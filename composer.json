@@ -1,0 +1,26 @@
+{
+  "name": "praxigento/mobi_mod_mage2_odoo",
+  "description": "MOBI: Magento 2 integration code for Praxigento_Odoo module.",
+  "type": "magento2-module",
+  "homepage": "https://github.com/praxigento/mobi_mod_mage2_odoo",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alex Gusev",
+      "email": "flancer64@gmail.com"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "src/registration.php"
+    ],
+    "psr-4": {
+      "Praxigento\\Odoo\\": "src/"
+    }
+  },
+  "require": {
+    "praxigento/mobi_mod_common_odoo": "dev-master",
+    "praxigento/mobi_mod_mage2_exp_date": "dev-master",
+    "praxigento/mobi_mod_mage2_wallet": "dev-master"
+  }
+}
