@@ -2,7 +2,7 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
-    <route url="/V1/prxgt/odoo/customer/address/read/" method="GET">
+    <route url="/V1/prxgt/odoo/customer_address/read/" method="GET">
         <service class="Praxigento\Odoo\Api\CustomerAddressInterface" method="read"/>
         <resources>
             <resource ref="anonymous"/>
@@ -11,6 +11,34 @@
 
     <route url="/V1/prxgt/odoo/customer/read/" method="GET">
         <service class="Praxigento\Odoo\Api\CustomerInterface" method="read"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/product/read/" method="GET">
+        <service class="Praxigento\Odoo\Api\ProductInterface" method="read"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sale_order/read/" method="GET">
+        <service class="Praxigento\Odoo\Api\SaleOrderInterface" method="read"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sale_order_invoice/read/" method="GET">
+        <service class="Praxigento\Odoo\Api\SaleOrderInvoiceInterface" method="read"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sale_order_shipment/read/" method="GET">
+        <service class="Praxigento\Odoo\Api\SaleOrderShipmentInterface" method="read"/>
         <resources>
             <resource ref="anonymous"/>
         </resources>

@@ -10,5 +10,13 @@
                 type="Praxigento\Odoo\Api\Def\Customer"/>
     <preference for="Praxigento\Odoo\Api\CustomerAddressInterface"
                 type="Praxigento\Odoo\Api\Def\CustomerAddress"/>
+    <preference for="Praxigento\Odoo\Api\ProductInterface"
+                type="Praxigento\Odoo\Api\Def\ProductAddress"/>
+    <preference for="Praxigento\Odoo\Api\SaleOrderInterface"
+                type="Praxigento\Odoo\Api\Def\SaleOrder"/>
+    <preference for="Praxigento\Odoo\Api\SaleOrderInvoiceInterface"
+                type="Praxigento\Odoo\Api\Def\SaleOrderInvoice"/>
+    <preference for="Praxigento\Odoo\Api\SaleOrderShipmentInterface"
+                type="Praxigento\Odoo\Api\Def\SaleOrderShipment"/>
 
 </config>
