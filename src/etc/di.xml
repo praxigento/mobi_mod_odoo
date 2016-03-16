@@ -5,5 +5,10 @@
     <!-- Repos -->
     <!-- Services -->
 
+    <!-- API Services -->
+    <preference for="Praxigento\Odoo\Api\CustomerInterface"
+                type="Praxigento\Odoo\Api\Def\Customer"/>
+    <preference for="Praxigento\Odoo\Api\CustomerAddressInterface"
+                type="Praxigento\Odoo\Api\Def\CustomerAddress"/>
 
 </config>
