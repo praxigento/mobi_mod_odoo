@@ -11,12 +11,27 @@
     <preference for="Praxigento\Odoo\Api\CustomerAddressInterface"
                 type="Praxigento\Odoo\Api\Def\CustomerAddress"/>
     <preference for="Praxigento\Odoo\Api\ProductInterface"
-                type="Praxigento\Odoo\Api\Def\ProductAddress"/>
+                type="Praxigento\Odoo\Api\Def\Product"/>
+    <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface"
+                type="Praxigento\Odoo\Api\Def\ProductReplicator"/>
     <preference for="Praxigento\Odoo\Api\SaleOrderInterface"
                 type="Praxigento\Odoo\Api\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Api\SaleOrderInvoiceInterface"
                 type="Praxigento\Odoo\Api\Def\SaleOrderInvoice"/>
     <preference for="Praxigento\Odoo\Api\SaleOrderShipmentInterface"
                 type="Praxigento\Odoo\Api\Def\SaleOrderShipment"/>
+
+    <!-- API Data -->
+    <preference for="Praxigento\Odoo\Api\Data\Product\Replicator\IBundle"
+                type="Praxigento\Odoo\Api\Data\Product\Replicator\Def\Bundle"/>
+    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\ILot"
+                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Lot"/>
+    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IOption"
+                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Option"/>
+    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IProduct"
+                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Product"/>
+    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IWarehouse"
+                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Warehouse"/>
+
 
 </config>

@@ -16,6 +16,14 @@
         </resources>
     </route>
 
+    <route url="/V1/prxgt/odoo/product/replicate/save/" method="POST">
+        <service class="Praxigento\Odoo\Api\ProductReplicatorInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+
     <route url="/V1/prxgt/odoo/product/read/" method="GET">
         <service class="Praxigento\Odoo\Api\ProductInterface" method="read"/>
         <resources>
