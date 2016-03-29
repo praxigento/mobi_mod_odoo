@@ -2,7 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
 
-    <!-- Repos -->
+    <!-- Own Repos -->
+    <preference for="Praxigento\Odoo\Lib\Repo\Entity\IWarehouse"
+                type="Praxigento\Odoo\Lib\Repo\Entity\Def\Warehouse"/>
+    <!-- Other Repos override -->
+    <preference for="Praxigento\Warehouse\Lib\Repo\Entity\IWarehouse"
+                type="Praxigento\Odoo\Lib\Repo\Entity\Def\Warehouse"/>
+
     <!-- Services -->
     <preference for="\Praxigento\Odoo\Lib\Service\IReplicate"
                 type="\Praxigento\Odoo\Lib\Service\Replicate\Call"/>
