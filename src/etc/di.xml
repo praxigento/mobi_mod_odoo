@@ -4,6 +4,8 @@
 
     <!-- Repos -->
     <!-- Services -->
+    <preference for="\Praxigento\Odoo\Lib\Service\IReplicate"
+                type="\Praxigento\Odoo\Lib\Service\Replicate\Call"/>
 
     <!-- API Services -->
     <preference for="Praxigento\Odoo\Api\CustomerInterface"
@@ -22,16 +24,15 @@
                 type="Praxigento\Odoo\Api\Def\SaleOrderShipment"/>
 
     <!-- API Data -->
-    <preference for="Praxigento\Odoo\Api\Data\Product\Replicator\IBundle"
-                type="Praxigento\Odoo\Api\Data\Product\Replicator\Def\Bundle"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\ILot"
-                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Lot"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IOption"
-                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Option"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IProduct"
-                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Product"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\IWarehouse"
-                type="\Praxigento\Odoo\Api\Data\Product\Replicator\Bundle\Def\Warehouse"/>
-
+    <preference for="\Praxigento\Odoo\Lib\Data\Dict\IBundle"
+                type="\Praxigento\Odoo\Lib\Data\Dict\Def\Bundle"/>
+    <preference for="\Praxigento\Odoo\Lib\Data\Dict\Bundle\ILot"
+                type="\Praxigento\Odoo\Lib\Data\Dict\Bundle\Def\Lot"/>
+    <preference for="\Praxigento\Odoo\Lib\Data\Dict\Bundle\IOption"
+                type="\Praxigento\Odoo\Lib\Data\Dict\Bundle\Def\Option"/>
+    <preference for="\Praxigento\Odoo\Lib\Data\Dict\Bundle\IProduct"
+                type="\Praxigento\Odoo\Lib\Data\Dict\Bundle\Def\Product"/>
+    <preference for="\Praxigento\Odoo\Lib\Data\Dict\Bundle\IWarehouse"
+                type="\Praxigento\Odoo\Lib\Data\Dict\Bundle\Def\Warehouse"/>
 
 </config>

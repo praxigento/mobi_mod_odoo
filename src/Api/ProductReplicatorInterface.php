@@ -13,10 +13,10 @@ interface ProductReplicatorInterface
 {
 
     /**
-     * @param \Praxigento\Odoo\Api\Data\Product\Replicator\IBundle $data
+     * @param \Praxigento\Odoo\Lib\Data\Dict\IBundle $data
      *
      * @return null
      */
-    public function save(Data\Product\Replicator\IBundle $data);
+    public function save(\Praxigento\Odoo\Lib\Data\Dict\IBundle $data);
 
 }
