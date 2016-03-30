@@ -10,7 +10,7 @@ use Flancer32\Lib\DataObject;
 use Praxigento\Odoo\Api\Data\Bundle\IProduct;
 
 /**
- * This class is used in REST/SOAP API and all methods should be declared explicitly.   
+ * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
 class Product extends DataObject implements IProduct
 {
@@ -44,6 +44,15 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getWarehouses()
+    {
+        $result = parent::getWarehouses();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setPrice($data)
     {
         parent::setPrice($data);
@@ -65,4 +74,11 @@ class Product extends DataObject implements IProduct
         parent::setSku($data);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function setWarehouses($data)
+    {
+        parent::setWarehouses($data);
+    }
 }

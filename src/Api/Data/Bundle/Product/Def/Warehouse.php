@@ -1,0 +1,67 @@
+<?php
+/**
+ * User: Alex Gusev <alex@flancer64.com>
+ */
+
+namespace Praxigento\Odoo\Api\Data\Bundle\Product\Def;
+
+
+use Flancer32\Lib\DataObject;
+use Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse;
+
+/**
+ * This class is used in REST/SOAP API and all methods should be declared explicitly.
+ */
+class Warehouse extends DataObject implements IWarehouse
+{
+    /**
+     * @inheritdoc
+     */
+    public function getLots()
+    {
+        $result = parent::getLots();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPrice()
+    {
+        $result = parent::getPrice();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPv()
+    {
+        $result = parent::getPv();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setLots($data)
+    {
+        parent::setLots($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPrice($data)
+    {
+        parent::setPrice($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPv($data)
+    {
+        parent::setPv($data);
+    }
+}

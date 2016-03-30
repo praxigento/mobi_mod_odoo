@@ -13,50 +13,58 @@ namespace Praxigento\Odoo\Api\Data\Bundle;
 interface IProduct
 {
     /**
-     * Wholesale price for the product (see /option/currency to get wholesale currency).
+     * Get wholesale price for the product (see /option/currency to get wholesale currency).
      *
-     * @api
      * @return double
      */
     public function getPrice();
 
     /**
-     * Wholesale PV for the product.
+     * Get wholesale PV for the product.
      *
-     * @api
      * @return double
      */
     public function getPv();
 
     /**
-     * SKU for the product.
+     * Get SKU for the product.
      *
-     * @api
      * @return string
      */
     public function getSku();
 
     /**
-     * Wholesale price for the product (see /option/currency to get wholesale currency).
+     * Get array of warehouse data for concrete product in bundle.
      *
-     * @api
+     * @return \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[]
+     */
+    public function getWarehouses();
+
+    /**
+     * Set wholesale price for the product (see /option/currency to get wholesale currency).
+     *
      * @param double $data
      */
     public function setPrice($data);
 
     /**
-     * Wholesale PV for the product.
+     * Set wholesale PV for the product.
      *
-     * @api
      * @param double $data
      */
     public function setPv($data);
 
     /**
-     * SKU for the product.
+     * Set SKU for the product.
      *
-     * @api
      * @param string $data
      */
     public function setSku($data);
+
+    /**
+     * Set array of warehouse data for concrete product in bundle.
+     *
+     * @param \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[] $data
+     */
+    public function setWarehouses($data);
 }

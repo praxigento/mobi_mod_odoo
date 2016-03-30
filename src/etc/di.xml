@@ -12,8 +12,8 @@
                 type="Praxigento\Odoo\Lib\Repo\Entity\Def\Warehouse"/>
 
     <!-- Services -->
-    <preference for="\Praxigento\Odoo\Lib\Service\IReplicate"
-                type="\Praxigento\Odoo\Lib\Service\Replicate\Call"/>
+    <preference for="Praxigento\Odoo\Lib\Service\IReplicate"
+                type="Praxigento\Odoo\Lib\Service\Replicate\Call"/>
 
     <!-- API Services -->
     <preference for="Praxigento\Odoo\Api\CustomerInterface"
@@ -32,15 +32,19 @@
                 type="Praxigento\Odoo\Api\Def\SaleOrderShipment"/>
 
     <!-- API Data -->
-    <preference for="\Praxigento\Odoo\Api\Data\IBundle"
-                type="\Praxigento\Odoo\Api\Data\Def\Bundle"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Bundle\ILot"
-                type="\Praxigento\Odoo\Api\Data\Bundle\Def\Lot"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Bundle\IOption"
-                type="\Praxigento\Odoo\Api\Data\Bundle\Def\Option"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Bundle\IProduct"
-                type="\Praxigento\Odoo\Api\Data\Bundle\Def\Product"/>
-    <preference for="\Praxigento\Odoo\Api\Data\Bundle\IWarehouse"
-                type="\Praxigento\Odoo\Api\Data\Bundle\Def\Warehouse"/>
+    <preference for="Praxigento\Odoo\Api\Data\IBundle"
+                type="Praxigento\Odoo\Api\Data\Def\Bundle"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\ILot"
+                type="Praxigento\Odoo\Api\Data\Bundle\Def\Lot"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\IOption"
+                type="Praxigento\Odoo\Api\Data\Bundle\Def\Option"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\IProduct"
+                type="Praxigento\Odoo\Api\Data\Bundle\Def\Product"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse"
+                type="Praxigento\Odoo\Api\Data\Bundle\Product\Def\Warehouse"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\ILot"
+                type="Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\Def\Lot"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\IWarehouse"
+                type="Praxigento\Odoo\Api\Data\Bundle\Def\Warehouse"/>
 
 </config>
