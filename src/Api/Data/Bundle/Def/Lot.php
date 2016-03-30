@@ -18,6 +18,15 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
+    public function getCode()
+    {
+        $result = parent::getCode();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getExpirationDate()
     {
         $result = parent::getExpirationDate();
@@ -31,6 +40,14 @@ class Lot extends DataObject implements ILot
     {
         $result = parent::getIdOdoo();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCode($data)
+    {
+        parent::setCode($data);
     }
 
     /**

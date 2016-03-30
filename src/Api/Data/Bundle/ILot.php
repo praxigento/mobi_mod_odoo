@@ -13,9 +13,15 @@ namespace Praxigento\Odoo\Api\Data\Bundle;
 interface ILot
 {
     /**
+     * Get code used by humans.
+     *
+     * @return string
+     */
+    public function getCode();
+
+    /**
      * Get expiration date for all products from this lot.
      *
-     * @api
      * @return string
      */
     public function getExpirationDate();
@@ -23,15 +29,20 @@ interface ILot
     /**
      * Get ID of the lot in Odoo.
      *
-     * @api
      * @return  int|null
      */
     public function getIdOdoo();
 
     /**
+     * Set code used by humans.
+     *
+     * @param string $data
+     */
+    public function setCode($data);
+
+    /**
      * Set expiration date for all products from this lot.
      *
-     * @api
      * @param string $data
      */
     public function setExpirationDate($data);
@@ -39,7 +50,6 @@ interface ILot
     /**
      * Set ID of the lot in Odoo.
      *
-     * @api
      * @param int $data
      */
     public function setIdOdoo($data);

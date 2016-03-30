@@ -3,6 +3,8 @@
         xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
 
     <!-- Own Repos -->
+    <preference for="Praxigento\Odoo\Lib\Repo\ILot"
+                type="Praxigento\Odoo\Lib\Repo\Def\Lot"/>
     <preference for="Praxigento\Odoo\Lib\Repo\Entity\IWarehouse"
                 type="Praxigento\Odoo\Lib\Repo\Entity\Def\Warehouse"/>
     <!-- Other Repos override -->
