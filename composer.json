@@ -19,7 +19,6 @@
     }
   },
   "require": {
-    "praxigento/mobi_mod_common_odoo": "dev-master",
     "praxigento/mobi_mod_mage2_exp_date": "dev-master",
     "praxigento/mobi_mod_mage2_wallet": "dev-master"
   }
