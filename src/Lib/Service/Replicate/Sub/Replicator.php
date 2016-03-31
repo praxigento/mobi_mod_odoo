@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Service\Replicate\Sub;
 
-use Praxigento\Core\Lib\Config as Cfg;
+use Praxigento\Core\Config as Cfg;
 use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;

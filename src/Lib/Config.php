@@ -6,6 +6,6 @@
  */
 namespace Praxigento\Odoo\Lib;
 
-class Config extends \Praxigento\Core\Lib\Config {
+class Config extends \Praxigento\Core\Config {
 
 }
