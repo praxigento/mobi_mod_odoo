@@ -9,7 +9,7 @@ use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Core\Lib\Context\IDbAdapter;
 use Praxigento\Core\Lib\Context\IObjectManager;
 use Praxigento\Core\Lib\Context\ObjectManagerFactory;
-use Praxigento\Core\Lib\Repo\IBasic as IBasicRepo;
+use Praxigento\Core\Repo\IBasic as IBasicRepo;
 use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Lib\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Lib\Repo\ILot;
