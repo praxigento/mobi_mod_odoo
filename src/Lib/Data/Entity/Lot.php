@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Data\Entity;
 
-use Praxigento\Core\Lib\Entity\Base as EntityBase;
+use Praxigento\Core\Entity\Base as EntityBase;
 
 class Lot extends EntityBase
 {
