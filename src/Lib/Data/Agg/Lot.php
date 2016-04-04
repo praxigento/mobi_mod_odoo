@@ -6,7 +6,7 @@
 
 namespace Praxigento\Odoo\Lib\Data\Agg;
 
-use Praxigento\Warehouse\Lib\Data\Entity\Lot as WrhsEntityLot;
+use Praxigento\Warehouse\Data\Entity\Lot as WrhsEntityLot;
 
 class Lot extends WrhsEntityLot
 {

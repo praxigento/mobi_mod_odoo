@@ -13,7 +13,7 @@ use Praxigento\Core\Repo\IBasic as IBasicRepo;
 use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Lib\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Lib\Repo\ILot;
-use Praxigento\Warehouse\Lib\Data\Entity\Lot as EntityWrhsLot;
+use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 class Lot implements ILot
 {

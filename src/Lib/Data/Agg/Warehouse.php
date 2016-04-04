@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Data\Agg;
 
-use Praxigento\Warehouse\Lib\Data\Agg\Warehouse as WrhsWarehouse;
+use Praxigento\Warehouse\Data\Agg\Warehouse as WrhsWarehouse;
 
 
 class Warehouse extends WrhsWarehouse
