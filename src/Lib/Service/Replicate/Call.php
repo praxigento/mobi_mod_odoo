@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Lib\Service\Replicate;
 
 use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Core\Lib\Context\IObjectManager;
-use Praxigento\Core\Lib\Context\ITransactionManager;
+use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse as RepoWarehouse;
 use Praxigento\Odoo\Lib\Service\IReplicate;
