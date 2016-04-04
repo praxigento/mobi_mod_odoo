@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Data\Entity;
 
-use Praxigento\Core\Entity\Base as EntityBase;
+use Praxigento\Core\Data\Entity\Base as EntityBase;
 
 class Warehouse extends EntityBase
 {
