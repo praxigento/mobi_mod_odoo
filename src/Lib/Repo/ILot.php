@@ -1,13 +1,13 @@
 <?php
 /**
- * Interface for Repository that operates with "\Praxigento\Odoo\Lib\Data\Agg\Lot" (aggregation of Warehouse Lot with data from Odoo Lot).
+ * Interface for Repository that operates with "\Praxigento\Odoo\Data\Agg\Lot" (aggregation of Warehouse Lot with data from Odoo Lot).
  *
  * User: Alex Gusev <alex@flancer64.com>
  */
 
 namespace Praxigento\Odoo\Lib\Repo;
 
-use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 
 interface ILot
 {

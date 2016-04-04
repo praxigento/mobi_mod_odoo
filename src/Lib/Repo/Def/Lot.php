@@ -10,8 +10,8 @@ use Praxigento\Core\Lib\Context\IDbAdapter;
 use Praxigento\Core\Lib\Context\IObjectManager;
 use Praxigento\Core\Lib\Context\ObjectManagerFactory;
 use Praxigento\Core\Repo\IBasic as IBasicRepo;
-use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
-use Praxigento\Odoo\Lib\Data\Entity\Lot as EntityLot;
+use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Lib\Repo\ILot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 

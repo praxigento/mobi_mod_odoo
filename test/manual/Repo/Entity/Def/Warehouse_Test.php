@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
 
 use Praxigento\Core\Lib\Context as Ctx;
-use Praxigento\Odoo\Lib\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');

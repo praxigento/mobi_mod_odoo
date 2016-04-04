@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Lib\Repo\Def;
 
 use Praxigento\Core\Lib\Context as Ctx;
-use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Lib\Repo\ILot;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');

@@ -7,9 +7,9 @@ namespace Praxigento\Odoo\Setup;
 
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
-use Praxigento\Odoo\Lib\Data\Entity\Lot;
-use Praxigento\Odoo\Lib\Data\Entity\Product;
-use Praxigento\Odoo\Lib\Data\Entity\Warehouse;
+use Praxigento\Odoo\Data\Entity\Lot;
+use Praxigento\Odoo\Data\Entity\Product;
+use Praxigento\Odoo\Data\Entity\Warehouse;
 
 class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
 {

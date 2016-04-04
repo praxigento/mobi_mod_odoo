@@ -7,8 +7,8 @@ namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
 
 use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Lib\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Lib\Data\Entity\Warehouse as EntityWarehouse;
+use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse;
 use Praxigento\Warehouse\Lib\Repo\Entity\Def\Warehouse as WrhsRepoWarehouse;
 

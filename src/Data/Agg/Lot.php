@@ -4,7 +4,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Data\Agg;
+namespace Praxigento\Odoo\Data\Agg;
 
 use Praxigento\Warehouse\Data\Entity\Lot as WrhsEntityLot;
 

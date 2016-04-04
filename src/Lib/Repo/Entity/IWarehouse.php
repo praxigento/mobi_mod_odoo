@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Repo\Entity;
 
-use Praxigento\Odoo\Lib\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Warehouse\Lib\Repo\Entity\IWarehouse as WrhsIWarehouse;
 
 interface IWarehouse extends WrhsIWarehouse

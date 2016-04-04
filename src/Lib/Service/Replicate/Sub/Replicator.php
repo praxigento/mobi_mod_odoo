@@ -9,8 +9,8 @@ use Praxigento\Core\Config as Cfg;
 use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
-use Praxigento\Odoo\Lib\Data\Agg\Lot as AggLot;
-use Praxigento\Odoo\Lib\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse as IRepoWarehouse;
 use Praxigento\Odoo\Lib\Repo\ILot as IRepoLot;
 
