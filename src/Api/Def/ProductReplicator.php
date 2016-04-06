@@ -5,8 +5,7 @@
 
 namespace Praxigento\Odoo\Api\Def;
 
-use Praxigento\Core\Lib\Context\IObjectManager;
-use Praxigento\Core\Lib\Context\ObjectManagerFactory;
+use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Api\Data;
 use Praxigento\Odoo\Api\ProductReplicatorInterface;
 
@@ -14,21 +13,21 @@ class ProductReplicator implements ProductReplicatorInterface
 {
     /** @var  \Praxigento\Odoo\Lib\Service\IReplicate */
     private $_callOdooReplicate;
-    /** @var  IObjectManager */
-    private $_obm;
+    /** @var  ObjectManagerInterface */
+    private $manObj;
 
     public function __construct(
-        ObjectManagerFactory $omf,
+        ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Lib\Service\IReplicate $callOdooReplicate
     ) {
-        $this->_obm = $omf->create();
+        $this->manObj = $manObj;
         $this->_callOdooReplicate = $callOdooReplicate;
     }
 
     public function save(\Praxigento\Odoo\Api\Data\IBundle $data)
     {
         /** @var  $req \Praxigento\Odoo\Lib\Service\Replicate\Request\ProductSave */
-        $req = $this->_obm->create(\Praxigento\Odoo\Lib\Service\Replicate\Request\ProductSave::class);
+        $req = $this->manObj->create(\Praxigento\Odoo\Lib\Service\Replicate\Request\ProductSave::class);
         $req->setProductBundle($data);
         $resp = $this->_callOdooReplicate->productSave($req);
         return;

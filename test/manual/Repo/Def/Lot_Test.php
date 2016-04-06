@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Lib\Repo\Def;
 
-use Praxigento\Core\Lib\Context as Ctx;
+use Magento\Framework\App\ObjectManager;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Lib\Repo\ILot;
 
@@ -15,7 +15,7 @@ class Lot_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
 
     public function test_checkExistence()
     {
-        $obm = Ctx::instance()->getObjectManager();
+        $obm = ObjectManager::getInstance();
         /** @var  $repo ILot */
         $repo = $obm->get(ILot::class);
         /** @var  $data AggLot */

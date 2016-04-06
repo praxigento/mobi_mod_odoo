@@ -5,8 +5,8 @@
 
 namespace Praxigento\Odoo\Lib\Service\Replicate\Sub;
 
+use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Config as Cfg;
-use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
@@ -16,19 +16,19 @@ use Praxigento\Odoo\Lib\Repo\ILot as IRepoLot;
 
 class Replicator
 {
-    /** @var   IObjectManager */
+    /** @var   ObjectManagerInterface */
     private $_manObj;
-    /** @var  IRepoWarehouse */
-    private $_repoWrhs;
     /** @var  IRepoLot */
     private $_repoLot;
+    /** @var  IRepoWarehouse */
+    private $_repoWrhs;
 
     public function __construct(
-        Ctx\ObjectManagerFactory $omf,
+        ObjectManagerInterface $manObj,
         IRepoWarehouse $repoWrhs,
         IRepoLot $repoLot
     ) {
-        $this->_manObj = $omf->create();
+        $this->_manObj = $manObj;
         $this->_repoWrhs = $repoWrhs;
         $this->_repoLot = $repoLot;
     }

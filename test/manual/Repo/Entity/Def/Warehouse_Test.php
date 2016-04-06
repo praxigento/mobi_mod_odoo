@@ -4,7 +4,8 @@
  */
 namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
 
-use Praxigento\Core\Lib\Context as Ctx;
+
+use Magento\Framework\App\ObjectManager;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse;
 
@@ -16,7 +17,7 @@ class Warehouse_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
 
     public function test_create()
     {
-        $obm = Ctx::instance()->getObjectManager();
+        $obm = ObjectManager::getInstance();
         /** @var  $repo IWarehouse */
         $repo = $obm->get(IWarehouse::class);
         /** @var  $data AggWarehouse */

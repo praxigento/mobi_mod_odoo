@@ -5,7 +5,6 @@
 
 namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
 
-use Praxigento\Core\Lib\Context as Ctx;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
@@ -19,11 +18,10 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
     protected function _initQueryRead()
     {
         $result = parent::_initQueryRead();
-        $dba = $this->_repoBasic->getDba();
         /* aliases and tables */
         $asStock = self::AS_STOCK;
         $asOdoo = self::AS_ODOO;
-        $tblOdoo = [$asOdoo => $dba->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
         /* LEFT LOIN prxgt_odoo_wrhs */
         $cols = [
             AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_ID,
@@ -44,9 +42,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
 
     public function create($data)
     {
-        $dba = $this->_repoBasic->getDba();
-        $manTrans = $dba->getTransactionManager();
-        $trans = $manTrans->transactionBegin();
+        $trans = $this->_manTrans->transactionBegin();
         try {
             $result = parent::create($data);
             /* create odoo related entries */
@@ -57,9 +53,9 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
                 EntityWarehouse::ATTR_CURRENCY => $data->getCurrency()
             ];
             $this->_repoBasic->addEntity($tbl, $bind);
-            $manTrans->transactionCommit($trans);
+            $this->_manTrans->transactionCommit($trans);
         } finally {
-            $manTrans->transactionClose($trans);
+            $this->_manTrans->transactionClose($trans);
         }
         return $result;
     }
@@ -70,10 +66,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
         $result = null;
         $query = $this->_initQueryRead();
         $query->where(self::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_ID . '=:id');
-        $sql = (string)$query;
-        $dba = $this->_repoBasic->getDba();
-        $conn = $dba->getDefaultConnection();
-        $data = $conn->fetchRow($query, ['id' => $odooId]);
+        $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
             $result = $this->_initResultRead($data);
         }

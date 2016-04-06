@@ -5,10 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Repo\Def;
 
-use Praxigento\Core\Lib\Context as Ctx;
-use Praxigento\Core\Lib\Context\IDbAdapter;
-use Praxigento\Core\Lib\Context\IObjectManager;
-use Praxigento\Core\Lib\Context\ObjectManagerFactory;
+use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\IBasic as IBasicRepo;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
@@ -23,32 +20,38 @@ class Lot implements ILot
     const AS_ODOO = 'pol';
     const AS_WRHS = 'pwl';
     /**#@-*/
-
-    /** @var  IObjectManager */
+    /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
+    protected $_conn;
+    /** @var  ObjectManagerInterface */
     protected $_manObj;
-    /** @var  IDbAdapter */
-    protected $_dba;
+    /** @var  \Praxigento\Core\Repo\ITransactionManager */
+    protected $_manTrans;
     /** @var IBasicRepo */
     protected $_repoBasic;
+    /** @var \Magento\Framework\App\ResourceConnection */
+    protected $_resource;
 
     public function __construct(
-        ObjectManagerFactory $factObjMan,
+        ObjectManagerInterface $manObj,
+        \Praxigento\Core\Repo\ITransactionManager $manTrans,
+        \Magento\Framework\App\ResourceConnection $resource,
         IBasicRepo $repoBasic
     ) {
-        $this->_manObj = $factObjMan->create();
+        $this->_manObj = $manObj;
+        $this->_manTrans = $manTrans;
+        $this->_resource = $resource;
+        $this->_conn = $resource->getConnection();
         $this->_repoBasic = $repoBasic;
-        $this->_dba = $repoBasic->getDba();
     }
 
     protected function _initQueryRead()
     {
-        $conn = $this->_dba->getDefaultConnection();
-        $result = $conn->select();
+        $result = $this->_conn->select();
         /* aliases and tables */
         $asWrhs = self::AS_WRHS;
         $asOdoo = self::AS_ODOO;
-        $tblWrhs = [$asWrhs => $this->_dba->getTableName(EntityWrhsLot::ENTITY_NAME)];
-        $tblOdoo = [$asOdoo => $this->_dba->getTableName(EntityLot::ENTITY_NAME)];
+        $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
         /* SELECT FROM prxgt_wrhs_lot */
         $cols = [
             AggLot::ATTR_ID => EntityWrhsLot::ATTR_ID,
@@ -70,8 +73,7 @@ class Lot implements ILot
      */
     protected function _register($data)
     {
-        $manTrans = $this->_dba->getTransactionManager();
-        $trans = $manTrans->transactionBegin();
+        $trans = $this->_manTrans->transactionBegin();
         try {
             /* register lot in Warehouse module */
             $tbl = EntityWrhsLot::ENTITY_NAME;
@@ -88,9 +90,9 @@ class Lot implements ILot
                 EntityLot::ATTR_ODOO_REF => $data->getOdooId()
             ];
             $this->_repoBasic->addEntity($tbl, $bind);
-            $manTrans->transactionCommit($trans);
+            $this->_manTrans->transactionCommit($trans);
         } finally {
-            $manTrans->transactionClose($trans);
+            $this->_manTrans->transactionClose($trans);
         }
     }
 
@@ -113,7 +115,7 @@ class Lot implements ILot
         $query = $this->_initQueryRead();
         $where = self::AS_WRHS . '.' . EntityWrhsLot::ATTR_ID . '=:id';
         $query->where($where);
-        $conn = $this->_dba->getDefaultConnection();
+        $conn = $this->_conn->getDefaultConnection();
         $data = $conn->fetchRow($query, ['id' => $id]);
         if ($data) {
             /** @var  $result AggLot */
@@ -129,8 +131,7 @@ class Lot implements ILot
         $query = $this->_initQueryRead();
         $where = self::AS_ODOO . '.' . EntityLot::ATTR_ODOO_REF . '=:id';
         $query->where($where);
-        $conn = $this->_dba->getDefaultConnection();
-        $data = $conn->fetchRow($query, ['id' => $id]);
+        $data = $this->_conn->fetchRow($query, ['id' => $id]);
         if ($data) {
             /** @var  $result AggLot */
             $result = $this->_manObj->create(AggLot::class);

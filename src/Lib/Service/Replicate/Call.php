@@ -5,8 +5,7 @@
 
 namespace Praxigento\Odoo\Lib\Service\Replicate;
 
-use Praxigento\Core\Lib\Context as Ctx;
-use Praxigento\Core\Lib\Context\IObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
 use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse as RepoWarehouse;
@@ -14,7 +13,7 @@ use Praxigento\Odoo\Lib\Service\IReplicate;
 
 class Call implements IReplicate
 {
-    /** @var   IObjectManager */
+    /** @var   ObjectManagerInterface */
     private $_manObj;
     /** @var  ITransactionManager */
     private $_manTrans;
@@ -27,11 +26,12 @@ class Call implements IReplicate
      * Call constructor.
      */
     public function __construct(
+        ObjectManagerInterface $manObj,
         ITransactionManager $manTrans,
         RepoWarehouse $repoWrhs,
         Sub\Replicator $subReplicator
     ) {
-        $this->_manObj = Ctx::instance()->getObjectManager();
+        $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
         $this->_repoWrhs = $repoWrhs;
         $this->_subReplicator = $subReplicator;
