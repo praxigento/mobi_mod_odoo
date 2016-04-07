@@ -11,7 +11,7 @@ use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Repo\Entity\IWarehouse as IRepoWarehouse;
+use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoWarehouse;
 use Praxigento\Odoo\Lib\Repo\ILot as IRepoLot;
 
 class Replicator
