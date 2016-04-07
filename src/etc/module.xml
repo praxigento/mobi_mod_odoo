@@ -4,6 +4,7 @@
     <module name="Praxigento_Odoo" setup_version="0.1.0">
         <sequence>
             <module name="Praxigento_ExpDate"/>
+            <module name="Praxigento_Pv"/>
             <module name="Praxigento_Wallet"/>
         </sequence>
     </module>
