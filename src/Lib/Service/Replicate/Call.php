@@ -8,8 +8,8 @@ namespace Praxigento\Odoo\Lib\Service\Replicate;
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
-use Praxigento\Odoo\Repo\Agg\IWarehouse as RepoWarehouse;
 use Praxigento\Odoo\Lib\Service\IReplicate;
+use Praxigento\Odoo\Repo\Agg\IWarehouse as RepoWarehouse;
 
 class Call implements IReplicate
 {
@@ -57,9 +57,7 @@ class Call implements IReplicate
             $this->_subReplicator->processLots($lots);
             /* replicate products */
             foreach ($products as $odooId => $prod) {
-                $sku = $prod->getSku();
-                $price = $prod->getPrice();
-                $pv = $prod->getPv();
+                $this->_subReplicator->processProductItem($prod);
             }
             $this->_manTrans->transactionCommit($trans);
         } finally {

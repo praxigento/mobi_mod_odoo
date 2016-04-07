@@ -26,6 +26,15 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getName()
+    {
+        $result = parent::getName();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getPrice()
     {
         $result = parent::getPrice();
@@ -62,9 +71,26 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getWeight()
+    {
+        $result = parent::getWeight();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setId($data)
     {
         parent::setId($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setName($data)
+    {
+        parent::setName($data);
     }
 
     /**
@@ -97,5 +123,13 @@ class Product extends DataObject implements IProduct
     public function setWarehouses($data)
     {
         parent::setWarehouses($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setWeight($data)
+    {
+        parent::setWeight($data);
     }
 }

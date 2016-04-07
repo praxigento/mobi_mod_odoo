@@ -21,6 +21,13 @@ interface IProduct
     public function getId();
 
     /**
+     * Get name for the product.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
      * Get wholesale price for the product (see /option/currency to get wholesale currency).
      *
      * @return double
@@ -49,12 +56,26 @@ interface IProduct
     public function getWarehouses();
 
     /**
+     * Get weight for the product.
+     *
+     * @return double
+     */
+    public function getWeight();
+
+    /**
      * Set Odoo ID of the product.
      *
      * @api
      * @param int $data
      */
     public function setId($data);
+
+    /**
+     * Set name for the product.
+     *
+     * @param string $data
+     */
+    public function setName($data);
 
     /**
      * Set wholesale price for the product (see /option/currency to get wholesale currency).
@@ -83,4 +104,11 @@ interface IProduct
      * @param \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[] $data
      */
     public function setWarehouses($data);
+
+    /**
+     * Set weight for the product.
+     *
+     * @param double $data
+     */
+    public function setWeight($data);
 }

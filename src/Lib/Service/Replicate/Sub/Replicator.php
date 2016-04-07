@@ -11,26 +11,35 @@ use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoWarehouse;
 use Praxigento\Odoo\Lib\Repo\ILot as IRepoLot;
+use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoWarehouse;
+use Praxigento\Odoo\Repo\IModule;
 
 class Replicator
 {
     /** @var   ObjectManagerInterface */
-    private $_manObj;
+    protected $_manObj;
     /** @var  IRepoLot */
-    private $_repoLot;
+    protected $_repoLot;
+    /** @var IModule */
+    protected $_repoMod;
     /** @var  IRepoWarehouse */
-    private $_repoWrhs;
+    protected $_repoWrhs;
+    /** @var Replicator\Product */
+    protected $_subProduct;
 
     public function __construct(
         ObjectManagerInterface $manObj,
+        IModule $repoMod,
         IRepoWarehouse $repoWrhs,
-        IRepoLot $repoLot
+        IRepoLot $repoLot,
+        Replicator\Product $subProduct
     ) {
         $this->_manObj = $manObj;
+        $this->_repoMod = $repoMod;
         $this->_repoWrhs = $repoWrhs;
         $this->_repoLot = $repoLot;
+        $this->_subProduct = $subProduct;
     }
 
     /**
@@ -47,6 +56,17 @@ class Replicator
             $aggData->setExpDate($lot->getExpirationDate());
             $this->_repoLot->checkExistence($aggData);
         }
+    }
+
+    public function processProductItem($product)
+    {
+        assert($product instanceof \Praxigento\Odoo\Api\Data\Bundle\IProduct);
+        $sku = $product->getSku();
+        $name = $product->getName();
+        $price = $product->getPrice();
+        $weight = $product->getPrice();
+        $pv = $product->getPv();
+        $mageId = $this->_subProduct->create($sku, $name, $price, $weight);
     }
 
     /**
