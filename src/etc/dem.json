@@ -88,12 +88,6 @@
                     "comment": "Reference to the warehouse in Odoo DB.",
                     "nullable": false,
                     "type": {"integer": {"unsigned": true}}
-                  },
-                  "Currency": {
-                    "alias": "currency",
-                    "comment": "Currency code (EUR, ...).",
-                    "nullable": false,
-                    "type": {"text": {"length": 3}}
                   }
                 },
                 "index": {
@@ -104,7 +98,7 @@
                   "toWarehouse": {
                     "own": {"aliases": ["mage_ref"]},
                     "reference": {
-                      "entity": {"completeAlias": "prxgt_wrhs_warehouse"},
+                      "entity": {"completeAlias": "prxgt_wrhs_wrhs"},
                       "aliases": ["stock_ref"]
                     },
                     "action": {"delete": "restrict", "update": "restrict"}

@@ -9,19 +9,9 @@ use Praxigento\Core\Data\Entity\Base as EntityBase;
 
 class Warehouse extends EntityBase
 {
-    const ATTR_CURRENCY = 'currency';
     const ATTR_MAGE_ID = 'mage_ref';
     const ATTR_ODOO_ID = 'odoo_ref';
     const ENTITY_NAME = 'prxgt_odoo_wrhs';
-
-    /**
-     * @return string
-     */
-    public function getCurrency()
-    {
-        $result = parent::getData(self::ATTR_CURRENCY);
-        return $result;
-    }
 
     /**
      * @inheritdoc
@@ -56,14 +46,6 @@ class Warehouse extends EntityBase
     {
         $result = [self::ATTR_MAGE_ID];
         return $result;
-    }
-
-    /**
-     * @param string $data
-     */
-    public function setCurrency($data)
-    {
-        parent::setData(self::ATTR_CURRENCY, $data);
     }
 
     /**
