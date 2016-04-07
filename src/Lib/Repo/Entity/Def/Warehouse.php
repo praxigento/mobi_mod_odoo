@@ -24,8 +24,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
         $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
         /* LEFT LOIN prxgt_odoo_wrhs */
         $cols = [
-            AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_ID,
-            AggWarehouse::AS_CURRENCY => EntityWarehouse::ATTR_CURRENCY,
+            AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_ID
         ];
         $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_ID . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
         $result->joinLeft($tblOdoo, $on, $cols);
@@ -49,8 +48,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
             $tbl = EntityWarehouse::ENTITY_NAME;
             $bind = [
                 EntityWarehouse::ATTR_MAGE_ID => $result->getId(),
-                EntityWarehouse::ATTR_ODOO_ID => $data->getOdooId(),
-                EntityWarehouse::ATTR_CURRENCY => $data->getCurrency()
+                EntityWarehouse::ATTR_ODOO_ID => $data->getOdooId()
             ];
             $this->_repoBasic->addEntity($tbl, $bind);
             $this->_manTrans->transactionCommit($trans);

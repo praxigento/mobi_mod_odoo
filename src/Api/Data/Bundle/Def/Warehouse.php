@@ -32,9 +32,9 @@ class Warehouse extends DataObject implements IWarehouse
     /**
      * @inheritdoc
      */
-    public function getIdOdoo()
+    public function getId()
     {
-        $result = parent::getIdOdoo();
+        $result = parent::getId();
         return $result;
     }
 
@@ -54,8 +54,8 @@ class Warehouse extends DataObject implements IWarehouse
     /**
      * @inheritdoc
      */
-    public function setIdOdoo($data)
+    public function setId($data)
     {
-        parent::setIdOdoo($data);
+        parent::setId($data);
     }
 }

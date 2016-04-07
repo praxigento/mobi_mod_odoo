@@ -14,6 +14,14 @@ namespace Praxigento\Odoo\Api\Data\Bundle\Product;
 interface IWarehouse
 {
     /**
+     * Get Odoo ID of the warehouse.
+     *
+     * @api
+     * @return  int|null
+     */
+    public function getId();
+
+    /**
      * Get array of lots data for the product on the warehouse.
      *
      * @return \Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\ILot[]
@@ -33,6 +41,14 @@ interface IWarehouse
      * @return double
      */
     public function getPv();
+
+    /**
+     * Set Odoo ID of the warehouse.
+     *
+     * @api
+     * @param int $data
+     */
+    public function setId($data);
 
     /**
      * Set array of lots data for the product on the warehouse.

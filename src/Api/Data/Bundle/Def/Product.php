@@ -17,6 +17,15 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getId()
+    {
+        $result = parent::getId();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getPrice()
     {
         $result = parent::getPrice();
@@ -48,6 +57,14 @@ class Product extends DataObject implements IProduct
     {
         $result = parent::getWarehouses();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setId($data)
+    {
+        parent::setId($data);
     }
 
     /**

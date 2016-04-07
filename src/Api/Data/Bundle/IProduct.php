@@ -13,6 +13,14 @@ namespace Praxigento\Odoo\Api\Data\Bundle;
 interface IProduct
 {
     /**
+     * Get Odoo ID of the product.
+     *
+     * @api
+     * @return  int|null
+     */
+    public function getId();
+
+    /**
      * Get wholesale price for the product (see /option/currency to get wholesale currency).
      *
      * @return double
@@ -39,6 +47,14 @@ interface IProduct
      * @return \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[]
      */
     public function getWarehouses();
+
+    /**
+     * Set Odoo ID of the product.
+     *
+     * @api
+     * @param int $data
+     */
+    public function setId($data);
 
     /**
      * Set wholesale price for the product (see /option/currency to get wholesale currency).

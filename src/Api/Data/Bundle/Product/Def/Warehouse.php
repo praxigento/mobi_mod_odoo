@@ -17,6 +17,15 @@ class Warehouse extends DataObject implements IWarehouse
     /**
      * @inheritdoc
      */
+    public function getId()
+    {
+        $result = parent::getId();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getLots()
     {
         $result = parent::getLots();
@@ -39,6 +48,14 @@ class Warehouse extends DataObject implements IWarehouse
     {
         $result = parent::getPv();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setId($data)
+    {
+        parent::setId($data);
     }
 
     /**

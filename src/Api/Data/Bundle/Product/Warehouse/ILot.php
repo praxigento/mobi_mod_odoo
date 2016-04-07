@@ -14,11 +14,27 @@ namespace Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse;
 interface ILot
 {
     /**
+     * Get Odoo ID of the lot.
+     *
+     * @api
+     * @return  int|null
+     */
+    public function getId();
+
+    /**
      * Get quantity of the product on the warehouse.
      *
      * @return double
      */
     public function getQty();
+
+    /**
+     * Set Odoo ID of the lot.
+     *
+     * @api
+     * @param int $data
+     */
+    public function setId($data);
 
     /**
      * Set quantity of the product on the warehouse.

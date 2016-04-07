@@ -25,7 +25,7 @@ interface IBundle
      * @api
      * @return \Praxigento\Odoo\Api\Data\Bundle\IOption
      */
-    public function getOptions();
+    public function getOption();
 
     /**
      * Get array of the products to the bundle.
@@ -57,7 +57,7 @@ interface IBundle
      * @api
      * @param \Praxigento\Odoo\Api\Data\Bundle\IOption $data
      */
-    public function setOptions($data);
+    public function setOption($data);
 
     /**
      * Set array of the products to the bundle.

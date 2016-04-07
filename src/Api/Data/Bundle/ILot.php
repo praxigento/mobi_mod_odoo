@@ -27,11 +27,11 @@ interface ILot
     public function getExpirationDate();
 
     /**
-     * Get ID of the lot in Odoo.
+     * Get Odoo ID of the lot.
      *
      * @return  int|null
      */
-    public function getIdOdoo();
+    public function getId();
 
     /**
      * Set code used by humans.
@@ -48,9 +48,9 @@ interface ILot
     public function setExpirationDate($data);
 
     /**
-     * Set ID of the lot in Odoo.
+     * Set Odoo ID of the lot.
      *
      * @param int $data
      */
-    public function setIdOdoo($data);
+    public function setId($data);
 }

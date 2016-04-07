@@ -45,7 +45,7 @@ class Call implements IReplicate
     {
         /** @var  $bundle IBundle */
         $bundle = $req->getProductBundle();
-        $options = $bundle->getOptions();
+        $options = $bundle->getOption();
         $warehouses = $bundle->getWarehouses();
         $lots = $bundle->getLots();
         $products = $bundle->getProducts();

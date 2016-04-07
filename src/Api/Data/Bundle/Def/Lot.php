@@ -36,7 +36,7 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
-    public function getIdOdoo()
+    public function getId()
     {
         $result = parent::getIdOdoo();
         return $result;
@@ -61,7 +61,7 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
-    public function setIdOdoo($data)
+    public function setId($data)
     {
         parent::setIdOdoo($data);
     }

@@ -17,10 +17,27 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
+    public function getId()
+    {
+        $result = parent::getId();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getQty()
     {
         $result = parent::getQty();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setId($data)
+    {
+        parent::setId($data);
     }
 
     /**

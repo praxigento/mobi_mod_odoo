@@ -8,7 +8,7 @@ namespace Praxigento\Odoo\Api\Data\Bundle;
 
 /**
  * Warehouse that is related to products bundle.
- * 
+ *
  * @api
  */
 interface IWarehouse
@@ -30,12 +30,12 @@ interface IWarehouse
     public function getCurrency();
 
     /**
-     * Get ID of the warehouse in Odoo.
+     * Get Odoo ID of the warehouse.
      *
      * @api
      * @return  int|null
      */
-    public function getIdOdoo();
+    public function getId();
 
     /**
      * Set short code to identify warehouse by humans.
@@ -54,10 +54,10 @@ interface IWarehouse
     public function setCurrency($data);
 
     /**
-     * Set ID of the warehouse in Odoo.
+     * Set Odoo ID of the warehouse.
      *
      * @api
      * @param int $data
      */
-    public function setIdOdoo($data);
+    public function setId($data);
 }

@@ -25,7 +25,7 @@ class Bundle extends DataObject implements IBundle
     /**
      * @inheritdoc
      */
-    public function getOptions()
+    public function getOption()
     {
         $result = parent::getOptions();
         return $result;
@@ -60,7 +60,7 @@ class Bundle extends DataObject implements IBundle
     /**
      * @inheritdoc
      */
-    public function setOptions($data = null)
+    public function setOption($data = null)
     {
         parent::setOptions($data);
     }
