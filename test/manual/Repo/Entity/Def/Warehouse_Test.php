@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
 
 use Magento\Framework\App\ObjectManager;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse;
+use Praxigento\Odoo\Repo\Entity\IWarehouse;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 

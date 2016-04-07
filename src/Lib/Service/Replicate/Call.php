@@ -8,7 +8,7 @@ namespace Praxigento\Odoo\Lib\Service\Replicate;
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
-use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse as RepoWarehouse;
+use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoWarehouse;
 use Praxigento\Odoo\Lib\Service\IReplicate;
 
 class Call implements IReplicate

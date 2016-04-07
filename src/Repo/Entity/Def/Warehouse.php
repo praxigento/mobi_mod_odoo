@@ -3,13 +3,13 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Repo\Entity\Def;
+namespace Praxigento\Odoo\Repo\Entity\Def;
 
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
-use Praxigento\Odoo\Lib\Repo\Entity\IWarehouse;
-use Praxigento\Warehouse\Lib\Repo\Entity\Def\Warehouse as WrhsRepoWarehouse;
+use Praxigento\Odoo\Repo\Entity\IWarehouse;
+use Praxigento\Warehouse\Repo\Entity\Def\Warehouse as WrhsRepoWarehouse;
 
 class Warehouse extends WrhsRepoWarehouse implements IWarehouse
 {

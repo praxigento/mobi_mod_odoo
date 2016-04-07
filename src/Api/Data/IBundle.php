@@ -14,7 +14,6 @@ interface IBundle
     /**
      * Set array of the lots related to products in the bundle.
      *
-     * @api
      * @return \Praxigento\Odoo\Api\Data\Bundle\ILot[]
      */
     public function getLots();
@@ -22,7 +21,6 @@ interface IBundle
     /**
      * Get products bundle options.
      *
-     * @api
      * @return \Praxigento\Odoo\Api\Data\Bundle\IOption
      */
     public function getOption();
@@ -30,7 +28,6 @@ interface IBundle
     /**
      * Get array of the products to the bundle.
      *
-     * @api
      * @return \Praxigento\Odoo\Api\Data\Bundle\IProduct[]
      */
     public function getProducts();
@@ -38,7 +35,6 @@ interface IBundle
     /**
      * Get array of the warehouses related to products in the bundle.
      *
-     * @api
      * @return \Praxigento\Odoo\Api\Data\Bundle\IWarehouse[]
      */
     public function getWarehouses();
@@ -46,7 +42,6 @@ interface IBundle
     /**
      * Set array of the lots related to products in the bundle.
      *
-     * @api
      * @param \Praxigento\Odoo\Api\Data\Bundle\ILot[] $data
      */
     public function setLots($data);
@@ -54,7 +49,6 @@ interface IBundle
     /**
      * Set products bundle options.
      *
-     * @api
      * @param \Praxigento\Odoo\Api\Data\Bundle\IOption $data
      */
     public function setOption($data);
@@ -62,7 +56,6 @@ interface IBundle
     /**
      * Set array of the products to the bundle.
      *
-     * @api
      * @param \Praxigento\Odoo\Api\Data\Bundle\IProduct[] $data
      */
     public function setProducts($data);
@@ -70,7 +63,6 @@ interface IBundle
     /**
      * Set array of the warehouses related to products in the bundle.
      *
-     * @api
      * @param \Praxigento\Odoo\Api\Data\Bundle\IWarehouse[] $data
      */
     public function setWarehouses($data);
