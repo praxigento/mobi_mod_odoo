@@ -95,7 +95,8 @@ class Replicator
         }
         /* check that categories are registered in Magento */
         $this->_subCategory->checkCategoriesExistence($categories);
-
+        /* TODO check product to categories links (add/remove) */
+        /* TODO update warehouse/lot/qty data  */
     }
 
     /**

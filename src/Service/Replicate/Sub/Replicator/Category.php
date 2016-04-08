@@ -40,7 +40,7 @@ class Category
             /* get mageId by odooId from registry */
             $mageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
             if (!$mageId) {
-                $mageId = $this->createMageCategory('Odoo #' . $odooId);
+                $mageId = $this->createMageCategory('Cat #' . $odooId);
                 $this->_repoMod->registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
             }
         }
@@ -51,7 +51,7 @@ class Category
         /** @var  $category CategoryInterface */
         $category = $this->_manObj->create(CategoryInterface::class);
         $category->setName($name);
-        $category->setIsActive(true);
+        $category->setIsActive(false);
         $saved = $this->_mageRepoCategory->save($category);
         $result = $saved->getId();
         return $result;
