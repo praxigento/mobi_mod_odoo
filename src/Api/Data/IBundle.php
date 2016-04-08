@@ -11,12 +11,6 @@ namespace Praxigento\Odoo\Api\Data;
  */
 interface IBundle
 {
-    /**
-     * Get array of the categories related to products in the bundle.
-     *
-     * @return \Praxigento\Odoo\Api\Data\Bundle\ICategory[]
-     */
-    public function getCategories();
 
     /**
      * Get array of the lots related to products in the bundle.
@@ -45,13 +39,6 @@ interface IBundle
      * @return \Praxigento\Odoo\Api\Data\Bundle\IWarehouse[]
      */
     public function getWarehouses();
-
-    /**
-     * Set array of the categories related to products in the bundle.
-     *
-     * @return \Praxigento\Odoo\Api\Data\Bundle\ICategory[]
-     */
-    public function setCategories($data);
 
     /**
      * Set array of the lots related to products in the bundle.

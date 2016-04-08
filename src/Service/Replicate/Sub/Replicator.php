@@ -7,7 +7,6 @@ namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Config as Cfg;
-use Praxigento\Odoo\Api\Data\Bundle\ICategory as ApiCategory;
 use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
@@ -30,6 +29,8 @@ class Replicator
     protected $_repoModPv;
     /** @var  IRepoModWarehouse */
     protected $_repoModWrhs;
+    /** @var Replicator\Category */
+    protected $_subCategory;
     /** @var Replicator\Product */
     protected $_subProduct;
 
@@ -39,7 +40,8 @@ class Replicator
         IRepoModLot $repoModLot,
         IRepoModPv $repoModPv,
         IRepoModWarehouse $repoModWrhs,
-        Replicator\Product $subProduct
+        Replicator\Product $subProduct,
+        Replicator\Category $subCategory
     ) {
         $this->_manObj = $manObj;
         $this->_repoMod = $repoMod;
@@ -47,24 +49,7 @@ class Replicator
         $this->_repoModPv = $repoModPv;
         $this->_repoModWrhs = $repoModWrhs;
         $this->_subProduct = $subProduct;
-    }
-
-    /**
-     * We need to check all categories against the list of existing in Mage and create new categories
-     * if they are absent in the list.
-     *
-     * @param ApiCategory[] $cats
-     */
-    public function processCategories($cats)
-    {
-        /** @var  $aggData AggLot */
-        $aggData = $this->_manObj->create(AggCa::class);
-        foreach ($cats as $item) {
-//            $aggData->setOdooId($item->getId());
-//            $aggData->setCode($item->getCode());
-//            $aggData->setExpDate($item->getExpirationDate());
-//            $this->_repoLot->checkExistence($aggData);
-        }
+        $this->_subCategory = $subCategory;
     }
 
     /**
@@ -108,7 +93,8 @@ class Replicator
             $this->_subProduct->update($idMage, $sku, $name, $priceWholesale, $weight);
             $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
-        /* replicate categories */
+        /* check that categories are registered in Magento */
+        $this->_subCategory->checkCategoriesExistence($categories);
 
     }
 
