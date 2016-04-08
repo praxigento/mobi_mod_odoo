@@ -31,4 +31,12 @@ interface IModule
      * @return bool
      */
     public function isOdooProductRegisteredInMage($idOdoo);
+
+    /**
+     * Register relation between Mage & Odoo instances of the $entityName.
+     * @param string $entityName
+     * @param int $mageId
+     * @param int $odooId
+     */
+    public function registerMageIdForOdooId($entityName, $mageId, $odooId);
 }

@@ -11,30 +11,30 @@ use Praxigento\Odoo\Repo\IModule;
 
 class Module implements IModule
 {
+    /** @var \Magento\Catalog\Api\CategoryRepositoryInterface */
+    protected $_mageRepoCat;
     /** @var \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
     /** @var \Praxigento\Core\Repo\IBasic */
     protected $_repoBasic;
-    /** @var \Magento\Catalog\Api\CategoryRepositoryInterface */
-    protected $_repoMageCat;
 
-    /**
-     * Module constructor.
-     */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Catalog\Api\CategoryRepositoryInterface $repoMageCat,
         \Praxigento\Core\Repo\IBasic $repoBasic
     ) {
         $this->_manObj = $manObj;
-        $this->_repoMageCat = $repoMageCat;
+        $this->_mageRepoCat = $repoMageCat;
         $this->_repoBasic = $repoBasic;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getCategoryIdToPlaceNewProduct()
     {
         $cat = $this->_manObj->create(\Magento\Catalog\Api\Data\CategoryInterface::class);
-        $this->_repoMageCat->get();
+        $this->_mageRepoCat->get();
 //        $this->_repoMageCat->get();
 //        $this->_repoMageCat->save();
         return 1;
@@ -66,5 +66,17 @@ class Module implements IModule
         $mageId = $this->getMageIdByOdooId(EntityProduct::ENTITY_NAME, $idOdoo);
         $result = !is_null($mageId);
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function registerMageIdForOdooId($entityName, $mageId, $odooId)
+    {
+        $bind = [
+            IOdooEntity::ATTR_MAGE_REF => (int)$mageId,
+            IOdooEntity::ATTR_ODOO_REF => (int)$odooId
+        ];
+        $this->_repoBasic->addEntity($entityName, $bind);
     }
 }
