@@ -5,6 +5,7 @@
  */
 namespace Praxigento\Odoo\Setup;
 
+use Praxigento\Odoo\Data\Entity\Category;
 use Praxigento\Odoo\Data\Entity\Lot;
 use Praxigento\Odoo\Data\Entity\Product;
 use Praxigento\Odoo\Data\Entity\Warehouse;
@@ -18,14 +19,19 @@ class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
         $pathToNode = '/dBEAR/package/Praxigento/package/Odoo';
         $demPackage = $this->_toolDem->readDemPackage($pathToFile, $pathToNode);
 
-        /* Product */
-        $entityAlias = Product::ENTITY_NAME;
-        $demEntity = $demPackage->getData('entity/Product');
+        /* Category */
+        $entityAlias = Category::ENTITY_NAME;
+        $demEntity = $demPackage->getData('entity/Category');
         $this->_toolDem->createEntity($entityAlias, $demEntity);
 
         /* Lot */
         $entityAlias = Lot::ENTITY_NAME;
         $demEntity = $demPackage->getData('entity/Lot');
+        $this->_toolDem->createEntity($entityAlias, $demEntity);
+
+        /* Product */
+        $entityAlias = Product::ENTITY_NAME;
+        $demEntity = $demPackage->getData('entity/Product');
         $this->_toolDem->createEntity($entityAlias, $demEntity);
 
         /* Warehouse */
