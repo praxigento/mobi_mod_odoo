@@ -15,8 +15,7 @@ interface IWarehouse
 {
     /**
      * Get Odoo ID of the warehouse.
-     *
-     * @api
+     * 
      * @return  int|null
      */
     public function getId();
@@ -45,7 +44,6 @@ interface IWarehouse
     /**
      * Set Odoo ID of the warehouse.
      *
-     * @api
      * @param int $data
      */
     public function setId($data);

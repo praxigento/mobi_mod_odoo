@@ -16,6 +16,15 @@ class Bundle extends DataObject implements IBundle
     /**
      * @inheritdoc
      */
+    public function getCategories()
+    {
+        $result = parent::getCategories();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getLots()
     {
         $result = parent::getLots();
@@ -47,6 +56,14 @@ class Bundle extends DataObject implements IBundle
     {
         $result = parent::getWarehouses();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCategories($data = null)
+    {
+        parent::setCategories($data);
     }
 
     /**

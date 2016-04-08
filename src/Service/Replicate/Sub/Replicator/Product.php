@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Service\Replicate\Sub\Replicator;
+namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator;
 
 use Magento\Catalog\Api\ProductRepositoryInterface as IProductRepo;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;

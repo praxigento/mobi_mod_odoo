@@ -3,13 +3,13 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Service\Replicate;
+namespace Praxigento\Odoo\Service\Replicate;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
-use Praxigento\Odoo\Lib\Service\IReplicate;
 use Praxigento\Odoo\Repo\Agg\IWarehouse as RepoWarehouse;
+use Praxigento\Odoo\Service\IReplicate;
 
 class Call implements IReplicate
 {
@@ -48,6 +48,7 @@ class Call implements IReplicate
         $options = $bundle->getOption();
         $warehouses = $bundle->getWarehouses();
         $lots = $bundle->getLots();
+        $categories = $bundle->getCategories();
         $products = $bundle->getProducts();
         /* replicate all data in one transaction */
         $trans = $this->_manTrans->transactionBegin();

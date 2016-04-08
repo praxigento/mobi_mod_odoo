@@ -15,16 +15,12 @@ interface IOption
     /**
      * Get currency for wholesale prices ('EUR').
      *
-     * @api
-     *
      * @return string
      */
     public function getCurrency();
 
     /**
      * Set currency for wholesale prices ('EUR').
-     *
-     * @api
      *
      * @param string $data
      */

@@ -13,9 +13,15 @@ namespace Praxigento\Odoo\Api\Data\Bundle;
 interface IProduct
 {
     /**
+     * Get array of the categories ids where this product is placed.
+     *
+     * @return int[]
+     */
+    public function getCategories();
+
+    /**
      * Get Odoo ID of the product.
      *
-     * @api
      * @return  int|null
      */
     public function getId();
@@ -63,9 +69,15 @@ interface IProduct
     public function getWeight();
 
     /**
+     * Set array of the categories ids where this product is placed.
+     *
+     * @param int[] $data
+     */
+    public function setCategories($data);
+
+    /**
      * Set Odoo ID of the product.
      *
-     * @api
      * @param int $data
      */
     public function setId($data);

@@ -3,10 +3,11 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Service\Replicate\Sub;
+namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Config as Cfg;
+use Praxigento\Odoo\Api\Data\Bundle\ICategory as ApiCategory;
 use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
@@ -43,6 +44,21 @@ class Replicator
     }
 
     /**
+     * @param ApiCategory[] $cats
+     */
+    public function processCategories($cats)
+    {
+        /** @var  $aggData AggLot */
+        $aggData = $this->_manObj->create(AggCa::class);
+        foreach ($cats as $item) {
+//            $aggData->setOdooId($item->getId());
+//            $aggData->setCode($item->getCode());
+//            $aggData->setExpDate($item->getExpirationDate());
+//            $this->_repoLot->checkExistence($aggData);
+        }
+    }
+
+    /**
      * @param ApiLot[] $lots
      * @throws \Exception
      */
@@ -50,10 +66,10 @@ class Replicator
     {
         /** @var  $aggData AggLot */
         $aggData = $this->_manObj->create(AggLot::class);
-        foreach ($lots as $odooId => $lot) {
-            $aggData->setOdooId($odooId);
-            $aggData->setCode($lot->getCode());
-            $aggData->setExpDate($lot->getExpirationDate());
+        foreach ($lots as $item) {
+            $aggData->setOdooId($item->getId());
+            $aggData->setCode($item->getCode());
+            $aggData->setExpDate($item->getExpirationDate());
             $this->_repoLot->checkExistence($aggData);
         }
     }
@@ -75,15 +91,16 @@ class Replicator
      */
     public function processWarehouses($warehouses)
     {
-        foreach ($warehouses as $odooId => $wrhs) {
+        foreach ($warehouses as $item) {
+            $odooId = $item->getId();
             $found = $this->_repoWrhs->getByOdooId($odooId);
             if (!$found) {
                 /** @var  $aggData AggWarehouse */
                 $aggData = $this->_manObj->create(AggWarehouse::class);
                 $aggData->setOdooId($odooId);
-                $aggData->setCurrency($wrhs->getCurrency());
+                $aggData->setCurrency($item->getCurrency());
                 $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_BASE);
-                $aggData->setCode($wrhs->getCode());
+                $aggData->setCode($item->getCode());
                 $aggData->setNote('replicated from Odoo');
                 $created = $this->_repoWrhs->create($aggData);
                 if (!$created->getId()) {

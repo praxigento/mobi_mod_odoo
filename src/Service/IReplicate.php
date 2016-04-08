@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Lib\Service;
+namespace Praxigento\Odoo\Service;
 
 
 interface IReplicate

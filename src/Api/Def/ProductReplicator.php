@@ -11,14 +11,14 @@ use Praxigento\Odoo\Api\ProductReplicatorInterface;
 
 class ProductReplicator implements ProductReplicatorInterface
 {
-    /** @var  \Praxigento\Odoo\Lib\Service\IReplicate */
+    /** @var  \Praxigento\Odoo\Service\IReplicate */
     private $_callOdooReplicate;
     /** @var  ObjectManagerInterface */
     private $manObj;
 
     public function __construct(
         ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Lib\Service\IReplicate $callOdooReplicate
+        \Praxigento\Odoo\Service\IReplicate $callOdooReplicate
     ) {
         $this->manObj = $manObj;
         $this->_callOdooReplicate = $callOdooReplicate;
@@ -26,8 +26,8 @@ class ProductReplicator implements ProductReplicatorInterface
 
     public function save(\Praxigento\Odoo\Api\Data\IBundle $data)
     {
-        /** @var  $req \Praxigento\Odoo\Lib\Service\Replicate\Request\ProductSave */
-        $req = $this->manObj->create(\Praxigento\Odoo\Lib\Service\Replicate\Request\ProductSave::class);
+        /** @var  $req \Praxigento\Odoo\Service\Replicate\Request\ProductSave */
+        $req = $this->manObj->create(\Praxigento\Odoo\Service\Replicate\Request\ProductSave::class);
         $req->setProductBundle($data);
         $resp = $this->_callOdooReplicate->productSave($req);
         return;

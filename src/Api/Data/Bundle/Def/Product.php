@@ -17,6 +17,15 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getCategories()
+    {
+        $result = parent::getCategories();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getId()
     {
         $result = parent::getId();
@@ -75,6 +84,14 @@ class Product extends DataObject implements IProduct
     {
         $result = parent::getWeight();
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCategories($data)
+    {
+        parent::setCategories($data);
     }
 
     /**

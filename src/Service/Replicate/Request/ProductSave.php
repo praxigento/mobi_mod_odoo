@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Lib\Service\Replicate\Request;
+namespace Praxigento\Odoo\Service\Replicate\Request;
 
 use Praxigento\Odoo\Api\Data\Def\Bundle;
 use Praxigento\Odoo\Api\Data\IBundle;

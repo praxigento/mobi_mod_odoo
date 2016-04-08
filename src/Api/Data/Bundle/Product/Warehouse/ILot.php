@@ -16,7 +16,6 @@ interface ILot
     /**
      * Get Odoo ID of the lot.
      *
-     * @api
      * @return  int|null
      */
     public function getId();
@@ -31,7 +30,6 @@ interface ILot
     /**
      * Set Odoo ID of the lot.
      *
-     * @api
      * @param int $data
      */
     public function setId($data);

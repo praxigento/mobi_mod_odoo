@@ -14,8 +14,8 @@
                 type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
 
     <!-- Services -->
-    <preference for="Praxigento\Odoo\Lib\Service\IReplicate"
-                type="Praxigento\Odoo\Lib\Service\Replicate\Call"/>
+    <preference for="Praxigento\Odoo\Service\IReplicate"
+                type="Praxigento\Odoo\Service\Replicate\Call"/>
 
     <!-- API Services -->
     <preference for="Praxigento\Odoo\Api\CustomerInterface"
@@ -36,6 +36,8 @@
     <!-- API Data -->
     <preference for="Praxigento\Odoo\Api\Data\IBundle"
                 type="Praxigento\Odoo\Api\Data\Def\Bundle"/>
+    <preference for="Praxigento\Odoo\Api\Data\Bundle\ICategory"
+                type="Praxigento\Odoo\Api\Data\Bundle\Def\Category"/>
     <preference for="Praxigento\Odoo\Api\Data\Bundle\ILot"
                 type="Praxigento\Odoo\Api\Data\Bundle\Def\Lot"/>
     <preference for="Praxigento\Odoo\Api\Data\Bundle\IOption"
