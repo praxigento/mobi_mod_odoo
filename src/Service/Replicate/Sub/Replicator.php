@@ -44,6 +44,9 @@ class Replicator
     }
 
     /**
+     * We need to check all categories against the list of existing in Mage and create new categories
+     * if they are absent in the list.
+     *
      * @param ApiCategory[] $cats
      */
     public function processCategories($cats)
@@ -74,9 +77,16 @@ class Replicator
         }
     }
 
+    /**
+     * @param \Praxigento\Odoo\Api\Data\Bundle\IProduct $product
+     */
     public function processProductItem($product)
     {
         assert($product instanceof \Praxigento\Odoo\Api\Data\Bundle\IProduct);
+        $idOdoo = $product->getId();
+        /* check does product item is already registered in Magento */
+
+
         $sku = $product->getSku();
         $name = $product->getName();
         $price = $product->getPrice();
