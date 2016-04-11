@@ -21,11 +21,13 @@ class Product
     /** @var   ObjectManagerInterface */
     protected $_manObj;
 
+
     public function __construct(
         ObjectManagerInterface $manObj,
         EntityTypeFactory $mageFactEntityType,
         AttributeSetFactory $mageFfactAttrSet,
         IProductRepo $mageRepoProd
+
     ) {
         $this->_manObj = $manObj;
         $this->_mageFactEntityType = $mageFactEntityType;
@@ -77,16 +79,14 @@ class Product
      * Create simple product.
      *
      * @param int $mageId
-     * @param string $sku
      * @param string $name
      * @param double $priceWholesale
      * @param double $weight
      */
-    public function update($mageId, $sku, $name, $priceWholesale, $weight)
+    public function update($mageId, $name, $priceWholesale, $weight)
     {
         $product = $this->_mageRepoProd->getById($mageId);
         // SKU should not be changed
-        // $product->setSku($sku);
         $product->setName($name);
         $product->setPrice($priceWholesale);
         $product->setWeight($weight);

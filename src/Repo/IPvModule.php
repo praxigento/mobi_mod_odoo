@@ -9,18 +9,30 @@ namespace Praxigento\Odoo\Repo;
 interface IPvModule
 {
     /**
-     * Create new record in wholesale PV register.
+     * Create new record for wholesale PV in register.
      *
-     * @param $mageId
-     * @param $pv
+     * @param int $productMageId
+     * @param double $pv
      */
-    public function saveProductWholesalePv($mageId, $pv);
+    public function saveProductWholesalePv($productMageId, $pv);
+
+    /**
+     * @param int $stockItemMageId
+     * @param double $pv
+     */
+    public function saveWarehousePv($stockItemMageId, $pv);
 
     /**
      * Update wholesale PV in register.
      *
-     * @param $mageId
-     * @param $pv
+     * @param int $productMageId
+     * @param double $pv
      */
-    public function updateProductWholesalePv($mageId, $pv);
+    public function updateProductWholesalePv($productMageId, $pv);
+
+    /**
+     * @param int $stockItemMageId
+     * @param double $pv
+     */
+    public function updateWarehousePv($stockItemMageId, $pv);
 }

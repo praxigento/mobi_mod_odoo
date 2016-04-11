@@ -31,6 +31,8 @@ class Replicator
     protected $_repoModWrhs;
     /** @var Replicator\Category */
     protected $_subCategory;
+    /** @var Replicator\Product\Warehouse */
+    protected $_subProdWarehouse;
     /** @var Replicator\Product */
     protected $_subProduct;
 
@@ -41,7 +43,8 @@ class Replicator
         IRepoModPv $repoModPv,
         IRepoModWarehouse $repoModWrhs,
         Replicator\Product $subProduct,
-        Replicator\Category $subCategory
+        Replicator\Category $subCategory,
+        Replicator\Product\Warehouse $subProdWarehouse
     ) {
         $this->_manObj = $manObj;
         $this->_repoMod = $repoMod;
@@ -50,6 +53,7 @@ class Replicator
         $this->_repoModWrhs = $repoModWrhs;
         $this->_subProduct = $subProduct;
         $this->_subCategory = $subCategory;
+        $this->_subProdWarehouse = $subProdWarehouse;
     }
 
     /**
@@ -80,7 +84,6 @@ class Replicator
         $priceWholesale = $product->getPrice();
         $weight = $product->getPrice();
         $pvWholesale = $product->getPv();
-        $categories = $product->getCategories();
         /* check does product item is already registered in Magento */
         if (!$this->_repoMod->isOdooProductRegisteredInMage($idOdoo)) {
             /* create new product in Magento */
@@ -90,12 +93,15 @@ class Replicator
         } else {
             /* update attributes for magento product */
             $idMage = $this->_repoMod->getMageIdByOdooId(EntityProduct::ENTITY_NAME, $idOdoo);
-            $this->_subProduct->update($idMage, $sku, $name, $priceWholesale, $weight);
+            $this->_subProduct->update($idMage, $name, $priceWholesale, $weight);
             $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         /* check that categories are registered in Magento */
+        $categories = $product->getCategories();
         $this->_subCategory->checkCategoriesExistence($categories);
         /* TODO check product to categories links (add/remove) */
+        $warehouses = $product->getWarehouses();
+        $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
         /* TODO update warehouse/lot/qty data  */
     }
 
