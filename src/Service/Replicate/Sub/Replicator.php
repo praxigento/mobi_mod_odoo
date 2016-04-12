@@ -29,8 +29,6 @@ class Replicator
     protected $_repoModPv;
     /** @var  IRepoModWarehouse */
     protected $_repoModWrhs;
-    /** @var Replicator\Category */
-    protected $_subCategory;
     /** @var Replicator\Product\Category */
     protected $_subProdCategory;
     /** @var Replicator\Product\Warehouse */
@@ -45,7 +43,6 @@ class Replicator
         IRepoModPv $repoModPv,
         IRepoModWarehouse $repoModWrhs,
         Replicator\Product $subProduct,
-        Replicator\Category $subCategory,
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse
     ) {
@@ -55,7 +52,6 @@ class Replicator
         $this->_repoModPv = $repoModPv;
         $this->_repoModWrhs = $repoModWrhs;
         $this->_subProduct = $subProduct;
-        $this->_subCategory = $subCategory;
         $this->_subProdCategory = $subProdCategory;
         $this->_subProdWarehouse = $subProdWarehouse;
     }
@@ -102,9 +98,9 @@ class Replicator
         }
         /* check that categories are registered in Magento */
         $categories = $product->getCategories();
-        $this->_subCategory->checkCategoriesExistence($categories);
+        $this->_subProdCategory->checkCategoriesExistence($categories);
+        /* check product to categories links (add/remove) */
         $this->_subProdCategory->replicateCategories($idMage, $categories);
-        /* TODO check product to categories links (add/remove) */
         /* update warehouse/lot/qty data  */
         $warehouses = $product->getWarehouses();
         $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);

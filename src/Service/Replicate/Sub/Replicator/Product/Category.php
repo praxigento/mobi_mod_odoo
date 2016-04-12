@@ -6,6 +6,8 @@
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product;
 
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\CategoryProductLinkInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
@@ -17,6 +19,8 @@ class Category
 
     /** @var  CategoryLinkRepositoryInterface */
     protected $_mageRepoCatLink;
+    /** @var   CategoryRepositoryInterface */
+    protected $_mageRepoCategory;
     /** @var ProductRepositoryInterface */
     protected $_mageRepoProd;
     /** @var   ObjectManagerInterface */
@@ -27,13 +31,41 @@ class Category
     public function __construct(
         ObjectManagerInterface $manObj,
         ProductRepositoryInterface $mageRepoProd,
+        CategoryRepositoryInterface $mageRepoCat,
         CategoryLinkRepositoryInterface $mageRepoCatLink,
         IModule $repoMod
     ) {
         $this->_manObj = $manObj;
         $this->_mageRepoProd = $mageRepoProd;
+        $this->_mageRepoCategory = $mageRepoCat;
         $this->_mageRepoCatLink = $mageRepoCatLink;
         $this->_repoMod = $repoMod;
+    }
+
+    /**
+     * @param int[] $cats
+     */
+    public function checkCategoriesExistence($cats)
+    {
+        foreach ($cats as $odooId) {
+            /* get mageId by odooId from registry */
+            $mageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
+            if (!$mageId) {
+                $mageId = $this->createMageCategory('Cat #' . $odooId);
+                $this->_repoMod->registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
+            }
+        }
+    }
+
+    public function createMageCategory($name)
+    {
+        /** @var  $category CategoryInterface */
+        $category = $this->_manObj->create(CategoryInterface::class);
+        $category->setName($name);
+        $category->setIsActive(false);
+        $saved = $this->_mageRepoCategory->save($category);
+        $result = $saved->getId();
+        return $result;
     }
 
     /**
