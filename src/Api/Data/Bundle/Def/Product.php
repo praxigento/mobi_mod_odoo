@@ -35,6 +35,15 @@ class Product extends DataObject implements IProduct
     /**
      * @inheritdoc
      */
+    public function getIsActive()
+    {
+        $result = parent::getIsActive();
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         $result = parent::getName();
@@ -100,6 +109,14 @@ class Product extends DataObject implements IProduct
     public function setId($data)
     {
         parent::setId($data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setIsActive($data)
+    {
+        parent::setIsActive($data);
     }
 
     /**
