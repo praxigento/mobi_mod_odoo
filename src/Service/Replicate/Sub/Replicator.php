@@ -81,19 +81,20 @@ class Replicator
         $idOdoo = $product->getId();
         $sku = $product->getSku();
         $name = $product->getName();
+        $isActive = $product->getIsActive();
         $priceWholesale = $product->getPrice();
         $weight = $product->getPrice();
         $pvWholesale = $product->getPv();
         /* check does product item is already registered in Magento */
         if (!$this->_repoMod->isOdooProductRegisteredInMage($idOdoo)) {
             /* create new product in Magento */
-            $idMage = $this->_subProduct->create($sku, $name, $priceWholesale, $pvWholesale, $weight);
+            $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
             $this->_repoMod->registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $idMage, $idOdoo);
             $this->_repoModPv->saveProductWholesalePv($idMage, $pvWholesale);
         } else {
             /* update attributes for magento product */
             $idMage = $this->_repoMod->getMageIdByOdooId(EntityProduct::ENTITY_NAME, $idOdoo);
-            $this->_subProduct->update($idMage, $name, $priceWholesale, $weight);
+            $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
             $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         /* check that categories are registered in Magento */
