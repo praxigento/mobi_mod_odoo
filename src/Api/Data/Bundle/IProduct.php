@@ -27,6 +27,13 @@ interface IProduct
     public function getId();
 
     /**
+     * Get activity status.
+     *
+     * @return  bool
+     */
+    public function getIsActive();
+
+    /**
      * Get name for the product.
      *
      * @return string
@@ -81,6 +88,13 @@ interface IProduct
      * @param int $data
      */
     public function setId($data);
+
+    /**
+     * Set activity status.
+     *
+     * @param bool $data
+     */
+    public function setIsActive($data);
 
     /**
      * Set name for the product.
