@@ -122,7 +122,7 @@ class Login implements ICached, ILogin
             /* request User ID from Odoo */
             $params = [$this->_authDb, $this->_authUser, $this->_authPasswd];
             $outOpts = ['encoding' => 'utf-8', 'escaping' => 'markup'];
-            $request = $this->_adapter->encodeRequest('login', $params, $outOpts);
+            $request = $this->_adapter->encodeXml('login', $params, $outOpts);
             $ctxOpts = [
                 'http' => [
                     'method' => 'POST',

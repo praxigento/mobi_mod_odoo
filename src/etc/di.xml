@@ -29,6 +29,12 @@
     <!-- Odoo API repo -->
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication"
                 type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection"
+                type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\IInventory"
+                type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Inventory"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin"
+                type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
     <!-- Services -->
     <preference for="Praxigento\Odoo\Service\IReplicate"

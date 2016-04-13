@@ -5,72 +5,38 @@
 
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
-use Praxigento\Odoo\Repo\Odoo\Connector\Base\Adapter;
-use Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection;
-use Psr\Log\LoggerInterface;
+use Praxigento\Odoo\Repo\Odoo\Connector\Api\IInventory;
+use Praxigento\Odoo\Repo\Odoo\Connector\Base\RestRequest;
 
-class Inventory
+class Inventory implements IInventory
 {
-    /** @var  Adapter adapter for PHP functions to be mocked in tests */
-    private $_adapter;
-    /** @var  string */
-    private $_baseUri;
-    /** @var  LoggerInterface separate channel to log Odoo activity */
-    private $_logger;
-    /** @var  ILogin */
-    private $_login;
+    const ODOO_IDS = 'ids';
+    const ROUTE = '/api/inventory';
+    /** @var  RestRequest */
+    private $_rest;
 
     public function __construct(
-        LoggerInterface $logger,
-        Adapter $adapter,
-        IConnection $params,
-        ILogin $login
+        RestRequest $rest
     ) {
-        $this->_logger = $logger;
-        $this->_adapter = $adapter;
-        $this->_login = $login;
-        $this->_baseUri = $params->getBaseUri();
+        $this->_rest = $rest;
     }
 
-    public function get()
+    /**
+     * @inheritdoc
+     */
+    public function get($ids = null)
     {
-        $contents = null;
-        $timeout = 15;
-        $sessId = $this->_login->getSessionId();
-//        $this->_logger->debug("Request for '$resource/$operation':\n" . var_export($params, true));
-        /** compose RPC request parameters array */
-//        $rpcParams = [$this->_authDb, $loginId, $this->_authPasswd, $resource, $operation, $params];
-        $rpcParams = ['ids' => [428]];
-        /** add attribute names array to filter result set */
-//        if (!is_null($fields)) {
-//            $rpcParams[] = $fields;
-//        }
-        /** RPC options */
-        $options = ['encoding' => 'utf-8', 'escaping' => 'markup'];
-        //$request = xmlrpc_encode_request('execute', $rpcParams, $options);
-        $request = json_encode($rpcParams);
-        $contextOpts = [
-            'http' => [
-                'method' => "POST",
-                'header' => "Content-Type: application/json; charset=utf-8\r\nCookie: session_id=d8a82a8c31379cbd367b6186d275d6c0dfec0978\r\n",
-                'timeout' => $timeout,
-                'content' => $request
-            ]
-        ];
-        $context = stream_context_create($contextOpts);
-        $uri = $this->_baseUri . '/api/inventory/';
-        $this->_logger->debug("Request URI:\t$uri");
-        $this->_logger->debug("Request context:\t\n" . json_encode($contextOpts));
-        $contents = $this->_adapter->getContents($uri, $context);
-        if ($contents === false) {
-            // Mage::throwException("Cannot execute '$resource/$operation' using OpenERP XML RPC.");
-            2 + 2;
+        /* prepare request parameters */
+        if (is_array($ids)) {
+            $params = [self::ODOO_IDS => $ids];
+        } elseif (is_int($ids)) {
+            $params = [self::ODOO_IDS => [$ids]];
+        } else {
+            $params = [self::ODOO_IDS => []];
         }
-        $this->_logger->debug("Response:\t\n$contents");
-        $result = json_decode($contents);
-        //$this->_logger->debug("Response for '$resource/$operation':\n" . var_export($result, true));
+        /* perform request and extract result data */
+        $cover = $this->_rest->request($params, self::ROUTE);
+        $result = $cover->getResultData();
         return $result;
-        1 + 1;
     }
 }

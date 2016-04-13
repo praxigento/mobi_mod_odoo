@@ -17,7 +17,31 @@ class Adapter
         return $result;
     }
 
-    public function encodeRequest($method, $params, $output_options = null)
+    /**
+     * Decode JSON string as associative array.
+     *
+     * @param string $json
+     * @return array
+     */
+    public function decodeJson($json)
+    {
+        $result = json_decode($json, true);
+        return $result;
+    }
+
+    /**
+     * Encode array data to JSON string.
+     * 
+     * @param array $params
+     * @return string
+     */
+    public function encodeJson($params)
+    {
+        $result = json_encode($params);
+        return $result;
+    }
+
+    public function encodeXml($method, $params, $output_options = null)
     {
         $result = xmlrpc_encode_request($method, $params, $output_options);
         return $result;

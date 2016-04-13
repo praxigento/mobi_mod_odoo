@@ -5,6 +5,7 @@
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
 use Praxigento\Odoo\Repo\Odoo\Connector\Base\Adapter;
+use Praxigento\Odoo\Repo\Odoo\Connector\Base\RestRequest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params;
 
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');
@@ -26,13 +27,14 @@ class Inventory_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
             'UserPassword' => 'admin'
         ]);
         $login = new Login($logger, $adapter, $params);
-        $this->obj = new Inventory($logger, $adapter, $params, $login);
+        $rest = new RestRequest($logger, $adapter, $params, $login);
+        $this->obj = new Inventory($rest);
     }
 
     public function test_get()
     {
-        $this->obj->get();
-        1 + 1;
+        $res = $this->obj->get(428);
+        $this->assertNotNull($res);
     }
 
 }
