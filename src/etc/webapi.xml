@@ -19,7 +19,9 @@
     <route url="/V1/prxgt/odoo/product/replicate/save/" method="POST">
         <service class="Praxigento\Odoo\Api\ProductReplicatorInterface" method="save"/>
         <resources>
-            <resource ref="Praxigento_Odoo::replicate"/>
+            <!-- MOBI-271 -->
+            <!--<resource ref="Praxigento_Odoo::replicate"/>-->
+            <resource ref="anonymous"/>
         </resources>
     </route>
 
