@@ -2,6 +2,16 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
 
+    <!-- Logger -->
+    <type name="Praxigento\Odoo\Logger">
+        <arguments>
+            <!-- Config file path is related to Magento 2 base directory. Absolute path can be used too. -->
+            <argument name="configFile" xsi:type="string">var/log/logging.yaml</argument>
+            <!-- Name of the logger in configuration file. Default: "odoo".  -->
+            <argument name="loggerName" xsi:type="string">odoo</argument>
+        </arguments>
+    </type>
+
     <!-- Own Repos -->
     <preference for="Praxigento\Odoo\Lib\Repo\ILot"
                 type="Praxigento\Odoo\Lib\Repo\Def\Lot"/>
@@ -15,6 +25,10 @@
     <!-- Other Repos override -->
     <preference for="Praxigento\Warehouse\Repo\Agg\IWarehouse"
                 type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
+
+    <!-- Odoo API repo -->
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication"
+                type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params"/>
 
     <!-- Services -->
     <preference for="Praxigento\Odoo\Service\IReplicate"

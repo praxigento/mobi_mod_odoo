@@ -1,10 +1,10 @@
 <?php
 /**
- * Empty class to get stub for tests
  * User: Alex Gusev <alex@flancer64.com>
  */
 namespace Praxigento\Odoo\Setup;
 
+use Praxigento\Odoo\Data\Entity\Category;
 use Praxigento\Odoo\Data\Entity\Lot;
 use Praxigento\Odoo\Data\Entity\Product;
 use Praxigento\Odoo\Data\Entity\Warehouse;
@@ -56,8 +56,9 @@ class InstallSchema_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         //
         // $this->_toolDem->createEntity($entityAlias, $demEntity);
         //
-        $this->mToolDem->shouldReceive('createEntity')->withArgs([Product::ENTITY_NAME, anything()]);
+        $this->mToolDem->shouldReceive('createEntity')->withArgs([Category::ENTITY_NAME, anything()]);
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Lot::ENTITY_NAME, anything()]);
+        $this->mToolDem->shouldReceive('createEntity')->withArgs([Product::ENTITY_NAME, anything()]);
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Warehouse::ENTITY_NAME, anything()]);
         // $setup->endSetup();
         $this->mSetup
