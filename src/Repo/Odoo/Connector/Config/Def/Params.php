@@ -16,6 +16,11 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication;
  */
 class Params extends DataObject implements IAuthentication
 {
+    public function __construct($arg1=null, $arg2=null)
+    {
+        parent::__construct($arg1, $arg2);
+    }
+
     /**
      * @inheritdoc
      */

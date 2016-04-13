@@ -82,29 +82,37 @@ class Replicator
         $sku = $product->getSku();
         $name = $product->getName();
         $isActive = $product->getIsActive();
+        $skipProduct = false;
         $priceWholesale = $product->getPrice();
         $weight = $product->getPrice();
         $pvWholesale = $product->getPv();
         /* check does product item is already registered in Magento */
         if (!$this->_repoMod->isOdooProductRegisteredInMage($idOdoo)) {
-            /* create new product in Magento */
-            $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
-            $this->_repoMod->registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $idMage, $idOdoo);
-            $this->_repoModPv->saveProductWholesalePv($idMage, $pvWholesale);
+            if ($isActive) {
+                /* create new product in Magento */
+                $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
+                $this->_repoMod->registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $idMage, $idOdoo);
+                $this->_repoModPv->saveProductWholesalePv($idMage, $pvWholesale);
+            } else {
+                /* skip product replication for not active and not existing products */
+                $skipProduct = true;
+            }
         } else {
             /* update attributes for magento product */
             $idMage = $this->_repoMod->getMageIdByOdooId(EntityProduct::ENTITY_NAME, $idOdoo);
             $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
             $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
-        /* check that categories are registered in Magento */
-        $categories = $product->getCategories();
-        $this->_subProdCategory->checkCategoriesExistence($categories);
-        /* check product to categories links (add/remove) */
-        $this->_subProdCategory->replicateCategories($idMage, $categories);
-        /* update warehouse/lot/qty data  */
-        $warehouses = $product->getWarehouses();
-        $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
+        if (!$skipProduct) {
+            /* check that categories are registered in Magento */
+            $categories = $product->getCategories();
+            $this->_subProdCategory->checkCategoriesExistence($categories);
+            /* check product to categories links (add/remove) */
+            $this->_subProdCategory->replicateCategories($idMage, $categories);
+            /* update warehouse/lot/qty data  */
+            $warehouses = $product->getWarehouses();
+            $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
+        }
     }
 
     /**

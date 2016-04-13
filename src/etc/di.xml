@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
     <!-- Logger -->
     <type name="Praxigento\Odoo\Logger">
@@ -27,14 +27,27 @@
                 type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
 
     <!-- Odoo API repo -->
+    <virtualType name="odooTestConfigParams" type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params">
+        <arguments>
+            <argument xsi:type="array" name="arg1">
+                <item name="BaseUri" xsi:type="string">http://lion.host.prxgt.com:8122</item>
+                <item name="DbName" xsi:type="string">oe_odoo9_api</item>
+                <item name="UserName" xsi:type="string">admin</item>
+                <item name="UserPassword" xsi:type="string">admin</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory"
+                type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication"
-                type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params"/>
+                type="odooTestConfigParams"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection"
-                type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\IInventory"
-                type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Inventory"/>
+                type="odooTestConfigParams"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory"
+                type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin"
                 type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
+
 
     <!-- Services -->
     <preference for="Praxigento\Odoo\Service\IReplicate"

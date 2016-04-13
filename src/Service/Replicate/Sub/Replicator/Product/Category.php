@@ -47,12 +47,14 @@ class Category
      */
     public function checkCategoriesExistence($cats)
     {
-        foreach ($cats as $odooId) {
-            /* get mageId by odooId from registry */
-            $mageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
-            if (!$mageId) {
-                $mageId = $this->createMageCategory('Cat #' . $odooId);
-                $this->_repoMod->registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
+        if (is_array($cats)) {
+            foreach ($cats as $odooId) {
+                /* get mageId by odooId from registry */
+                $mageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
+                if (!$mageId) {
+                    $mageId = $this->createMageCategory('Cat #' . $odooId);
+                    $this->_repoMod->registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
+                }
             }
         }
     }
@@ -79,19 +81,21 @@ class Category
         $sku = $prod->getSku();
         $catsExist = $prod->getCategoryIds();
         $catsFound = [];
-        foreach ($categories as $catOdooId) {
-            $catMageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $catOdooId);
-            if (!in_array($catMageId, $catsExist)) {
-                /* create new product link if not exists */
-                /** @var CategoryProductLinkInterface $prodLink */
-                $prodLink = $this->_manObj->create(CategoryProductLinkInterface::class);
-                $prodLink->setCategoryId($catMageId);
-                $prodLink->setSku($sku);
-                $prodLink->setPosition(1);
-                $this->_mageRepoCatLink->save($prodLink);
+        if (is_array($categories)) {
+            foreach ($categories as $catOdooId) {
+                $catMageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $catOdooId);
+                if (!in_array($catMageId, $catsExist)) {
+                    /* create new product link if not exists */
+                    /** @var CategoryProductLinkInterface $prodLink */
+                    $prodLink = $this->_manObj->create(CategoryProductLinkInterface::class);
+                    $prodLink->setCategoryId($catMageId);
+                    $prodLink->setSku($sku);
+                    $prodLink->setPosition(1);
+                    $this->_mageRepoCatLink->save($prodLink);
+                }
+                /* register found link */
+                $catsFound[] = $catMageId;
             }
-            /* register found link */
-            $catsFound[] = $catMageId;
         }
         /* get difference between exist & found */
         $diff = array_diff($catsExist, $catsFound);

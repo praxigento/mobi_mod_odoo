@@ -3,21 +3,27 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
+namespace Praxigento\Odoo\Repo\Odoo\Def;
 
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\IInventory;
+use Magento\Framework\Webapi\ServiceInputProcessor;
+use Praxigento\Odoo\Api\Data\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Base\RestRequest;
+use Praxigento\Odoo\Repo\Odoo\IInventory;
 
 class Inventory implements IInventory
 {
     const ODOO_IDS = 'ids';
     const ROUTE = '/api/inventory';
+    /** @var  ServiceInputProcessor */
+    protected $_mageSrvInProc;
     /** @var  RestRequest */
-    private $_rest;
+    protected $_rest;
 
     public function __construct(
+        ServiceInputProcessor $mageSrvInProc,
         RestRequest $rest
     ) {
+        $this->_mageSrvInProc = $mageSrvInProc;
         $this->_rest = $rest;
     }
 
@@ -36,7 +42,8 @@ class Inventory implements IInventory
         }
         /* perform request and extract result data */
         $cover = $this->_rest->request($params, self::ROUTE);
-        $result = $cover->getResultData();
+        $data = $cover->getResultData();
+        $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
         return $result;
     }
 }

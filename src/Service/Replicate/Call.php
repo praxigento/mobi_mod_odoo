@@ -5,36 +5,53 @@
 
 namespace Praxigento\Odoo\Service\Replicate;
 
-use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Api\Data\IBundle;
-use Praxigento\Odoo\Repo\Agg\IWarehouse as RepoWarehouse;
+use Praxigento\Odoo\Repo\Odoo\IInventory as RepoOdooIInventory;
 use Praxigento\Odoo\Service\IReplicate;
+use Praxigento\Odoo\Service\Replicate;
 
 class Call implements IReplicate
 {
-    /** @var   ObjectManagerInterface */
-    private $_manObj;
     /** @var  ITransactionManager */
-    private $_manTrans;
-    /** @var  RepoWarehouse */
-    private $_repoWrhs;
+    protected $_manTrans;
+    /** @var RepoOdooIInventory */
+    protected $_repoOdooInventory;
     /** @var  Sub\Replicator */
-    private $_subReplicator;
+    protected $_subReplicator;
 
     /**
      * Call constructor.
      */
     public function __construct(
-        ObjectManagerInterface $manObj,
         ITransactionManager $manTrans,
-        RepoWarehouse $repoWrhs,
+        RepoOdooIInventory $repoOdooInventory,
         Sub\Replicator $subReplicator
     ) {
-        $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
-        $this->_repoWrhs = $repoWrhs;
+        $this->_repoOdooInventory = $repoOdooInventory;
         $this->_subReplicator = $subReplicator;
+    }
+
+    /**
+     * Perform products bundle replication.
+     *
+     * @param IBundle $bundle
+     * @throws \Exception
+     */
+    protected function _doProductReplication(IBundle $bundle)
+    {
+        $options = $bundle->getOption();
+        $warehouses = $bundle->getWarehouses();
+        $lots = $bundle->getLots();
+        $products = $bundle->getProducts();
+        /* replicate warehouses & lots */
+        $this->_subReplicator->processWarehouses($warehouses);
+        $this->_subReplicator->processLots($lots);
+        /* replicate products */
+        foreach ($products as $odooId => $prod) {
+            $this->_subReplicator->processProductItem($prod);
+        }
     }
 
     /**
@@ -43,28 +60,40 @@ class Call implements IReplicate
      */
     public function productSave(Request\ProductSave $req)
     {
+        $result = new Response\ProductSave();
         /** @var  $bundle IBundle */
         $bundle = $req->getProductBundle();
-        $options = $bundle->getOption();
-        $warehouses = $bundle->getWarehouses();
-        $lots = $bundle->getLots();
-        $categories = $bundle->getCategories();
-        $products = $bundle->getProducts();
         /* replicate all data in one transaction */
         $trans = $this->_manTrans->transactionBegin();
         try {
-            /* replicate warehouses & lots */
-            $this->_subReplicator->processWarehouses($warehouses);
-            $this->_subReplicator->processLots($lots);
-            /* replicate products */
-            foreach ($products as $odooId => $prod) {
-                $this->_subReplicator->processProductItem($prod);
-            }
+            $this->_doProductReplication($bundle);
             $this->_manTrans->transactionCommit($trans);
+            $result->setAsSucceed();
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);
         }
-        return;
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function productsFromOdoo(Request\ProductsFromOdoo $req)
+    {
+        $result = new Response\ProductsFromOdoo();
+        /* replicate all data in one transaction */
+        $trans = $this->_manTrans->transactionBegin();
+        try {
+            /** @var  $bundle IBundle */
+            $bundle = $this->_repoOdooInventory->get();
+            $this->_doProductReplication($bundle);
+            $this->_manTrans->transactionCommit($trans);
+            $result->setAsSucceed();
+        } finally {
+            // transaction will be rolled back if commit is not done (otherwise - do nothing)
+            $this->_manTrans->transactionClose($trans);
+        }
+        return $result;
     }
 }
