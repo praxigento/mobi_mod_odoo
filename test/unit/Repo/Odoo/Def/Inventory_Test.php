@@ -2,11 +2,10 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Def;
+namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 use Praxigento\Odoo\Api\Data\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
-use Praxigento\Odoo\Repo\Odoo\Def\Inventory;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 

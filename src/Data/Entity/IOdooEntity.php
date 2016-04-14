@@ -6,7 +6,9 @@
 namespace Praxigento\Odoo\Data\Entity;
 
 
-interface IOdooEntity
+use Praxigento\Core\Data\IEntity;
+
+interface IOdooEntity extends IEntity
 {
     const ATTR_MAGE_REF = 'mage_ref';
     const ATTR_ODOO_REF = 'odoo_ref';

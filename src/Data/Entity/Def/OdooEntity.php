@@ -16,7 +16,7 @@ abstract class OdooEntity extends EntityBase implements IOdooEntity
      */
     public function getMageRef()
     {
-        $result = parent::getData(self::ATTR_MAGE_REF);
+        $result = parent::getData(static::ATTR_MAGE_REF);
         return $result;
     }
 
@@ -25,7 +25,7 @@ abstract class OdooEntity extends EntityBase implements IOdooEntity
      */
     public function getOdooRef()
     {
-        $result = parent::getData(self::ATTR_ODOO_REF);
+        $result = parent::getData(static::ATTR_ODOO_REF);
         return $result;
     }
 
@@ -34,7 +34,7 @@ abstract class OdooEntity extends EntityBase implements IOdooEntity
      */
     public function getPrimaryKeyAttrs()
     {
-        $result = [self::ATTR_MAGE_REF];
+        $result = [static::ATTR_MAGE_REF];
         return $result;
     }
 
@@ -43,7 +43,7 @@ abstract class OdooEntity extends EntityBase implements IOdooEntity
      */
     public function setMageRef($data)
     {
-        parent::setData(self::ATTR_MAGE_REF, $data);
+        parent::setData(static::ATTR_MAGE_REF, $data);
     }
 
     /**
@@ -51,6 +51,6 @@ abstract class OdooEntity extends EntityBase implements IOdooEntity
      */
     public function setOdooRef($data)
     {
-        parent::setData(self::ATTR_ODOO_REF, $data);
+        parent::setData(static::ATTR_ODOO_REF, $data);
     }
 }
