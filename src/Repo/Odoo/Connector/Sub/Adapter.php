@@ -5,12 +5,20 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Base;
+namespace Praxigento\Odoo\Repo\Odoo\Connector\Sub;
 
-
+/**
+ * @codeCoverageIgnore
+ */
 class Adapter
 {
-
+    /**
+     * Create context for HTTP request.
+     *
+     * @param null $options
+     * @param null $params
+     * @return resource
+     */
     public function createContext($options = null, $params = null)
     {
         $result = stream_context_create($options, $params);
@@ -31,7 +39,7 @@ class Adapter
 
     /**
      * Encode array data to JSON string.
-     * 
+     *
      * @param array $params
      * @return string
      */
@@ -41,12 +49,27 @@ class Adapter
         return $result;
     }
 
+    /**
+     * Encode parameters for XML RPC request.
+     *
+     * @param $method
+     * @param $params
+     * @param null $output_options
+     * @return mixed
+     */
     public function encodeXml($method, $params, $output_options = null)
     {
         $result = xmlrpc_encode_request($method, $params, $output_options);
         return $result;
     }
 
+    /**
+     * Get contents from URI.
+     *
+     * @param $uri
+     * @param null $context
+     * @return mixed
+     */
     public function getContents($uri, $context = null)
     {
         $result = file_get_contents($uri, null, $context);

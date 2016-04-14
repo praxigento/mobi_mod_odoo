@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
-use Praxigento\Odoo\Repo\Odoo\Connector\Base\Adapter;
+use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params;
 
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');

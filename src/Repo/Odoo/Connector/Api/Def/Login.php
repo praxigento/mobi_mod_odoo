@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 use Flancer32\Lib\DataObject;
 use Praxigento\Core\ICached;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
-use Praxigento\Odoo\Repo\Odoo\Connector\Base\Adapter;
+use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication;
 use Psr\Log\LoggerInterface;
 
@@ -107,7 +107,7 @@ class Login implements ICached, ILogin
             $respData = new DataObject($response);
             $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
             $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
-            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}'. " . $this->_traceConnectionData();
+            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using REST API. " . $this->_traceConnectionData();
             $this->_logger->info($msg);
         }
         return $this->_cachedOdooSessionId;
@@ -140,7 +140,7 @@ class Login implements ICached, ILogin
                 throw new \Exception($msg);
             }
             $this->_cachedOdooUserId = xmlrpc_decode($file);
-            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}'. " . $this->_traceConnectionData();
+            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using XML RPC. " . $this->_traceConnectionData();
             $this->_logger->info($msg);
         }
         return $this->_cachedOdooUserId;

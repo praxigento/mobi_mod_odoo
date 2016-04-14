@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 use Magento\Framework\Webapi\ServiceInputProcessor;
 use Praxigento\Odoo\Api\Data\IBundle;
-use Praxigento\Odoo\Repo\Odoo\Connector\Base\RestRequest;
+use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\IInventory;
 
 class Inventory implements IInventory
@@ -16,12 +16,12 @@ class Inventory implements IInventory
     const ROUTE = '/api/inventory';
     /** @var  ServiceInputProcessor */
     protected $_mageSrvInProc;
-    /** @var  RestRequest */
+    /** @var  Rest */
     protected $_rest;
 
     public function __construct(
         ServiceInputProcessor $mageSrvInProc,
-        RestRequest $rest
+        Rest $rest
     ) {
         $this->_mageSrvInProc = $mageSrvInProc;
         $this->_rest = $rest;

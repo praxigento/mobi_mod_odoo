@@ -3,35 +3,41 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Base;
+namespace Praxigento\Odoo\Repo\Odoo\Connector;
 
+use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def\Cover;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection;
+use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 use Psr\Log\LoggerInterface;
 
-class RestRequest
+class Rest
 {
     const DEF_TIMEOUT_SEC = 60;
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_POST = 'POST';
     /** @var  Adapter adapter for PHP functions to be mocked in tests */
-    private $_adapter;
+    protected $_adapter;
     /** @var  string */
-    private $_baseUri;
+    protected $_baseUri;
     /** @var  LoggerInterface separate channel to log Odoo activity */
-    private $_logger;
+    protected $_logger;
     /** @var  Login */
-    private $_login;
+    protected $_login;
+    /** @var ObjectManagerInterface */
+    protected $_manObj;
 
     public function __construct(
         LoggerInterface $logger,
+        ObjectManagerInterface $manObj,
         Adapter $adapter,
         IConnection $params,
         ILogin $login
     ) {
         $this->_logger = $logger;
+        $this->_manObj = $manObj;
         $this->_adapter = $adapter;
         $this->_baseUri = $params->getBaseUri();
         $this->_login = $login;
@@ -61,11 +67,10 @@ class RestRequest
         ];
         $context = $this->_adapter->createContext($contextOpts);
         $uri = $this->_baseUri . $route;
-        $jsonContextOpt = $this->_adapter->encodeJson($contextOpts);
         $this->_logger->debug("Request URI:\t$uri");
+        $jsonContextOpt = $this->_adapter->encodeJson($contextOpts);
         $this->_logger->debug("Request context:\t\n$jsonContextOpt");
         $contents = $this->_adapter->getContents($uri, $context);
-        // $jsonHttpRespHeaders = $this->_adapter->encodeJson($http_response_header);
         if ($contents === false) {
             $msg = "Cannot request Odoo REST API ({$this->_baseUri}).";
             //$msg .= " HTTP Response headers: $jsonHttpRespHeaders";
@@ -74,7 +79,7 @@ class RestRequest
         }
         $this->_logger->debug("Response:\t\n$contents");
         $data = $this->_adapter->decodeJson($contents);
-        $result = new Cover($data);
+        $result = $this->_manObj->create(Cover::class, ['arg1' => $data]);
         return $result;
     }
 }
