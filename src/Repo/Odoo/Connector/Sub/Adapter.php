@@ -38,6 +38,16 @@ class Adapter
     }
 
     /**
+     * @param string $xml
+     * @return mixed
+     */
+    public function decodeXml($xml)
+    {
+        $result = xmlrpc_decode($xml, 'UTF-8');
+        return $result;
+    }
+
+    /**
      * Encode array data to JSON string.
      *
      * @param array $params

@@ -64,8 +64,7 @@ class Rest_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
             ->andReturn($PARAMS_JSON);
         // $context = $this->_adapter->createContext($contextOpts);
         $this->mAdapter
-            ->shouldReceive('createContext')->once()
-            ->andReturn($PARAMS_JSON);
+            ->shouldReceive('createContext')->once();
         // this->_logger->debug("Request URI:\t$uri");
         $this->mLogger
             ->shouldReceive('debug');
@@ -102,8 +101,6 @@ class Rest_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         $ROUTE = 'route';
         $SESS_ID = 'session id';
         $CONTEXT_OPTS_JSON = 'JSON encoded context options';
-        $CONTENT = 'content';
-        $CONTENT_DATA = 'data';
         $RESULT = 'result';
         /* === Setup Mocks === */
         // $sessId = $this->_login->getSessionId();
