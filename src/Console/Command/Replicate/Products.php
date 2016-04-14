@@ -5,6 +5,8 @@
 
 namespace Praxigento\Odoo\Console\Command\Replicate;
 
+use Magento\Framework\ObjectManagerInterface;
+use Magento\Setup\Model\ObjectManagerProvider;
 use Praxigento\Odoo\Service\IReplicate;
 use Praxigento\Odoo\Service\Replicate\Request\ProductsFromOdoo as ProductsFromOdooRequest;
 use Praxigento\Odoo\Service\Replicate\Response\ProductsFromOdoo as ProductsFromOdooResponse;
@@ -21,15 +23,32 @@ class Products extends Command
      */
     const ARG_IDS = 'ids';
     /**#@- */
-
     /** @var IReplicate */
     protected $_callReplicate;
+    /** @var ObjectManagerInterface */
+    protected $_manObj;
 
     public function __construct(
+        ObjectManagerInterface $objectManagerProvider,
         IReplicate $callReplicate
     ) {
         parent::__construct();
+        $this->_manObj = $objectManagerProvider;
         $this->_callReplicate = $callReplicate;
+    }
+
+    /**
+     * Sets area code to start a session for replication.
+     */
+    private function _setAreaCode()
+    {
+        $areaCode = 'adminhtml';
+        /** @var \Magento\Framework\App\State $appState */
+        $appState = $this->_manObj->get(\Magento\Framework\App\State::class);
+        $appState->setAreaCode($areaCode);
+        /** @var \Magento\Framework\ObjectManager\ConfigLoaderInterface $configLoader */
+        $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
+        $this->_manObj->configure($configLoader->load($areaCode));
     }
 
     /**
@@ -60,6 +79,8 @@ class Products extends Command
             $msgIds = implode(',', $ids);
             $output->writeln("<info>Products with Odoo IDs ($msgIds) will be pulled from Odoo.<info>");
         }
+        /* setup session */
+        $this->_setAreaCode();
         /* call service operation */
         /** @var ProductsFromOdooRequest $req */
         $req = new ProductsFromOdooRequest();
