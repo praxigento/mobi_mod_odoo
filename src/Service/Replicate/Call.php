@@ -85,8 +85,9 @@ class Call implements IReplicate
         /* replicate all data in one transaction */
         $trans = $this->_manTrans->transactionBegin();
         try {
+            $ids = $req->getOdooIds();
             /** @var  $bundle IBundle */
-            $bundle = $this->_repoOdooInventory->get();
+            $bundle = $this->_repoOdooInventory->get($ids);
             $this->_doProductReplication($bundle);
             $this->_manTrans->transactionCommit($trans);
             $result->setAsSucceed();
