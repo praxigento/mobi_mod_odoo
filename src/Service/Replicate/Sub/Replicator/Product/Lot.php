@@ -67,7 +67,7 @@ class Lot
     {
         $refQty = $this->_repoWarehouseEntityQuantity->getRef();
         $lotIdOdoo = $lot->getId();
-        $qty = $lot->getQty();
+        $qty = $lot->getQuantity();
         $lotIdMage = $this->_repoMod->getMageIdByOdooId(EntityLot::ENTITY_NAME, $lotIdOdoo);
         $pk = [$refQty::ATTR_STOCK_ITEM_REF => $stockItemId, $refQty::ATTR_LOT_REF => $lotIdMage];
         $qtyItem = $this->_repoWarehouseEntityQuantity->getById($pk);

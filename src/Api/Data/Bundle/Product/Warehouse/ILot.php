@@ -25,7 +25,7 @@ interface ILot
      *
      * @return double
      */
-    public function getQty();
+    public function getQuantity();
 
     /**
      * Set Odoo ID of the lot.
@@ -39,5 +39,5 @@ interface ILot
      *
      * @param double $data
      */
-    public function setQty($data);
+    public function setQuantity($data);
 }

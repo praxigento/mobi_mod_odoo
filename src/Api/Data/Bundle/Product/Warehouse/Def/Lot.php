@@ -26,9 +26,9 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
-    public function getQty()
+    public function getQuantity()
     {
-        $result = parent::getQty();
+        $result = parent::getQuantity();
         return $result;
     }
 
@@ -43,8 +43,8 @@ class Lot extends DataObject implements ILot
     /**
      * @inheritdoc
      */
-    public function setQty($data)
+    public function setQuantity($data)
     {
-        parent::setQty($data);
+        parent::setQuantity($data);
     }
 }
