@@ -7,21 +7,20 @@ namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Config as Cfg;
-use Praxigento\Odoo\Data\Api\Bundle\ILot as ApiLot;
-use Praxigento\Odoo\Data\Api\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Data\Entity\Product as EntityProduct;
+use Praxigento\Odoo\Data\Api\Bundle\ILot as ApiLot;
+use Praxigento\Odoo\Data\Api\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Lib\Repo\ILot as IRepoModLot;
 use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoModWarehouse;
-use Praxigento\Odoo\Repo\IModule;
 use Praxigento\Odoo\Repo\IPv as IRepoModPv;
+use Praxigento\Odoo\Repo\IRegistry;
 
 class Replicator
 {
     /** @var   ObjectManagerInterface */
     protected $_manObj;
-    /** @var IModule */
+    /** @var IRegistry */
     protected $_repoMod;
     /** @var  IRepoModLot */
     protected $_repoModLot;
@@ -38,7 +37,7 @@ class Replicator
 
     public function __construct(
         ObjectManagerInterface $manObj,
-        IModule $repoMod,
+        IRegistry $repoMod,
         IRepoModLot $repoModLot,
         IRepoModPv $repoModPv,
         IRepoModWarehouse $repoModWrhs,
@@ -87,11 +86,11 @@ class Replicator
         $weight = $product->getPrice();
         $pvWholesale = $product->getPv();
         /* check does product item is already registered in Magento */
-        if (!$this->_repoMod->isOdooProductRegisteredInMage($idOdoo)) {
+        if (!$this->_repoMod->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
                 $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
-                $this->_repoMod->registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $idMage, $idOdoo);
+                $this->_repoMod->registerProduct($idMage, $idOdoo);
                 $this->_repoModPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
@@ -99,7 +98,7 @@ class Replicator
             }
         } else {
             /* update attributes for magento product */
-            $idMage = $this->_repoMod->getMageIdByOdooId(EntityProduct::ENTITY_NAME, $idOdoo);
+            $idMage = $this->_repoMod->getProductMageIdByOdooId($idOdoo);
             $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
             $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
         }

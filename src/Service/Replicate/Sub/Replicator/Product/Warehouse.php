@@ -10,7 +10,7 @@ use Magento\CatalogInventory\Api\StockItemCriteriaInterface;
 use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
-use Praxigento\Odoo\Repo\IModule;
+use Praxigento\Odoo\Repo\IRegistry;
 use Praxigento\Odoo\Repo\IPv as IRepoPvModule;
 use Praxigento\Pv\Repo\Entity\Stock\IItem as IRepoPvStockItem;
 use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockItem;
@@ -21,7 +21,7 @@ class Warehouse
     protected $_mageRepoStockItem;
     /** @var   ObjectManagerInterface */
     protected $_manObj;
-    /** @var IModule */
+    /** @var IRegistry */
     protected $_repoMod;
     /** @var  IRepoPvModule */
     protected $_repoPvMod;
@@ -35,7 +35,7 @@ class Warehouse
     public function __construct(
         ObjectManagerInterface $manObj,
         StockItemRepositoryInterface $mageRepoStockItem,
-        IModule $repoMod,
+        IRegistry $repoMod,
         IRepoPvModule $repoPvMod,
         IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
         IRepoPvStockItem $repoPvStockItem,
@@ -147,7 +147,7 @@ class Warehouse
             $pvWarehouse = $warehouse->getPv();
             $priceWarehouse = $warehouse->getPrice();
             /* get warehouse data by Odoo ID */
-            $stockIdMage = $this->_repoMod->getMageIdByOdooId(EntityWarehouse::ENTITY_NAME, $stockIdOdoo);
+            $stockIdMage = $this->_repoMod->getWarehouseMageIdByOdooId($stockIdOdoo);
             /* create or update product data for warehouse (stock)*/
             if (isset($mapItemsByStock[$stockIdMage])) {
                 /* there is item for the stock, update item data */

@@ -11,8 +11,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\CategoryProductLinkInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Data\Entity\Category as EntityCategory;
-use Praxigento\Odoo\Repo\IModule;
+use Praxigento\Odoo\Repo\IRegistry;
 
 class Category
 {
@@ -25,7 +24,7 @@ class Category
     protected $_mageRepoProd;
     /** @var   ObjectManagerInterface */
     protected $_manObj;
-    /** @var  IModule */
+    /** @var  IRegistry */
     protected $_repoMod;
 
     public function __construct(
@@ -33,7 +32,7 @@ class Category
         ProductRepositoryInterface $mageRepoProd,
         CategoryRepositoryInterface $mageRepoCat,
         CategoryLinkRepositoryInterface $mageRepoCatLink,
-        IModule $repoMod
+        IRegistry $repoMod
     ) {
         $this->_manObj = $manObj;
         $this->_mageRepoProd = $mageRepoProd;
@@ -50,10 +49,10 @@ class Category
         if (is_array($cats)) {
             foreach ($cats as $odooId) {
                 /* get mageId by odooId from registry */
-                $mageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
+                $mageId = $this->_repoMod->getCategoryMageIdByOdooId($odooId);
                 if (!$mageId) {
                     $mageId = $this->createMageCategory('Cat #' . $odooId);
-                    $this->_repoMod->registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
+                    $this->_repoMod->registerCategory($mageId, $odooId);
                 }
             }
         }
@@ -83,7 +82,7 @@ class Category
         $catsFound = [];
         if (is_array($categories)) {
             foreach ($categories as $catOdooId) {
-                $catMageId = $this->_repoMod->getMageIdByOdooId(EntityCategory::ENTITY_NAME, $catOdooId);
+                $catMageId = $this->_repoMod->getCategoryMageIdByOdooId($catOdooId);
                 if (!in_array($catMageId, $catsExist)) {
                     /* create new product link if not exists */
                     /** @var CategoryProductLinkInterface $prodLink */
