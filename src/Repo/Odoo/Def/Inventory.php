@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 use Magento\Framework\Webapi\ServiceInputProcessor;
-use Praxigento\Odoo\Api\Data\IBundle;
+use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\IInventory;
 

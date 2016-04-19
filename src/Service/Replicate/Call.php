@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Service\Replicate;
 
 use Praxigento\Core\Repo\ITransactionManager;
-use Praxigento\Odoo\Api\Data\IBundle;
+use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\IInventory as RepoOdooIInventory;
 use Praxigento\Odoo\Service\IReplicate;
 use Praxigento\Odoo\Service\Replicate;

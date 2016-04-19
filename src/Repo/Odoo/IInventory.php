@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Odoo;
 
-use Praxigento\Odoo\Api\Data\IBundle;
+use Praxigento\Odoo\Data\Api\IBundle;
 
 interface IInventory
 {

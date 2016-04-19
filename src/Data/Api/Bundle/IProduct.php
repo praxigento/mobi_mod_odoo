@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle;
+namespace Praxigento\Odoo\Data\Api\Bundle;
 
 /**
  * Data for one product in bundle.
@@ -64,7 +64,7 @@ interface IProduct
     /**
      * Get array of warehouse data for concrete product in bundle.
      *
-     * @return \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[]
+     * @return \Praxigento\Odoo\Data\Api\Bundle\Product\IWarehouse[]
      */
     public function getWarehouses();
 
@@ -127,7 +127,7 @@ interface IProduct
     /**
      * Set array of warehouse data for concrete product in bundle.
      *
-     * @param \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[] $data
+     * @param \Praxigento\Odoo\Data\Api\Bundle\Product\IWarehouse[] $data
      */
     public function setWarehouses($data);
 

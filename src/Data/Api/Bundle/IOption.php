@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle;
+namespace Praxigento\Odoo\Data\Api\Bundle;
 
 /**
  * Options that are related to products bundle.

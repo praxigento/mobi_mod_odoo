@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse;
+namespace Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse;
 
 
 /**

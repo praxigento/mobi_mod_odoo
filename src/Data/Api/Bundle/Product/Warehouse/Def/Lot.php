@@ -3,11 +3,11 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\Def;
+namespace Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\Def;
 
 
 use Flancer32\Lib\DataObject;
-use Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\ILot;
+use Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\ILot;
 
 /**
  * This class is used in REST/SOAP API and all methods should be declared explicitly.

@@ -134,7 +134,7 @@ class Warehouse
 
     /**
      * @param int $productIdMage
-     * @param \Praxigento\Odoo\Api\Data\Bundle\Product\IWarehouse[] $warehouses
+     * @param \Praxigento\Odoo\Data\Api\Bundle\Product\IWarehouse[] $warehouses
      */
     public function processWarehouses($productIdMage, $warehouses)
     {

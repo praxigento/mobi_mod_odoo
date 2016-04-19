@@ -7,8 +7,8 @@ namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Config as Cfg;
-use Praxigento\Odoo\Api\Data\Bundle\ILot as ApiLot;
-use Praxigento\Odoo\Api\Data\Bundle\IWarehouse as ApiWarehouse;
+use Praxigento\Odoo\Data\Api\Bundle\ILot as ApiLot;
+use Praxigento\Odoo\Data\Api\Bundle\IWarehouse as ApiWarehouse;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Product as EntityProduct;
@@ -73,11 +73,11 @@ class Replicator
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Data\Bundle\IProduct $product
+     * @param \Praxigento\Odoo\Data\Api\Bundle\IProduct $product
      */
     public function processProductItem($product)
     {
-        assert($product instanceof \Praxigento\Odoo\Api\Data\Bundle\IProduct);
+        assert($product instanceof \Praxigento\Odoo\Data\Api\Bundle\IProduct);
         $idOdoo = $product->getId();
         $sku = $product->getSku();
         $name = $product->getName();

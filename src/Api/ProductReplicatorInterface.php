@@ -5,6 +5,8 @@
 
 namespace Praxigento\Odoo\Api;
 
+use Praxigento\Odoo\Data\Api\IBundle;
+
 /**
  * Service to replicate product data between Magento 2 & Odoo.
  * @api
@@ -13,10 +15,10 @@ interface ProductReplicatorInterface
 {
 
     /**
-     * @param \Praxigento\Odoo\Api\Data\IBundle $data
+     * @param \Praxigento\Odoo\Data\Api\IBundle $data
      *
      * @return null
      */
-    public function save(\Praxigento\Odoo\Api\Data\IBundle $data);
+    public function save(IBundle $data);
 
 }

@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
-use Praxigento\Odoo\Api\Data\IBundle;
+use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');

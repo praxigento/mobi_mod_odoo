@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle\Product;
+namespace Praxigento\Odoo\Data\Api\Bundle\Product;
 
 
 /**
@@ -23,7 +23,7 @@ interface IWarehouse
     /**
      * Get array of lots data for the product on the warehouse.
      *
-     * @return \Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\ILot[]
+     * @return \Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\ILot[]
      */
     public function getLots();
 
@@ -51,7 +51,7 @@ interface IWarehouse
     /**
      * Set array of lots data for the product on the warehouse.
      *
-     * @param \Praxigento\Odoo\Api\Data\Bundle\Product\Warehouse\ILot[] $data
+     * @param \Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\ILot[] $data
      */
     public function setLots($data);
 

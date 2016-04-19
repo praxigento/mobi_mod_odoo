@@ -4,8 +4,8 @@
  */
 namespace Praxigento\Odoo\Service\Replicate\Request;
 
-use Praxigento\Odoo\Api\Data\Def\Bundle;
-use Praxigento\Odoo\Api\Data\IBundle;
+use Praxigento\Odoo\Data\Api\Def\Bundle;
+use Praxigento\Odoo\Data\Api\IBundle;
 
 class ProductSave extends \Praxigento\Core\Service\Base\Request
 {

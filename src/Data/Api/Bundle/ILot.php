@@ -3,53 +3,52 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Data\Bundle;
-
+namespace Praxigento\Odoo\Data\Api\Bundle;
 
 /**
- * Warehouse that is related to products bundle.
+ * Lot that is related to products bundle.
  *
  * @api
  */
-interface IWarehouse
+interface ILot
 {
     /**
-     * Get short code to identify warehouse by humans.
+     * Get code used by humans.
      *
      * @return string
      */
     public function getCode();
 
     /**
-     * Get currency for warehouse prices ('CNY').
+     * Get expiration date for all products from this lot.
      *
      * @return string
      */
-    public function getCurrency();
+    public function getExpirationDate();
 
     /**
-     * Get Odoo ID of the warehouse.
+     * Get Odoo ID of the lot.
      *
      * @return  int|null
      */
     public function getId();
 
     /**
-     * Set short code to identify warehouse by humans.
+     * Set code used by humans.
      *
      * @param string $data
      */
     public function setCode($data);
 
     /**
-     * Set currency for warehouse prices ('CNY').
+     * Set expiration date for all products from this lot.
      *
      * @param string $data
      */
-    public function setCurrency($data);
+    public function setExpirationDate($data);
 
     /**
-     * Set Odoo ID of the warehouse.
+     * Set Odoo ID of the lot.
      *
      * @param int $data
      */
