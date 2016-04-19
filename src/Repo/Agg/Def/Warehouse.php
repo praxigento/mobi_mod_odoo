@@ -31,7 +31,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
         return $result;
     }
 
-    protected function _initResultRead($data)
+    protected function _initAggregate($data)
     {
         /** @var  $result AggWarehouse */
         $result = $this->_manObj->create(AggWarehouse::class);
@@ -66,7 +66,7 @@ class Warehouse extends WrhsRepoWarehouse implements IWarehouse
         $query->where(self::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
-            $result = $this->_initResultRead($data);
+            $result = $this->_initAggregate($data);
         }
         return $result;
     }
