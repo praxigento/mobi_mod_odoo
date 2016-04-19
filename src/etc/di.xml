@@ -50,8 +50,8 @@
                 type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
     <preference for="Praxigento\Odoo\Repo\IModule"
                 type="Praxigento\Odoo\Repo\Def\Module"/>
-    <preference for="Praxigento\Odoo\Repo\IPvModule"
-                type="\Praxigento\Odoo\Repo\Def\PvModule"/>
+    <preference for="Praxigento\Odoo\Repo\IPv"
+                type="\Praxigento\Odoo\Repo\Def\Pv"/>
 
     <!-- Other Repos override -->
     <preference for="Praxigento\Warehouse\Repo\Agg\IWarehouse"

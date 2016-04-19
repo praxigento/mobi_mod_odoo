@@ -15,7 +15,7 @@ use Praxigento\Odoo\Data\Entity\Product as EntityProduct;
 use Praxigento\Odoo\Lib\Repo\ILot as IRepoModLot;
 use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoModWarehouse;
 use Praxigento\Odoo\Repo\IModule;
-use Praxigento\Odoo\Repo\IPvModule as IRepoModPv;
+use Praxigento\Odoo\Repo\IPv as IRepoModPv;
 
 class Replicator
 {
@@ -92,7 +92,7 @@ class Replicator
                 /* create new product in Magento */
                 $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
                 $this->_repoMod->registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $idMage, $idOdoo);
-                $this->_repoModPv->saveProductWholesalePv($idMage, $pvWholesale);
+                $this->_repoModPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
                 $skipProduct = true;

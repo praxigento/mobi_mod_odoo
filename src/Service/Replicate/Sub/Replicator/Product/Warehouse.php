@@ -11,7 +11,7 @@ use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\IModule;
-use Praxigento\Odoo\Repo\IPvModule as IRepoPvModule;
+use Praxigento\Odoo\Repo\IPv as IRepoPvModule;
 use Praxigento\Pv\Repo\Entity\Stock\IItem as IRepoPvStockItem;
 use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockItem;
 
@@ -127,7 +127,7 @@ class Warehouse
     {
         $ref = $this->_repoWarehouseEntityStockItem->getRef();
         $bind = [$ref::ATTR_PRICE => $price];
-        $this->_repoWarehouseEntityStockItem->update($bind, $stockItemId);
+        $this->_repoWarehouseEntityStockItem->updateById($bind, $stockItemId);
         /* update warehouse PV */
         $this->_repoPvMod->updateWarehousePv($stockItemId, $pv);
     }
