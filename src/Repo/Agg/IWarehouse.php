@@ -10,6 +10,8 @@ use Praxigento\Warehouse\Repo\Agg\IWarehouse as WrhsIWarehouse;
 
 interface IWarehouse extends WrhsIWarehouse
 {
+    const AS_ODOO = 'pow';
+
     /**
      * @param AggWarehouse $data
      * @return AggWarehouse

@@ -5,69 +5,116 @@
 
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\ObjectManagerInterface;
+use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Agg\IWarehouse;
-use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoWarehouse;
+use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
+use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
-class Warehouse extends WrhsRepoWarehouse implements IWarehouse
+class Warehouse implements IWarehouse
 {
-    const AS_ODOO = 'pow';
 
-    protected function _initQueryRead()
-    {
-        $result = parent::_initQueryRead();
-        /* aliases and tables */
-        $asStock = self::AS_STOCK;
-        $asOdoo = self::AS_ODOO;
-        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
-        /* LEFT LOIN prxgt_odoo_wrhs */
-        $cols = [
-            AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_REF
-        ];
-        $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
-        $result->joinLeft($tblOdoo, $on, $cols);
-        return $result;
+    /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
+    protected $_conn;
+    /** @var  ObjectManagerInterface */
+    protected $_manObj;
+    /** @var  \Praxigento\Core\Repo\ITransactionManager */
+    protected $_manTrans;
+    /** @var  \Praxigento\Odoo\Repo\Entity\IWarehouse */
+    protected $_repoEntityWarehouse;
+    /** @var  WrhsRepoAggWarehouse */
+    protected $_repoWrhsAggWarehouse;
+    /** @var \Magento\Framework\App\ResourceConnection */
+    protected $_resource;
+    /** @var  \Praxigento\Odoo\Repo\Agg\Def\Sub\Select */
+    protected $_subSelect;
+
+    public function __construct(
+        ObjectManagerInterface $manObj,
+        ITransactionManager $manTrans,
+        ResourceConnection $resource,
+        WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
+        RepoEntityWarehouse $repoEntityWarehouse,
+        Sub\Select $subSelect
+    ) {
+        $this->_manObj = $manObj;
+        $this->_manTrans = $manTrans;
+        $this->_resource = $resource;
+        $this->_conn = $resource->getConnection();
+        $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
+        $this->_repoEntityWarehouse = $repoEntityWarehouse;
+        $this->_subSelect = $subSelect;
     }
 
-    protected function _initAggregate($data)
-    {
-        /** @var  $result AggWarehouse */
-        $result = $this->_manObj->create(AggWarehouse::class);
-        $result->setData($data);
-        return $result;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function create($data)
     {
+        /** @var  $result AggWarehouse */
+        $result = null;
         $trans = $this->_manTrans->transactionBegin();
         try {
-            $result = parent::create($data);
+            $wrhsData = $this->_repoWrhsAggWarehouse->create($data);
             /* create odoo related entries */
-            $tbl = EntityWarehouse::ENTITY_NAME;
             $bind = [
-                EntityWarehouse::ATTR_MAGE_REF => $result->getId(),
+                EntityWarehouse::ATTR_MAGE_REF => $wrhsData->getId(),
                 EntityWarehouse::ATTR_ODOO_REF => $data->getOdooId()
             ];
-            $this->_repoBasic->addEntity($tbl, $bind);
+            $this->_repoEntityWarehouse->create($bind);
             $this->_manTrans->transactionCommit($trans);
+            /* compose result from warehouse module's data and odoo module's data */
+            $result = $this->_manObj->create(AggWarehouse::class);
+            $result->setData($wrhsData);
+            $result->setOdooId($data->getOdooId());
         } finally {
             $this->_manTrans->transactionClose($trans);
         }
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getById($id)
+    {
+        $query = $this->_subSelect->getQuery();
+        $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
+        $data = $this->_conn->fetchRow($query, ['id' => $id]);
+        if ($data) {
+            $result = $this->_manObj->create(AggWarehouse::class);
+            $result->setData($data);
+        }
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getByOdooId($odooId)
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $query = $this->_initQueryRead();
-        $query->where(self::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
+        $query = $this->_subSelect->getQuery();
+        $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
-            $result = $this->_initAggregate($data);
+            $result = $this->_manObj->create(AggWarehouse::class);
+            $result->setData($data);
         }
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getQueryToSelect()
+    {
+        $result = $this->_subSelect->getQuery();
         return $result;
     }
 }
