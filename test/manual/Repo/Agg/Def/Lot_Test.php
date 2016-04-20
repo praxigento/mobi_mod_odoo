@@ -11,7 +11,7 @@ use Praxigento\Odoo\Repo\Agg\ILot;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Lot_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
+class Lot_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 {
     /** @var  ObjectManagerInterface */
     private $manObj;

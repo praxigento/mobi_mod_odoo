@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Def;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 
-class Pv_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
     private $mRepoPvProduct;

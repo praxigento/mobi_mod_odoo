@@ -9,7 +9,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');
 
-class Login_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
+class Login_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 {
     /** @var  Login */
     private $obj;

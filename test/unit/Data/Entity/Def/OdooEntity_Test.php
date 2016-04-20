@@ -10,7 +10,7 @@ class OdooEntityChild extends OdooEntity
 {
 }
 
-class OdooEntity_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class OdooEntity_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  OdooEntityChild */
     private $obj;

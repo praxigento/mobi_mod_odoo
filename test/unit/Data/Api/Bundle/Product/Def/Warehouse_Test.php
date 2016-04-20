@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Data\Api\Bundle\Product\Def;
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');
 
 
-class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  Warehouse */
     private $obj;

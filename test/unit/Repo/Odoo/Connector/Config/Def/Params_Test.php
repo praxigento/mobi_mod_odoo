@@ -9,7 +9,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection;
 
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');
 
-class Params_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class Params_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
 
     public function test_accessors()

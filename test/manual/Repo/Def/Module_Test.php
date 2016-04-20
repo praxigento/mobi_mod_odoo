@@ -11,7 +11,7 @@ use Praxigento\Odoo\Repo\IRegistry;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 
-class Module_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
+class Module_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 {
     /** @var  ObjectManagerInterface */
     private $manObj;

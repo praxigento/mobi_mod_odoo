@@ -23,7 +23,7 @@ class ProductsChild extends Products
     }
 }
 
-class Products_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class Products_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
     private $mCallOdooReplicate;
