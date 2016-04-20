@@ -13,7 +13,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
     /** @var  \Mockery\MockInterface */
     private $mManObj;
     /** @var  \Mockery\MockInterface */
-    private $mRepoBasic;
+    private $mRepoGeneric;
     /** @var  Registry */
     private $obj;
 
@@ -22,12 +22,12 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         parent::setUp();
         /* create mocks */
         $this->mManObj = $this->_mockObjectManager();
-        $this->mRepoBasic = $this->_mockRepoBasic();
+        $this->mRepoGeneric = $this->_mockRepoGeneric();
         /* setup mocks for constructor */
         /* create object to test */
         $this->obj = new Registry(
             $this->mManObj,
-            $this->mRepoBasic
+            $this->mRepoGeneric
         );
     }
 
@@ -39,7 +39,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
         /* === Call and asserts  === */
@@ -55,7 +55,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityLot::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
         /* === Call and asserts  === */
@@ -71,7 +71,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityProduct::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
         /* === Call and asserts  === */
@@ -87,7 +87,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityWarehouse::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
         /* === Call and asserts  === */
@@ -103,7 +103,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $this->_registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
         // $this->_repoBasic->addEntity($entityName, $bind);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('addEntity')->once();
         /* === Call and asserts  === */
         $res = $this->obj->registerCategory($MAGE_ID, $ODOO_ID);
@@ -117,7 +117,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Setup Mocks === */
         // $this->_registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $mageId, $odooId);
         // $this->_repoBasic->addEntity($entityName, $bind);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('addEntity')->once();
         /* === Call and asserts  === */
         $res = $this->obj->registerProduct($MAGE_ID, $ODOO_ID);
@@ -130,7 +130,7 @@ class Registry_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         // $mageId = $this->getProductMageIdByOdooId($odooId);
         // $result = $this->_getMageIdByOdooId(EntityProduct::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
-        $this->mRepoBasic
+        $this->mRepoGeneric
             ->shouldReceive('getEntities')->once();
         /* === Call and asserts  === */
         $res = $this->obj->isProductRegisteredInMage($ODOO_ID);

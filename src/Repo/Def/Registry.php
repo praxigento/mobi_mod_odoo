@@ -18,12 +18,12 @@ class Registry implements IRegistry
 {
     /** @var \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
-    /** @var \Praxigento\Core\Repo\IBasic */
+    /** @var \Praxigento\Core\Repo\IGeneric */
     protected $_repoBasic;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Core\Repo\IBasic $repoBasic
+        \Praxigento\Core\Repo\IGeneric $repoBasic
     ) {
         $this->_manObj = $manObj;
         $this->_repoBasic = $repoBasic;
