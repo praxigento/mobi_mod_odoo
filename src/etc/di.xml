@@ -36,9 +36,9 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="prxgt_odoo_replicate_products_command"
-                      xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products
-                </item>
+                <item
+                        name="prxgt_odoo_replicate_products_command"
+                        xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products</item>
             </argument>
         </arguments>
     </type>
@@ -67,10 +67,10 @@
     <virtualType name="odooTestConfigParams" type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params">
         <arguments>
             <argument xsi:type="array" name="arg1">
-                <item name="BaseUri" xsi:type="string">http://lion.host.prxgt.com:8122</item>
-                <item name="DbName" xsi:type="string">oe_odoo9_api</item>
-                <item name="UserName" xsi:type="string">admin</item>
-                <item name="UserPassword" xsi:type="string">admin</item>
+                <item name="baseUri" xsi:type="string">http://lion.host.prxgt.com:8122</item>
+                <item name="dbName" xsi:type="string">oe_odoo9_api</item>
+                <item name="userName" xsi:type="string">admin</item>
+                <item name="userPassword" xsi:type="string">admin</item>
             </argument>
         </arguments>
     </virtualType>
