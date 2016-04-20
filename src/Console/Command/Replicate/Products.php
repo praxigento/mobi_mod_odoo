@@ -29,11 +29,11 @@ class Products extends Command
     protected $_manObj;
 
     public function __construct(
-        ObjectManagerInterface $objectManagerProvider,
+        ObjectManagerInterface $manObj,
         IReplicate $callReplicate
     ) {
         parent::__construct();
-        $this->_manObj = $objectManagerProvider;
+        $this->_manObj = $manObj;
         $this->_callReplicate = $callReplicate;
     }
 
@@ -48,7 +48,8 @@ class Products extends Command
         $appState->setAreaCode($areaCode);
         /** @var \Magento\Framework\ObjectManager\ConfigLoaderInterface $configLoader */
         $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
-        $this->_manObj->configure($configLoader->load($areaCode));
+        $config = $configLoader->load($areaCode);
+        $this->_manObj->configure($config);
     }
 
     /**
@@ -70,20 +71,19 @@ class Products extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* parse arguments */
-        $argIds = $input->getArgument(self::ARG_IDS);
+        $argIds = $input->getArgument(static::ARG_IDS);
         if (is_null($argIds)) {
             $ids = null;
             $output->writeln('<info>List of all products will be pulled from Odoo.<info>');
         } else {
             $ids = explode(',', $argIds);
-            $msgIds = implode(',', $ids);
-            $output->writeln("<info>Products with Odoo IDs ($msgIds) will be pulled from Odoo.<info>");
+            $output->writeln("<info>Products with Odoo IDs ($argIds) will be pulled from Odoo.<info>");
         }
         /* setup session */
         $this->_setAreaCode();
         /* call service operation */
         /** @var ProductsFromOdooRequest $req */
-        $req = new ProductsFromOdooRequest();
+        $req = $this->_manObj->create(ProductsFromOdooRequest::class);
         $req->setOdooIds($ids);
         /** @var ProductsFromOdooResponse $resp */
         $resp = $this->_callReplicate->productsFromOdoo($req);
