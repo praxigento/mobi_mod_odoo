@@ -4,14 +4,13 @@
  */
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
-use Praxigento\Warehouse\Data\Agg\Warehouse as WrhsAggWarehouse;
-use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
+use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
+use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
+class Lot_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
     private $mConn;
@@ -20,14 +19,14 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
     /** @var  \Mockery\MockInterface */
-    private $mRepoEntityWarehouse;
+    private $mRepoEntityLot;
     /** @var  \Mockery\MockInterface */
-    private $mRepoWrhsAggWarehouse;
+    private $mRepoWrhsEntityLot;
     /** @var  \Mockery\MockInterface */
     private $mResource;
     /** @var  \Mockery\MockInterface */
     private $mSubSelect;
-    /** @var  Warehouse */
+    /** @var  Lot */
     private $obj;
 
     protected function setUp()
@@ -38,17 +37,17 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mConn = $this->_mockConn();
         $this->mResource = $this->_mockResourceConnection($this->mConn);
-        $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
-        $this->mRepoEntityWarehouse = $this->_mock(RepoEntityWarehouse::class);
-        $this->mSubSelect = $this->_mock(Warehouse\Select::class);
+        $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
+        $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
+        $this->mSubSelect = $this->_mock(Lot\Select::class);
         /* setup mocks for constructor */
         /* create object to test */
-        $this->obj = new Warehouse(
+        $this->obj = new Lot(
             $this->mManObj,
             $this->mManTrans,
             $this->mResource,
-            $this->mRepoWrhsAggWarehouse,
-            $this->mRepoEntityWarehouse,
+            $this->mRepoWrhsEntityLot,
+            $this->mRepoEntityLot,
             $this->mSubSelect
         );
     }
@@ -56,7 +55,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
     public function test_constructor()
     {
         /* === Call and asserts  === */
-        $this->assertInstanceOf(Warehouse::class, $this->obj);
+        $this->assertInstanceOf(Lot::class, $this->obj);
     }
 
     public function test_create()
@@ -64,49 +63,48 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
         /* === Test Data === */
         $MAGE_ID = 32;
         $ODOO_ID = 54;
-        $DATA = new AggWarehouse([AggWarehouse::AS_ODOO_ID => $ODOO_ID]);
+        $DATA = new AggLot([AggLot::AS_ODOO_ID => $ODOO_ID]);
         /* === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
         $mTrans = $this->_mockTransactionDefinition();
         $this->mManTrans
             ->shouldReceive('transactionBegin')->once()
             ->andReturn($mTrans);
-        // $result = $this->_repoWrhsAggWarehouse->create($data);
-        $mWrhsData = new WrhsAggWarehouse([WrhsAggWarehouse::AS_ID => $MAGE_ID]);
-        $this->mRepoWrhsAggWarehouse
+        // $id = $this->_repoWrhsEntityRepoLot->create($bind);
+        $this->mRepoWrhsEntityLot
             ->shouldReceive('create')->once()
-            ->andReturn($mWrhsData);
-        // $this->_repoEntityWarehouse->create($bind);
-        $this->mRepoEntityWarehouse
+            ->andReturn($MAGE_ID);
+        // $this->_repoEntityLot->create($bind);
+        $this->mRepoEntityLot
             ->shouldReceive('create')->once();
         // $this->_manTrans->transactionCommit($trans);
         $this->mManTrans
             ->shouldReceive('transactionCommit')->once()
             ->with($mTrans);
-        // $result = $this->_manObj->create(AggWarehouse::class);
+        // $result = $this->_manObj->create(AggLot::class);
         $this->mManObj->shouldReceive('create')->once()
-            ->andReturn(new AggWarehouse());
+            ->andReturn(new AggLot());
         // $this->_manTrans->transactionClose($trans);
         $this->mManTrans
             ->shouldReceive('transactionClose')->once()
             ->with($mTrans);
         /* === Call and asserts  === */
         $res = $this->obj->create($DATA);
-
+        $this->assertEquals($MAGE_ID, $res->getId());
     }
 
     public function test_getById()
     {
         /* === Test Data === */
         $ID = 32;
-        $DATA = [AggWarehouse::AS_ID => $ID];
+        $DATA = [AggLot::AS_ID => $ID];
         /* === Setup Mocks === */
         // $result = $this->_subSelect->getQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
             ->shouldReceive('getQuery')->once()
             ->andReturn($mQuery);
-        // $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
+        // $query->where($where);
         $mQuery->shouldReceive('where')->once();
         // $data = $this->_conn->fetchRow($query, ['id' => $id]);
         $this->mConn
@@ -114,7 +112,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
             ->andReturn($DATA);
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
-            ->andReturn(new AggWarehouse());
+            ->andReturn(new AggLot());
         /* === Call and asserts  === */
         $res = $this->obj->getById($ID);
         $this->assertEquals($ID, $res->getId());
@@ -124,39 +122,25 @@ class Warehouse_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
     {
         /* === Test Data === */
         $ODOO_ID = 32;
-        $DATA = [AggWarehouse::AS_ODOO_ID => $ODOO_ID];
+        $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /* === Setup Mocks === */
         // $result = $this->_subSelect->getQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
             ->shouldReceive('getQuery')->once()
             ->andReturn($mQuery);
-        // $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
+        // $query->where($where);
         $mQuery->shouldReceive('where')->once();
-        // $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
+        // $data = $this->_conn->fetchRow($query, ['id' => $id]);
         $this->mConn
             ->shouldReceive('fetchRow')->once()
             ->andReturn($DATA);
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
-            ->andReturn(new AggWarehouse());
+            ->andReturn(new AggLot());
         /* === Call and asserts  === */
         $res = $this->obj->getByOdooId($ODOO_ID);
         $this->assertEquals($ODOO_ID, $res->getOdooId());
-    }
-
-    public function test_getQueryToSelect()
-    {
-        /* === Test Data === */
-        /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
-        $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
-            ->andReturn($mQuery);
-        /* === Call and asserts  === */
-        $res = $this->obj->getQueryToSelect();
-        $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
     }
 
 }
