@@ -1,9 +1,10 @@
 <?php
 /**
+ * Compose SELECT query to get Warehouse aggregate.
+ *
  * User: Alex Gusev <alex@flancer64.com>
  */
-
-namespace Praxigento\Odoo\Repo\Agg\Def\Sub;
+namespace Praxigento\Odoo\Repo\Agg\Def\Warehouse;
 
 use Magento\Framework\App\ResourceConnection;
 use Praxigento\Odoo\Config as Cfg;
@@ -17,17 +18,17 @@ class Select implements \Praxigento\Core\Repo\IHasQuery
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
     /** @var  WrhsRepoAggWarehouse */
-    protected $_repoWrhsWarehouse;
+    protected $_repoWrhsAggWarehouse;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
 
     public function __construct(
         ResourceConnection $resource,
-        WrhsRepoAggWarehouse $repoWrhsWarehouse
+        WrhsRepoAggWarehouse $repoWrhsAggWarehouse
     ) {
         $this->_resource = $resource;
         $this->_conn = $resource->getConnection();
-        $this->_repoWrhsWarehouse = $repoWrhsWarehouse;
+        $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
     }
 
     /**
@@ -35,7 +36,7 @@ class Select implements \Praxigento\Core\Repo\IHasQuery
      */
     public function getQuery()
     {
-        $result = $this->_repoWrhsWarehouse->getQueryToSelect();
+        $result = $this->_repoWrhsAggWarehouse->getQueryToSelect();
         /* aliases and tables */
         $asStock = WrhsRepoAggWarehouse::AS_STOCK;
         $asOdoo = IWarehouse::AS_ODOO;

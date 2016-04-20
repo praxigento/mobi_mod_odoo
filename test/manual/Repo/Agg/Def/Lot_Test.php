@@ -7,21 +7,21 @@ namespace Praxigento\Odoo\Repo\Agg\Def;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Data\Entity;
-use Praxigento\Odoo\Repo\Agg\IWarehouse;
+use Praxigento\Odoo\Repo\Agg\ILot;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Warehouse_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
+class Lot_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
 {
     /** @var  ObjectManagerInterface */
     private $manObj;
-    /** @var  Warehouse */
+    /** @var  Lot */
     private $obj;
 
     protected function setUp()
     {
         $this->manObj = ObjectManager::getInstance();
-        $this->obj = $this->manObj->create(IWarehouse::class);
+        $this->obj = $this->manObj->create(ILot::class);
     }
 
 
@@ -31,6 +31,14 @@ class Warehouse_ManualTest extends \Praxigento\Core\Lib\Test\BaseIntegrationTest
         $id = 1;
         /* === Call and asserts  === */
         $res = $this->obj->getById($id);
+        $this->assertNotNull($res);
+    }
+    public function test_getByOdooId()
+    {
+        /* === Test Data === */
+        $id = 1;
+        /* === Call and asserts  === */
+        $res = $this->obj->getByOdooId($id);
         $this->assertNotNull($res);
     }
 

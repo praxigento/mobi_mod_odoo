@@ -5,18 +5,24 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Lib\Repo;
+namespace Praxigento\Odoo\Repo\Agg;
 
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 
 interface ILot
 {
-    /**
-     * Check existence of the 'Lot' aggregate in Magento and register new 'Lot' if required.
-     * @param AggLot $data data to check and register
-     * @return AggLot|null data from Magento (new or existed)
+    /**#@+
+     *  Aliases for tables in DB.
      */
-    public function checkExistence(AggLot $data);
+    const AS_ODOO = 'pol';
+    const AS_WRHS = 'pwl';
+    /**#@-*/
+
+    /**
+     * @param AggLot $data
+     * @return AggLot
+     */
+    public function create($data);
 
     /**
      * @param int $id Magento ID of the Lot.

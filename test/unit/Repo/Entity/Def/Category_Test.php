@@ -27,8 +27,6 @@ class Category_UnitTest extends \Praxigento\Core\Lib\Test\BaseMockeryCase
 
     public function test_constructor()
     {
-        /* === Test Data === */
-        /* === Setup Mocks === */
         /* === Call and asserts  === */
         $this->assertInstanceOf(Category::class, $this->obj);
     }

@@ -30,7 +30,7 @@ class Warehouse implements IWarehouse
     protected $_repoWrhsAggWarehouse;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
-    /** @var  \Praxigento\Odoo\Repo\Agg\Def\Sub\Select */
+    /** @var  Warehouse\Select */
     protected $_subSelect;
 
     public function __construct(
@@ -39,7 +39,7 @@ class Warehouse implements IWarehouse
         ResourceConnection $resource,
         WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
         RepoEntityWarehouse $repoEntityWarehouse,
-        Sub\Select $subSelect
+        Warehouse\Select $subSelect
     ) {
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;

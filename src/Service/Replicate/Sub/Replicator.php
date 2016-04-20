@@ -6,28 +6,28 @@
 namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Core\Config as Cfg;
+use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Api\Bundle\ILot as ApiLot;
 use Praxigento\Odoo\Data\Api\Bundle\IWarehouse as ApiWarehouse;
-use Praxigento\Odoo\Lib\Repo\ILot as IRepoModLot;
-use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoModWarehouse;
-use Praxigento\Odoo\Repo\IPv as IRepoModPv;
+use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
+use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoAggWarehouse;
+use Praxigento\Odoo\Repo\IPv as IRepoPv;
 use Praxigento\Odoo\Repo\IRegistry;
 
 class Replicator
 {
     /** @var   ObjectManagerInterface */
     protected $_manObj;
-    /** @var IRegistry */
-    protected $_repoMod;
-    /** @var  IRepoModLot */
-    protected $_repoModLot;
-    /** @var  IRepoModPv */
-    protected $_repoModPv;
-    /** @var  IRepoModWarehouse */
+    /** @var  IRepoAggLot */
+    protected $_repoAggLot;
+    /** @var  IRepoAggWarehouse */
     protected $_repoModWrhs;
+    /** @var  IRepoPv */
+    protected $_repoPv;
+    /** @var IRegistry */
+    protected $_repoRegistry;
     /** @var Replicator\Product\Category */
     protected $_subProdCategory;
     /** @var Replicator\Product\Warehouse */
@@ -38,17 +38,17 @@ class Replicator
     public function __construct(
         ObjectManagerInterface $manObj,
         IRegistry $repoMod,
-        IRepoModLot $repoModLot,
-        IRepoModPv $repoModPv,
-        IRepoModWarehouse $repoModWrhs,
+        IRepoAggLot $repoModLot,
+        IRepoPv $repoModPv,
+        IRepoAggWarehouse $repoModWrhs,
         Replicator\Product $subProduct,
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse
     ) {
         $this->_manObj = $manObj;
-        $this->_repoMod = $repoMod;
-        $this->_repoModLot = $repoModLot;
-        $this->_repoModPv = $repoModPv;
+        $this->_repoRegistry = $repoMod;
+        $this->_repoAggLot = $repoModLot;
+        $this->_repoPv = $repoModPv;
         $this->_repoModWrhs = $repoModWrhs;
         $this->_subProduct = $subProduct;
         $this->_subProdCategory = $subProdCategory;
@@ -61,13 +61,16 @@ class Replicator
      */
     public function processLots($lots)
     {
-        /** @var  $aggData AggLot */
-        $aggData = $this->_manObj->create(AggLot::class);
+        /** @var  $data AggLot */
+        $data = $this->_manObj->create(AggLot::class);
         foreach ($lots as $item) {
-            $aggData->setOdooId($item->getId());
-            $aggData->setCode($item->getCode());
-            $aggData->setExpDate($item->getExpirationDate());
-            $this->_repoModLot->checkExistence($aggData);
+            $data->setOdooId($item->getId());
+            $data->setCode($item->getCode());
+            $data->setExpDate($item->getExpirationDate());
+            $lotExists = $this->_repoAggLot->getByOdooId($data->getOdooId());
+            if (!$lotExists) {
+                $this->_repoAggLot->create($data);
+            }
         }
     }
 
@@ -86,21 +89,21 @@ class Replicator
         $weight = $product->getPrice();
         $pvWholesale = $product->getPv();
         /* check does product item is already registered in Magento */
-        if (!$this->_repoMod->isProductRegisteredInMage($idOdoo)) {
+        if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
                 $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
-                $this->_repoMod->registerProduct($idMage, $idOdoo);
-                $this->_repoModPv->registerProductWholesalePv($idMage, $pvWholesale);
+                $this->_repoRegistry->registerProduct($idMage, $idOdoo);
+                $this->_repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
                 $skipProduct = true;
             }
         } else {
             /* update attributes for magento product */
-            $idMage = $this->_repoMod->getProductMageIdByOdooId($idOdoo);
+            $idMage = $this->_repoRegistry->getProductMageIdByOdooId($idOdoo);
             $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
-            $this->_repoModPv->updateProductWholesalePv($idMage, $pvWholesale);
+            $this->_repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipProduct) {
             /* check that categories are registered in Magento */
