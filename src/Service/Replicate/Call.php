@@ -68,7 +68,7 @@ class Call implements IReplicate
         try {
             $this->_doProductReplication($bundle);
             $this->_manTrans->transactionCommit($trans);
-            $result->setAsSucceed();
+            $result->markSucceed();
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);
@@ -90,7 +90,7 @@ class Call implements IReplicate
             $bundle = $this->_repoOdooInventory->get($ids);
             $this->_doProductReplication($bundle);
             $this->_manTrans->transactionCommit($trans);
-            $result->setAsSucceed();
+            $result->markSucceed();
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);
