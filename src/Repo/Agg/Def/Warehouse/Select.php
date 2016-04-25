@@ -13,7 +13,7 @@ use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Agg\IWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
-class Select implements \Praxigento\Core\Repo\IHasQuery
+class Select implements \Praxigento\Core\Repo\IHasSelectQuery
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
@@ -34,7 +34,7 @@ class Select implements \Praxigento\Core\Repo\IHasQuery
     /**
      * @inheritdoc
      */
-    public function getQuery()
+    public function getSelectQuery()
     {
         $result = $this->_repoWrhsAggWarehouse->getQueryToSelect();
         /* aliases and tables */

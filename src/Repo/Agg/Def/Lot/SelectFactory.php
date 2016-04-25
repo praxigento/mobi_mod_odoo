@@ -8,12 +8,13 @@
 namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
 
 use Magento\Framework\App\ResourceConnection;
+use Praxigento\Core\Repo\IHasSelectQuery;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Repo\Agg\ILot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
-class Select implements \Praxigento\Core\Repo\IHasQuery
+class SelectFactory implements IHasSelectQuery
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
@@ -30,7 +31,7 @@ class Select implements \Praxigento\Core\Repo\IHasQuery
     /**
      * @inheritdoc
      */
-    public function getQuery()
+    public function getSelectQuery()
     {
         $result = $this->_conn->select();
         /* aliases and tables */

@@ -27,8 +27,8 @@ class Lot implements ILot
     protected $_repoWrhsEntityLot;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
-    /** @var  Lot\Select */
-    protected $_subSelect;
+    /** @var  Lot\SelectFactory */
+    protected $_factorySelect;
 
     public function __construct(
         ObjectManagerInterface $manObj,
@@ -36,7 +36,7 @@ class Lot implements ILot
         \Magento\Framework\App\ResourceConnection $resource,
         IRepoWrhsEntityLot $repoWrhsEntityLot,
         IRepoEntityLot $repoEntityLot,
-        Lot\Select $subSelect
+        Lot\SelectFactory $factorySelect
     ) {
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
@@ -44,7 +44,7 @@ class Lot implements ILot
         $this->_conn = $resource->getConnection();
         $this->_repoWrhsEntityLot = $repoWrhsEntityLot;
         $this->_repoEntityLot = $repoEntityLot;
-        $this->_subSelect = $subSelect;
+        $this->_factorySelect = $factorySelect;
     }
 
     /**
@@ -84,7 +84,7 @@ class Lot implements ILot
     public function getById($id)
     {
         $result = null;
-        $query = $this->_subSelect->getQuery();
+        $query = $this->_factorySelect->getSelectQuery();
         $where = static::AS_WRHS . '.' . EntityWrhsLot::ATTR_ID . '=:id';
         $query->where($where);
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
@@ -102,7 +102,7 @@ class Lot implements ILot
     public function getByOdooId($id)
     {
         $result = null;
-        $query = $this->_subSelect->getQuery();
+        $query = $this->_factorySelect->getSelectQuery();
         $where = static::AS_ODOO . '.' . EntityLot::ATTR_ODOO_REF . '=:id';
         $query->where($where);
         $data = $this->_conn->fetchRow($query, ['id' => $id]);

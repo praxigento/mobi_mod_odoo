@@ -12,7 +12,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mConn;
     /** @var  \Mockery\MockInterface */
     private $mResource;
-    /** @var  Select */
+    /** @var  SelectFactory */
     private $obj;
 
     protected function setUp()
@@ -22,7 +22,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mConn = $this->_mockConn();
         $this->mResource = $this->_mockResourceConnection($this->mConn);
         /* create object to test */
-        $this->obj = new Select(
+        $this->obj = new SelectFactory(
             $this->mResource
         );
     }
@@ -30,7 +30,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_constructor()
     {
         /* === Call and asserts  === */
-        $this->assertInstanceOf(Select::class, $this->obj);
+        $this->assertInstanceOf(SelectFactory::class, $this->obj);
     }
 
 
@@ -50,7 +50,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /* === Call and asserts  === */
-        $this->obj->getQuery();
+        $this->obj->getSelectQuery();
     }
 
 }

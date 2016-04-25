@@ -101,10 +101,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ID = 32;
         $DATA = [AggWarehouse::AS_ID => $ID];
         /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
+        // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
+            ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $mQuery->shouldReceive('where')->once();
@@ -126,10 +126,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 32;
         $DATA = [AggWarehouse::AS_ODOO_ID => $ODOO_ID];
         /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
+        // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
+            ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $mQuery->shouldReceive('where')->once();
@@ -149,10 +149,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         /* === Test Data === */
         /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
+        // $result = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
+            ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         /* === Call and asserts  === */
         $res = $this->obj->getQueryToSelect();

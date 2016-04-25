@@ -7,6 +7,7 @@ namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\ObjectManagerInterface;
+use Praxigento\Core\Repo\Def\Aggregate as BaseAggRepo;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
@@ -15,7 +16,7 @@ use Praxigento\Odoo\Repo\Agg\IWarehouse;
 use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
-class Warehouse implements IWarehouse
+class Warehouse extends BaseAggRepo implements IWarehouse
 {
 
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
@@ -82,7 +83,7 @@ class Warehouse implements IWarehouse
      */
     public function getById($id)
     {
-        $query = $this->_subSelect->getQuery();
+        $query = $this->_subSelect->getSelectQuery();
         $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
         if ($data) {
@@ -99,7 +100,7 @@ class Warehouse implements IWarehouse
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $query = $this->_subSelect->getQuery();
+        $query = $this->_subSelect->getSelectQuery();
         $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
@@ -114,7 +115,7 @@ class Warehouse implements IWarehouse
      */
     public function getQueryToSelect()
     {
-        $result = $this->_subSelect->getQuery();
+        $result = $this->_subSelect->getSelectQuery();
         return $result;
     }
 }

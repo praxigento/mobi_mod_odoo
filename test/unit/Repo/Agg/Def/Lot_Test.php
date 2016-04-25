@@ -15,6 +15,8 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     /** @var  \Mockery\MockInterface */
     private $mConn;
     /** @var  \Mockery\MockInterface */
+    private $mFactorySelect;
+    /** @var  \Mockery\MockInterface */
     private $mManObj;
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
@@ -24,8 +26,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mRepoWrhsEntityLot;
     /** @var  \Mockery\MockInterface */
     private $mResource;
-    /** @var  \Mockery\MockInterface */
-    private $mSubSelect;
     /** @var  Lot */
     private $obj;
 
@@ -39,7 +39,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
         $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
-        $this->mSubSelect = $this->_mock(Lot\Select::class);
+        $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
         /* setup mocks for constructor */
         /* create object to test */
         $this->obj = new Lot(
@@ -48,7 +48,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             $this->mResource,
             $this->mRepoWrhsEntityLot,
             $this->mRepoEntityLot,
-            $this->mSubSelect
+            $this->mFactorySelect
         );
     }
 
@@ -99,10 +99,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ID = 32;
         $DATA = [AggLot::AS_ID => $ID];
         /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
+        // $query = $this->_factorySelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
+        $this->mFactorySelect
+            ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where($where);
         $mQuery->shouldReceive('where')->once();
@@ -124,10 +124,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 32;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /* === Setup Mocks === */
-        // $result = $this->_subSelect->getQuery();
+        // $query = $this->_factorySelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
-            ->shouldReceive('getQuery')->once()
+        $this->mFactorySelect
+            ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where($where);
         $mQuery->shouldReceive('where')->once();

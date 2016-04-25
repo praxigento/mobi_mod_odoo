@@ -58,7 +58,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /* === Call and asserts  === */
-        $this->obj->getQuery();
+        $this->obj->getSelectQuery();
     }
 
 }
