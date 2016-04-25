@@ -28,6 +28,24 @@ class SelectFactory implements IHasSelectQuery
         $this->_conn = $resource->getConnection();
     }
 
+    public function getSelectCountQuery()
+    {
+        $result = $this->_conn->select();
+        /* aliases and tables */
+        $asWrhs = ILot::AS_WRHS;
+        $asOdoo = ILot::AS_ODOO;
+        $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
+        /* SELECT FROM prxgt_wrhs_lot */
+        $cols = "COUNT(" . EntityWrhsLot::ATTR_ID . ")";
+        $result->from($tblWrhs, $cols);
+        /* LEFT JOIN prxgt_odoo_lot */
+        $cols = [];
+        $on = $asOdoo . '.' . EntityLot::ATTR_MAGE_REF . '=' . $asWrhs . '.' . EntityWrhsLot::ATTR_ID;
+        $result->joinLeft($tblOdoo, $on, $cols);
+        return $result;
+    }
+
     /**
      * @inheritdoc
      */

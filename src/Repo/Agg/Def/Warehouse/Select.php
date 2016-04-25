@@ -31,6 +31,20 @@ class Select implements \Praxigento\Core\Repo\IHasSelectQuery
         $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
     }
 
+    public function getSelectCountQuery()
+    {
+        $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
+        /* aliases and tables */
+        $asStock = WrhsRepoAggWarehouse::AS_STOCK;
+        $asOdoo = IWarehouse::AS_ODOO;
+        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
+        /* LEFT JOIN prxgt_odoo_wrhs */
+        $cols = [];
+        $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
+        $result->joinLeft($tblOdoo, $on, $cols);
+        return $result;
+    }
+
     /**
      * @inheritdoc
      */

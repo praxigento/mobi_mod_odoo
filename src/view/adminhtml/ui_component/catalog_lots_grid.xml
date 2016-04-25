@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <!-- **************************************************** -->
+    <!-- Data loader (???) -->
+    <!-- **************************************************** -->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">catalog_lots_grid.catalog_lots_grid_data_source</item>
+            <item name="deps" xsi:type="string">catalog_lots_grid.catalog_lots_grid_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">catalog_lots_columns</item>
+    </argument>
+
+    <!-- **************************************************** -->
+    <!-- Data Source definition -->
+    <!-- **************************************************** -->
+    <dataSource name="catalog_lots_grid_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Praxigento\Odoo\Ui\DataProvider\Lot</argument>
+            <argument name="name" xsi:type="string">catalog_lots_grid_data_source</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <!-- **************************************************** -->
+    <!-- Grid Columns -->
+    <!-- **************************************************** -->
+    <columns name="catalog_lots_columns">
+
+        <column name="odoo_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Odoo ID</item>
+                </item>
+            </argument>
+        </column>
+
+    </columns>
+</listing>

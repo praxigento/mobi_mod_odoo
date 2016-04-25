@@ -13,10 +13,10 @@ class Lot extends DataObject
     /**#@+
      * Aliases for data attributes.
      */
-    const AS_CODE = 'Code';
-    const AS_EXP_DATE = 'ExpDate';
-    const AS_ID = 'Id';
-    const AS_ODOO_ID = 'OdooId';
+    const AS_CODE = 'code';
+    const AS_EXP_DATE = 'exp_date';
+    const AS_ID = 'id';
+    const AS_ODOO_ID = 'odoo_id';
 
     /**#@-*/
 

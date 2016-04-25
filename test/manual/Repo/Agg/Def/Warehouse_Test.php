@@ -34,5 +34,12 @@ class Warehouse_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $this->assertNotNull($res);
     }
 
+    public function test_getQueryToSelectCount()
+    {
+        /* === Call and asserts  === */
+        $res = $this->obj->getQueryToSelectCount();
+        $this->assertNotNull($res);
+    }
+
 
 }

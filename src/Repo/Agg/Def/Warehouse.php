@@ -21,6 +21,8 @@ class Warehouse extends BaseAggRepo implements IWarehouse
 
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
+    /** @var  Warehouse\Select */
+    protected $_factorySelect;
     /** @var  ObjectManagerInterface */
     protected $_manObj;
     /** @var  \Praxigento\Core\Repo\ITransactionManager */
@@ -31,8 +33,6 @@ class Warehouse extends BaseAggRepo implements IWarehouse
     protected $_repoWrhsAggWarehouse;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
-    /** @var  Warehouse\Select */
-    protected $_subSelect;
 
     public function __construct(
         ObjectManagerInterface $manObj,
@@ -40,7 +40,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
         ResourceConnection $resource,
         WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
         RepoEntityWarehouse $repoEntityWarehouse,
-        Warehouse\Select $subSelect
+        Warehouse\Select $factorySelect
     ) {
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
@@ -48,7 +48,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
         $this->_conn = $resource->getConnection();
         $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
         $this->_repoEntityWarehouse = $repoEntityWarehouse;
-        $this->_subSelect = $subSelect;
+        $this->_factorySelect = $factorySelect;
     }
 
     /**
@@ -83,7 +83,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
      */
     public function getById($id)
     {
-        $query = $this->_subSelect->getSelectQuery();
+        $query = $this->_factorySelect->getSelectQuery();
         $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
         if ($data) {
@@ -100,7 +100,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $query = $this->_subSelect->getSelectQuery();
+        $query = $this->_factorySelect->getSelectQuery();
         $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
@@ -115,7 +115,13 @@ class Warehouse extends BaseAggRepo implements IWarehouse
      */
     public function getQueryToSelect()
     {
-        $result = $this->_subSelect->getSelectQuery();
+        $result = $this->_factorySelect->getSelectQuery();
+        return $result;
+    }
+
+    public function getQueryToSelectCount()
+    {
+        $result = $this->_factorySelect->getSelectCountQuery();
         return $result;
     }
 }

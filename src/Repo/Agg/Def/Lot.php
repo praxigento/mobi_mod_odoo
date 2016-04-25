@@ -6,6 +6,7 @@
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Magento\Framework\ObjectManagerInterface;
+use Praxigento\Core\Repo\Def\Aggregate as BaseAggRepo;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Repo\Agg\ILot;
@@ -13,10 +14,12 @@ use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
-class Lot implements ILot
+class Lot extends BaseAggRepo implements ILot
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
+    /** @var  Lot\SelectFactory */
+    protected $_factorySelect;
     /** @var  ObjectManagerInterface */
     protected $_manObj;
     /** @var  \Praxigento\Core\Repo\ITransactionManager */
@@ -27,8 +30,6 @@ class Lot implements ILot
     protected $_repoWrhsEntityLot;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
-    /** @var  Lot\SelectFactory */
-    protected $_factorySelect;
 
     public function __construct(
         ObjectManagerInterface $manObj,
@@ -111,6 +112,19 @@ class Lot implements ILot
             $result = $this->_manObj->create(AggLot::class);
             $result->setData($data);
         }
+        return $result;
+    }
+
+    public function getQueryToSelect()
+    {
+        $result = $this->_factorySelect->getSelectQuery();
+        return $result;
+
+    }
+
+    public function getQueryToSelectCount()
+    {
+        $result = $this->_factorySelect->getSelectCountQuery();
         return $result;
     }
 }
