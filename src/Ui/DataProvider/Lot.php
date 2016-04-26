@@ -11,6 +11,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Magento\Store\Model\StoreManagerInterface;
+use Praxigento\Core\Repo\Criteria\IAdapter as ICriteriaAdapter;
 use Praxigento\Core\Ui\DataProvider\Base as BaseDataProvider;
 use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
 
@@ -19,6 +20,7 @@ class Lot extends BaseDataProvider
 
     public function __construct(
         UrlInterface $url,
+        ICriteriaAdapter $criteriaAdapter,
         IRepoAggLot $repo,
         Reporting $reporting,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -30,6 +32,7 @@ class Lot extends BaseDataProvider
     ) {
         parent::__construct(
             $url,
+            $criteriaAdapter,
             $repo,
             $reporting,
             $searchCriteriaBuilder,
