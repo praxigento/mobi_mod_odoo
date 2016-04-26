@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Agg;
 
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 
-interface ILot
+interface ILot extends \Praxigento\Core\Repo\IAggregate
 {
     /**#@+
      *  Aliases for tables in DB.
@@ -35,4 +35,10 @@ interface ILot
      * @return AggLot|null
      */
     public function getByOdooId($id);
+
+    /**
+     * @inheritdoc
+     * @return AggLot
+     */
+    public function getRef();
 }

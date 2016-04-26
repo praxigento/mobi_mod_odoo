@@ -46,6 +46,8 @@ class Lot extends BaseAggRepo implements ILot
         $this->_repoWrhsEntityLot = $repoWrhsEntityLot;
         $this->_repoEntityLot = $repoEntityLot;
         $this->_factorySelect = $factorySelect;
+        /* init reference */
+        $this->_refDataObject = new EntityLot();
     }
 
     /**
