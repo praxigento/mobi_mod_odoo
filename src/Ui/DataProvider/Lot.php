@@ -16,19 +16,7 @@ use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
 
 class Lot extends BaseDataProvider
 {
-    /**
-     * @param UrlInterface $url
-     * @param IRepoAggLot $repo
-     * @param Reporting $reporting
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param RequestInterface $request
-     * @param FilterBuilder $filterBuilder
-     * @param FilterBuilder $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
-     * @param array $meta
-     * @param array $data
-     */
+
     public function __construct(
         UrlInterface $url,
         IRepoAggLot $repo,
@@ -48,8 +36,6 @@ class Lot extends BaseDataProvider
             $request,
             $filterBuilder,
             $name,
-            'entity_id',
-            'id',
             $meta,
             $data
         );
