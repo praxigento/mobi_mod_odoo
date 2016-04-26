@@ -17,7 +17,7 @@ class Login_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
     protected function setUp()
     {
         parent::setUp();
-        $logger = $this->_manObj->get(\Praxigento\Odoo\Logger::class);
+        $logger = $this->_manObj->get(\Psr\Log\LoggerInterface::class);
         $adapter = $this->_manObj->get(Adapter::class);
         $params = new Params([
             'BaseUri' => 'http://lion.host.prxgt.com:8122',
