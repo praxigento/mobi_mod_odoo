@@ -16,7 +16,7 @@ class Category extends BaseEntityRepo implements IEntityRepo
         ResourceConnection $resource,
         IRepoBasic $repoGeneric
     ) {
-        parent::__construct($resource, $repoGeneric, new Entity());
+        parent::__construct($resource, $repoGeneric, Entity::class);
     }
 
 }
