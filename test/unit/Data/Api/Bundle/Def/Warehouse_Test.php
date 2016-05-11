@@ -15,17 +15,17 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Warehouse();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CODE = 'code';
         $CUR = 'currency';
         $ID = 'id';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setCode($CODE);
         $this->obj->setCurrency($CUR);
         $this->obj->setId($ID);

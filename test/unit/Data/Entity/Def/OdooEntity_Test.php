@@ -18,16 +18,16 @@ class OdooEntity_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new OdooEntityChild();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $MAGE_ID = 21;
         $ODOO_ID = 43;
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setMageRef($MAGE_ID);
         $this->obj->setOdooRef($ODOO_ID);
         $this->assertEquals($MAGE_ID, $this->obj->getMageRef());

@@ -14,12 +14,12 @@ class Params_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $URI = 'uri';
         $BASE_NAME = 'base';
         $USER_NAME = 'user';
         $USER_PASSWORD = 'password';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $obj = new Params();
         $this->assertInstanceOf(IConnection::class, $obj);
         $this->assertInstanceOf(IAuthentication::class, $obj);

@@ -22,12 +22,12 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mConn = $this->_mockConn();
         $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Select(
             $this->mResource,
             $this->mRepoWrhsAggWarehouse
@@ -36,17 +36,17 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_constructor()
     {
-        /* === Test Data === */
-        /* === Setup Mocks === */
-        /* === Call and asserts  === */
+        /** === Test Data === */
+        /** === Setup Mocks === */
+        /** === Call and asserts  === */
         $this->assertInstanceOf(Select::class, $this->obj);
     }
 
 
     public function test_getQuery()
     {
-        /* === Test Data === */
-        /* === Setup Mocks === */
+        /** === Test Data === */
+        /** === Setup Mocks === */
         // $result = $this->_repoWrhsWarehouse->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mRepoWrhsAggWarehouse
@@ -57,7 +57,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('getTableName')->once();
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->getSelectQuery();
     }
 

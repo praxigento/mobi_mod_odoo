@@ -15,13 +15,13 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Product();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CATEGORIES = 'categories';
         $ID = 'id';
         $IS_ACTIVE = 'is active';
@@ -31,7 +31,7 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $SKU = 'sku';
         $WAREHOUSE = 'warehouse';
         $WEIGHT = 'weight';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setCategories($CATEGORIES);
         $this->obj->setId($ID);
         $this->obj->setIsActive($IS_ACTIVE);

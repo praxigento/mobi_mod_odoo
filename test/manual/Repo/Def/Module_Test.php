@@ -27,9 +27,9 @@ class Module_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 
     public function test_isOdooProductRegisteredInMage()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $idOdoo = 43;
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->isProductRegisteredInMage($idOdoo);
         $this->assertTrue($res);
     }

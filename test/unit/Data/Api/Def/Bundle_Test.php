@@ -15,19 +15,19 @@ class Bundle_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Bundle();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CATEGORIES = 'categories';
         $LOTS = 'lots';
         $OPTION = 'option';
         $PRODUCTS = 'products';
         $WAREHOUSES = 'warehouses';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setCategories($CATEGORIES);
         $this->obj->setLots($LOTS);
         $this->obj->setOption($OPTION);

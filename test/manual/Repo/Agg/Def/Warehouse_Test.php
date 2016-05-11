@@ -27,16 +27,16 @@ class Warehouse_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 
     public function test_getById()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $id = 1;
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getById($id);
         $this->assertNotNull($res);
     }
 
     public function test_getQueryToSelectCount()
     {
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelectCount();
         $this->assertNotNull($res);
     }

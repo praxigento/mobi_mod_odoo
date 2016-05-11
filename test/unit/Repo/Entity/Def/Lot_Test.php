@@ -15,7 +15,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseRepoEntityCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Lot(
             $this->mResource,
             $this->mRepoGeneric
@@ -24,7 +24,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseRepoEntityCase
 
     public function test_constructor()
     {
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->assertInstanceOf(Lot::class, $this->obj);
     }
 

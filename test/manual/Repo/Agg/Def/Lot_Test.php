@@ -27,17 +27,17 @@ class Lot_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
 
     public function test_getById()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $id = 1;
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getById($id);
         $this->assertNotNull($res);
     }
     public function test_getByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $id = 1;
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getByOdooId($id);
         $this->assertNotNull($res);
     }

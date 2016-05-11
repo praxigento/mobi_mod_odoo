@@ -52,13 +52,13 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_getSessionId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $USER_ID = 'user id';
         $SESS_ID = 'session id';
         $PARAMS_JSON = 'json params';
         $CONTENT = 'content';
         $CONTENT_DATA = 'content data';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $request = $this->_adapter->encodeJson($params);
         $this->mAdapter
             ->shouldReceive('encodeJson')->once()
@@ -90,7 +90,7 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_logger->info($msg);
         $this->mLogger
             ->shouldReceive('info')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getSessionId();
         $this->assertEquals($SESS_ID, $res);
     }
@@ -100,9 +100,9 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
      */
     public function test_getSessionId_failed()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $PARAMS_JSON = 'json params';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $request = $this->_adapter->encodeJson($params);
         $this->mAdapter
             ->shouldReceive('encodeJson')->once()
@@ -118,20 +118,20 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_logger->critical($msg);
         $this->mLogger
             ->shouldReceive('critical')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->getSessionId();
     }
 
     public function test_getUserId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $USER_ID = 'user id';
         $SESS_ID = 'session id';
         $REQUEST = 'xml request';
         $CONTEXT = 'context';
         $CONTENT = 'content';
         $CONTENT_DATA = 'content data';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $request = $this->_adapter->encodeXml('login', $params, $outOpts);
         $this->mAdapter
             ->shouldReceive('encodeXml')->once()
@@ -152,7 +152,7 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_logger->info($msg);
         $this->mLogger
             ->shouldReceive('info')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getUserId();
         $this->assertEquals($USER_ID, $res);
     }
@@ -162,14 +162,14 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
      */
     public function test_getUserId_failed()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $USER_ID = 'user id';
         $SESS_ID = 'session id';
         $REQUEST = 'xml request';
         $CONTEXT = 'context';
         $CONTENT = 'content';
         $CONTENT_DATA = 'content data';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $request = $this->_adapter->encodeXml('login', $params, $outOpts);
         $this->mAdapter
             ->shouldReceive('encodeXml')->once()
@@ -185,7 +185,7 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_logger->critical($msg);
         $this->mLogger
             ->shouldReceive('critical')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getUserId();
         $this->assertEquals($USER_ID, $res);
     }

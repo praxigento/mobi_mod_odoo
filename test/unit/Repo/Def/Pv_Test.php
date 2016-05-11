@@ -18,11 +18,11 @@ class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mRepoPvProduct = $this->_mock(\Praxigento\Pv\Repo\Entity\IProduct::class);
         $this->mRepoPvStockItem = $this->_mock(\Praxigento\Pv\Repo\Entity\Stock\IItem::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Pv(
             $this->mRepoPvProduct,
             $this->mRepoPvStockItem
@@ -31,49 +31,49 @@ class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_registerProductWholesalePv()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 21;
         $PV = 34.23;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         $this->mRepoPvProduct
             ->shouldReceive('create')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->registerProductWholesalePv($ID, $PV);
     }
 
     public function test_registerWarehousePv()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 21;
         $PV = 34.23;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         $this->mRepoPvStockItem
             ->shouldReceive('create')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->registerWarehousePv($ID, $PV);
     }
 
     public function test_updateProductWholesalePv()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 21;
         $PV = 34.23;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         $this->mRepoPvProduct
             ->shouldReceive('update')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->updateProductWholesalePv($ID, $PV);
     }
 
     public function test_updateWarehousePv()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 21;
         $PV = 34.23;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         $this->mRepoPvStockItem
             ->shouldReceive('update')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->updateWarehousePv($ID, $PV);
     }
 

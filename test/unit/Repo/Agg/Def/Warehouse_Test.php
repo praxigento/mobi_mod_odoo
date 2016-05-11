@@ -33,7 +33,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mConn = $this->_mockConn();
@@ -41,8 +41,8 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
         $this->mRepoEntityWarehouse = $this->_mock(RepoEntityWarehouse::class);
         $this->mSubSelect = $this->_mock(Warehouse\Select::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Warehouse(
             $this->mManObj,
             $this->mManTrans,
@@ -55,17 +55,17 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_constructor()
     {
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->assertInstanceOf(Warehouse::class, $this->obj);
     }
 
     public function test_create()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $MAGE_ID = 32;
         $ODOO_ID = 54;
         $DATA = new AggWarehouse([AggWarehouse::AS_ODOO_ID => $ODOO_ID]);
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
         $mTrans = $this->_mockTransactionDefinition();
         $this->mManTrans
@@ -90,17 +90,17 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mManTrans
             ->shouldReceive('transactionClose')->once()
             ->with($mTrans);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->create($DATA);
 
     }
 
     public function test_getById()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 32;
         $DATA = [AggWarehouse::AS_ID => $ID];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
@@ -115,17 +115,17 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggWarehouse());
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getById($ID);
         $this->assertEquals($ID, $res->getId());
     }
 
     public function test_getByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 32;
         $DATA = [AggWarehouse::AS_ODOO_ID => $ODOO_ID];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
@@ -140,21 +140,21 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggWarehouse());
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getByOdooId($ODOO_ID);
         $this->assertEquals($ODOO_ID, $res->getOdooId());
     }
 
     public function test_getQueryToSelect()
     {
-        /* === Test Data === */
-        /* === Setup Mocks === */
+        /** === Test Data === */
+        /** === Setup Mocks === */
         // $result = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mSubSelect
             ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelect();
         $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
     }

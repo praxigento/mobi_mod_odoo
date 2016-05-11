@@ -18,11 +18,11 @@ class ProductReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mCallOdooReplicate = $this->_mock(\Praxigento\Odoo\Service\IReplicate::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new ProductReplicator(
             $this->mManObj,
             $this->mCallOdooReplicate
@@ -31,9 +31,9 @@ class ProductReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_save()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $DATA = new \Praxigento\Odoo\Data\Api\Def\Bundle();
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $req = $this->manObj->create(\Praxigento\Odoo\Service\Replicate\Request\ProductSave::class);
         $this->mManObj
             ->shouldReceive('create')->once()
@@ -41,7 +41,7 @@ class ProductReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $resp = $this->_callOdooReplicate->productSave($req);
         $this->mCallOdooReplicate
             ->shouldReceive('productSave')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->save($DATA);
     }
 

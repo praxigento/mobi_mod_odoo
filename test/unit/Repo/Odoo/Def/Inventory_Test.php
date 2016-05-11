@@ -21,11 +21,11 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mMageSrvInProc = $this->_mock(\Magento\Framework\Webapi\ServiceInputProcessor::class);
         $this->mRest = $this->_mock(\Praxigento\Odoo\Repo\Odoo\Connector\Rest::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Inventory(
             $this->mMageSrvInProc,
             $this->mRest
@@ -34,10 +34,10 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_get_emptyParams()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $DATA = 'data';
         $RESULT = 'result';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $cover = $this->_rest->request($params, self::ROUTE);
         $mCover = $this->_mock(ICover::class);
         $this->mRest
@@ -51,18 +51,18 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('convertValue')->once()
             ->with($DATA, IBundle::class)
             ->andReturn($RESULT);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->get();
         $this->assertEquals($RESULT, $res);
     }
 
     public function test_get_paramIsArray()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $PARAM = [2, 3];
         $DATA = 'data';
         $RESULT = 'result';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $cover = $this->_rest->request($params, self::ROUTE);
         $mCover = $this->_mock(ICover::class);
         $this->mRest
@@ -76,18 +76,18 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('convertValue')->once()
             ->with($DATA, IBundle::class)
             ->andReturn($RESULT);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->get($PARAM);
         $this->assertEquals($RESULT, $res);
     }
 
     public function test_get_paramIsInt()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $PARAM = 43;
         $DATA = 'data';
         $RESULT = 'result';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $cover = $this->_rest->request($params, self::ROUTE);
         $mCover = $this->_mock(ICover::class);
         $this->mRest
@@ -101,7 +101,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('convertValue')->once()
             ->with($DATA, IBundle::class)
             ->andReturn($RESULT);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->get($PARAM);
         $this->assertEquals($RESULT, $res);
     }

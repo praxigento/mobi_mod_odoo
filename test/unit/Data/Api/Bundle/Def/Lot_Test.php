@@ -15,17 +15,17 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Lot();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CODE = 'code';
         $EXP_DATE = 'exp date';
         $ID = 'id';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setCode($CODE);
         $this->obj->setExpirationDate($EXP_DATE);
         $this->obj->setId($ID);

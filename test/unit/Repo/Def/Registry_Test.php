@@ -20,11 +20,11 @@ class Registry_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mRepoGeneric = $this->_mockRepoGeneric();
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Registry(
             $this->mManObj,
             $this->mRepoGeneric
@@ -33,106 +33,106 @@ class Registry_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_getCategoryMageIdByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityCategory::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
         $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getCategoryMageIdByOdooId($ODOO_ID);
         $this->assertEquals($MAGE_ID, $res);
     }
 
     public function test_getLotMageIdByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityLot::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
         $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getLotMageIdByOdooId($ODOO_ID);
         $this->assertEquals($MAGE_ID, $res);
     }
 
     public function test_getProductMageIdByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityProduct::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
         $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getProductMageIdByOdooId($ODOO_ID);
         $this->assertEquals($MAGE_ID, $res);
     }
 
     public function test_getWarehouseMageIdByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $result = $this->_getMageIdByOdooId(EntityWarehouse::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
         $this->mRepoGeneric
             ->shouldReceive('getEntities')->once()
             ->andReturn([[IOdooEntity::ATTR_MAGE_REF => $MAGE_ID]]);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getWarehouseMageIdByOdooId($ODOO_ID);
         $this->assertEquals($MAGE_ID, $res);
     }
 
     public function test_registerCategory()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $this->_registerMageIdForOdooId(EntityCategory::ENTITY_NAME, $mageId, $odooId);
         // $this->_repoBasic->addEntity($entityName, $bind);
         $this->mRepoGeneric
             ->shouldReceive('addEntity')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->registerCategory($MAGE_ID, $ODOO_ID);
     }
 
     public function test_registerProduct()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
         $MAGE_ID = 43;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $this->_registerMageIdForOdooId(EntityProduct::ENTITY_NAME, $mageId, $odooId);
         // $this->_repoBasic->addEntity($entityName, $bind);
         $this->mRepoGeneric
             ->shouldReceive('addEntity')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->registerProduct($MAGE_ID, $ODOO_ID);
     }
     public function test_isProductRegisteredInMage()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 21;
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $mageId = $this->getProductMageIdByOdooId($odooId);
         // $result = $this->_getMageIdByOdooId(EntityProduct::ENTITY_NAME, $odooId);
         // $items = $this->_repoBasic->getEntities($entityName, null, $where);
         $this->mRepoGeneric
             ->shouldReceive('getEntities')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->isProductRegisteredInMage($ODOO_ID);
     }
 

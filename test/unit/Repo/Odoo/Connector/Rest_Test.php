@@ -43,7 +43,7 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_request()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $PARAMS = 'params';
         $PARAMS_JSON = 'JSON encoded params';
         $ROUTE = 'route';
@@ -52,7 +52,7 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $CONTENT = 'content';
         $CONTENT_DATA = 'data';
         $RESULT = 'result';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $sessId = $this->_login->getSessionId();
         $this->mLogin
             ->shouldReceive('getSessionId')->once()
@@ -85,7 +85,7 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($RESULT);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->request($PARAMS, $ROUTE);
         $this->assertEquals($RESULT, $res);
     }
@@ -95,14 +95,14 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
      */
     public function test_request_false()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $PARAMS = 'params';
         $PARAMS_JSON = 'JSON encoded params';
         $ROUTE = 'route';
         $SESS_ID = 'session id';
         $CONTEXT_OPTS_JSON = 'JSON encoded context options';
         $RESULT = 'result';
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $sessId = $this->_login->getSessionId();
         $this->mLogin
             ->shouldReceive('getSessionId')->once()
@@ -130,7 +130,7 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_logger->critical($msg);
         $this->mLogger
             ->shouldReceive('critical')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->request($PARAMS, $ROUTE);
         $this->assertEquals($RESULT, $res);
     }

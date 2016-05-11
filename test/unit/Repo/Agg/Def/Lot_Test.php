@@ -32,7 +32,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mConn = $this->_mockConn();
@@ -40,8 +40,8 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
         $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
         $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
-        /* setup mocks for constructor */
-        /* create object to test */
+        /** setup mocks for constructor */
+        /** create object to test */
         $this->obj = new Lot(
             $this->mManObj,
             $this->mManTrans,
@@ -54,17 +54,17 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_constructor()
     {
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->assertInstanceOf(Lot::class, $this->obj);
     }
 
     public function test_create()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $MAGE_ID = 32;
         $ODOO_ID = 54;
         $DATA = new AggLot([AggLot::AS_ODOO_ID => $ODOO_ID]);
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
         $mTrans = $this->_mockTransactionDefinition();
         $this->mManTrans
@@ -88,17 +88,17 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mManTrans
             ->shouldReceive('transactionClose')->once()
             ->with($mTrans);
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->create($DATA);
         $this->assertEquals($MAGE_ID, $res->getId());
     }
 
     public function test_getById()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ID = 32;
         $DATA = [AggLot::AS_ID => $ID];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $query = $this->_factorySelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
@@ -113,17 +113,17 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggLot());
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getById($ID);
         $this->assertEquals($ID, $res->getId());
     }
 
     public function test_getByOdooId()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $ODOO_ID = 32;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $query = $this->_factorySelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
@@ -138,7 +138,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggLot());
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $res = $this->obj->getByOdooId($ODOO_ID);
         $this->assertEquals($ODOO_ID, $res->getOdooId());
     }

@@ -39,13 +39,13 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create mocks */
+        /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mCallOdooReplicate = $this->_mock(\Praxigento\Odoo\Service\IReplicate::class);
         /* parameters */
         $this->mInput = $this->_mock(InputInterface::class);
         $this->mOutput = $this->_mock(OutputInterface::class);
-        /* create object to test */
+        /** create object to test */
         $this->obj = new ProductsChild(
             $this->mManObj,
             $this->mCallOdooReplicate
@@ -54,10 +54,10 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_execute_withIds_done()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $IDS = '1,2,3';
         $CONFIG = ['config'];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $argIds = $input->getArgument(static::ARG_IDS);
         $this->mInput
             ->shouldReceive('getArgument')->once()
@@ -99,15 +99,15 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $output->writeln('<info>Replication is done.<info>');
         $this->mOutput
             ->shouldReceive('writeln')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->launchExecute($this->mInput, $this->mOutput);
     }
 
     public function test_execute_woIds_failed()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CONFIG = ['config'];
-        /* === Setup Mocks === */
+        /** === Setup Mocks === */
         // $argIds = $input->getArgument(static::ARG_IDS);
         $this->mInput
             ->shouldReceive('getArgument')->once()
@@ -147,7 +147,7 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $output->writeln('<info>Replication is failed.<info>');
         $this->mOutput
             ->shouldReceive('writeln')->once();
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->launchExecute($this->mInput, $this->mOutput);
     }
 

@@ -15,15 +15,15 @@ class Option_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     protected function setUp()
     {
         parent::setUp();
-        /* create object to test */
+        /** create object to test */
         $this->obj = new Option();
     }
 
     public function test_accessors()
     {
-        /* === Test Data === */
+        /** === Test Data === */
         $CUR = 'currency';
-        /* === Call and asserts  === */
+        /** === Call and asserts  === */
         $this->obj->setCurrency($CUR);
         $this->assertEquals($CUR, $this->obj->getCurrency());
     }
