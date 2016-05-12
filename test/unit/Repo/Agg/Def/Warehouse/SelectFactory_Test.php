@@ -8,7 +8,7 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
-class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
     private $mConn;
@@ -16,7 +16,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mRepoWrhsAggWarehouse;
     /** @var  \Mockery\MockInterface */
     private $mResource;
-    /** @var  Select */
+    /** @var  SelectFactory */
     private $obj;
 
     protected function setUp()
@@ -28,7 +28,7 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
         /** setup mocks for constructor */
         /** create object to test */
-        $this->obj = new Select(
+        $this->obj = new SelectFactory(
             $this->mResource,
             $this->mRepoWrhsAggWarehouse
         );
@@ -39,15 +39,32 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Test Data === */
         /** === Setup Mocks === */
         /** === Call and asserts  === */
-        $this->assertInstanceOf(Select::class, $this->obj);
+        $this->assertInstanceOf(SelectFactory::class, $this->obj);
     }
 
-
-    public function test_getQuery()
+    public function test_getSelectCountQuery()
     {
         /** === Test Data === */
         /** === Setup Mocks === */
-        // $result = $this->_repoWrhsWarehouse->getQueryToSelect();
+        // $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
+        $mQuery = $this->_mockDbSelect();
+        $this->mRepoWrhsAggWarehouse
+            ->shouldReceive('getQueryToSelectCount')->once()
+            ->andReturn($mQuery);
+        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $this->mConn
+            ->shouldReceive('getTableName')->once();
+        // $result->joinLeft($tblOdoo, $on, $cols);
+        $mQuery->shouldReceive('joinLeft')->once();
+        /** === Call and asserts  === */
+        $this->obj->getSelectCountQuery();
+    }
+
+    public function test_getSelectQuery()
+    {
+        /** === Test Data === */
+        /** === Setup Mocks === */
+        // $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
         $mQuery = $this->_mockDbSelect();
         $this->mRepoWrhsAggWarehouse
             ->shouldReceive('getQueryToSelect')->once()

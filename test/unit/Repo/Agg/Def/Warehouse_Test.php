@@ -16,6 +16,8 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     /** @var  \Mockery\MockInterface */
     private $mConn;
     /** @var  \Mockery\MockInterface */
+    private $mFactorySelect;
+    /** @var  \Mockery\MockInterface */
     private $mManObj;
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
@@ -25,8 +27,6 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mRepoWrhsAggWarehouse;
     /** @var  \Mockery\MockInterface */
     private $mResource;
-    /** @var  \Mockery\MockInterface */
-    private $mSubSelect;
     /** @var  Warehouse */
     private $obj;
 
@@ -40,7 +40,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
         $this->mRepoEntityWarehouse = $this->_mock(RepoEntityWarehouse::class);
-        $this->mSubSelect = $this->_mock(Warehouse\Select::class);
+        $this->mFactorySelect = $this->_mock(Warehouse\SelectFactory::class);
         /** setup mocks for constructor */
         /** create object to test */
         $this->obj = new Warehouse(
@@ -49,7 +49,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             $this->mResource,
             $this->mRepoWrhsAggWarehouse,
             $this->mRepoEntityWarehouse,
-            $this->mSubSelect
+            $this->mFactorySelect
         );
     }
 
@@ -103,7 +103,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Setup Mocks === */
         // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
+        $this->mFactorySelect
             ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
@@ -128,7 +128,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Setup Mocks === */
         // $query = $this->_subSelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
+        $this->mFactorySelect
             ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         // $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
@@ -147,15 +147,27 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_getQueryToSelect()
     {
-        /** === Test Data === */
         /** === Setup Mocks === */
-        // $result = $this->_subSelect->getSelectQuery();
+        // $result = $this->_factorySelect->getSelectQuery();
         $mQuery = $this->_mockDbSelect();
-        $this->mSubSelect
+        $this->mFactorySelect
             ->shouldReceive('getSelectQuery')->once()
             ->andReturn($mQuery);
         /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelect();
+        $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
+    }
+
+    public function test_getQueryToSelectCount()
+    {
+        /** === Setup Mocks === */
+        // $result = $this->_factorySelect->getSelectCountQuery();
+        $mQuery = $this->_mockDbSelect();
+        $this->mFactorySelect
+            ->shouldReceive('getSelectCountQuery')->once()
+            ->andReturn($mQuery);
+        /** === Call and asserts  === */
+        $res = $this->obj->getQueryToSelectCount();
         $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
     }
 

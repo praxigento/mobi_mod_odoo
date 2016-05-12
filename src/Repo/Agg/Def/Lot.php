@@ -117,6 +117,9 @@ class Lot extends BaseAggRepo implements ILot
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getQueryToSelect()
     {
         $result = $this->_factorySelect->getSelectQuery();
@@ -124,6 +127,9 @@ class Lot extends BaseAggRepo implements ILot
 
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getQueryToSelectCount()
     {
         $result = $this->_factorySelect->getSelectCountQuery();

@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
-class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
     private $mConn;
@@ -33,8 +33,26 @@ class Select_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->assertInstanceOf(SelectFactory::class, $this->obj);
     }
 
+    public function test_getSelectCountQuery()
+    {
+        // $result = $this->_conn->select();
+        $mQuery = $this->_mockDbSelect();
+        $this->mConn
+            ->shouldReceive('select')->once()
+            ->andReturn($mQuery);
+        // $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
+        $this->mConn
+            ->shouldReceive('getTableName')->twice();
+        // $result->from($tblWrhs, $cols);
+        $mQuery->shouldReceive('from')->once();
+        // $result->joinLeft($tblOdoo, $on, $cols);
+        $mQuery->shouldReceive('joinLeft')->once();
+        /** === Call and asserts  === */
+        $this->obj->getSelectCountQuery();
+    }
 
-    public function test_getQuery()
+    public function test_getSelectQuery()
     {
         // $result = $this->_conn->select();
         $mQuery = $this->_mockDbSelect();

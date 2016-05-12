@@ -21,7 +21,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
 
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
-    /** @var  Warehouse\Select */
+    /** @var  Warehouse\SelectFactory */
     protected $_factorySelect;
     /** @var  ObjectManagerInterface */
     protected $_manObj;
@@ -40,7 +40,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
         ResourceConnection $resource,
         WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
         RepoEntityWarehouse $repoEntityWarehouse,
-        Warehouse\Select $factorySelect
+        Warehouse\SelectFactory $factorySelect
     ) {
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;

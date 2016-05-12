@@ -143,4 +143,30 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->assertEquals($ODOO_ID, $res->getOdooId());
     }
 
+    public function test_getQueryToSelect()
+    {
+        /** === Setup Mocks === */
+        // $result = $this->_factorySelect->getSelectQuery();
+        $mQuery = $this->_mockDbSelect();
+        $this->mFactorySelect
+            ->shouldReceive('getSelectQuery')->once()
+            ->andReturn($mQuery);
+        /** === Call and asserts  === */
+        $res = $this->obj->getQueryToSelect();
+        $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
+    }
+
+    public function test_getQueryToSelectCount()
+    {
+        /** === Setup Mocks === */
+        // $result = $this->_factorySelect->getSelectCountQuery();
+        $mQuery = $this->_mockDbSelect();
+        $this->mFactorySelect
+            ->shouldReceive('getSelectCountQuery')->once()
+            ->andReturn($mQuery);
+        /** === Call and asserts  === */
+        $res = $this->obj->getQueryToSelectCount();
+        $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
+    }
+
 }
