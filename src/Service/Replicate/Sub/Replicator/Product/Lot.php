@@ -5,24 +5,20 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product;
 
-use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
-use Praxigento\Odoo\Repo\IRegistry;
-use Praxigento\Warehouse\Repo\Entity\IQuantity as IRepoWarehouseEntityQuantity;
-
 class Lot
 {
 
     /** @var IRegistry */
-    protected $_repoMod;
+    protected $_repoRegistry;
     /** @var  IRepoWarehouseEntityQuantity */
     protected $_repoWarehouseEntityQuantity;
 
     public function __construct(
-        IRegistry $repoMod,
-        IRepoWarehouseEntityQuantity $repoWarehouseEntityQuantity
+        \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
+        \Praxigento\Warehouse\Repo\Entity\IQuantity $repoWarehouseEntityQuantity
     ) {
-        $this->_repoMod = $repoMod; //
-        $this->_repoWarehouseEntityQuantity = $repoWarehouseEntityQuantity;//
+        $this->_repoRegistry = $repoRegistry;
+        $this->_repoWarehouseEntityQuantity = $repoWarehouseEntityQuantity;
     }
 
     /**
@@ -46,7 +42,7 @@ class Lot
         $mapOdooExist = [];
         foreach ($lots as $lot) {
             $lotIdOdoo = $lot->getId();
-            $lotIdMage = $this->_repoMod->getLotMageIdByOdooId($lotIdOdoo);
+            $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
             $mapOdooExist[] = $lotIdMage;
         }
         $diff = array_diff($mapMageExist, $mapOdooExist);
@@ -65,19 +61,19 @@ class Lot
      */
     public function processLot($stockItemId, $lot)
     {
-        $refQty = $this->_repoWarehouseEntityQuantity->getRef();
+        $ref = $this->_repoWarehouseEntityQuantity->getRef();
         $lotIdOdoo = $lot->getId();
         $qty = $lot->getQuantity();
-        $lotIdMage = $this->_repoMod->getLotMageIdByOdooId($lotIdOdoo);
-        $pk = [$refQty::ATTR_STOCK_ITEM_REF => $stockItemId, $refQty::ATTR_LOT_REF => $lotIdMage];
+        $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
+        $pk = [$ref::ATTR_STOCK_ITEM_REF => $stockItemId, $ref::ATTR_LOT_REF => $lotIdMage];
         $qtyItem = $this->_repoWarehouseEntityQuantity->getById($pk);
         if ($qtyItem) {
             /* update lot qty data */
-            $bind = [$refQty::ATTR_TOTAL => $qty];
+            $bind = [$ref::ATTR_TOTAL => $qty];
             $this->_repoWarehouseEntityQuantity->updateById($bind, $pk);
         } else {
             /* create lot qty data */
-            $pk[$refQty::ATTR_TOTAL] = $qty;
+            $pk[$ref::ATTR_TOTAL] = $qty;
             $this->_repoWarehouseEntityQuantity->create($pk);
         }
         return $qty;

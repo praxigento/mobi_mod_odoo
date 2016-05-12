@@ -9,9 +9,8 @@ use Magento\CatalogInventory\Api\Data\StockItemInterface;
 use Magento\CatalogInventory\Api\StockItemCriteriaInterface;
 use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
-use Praxigento\Odoo\Repo\IRegistry;
 use Praxigento\Odoo\Repo\IPv as IRepoPvModule;
+use Praxigento\Odoo\Repo\IRegistry;
 use Praxigento\Pv\Repo\Entity\Stock\IItem as IRepoPvStockItem;
 use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockItem;
 
@@ -22,7 +21,7 @@ class Warehouse
     /** @var   ObjectManagerInterface */
     protected $_manObj;
     /** @var IRegistry */
-    protected $_repoMod;
+    protected $_repoRegistry;
     /** @var  IRepoPvModule */
     protected $_repoPvMod;
     /** @var IRepoPvStockItem */
@@ -35,7 +34,7 @@ class Warehouse
     public function __construct(
         ObjectManagerInterface $manObj,
         StockItemRepositoryInterface $mageRepoStockItem,
-        IRegistry $repoMod,
+        IRegistry $repoRegistry,
         IRepoPvModule $repoPvMod,
         IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
         IRepoPvStockItem $repoPvStockItem,
@@ -43,7 +42,7 @@ class Warehouse
     ) {
         $this->_manObj = $manObj;
         $this->_mageRepoStockItem = $mageRepoStockItem;
-        $this->_repoMod = $repoMod;
+        $this->_repoRegistry = $repoRegistry;
         $this->_repoPvMod = $repoPvMod;
         $this->_repoWarehouseEntityStockItem = $repoWarehouseEntityStockItem;
         $this->_repoPvStockItem = $repoPvStockItem;
@@ -147,7 +146,7 @@ class Warehouse
             $pvWarehouse = $warehouse->getPv();
             $priceWarehouse = $warehouse->getPrice();
             /* get warehouse data by Odoo ID */
-            $stockIdMage = $this->_repoMod->getWarehouseMageIdByOdooId($stockIdOdoo);
+            $stockIdMage = $this->_repoRegistry->getWarehouseMageIdByOdooId($stockIdOdoo);
             /* create or update product data for warehouse (stock)*/
             if (isset($mapItemsByStock[$stockIdMage])) {
                 /* there is item for the stock, update item data */
