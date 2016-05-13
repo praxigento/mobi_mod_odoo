@@ -5,14 +5,10 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product;
 
-use Magento\CatalogInventory\Api\Data\StockItemInterface;
 use Magento\CatalogInventory\Api\StockItemCriteriaInterface;
 use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Repo\IPv as IRepoPvModule;
 use Praxigento\Odoo\Repo\IRegistry;
-use Praxigento\Pv\Repo\Entity\Stock\IItem as IRepoPvStockItem;
-use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockItem;
 
 class Warehouse
 {
@@ -22,12 +18,8 @@ class Warehouse
     protected $_manObj;
     /** @var IRegistry */
     protected $_repoRegistry;
-    /** @var  IRepoPvModule */
-    protected $_repoPvMod;
-    /** @var IRepoPvStockItem */
-    protected $_repoPvStockItem;
-    /** @var  IRepoWarehouseEntityStockItem */
-    protected $_repoWarehouseEntityStockItem;
+    /** @var  Warehouse\DataHandler */
+    protected $_subDataHandler;
     /** @var  Lot */
     protected $_subLot;
 
@@ -35,54 +27,14 @@ class Warehouse
         ObjectManagerInterface $manObj,
         StockItemRepositoryInterface $mageRepoStockItem,
         IRegistry $repoRegistry,
-        IRepoPvModule $repoPvMod,
-        IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
-        IRepoPvStockItem $repoPvStockItem,
-        Lot $subLot
+        Lot $subLot,
+        Warehouse\DataHandler $subDataHandler
     ) {
         $this->_manObj = $manObj;
         $this->_mageRepoStockItem = $mageRepoStockItem;
         $this->_repoRegistry = $repoRegistry;
-        $this->_repoPvMod = $repoPvMod;
-        $this->_repoWarehouseEntityStockItem = $repoWarehouseEntityStockItem;
-        $this->_repoPvStockItem = $repoPvStockItem;
         $this->_subLot = $subLot;
-    }
-
-    /**
-     * Create new stock item and register warehouse related price & PV.
-     *
-     * @param int $prodId Magento ID for related product
-     * @param int $stockId Magento ID for related stock/warehouse
-     * @param double $price warehouse price for the product
-     * @param double $pv warehouse PV for the product
-     * @return StockItemInterface new stock item
-     */
-    private function _createWarehouseData($prodId, $stockId, $price, $pv)
-    {
-        $refPv = $this->_repoPvStockItem->getRef();
-        $refWrhs = $this->_repoWarehouseEntityStockItem->getRef();
-        /** @var StockItemInterface $result */
-        $result = $this->_manObj->create(StockItemInterface::class);
-        $result->setProductId($prodId);
-        $result->setStockId($stockId);
-        $result->setIsInStock(true);
-        $result->setManageStock(true);
-        $result = $this->_mageRepoStockItem->save($result);
-        $stockItemId = $result->getItemId();
-        /* register warehouse price */
-        $bind = [
-            $refWrhs::ATTR_STOCK_ITEM_REF => $stockItemId,
-            $refWrhs::ATTR_PRICE => $price
-        ];
-        $this->_repoWarehouseEntityStockItem->create($bind);
-        /* register warehouse PV */
-        $bind = [
-            $refPv::ATTR_STOCK_ITEM_REF => $stockItemId,
-            $refPv::ATTR_PV => $pv
-        ];
-        $this->_repoPvStockItem->create($bind);
-        return $result;
+        $this->_subDataHandler = $subDataHandler;
     }
 
     /**
@@ -96,7 +48,9 @@ class Warehouse
         $crit = $this->_manObj->create(StockItemCriteriaInterface::class);
         $crit->setProductsFilter($prodId);
         /* get all stock items and create map by stock id (warehouse ID)*/
-        $result = $this->_mageRepoStockItem->getList($crit)->getItems();
+        /** @var \Magento\CatalogInventory\Api\Data\StockItemCollectionInterface $list */
+        $list = $this->_mageRepoStockItem->getList($crit);
+        $result = $list->getItems();
         return $result;
     }
 
@@ -115,20 +69,6 @@ class Warehouse
             $result[$stockId] = $stockItemId;
         }
         return $result;
-    }
-
-    /**
-     * @param int $stockItemId Mage ID for related stock item
-     * @param $price warehouse price for stock item
-     * @param $pv warehouse PV for stock item
-     */
-    private function _updateWarehouseData($stockItemId, $price, $pv)
-    {
-        $ref = $this->_repoWarehouseEntityStockItem->getRef();
-        $bind = [$ref::ATTR_PRICE => $price];
-        $this->_repoWarehouseEntityStockItem->updateById($bind, $stockItemId);
-        /* update warehouse PV */
-        $this->_repoPvMod->updateWarehousePv($stockItemId, $pv);
     }
 
     /**
@@ -155,23 +95,15 @@ class Warehouse
                 $stockItemIdMage = $mapItemsByStock[$stockIdMage];
                 $stockItem = $stockItems[$stockItemIdMage];
                 /* update warehouse price & PV */
-                $this->_updateWarehouseData($stockItemIdMage, $priceWarehouse, $pvWarehouse);
+                $this->_subDataHandler->updateWarehouseData($stockItemIdMage, $priceWarehouse, $pvWarehouse);
             } else {
                 /* there is no item for the stock, create new item */
-                $stockItem = $this->_createWarehouseData($productIdMage, $stockIdMage, $priceWarehouse, $pvWarehouse);
-                $stockItemIdMage = $stockItem->getItemId();
+                $stockItem = $this->_subDataHandler
+                    ->createWarehouseData($productIdMage, $stockIdMage, $priceWarehouse, $pvWarehouse);
             }
             /* create or update lot/quantity data */
             $lots = $warehouse->getLots();
-            $qtyTotal = 0;
-            foreach ($lots as $lot) {
-                $qtyTotal += $this->_subLot->processLot($stockItemIdMage, $lot);
-            }
-            /* update stock item qty */
-            $stockItem->setQty($qtyTotal);
-            $this->_mageRepoStockItem->save($stockItem);
-            /* cleanup extra lots */
-            $this->_subLot->cleanupLots($stockItemIdMage, $lots);
+            $this->_subDataHandler->processLots($lots, $stockItem);
         }
     }
 }

@@ -23,7 +23,7 @@ class Replicator
     /** @var  IRepoAggLot */
     protected $_repoAggLot;
     /** @var  IRepoAggWarehouse */
-    protected $_repoModWrhs;
+    protected $_repoAggWrhs;
     /** @var  IRepoPv */
     protected $_repoPv;
     /** @var IRegistry */
@@ -36,20 +36,20 @@ class Replicator
     protected $_subProduct;
 
     public function __construct(
-        ObjectManagerInterface $manObj,
-        IRegistry $repoMod,
-        IRepoAggLot $repoModLot,
-        IRepoPv $repoModPv,
-        IRepoAggWarehouse $repoModWrhs,
+        \Magento\Framework\ObjectManagerInterface $manObj,
+        \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
+        \Praxigento\Odoo\Repo\Agg\ILot $repoAggLot,
+        \Praxigento\Odoo\Repo\IPv $repoPv,
+        \Praxigento\Odoo\Repo\Agg\IWarehouse $repoAggWrhs,
         Replicator\Product $subProduct,
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse
     ) {
         $this->_manObj = $manObj;
-        $this->_repoRegistry = $repoMod;
-        $this->_repoAggLot = $repoModLot;
-        $this->_repoPv = $repoModPv;
-        $this->_repoModWrhs = $repoModWrhs;
+        $this->_repoRegistry = $repoRegistry;
+        $this->_repoAggLot = $repoAggLot;
+        $this->_repoPv = $repoPv;
+        $this->_repoAggWrhs = $repoAggWrhs;
         $this->_subProduct = $subProduct;
         $this->_subProdCategory = $subProdCategory;
         $this->_subProdWarehouse = $subProdWarehouse;
@@ -84,9 +84,9 @@ class Replicator
         $sku = $product->getSku();
         $name = $product->getName();
         $isActive = $product->getIsActive();
-        $skipProduct = false;
+        $skipReplication = false; // skip replication for inactive products are missed in Mage
         $priceWholesale = $product->getPrice();
-        $weight = $product->getPrice();
+        $weight = $product->getWeight();
         $pvWholesale = $product->getPv();
         /* check does product item is already registered in Magento */
         if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
@@ -97,7 +97,7 @@ class Replicator
                 $this->_repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
-                $skipProduct = true;
+                $skipReplication = true;
             }
         } else {
             /* update attributes for magento product */
@@ -105,7 +105,7 @@ class Replicator
             $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
             $this->_repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
-        if (!$skipProduct) {
+        if (!$skipReplication) {
             /* check that categories are registered in Magento */
             $categories = $product->getCategories();
             $this->_subProdCategory->checkCategoriesExistence($categories);
@@ -125,7 +125,7 @@ class Replicator
     {
         foreach ($warehouses as $item) {
             $odooId = $item->getId();
-            $found = $this->_repoModWrhs->getByOdooId($odooId);
+            $found = $this->_repoAggWrhs->getByOdooId($odooId);
             if (!$found) {
                 /** @var  $aggData AggWarehouse */
                 $aggData = $this->_manObj->create(AggWarehouse::class);
@@ -134,7 +134,7 @@ class Replicator
                 $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_BASE);
                 $aggData->setCode($item->getCode());
                 $aggData->setNote('replicated from Odoo');
-                $created = $this->_repoModWrhs->create($aggData);
+                $created = $this->_repoAggWrhs->create($aggData);
                 if (!$created->getId()) {
                     throw new \Exception('Cannot replicate warehouse.');
                 }

@@ -24,8 +24,8 @@ class Call implements IReplicate
      * Call constructor.
      */
     public function __construct(
-        ITransactionManager $manTrans,
-        RepoOdooIInventory $repoOdooInventory,
+        \Praxigento\Core\Repo\ITransactionManager $manTrans,
+        \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         Sub\Replicator $subReplicator
     ) {
         $this->_manTrans = $manTrans;

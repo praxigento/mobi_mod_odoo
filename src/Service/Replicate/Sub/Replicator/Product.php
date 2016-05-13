@@ -28,10 +28,10 @@ class Product
 
 
     public function __construct(
-        ObjectManagerInterface $manObj,
-        EntityTypeFactory $mageFactEntityType,
-        AttributeSetFactory $mageFfactAttrSet,
-        IProductRepo $mageRepoProd
+        \Magento\Framework\ObjectManagerInterface $manObj,
+        \Magento\Eav\Model\Entity\TypeFactory $mageFactEntityType,
+        \Magento\Eav\Model\Entity\Attribute\SetFactory $mageFfactAttrSet,
+        \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd
 
     ) {
         $this->_manObj = $manObj;
@@ -65,14 +65,13 @@ class Product
         /**
          * Retrieve entity type ID & attribute set ID.
          */
-        /** @var  $entityType \Magento\Eav\Model\Entity\Type */
-        $entityType = $this->_mageFactEntityType
-            ->create()
-            ->loadByCode(ProductModel::ENTITY);
+        /** @var \Magento\Eav\Model\Entity\Type $entityType */
+        $entityType = $this->_mageFactEntityType->create();
+        $entityType->loadByCode(ProductModel::ENTITY);
         $entityTypeId = $entityType->getId();
-        $attrSet = $this->_mageFactAttrSet
-            ->create()
-            ->load($entityTypeId, AttributeSet::KEY_ENTITY_TYPE_ID);
+        /** @var \Magento\Eav\Model\Entity\Attribute\Set $attrSet */
+        $attrSet = $this->_mageFactAttrSet->create();
+        $attrSet->load($entityTypeId, AttributeSet::KEY_ENTITY_TYPE_ID);
         $attrSetId = $attrSet->getId();
         /**
          * Create simple product.
@@ -104,6 +103,7 @@ class Product
      */
     public function update($mageId, $name, $isActive, $priceWholesale, $weight)
     {
+        /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->_mageRepoProd->getById($mageId);
         // SKU should not be changed
         $product->setName($name);
