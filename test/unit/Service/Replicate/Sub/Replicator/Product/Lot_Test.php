@@ -45,11 +45,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             [Quantity::ATTR_LOT_REF => $LOT_ID_M2]
         ];
         /** === Setup Mocks === */
-        // $ref = $this->_repoWarehouseEntityQuantity->getRef();
-        $mRef = new \Praxigento\Warehouse\Data\Entity\Quantity();
-        $this->mRepoWrhsEntityQty
-            ->shouldReceive('getRef')->once()
-            ->andReturn($mRef);
         // $lotsExist = $this->_repoWarehouseEntityQuantity->get($where);
         $this->mRepoWrhsEntityQty
             ->shouldReceive('get')->once()
@@ -86,11 +81,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $LOT = new \Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\Def\Lot();
         $QTY_ITEM = null;
         /** === Setup Mocks === */
-        // $ref = $this->_repoWarehouseEntityQuantity->getRef();
-        $mRef = new \Praxigento\Warehouse\Data\Entity\Quantity();
-        $this->mRepoWrhsEntityQty
-            ->shouldReceive('getRef')->once()
-            ->andReturn($mRef);
         // $lotIdOdoo = $lot->getId();
         $LOT->setId($LOT_ID_O1);
         // $qty = $lot->getQuantity();
@@ -121,11 +111,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $LOT = new \Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\Def\Lot();
         $QTY_ITEM = 'some item';
         /** === Setup Mocks === */
-        // $ref = $this->_repoWarehouseEntityQuantity->getRef();
-        $mRef = new \Praxigento\Warehouse\Data\Entity\Quantity();
-        $this->mRepoWrhsEntityQty
-            ->shouldReceive('getRef')->once()
-            ->andReturn($mRef);
         // $lotIdOdoo = $lot->getId();
         $LOT->setId($LOT_ID_O1);
         // $qty = $lot->getQuantity();

@@ -36,9 +36,4 @@ interface ILot extends \Praxigento\Core\Repo\IAggregate
      */
     public function getByOdooId($id);
 
-    /**
-     * @inheritdoc
-     * @return AggLot
-     */
-    public function getRef();
 }
