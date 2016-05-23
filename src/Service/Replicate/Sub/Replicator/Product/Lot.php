@@ -76,7 +76,7 @@ class Lot
         if ($qtyItem) {
             /* update lot qty data */
             $bind = [EntityWarehouseQuantity::ATTR_TOTAL => $qty];
-            $this->_repoWarehouseEntityQuantity->updateById($bind, $pk);
+            $this->_repoWarehouseEntityQuantity->updateById($pk, $bind);
         } else {
             /* create lot qty data */
             $pk[EntityWarehouseQuantity::ATTR_TOTAL] = $qty;

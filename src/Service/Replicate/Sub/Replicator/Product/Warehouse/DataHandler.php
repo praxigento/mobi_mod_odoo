@@ -100,15 +100,30 @@ class DataHandler
     /**
      * Create existing warehouse data for the stock item in Magento.
      *
-     * @param int $stockItemId Mage ID for related stock item
+     * @param int $stockItemRef Mage ID for related stock item
      * @param double $price warehouse price for stock item
      * @param double $pv warehouse PV for stock item
      */
-    public function updateWarehouseData($stockItemId, $price, $pv)
+    public function updateWarehouseData($stockItemRef, $price, $pv)
     {
+        /* update or create warehouse entry */
         $bind = [EntityWarehouseStockItem::ATTR_PRICE => $price];
-        $this->_repoWarehouseEntityStockItem->updateById($bind, $stockItemId);
-        /* update warehouse PV */
-        $this->_repoPvMod->updateWarehousePv($stockItemId, $pv);
+        $exist = $this->_repoWarehouseEntityStockItem->getById($stockItemRef);
+        if (!$exist) {
+            /* create new entry */
+            $bind[EntityWarehouseStockItem::ATTR_STOCK_ITEM_REF] = $stockItemRef;
+            $this->_repoWarehouseEntityStockItem->create($bind);
+        } else {
+            $this->_repoWarehouseEntityStockItem->updateById($stockItemRef, $bind);
+        }
+        /* update or create warehouse PV */
+        $registered = $this->_repoPvMod->getWarehousePv($stockItemRef);
+        if (is_null($registered)) {
+            /* create PV */
+            $this->_repoPvMod->registerWarehousePv($stockItemRef, $pv);
+        } else {
+            /* update PV */
+            $this->_repoPvMod->updateWarehousePv($stockItemRef, $pv);
+        }
     }
 }

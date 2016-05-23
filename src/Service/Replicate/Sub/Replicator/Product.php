@@ -11,16 +11,12 @@ use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
-use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
-use Magento\Eav\Model\Entity\TypeFactory as EntityTypeFactory;
 use Magento\Framework\ObjectManagerInterface;
 
 class Product
 {
-    /** @var AttributeSetFactory */
-    protected $_mageFactAttrSet;
-    /** @var EntityTypeFactory */
-    protected $_mageFactEntityType;
+    /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
+    protected $_mageRepoAttrSet;
     /** @var IProductRepo */
     protected $_mageRepoProd;
     /** @var   ObjectManagerInterface */
@@ -29,14 +25,12 @@ class Product
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Magento\Eav\Model\Entity\TypeFactory $mageFactEntityType,
-        \Magento\Eav\Model\Entity\Attribute\SetFactory $mageFfactAttrSet,
+        \Magento\Catalog\Api\AttributeSetRepositoryInterface $mageRepoAttrSet,
         \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd
 
     ) {
         $this->_manObj = $manObj;
-        $this->_mageFactEntityType = $mageFactEntityType;
-        $this->_mageFactAttrSet = $mageFfactAttrSet;
+        $this->_mageRepoAttrSet = $mageRepoAttrSet;
         $this->_mageRepoProd = $mageRepoProd;
     }
 
@@ -63,15 +57,14 @@ class Product
     public function create($sku, $name, $isActive, $priceWholesale, $weight)
     {
         /**
-         * Retrieve entity type ID & attribute set ID.
+         * Retrieve attribute set ID.
          */
-        /** @var \Magento\Eav\Model\Entity\Type $entityType */
-        $entityType = $this->_mageFactEntityType->create();
-        $entityType->loadByCode(ProductModel::ENTITY);
-        $entityTypeId = $entityType->getId();
+        /** @var \Magento\Framework\Api\SearchCriteriaInterface $crit */
+        $crit = $this->_manObj->create(\Magento\Framework\Api\SearchCriteriaInterface::class);
         /** @var \Magento\Eav\Model\Entity\Attribute\Set $attrSet */
-        $attrSet = $this->_mageFactAttrSet->create();
-        $attrSet->load($entityTypeId, AttributeSet::KEY_ENTITY_TYPE_ID);
+        $list = $this->_mageRepoAttrSet->getList($crit);
+        $items = $list->getItems();
+        $attrSet = reset($items);
         $attrSetId = $attrSet->getId();
         /**
          * Create simple product.

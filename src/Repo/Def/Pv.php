@@ -24,6 +24,16 @@ class Pv implements IPv
         $this->_repoPvStockItem = $repoPvStockItem;
     }
 
+    public function getWarehousePv($stockItemMageRef)
+    {
+        $result = null;
+        $data = $this->_repoPvStockItem->getById($stockItemMageRef);
+        if (isset($data[EntityPvStockItem::ATTR_PV])) {
+            $result = $data[EntityPvStockItem::ATTR_PV];
+        }
+        return $result;
+    }
+
     public function registerProductWholesalePv($productMageId, $pv)
     {
         $bind = [
@@ -33,32 +43,32 @@ class Pv implements IPv
         $this->_repoPvProduct->create($bind);
     }
 
-    public function registerWarehousePv($stockItemMageId, $pv)
+    public function registerWarehousePv($stockItemMageRef, $pv)
     {
         $bind = [
-            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageId,
+            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageRef,
             EntityPvStockItem::ATTR_PV => $pv
         ];
         $this->_repoPvStockItem->create($bind);
     }
 
-    public function updateProductWholesalePv($productMageId, $pv)
+    public function updateProductWholesalePv($productMageRef, $pv)
     {
         $bind = [
-            EntityPvProduct::ATTR_PROD_REF => $productMageId,
+            EntityPvProduct::ATTR_PROD_REF => $productMageRef,
             EntityPvProduct::ATTR_PV => $pv
         ];
-        $where = EntityPvProduct::ATTR_PROD_REF . '=' . (int)$productMageId;
+        $where = EntityPvProduct::ATTR_PROD_REF . '=' . (int)$productMageRef;
         $this->_repoPvProduct->update($bind, $where);
     }
 
-    public function updateWarehousePv($stockItemMageId, $pv)
+    public function updateWarehousePv($stockItemMageRef, $pv)
     {
         $bind = [
-            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageId,
+            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageRef,
             EntityPvStockItem::ATTR_PV => $pv
         ];
-        $where = EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemMageId;
+        $where = EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemMageRef;
         $this->_repoPvStockItem->update($bind, $where);
     }
 }
