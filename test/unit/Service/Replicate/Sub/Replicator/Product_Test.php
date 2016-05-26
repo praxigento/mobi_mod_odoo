@@ -9,9 +9,7 @@ include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
     /** @var  \Mockery\MockInterface */
-    private $mMageFactEntityType;
-    /** @var  \Mockery\MockInterface */
-    private $mMageFfactAttrSet;
+    private $mMageRepoAttrSet;
     /** @var  \Mockery\MockInterface */
     private $mMageRepoProd;
     /** @var  \Mockery\MockInterface */
@@ -24,14 +22,12 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         parent::setUp();
         /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
-        $this->mMageFactEntityType = $this->_mock(\Magento\Eav\Model\Entity\TypeFactory::class);
-        $this->mMageFfactAttrSet = $this->_mock(\Magento\Eav\Model\Entity\Attribute\SetFactory::class);
+        $this->mMageRepoAttrSet = $this->_mock(\Magento\Catalog\Api\AttributeSetRepositoryInterface::class);
         $this->mMageRepoProd = $this->_mock(\Magento\Catalog\Api\ProductRepositoryInterface::class);
         /** create object to test */
         $this->obj = new Product(
             $this->mManObj,
-            $this->mMageFactEntityType,
-            $this->mMageFfactAttrSet,
+            $this->mMageRepoAttrSet,
             $this->mMageRepoProd
         );
     }
@@ -50,27 +46,24 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $IS_ACTIVE = true;
         $PRICE = 43.21;
         $WEIGHT = 54.3210;
-        $TYPE_ID = 89;
         $ATTR_SET_ID = 8;
         $PRODUCT_ID = 543;
         /** === Setup Mocks === */
-        // $entityType = $this->_mageFactEntityType->create();
-        $mEntityType = $this->_mock(\Magento\Eav\Model\Entity\Type::class);
-        $this->mMageFactEntityType
+        // $crit = $this->_manObj->create(\Magento\Framework\Api\SearchCriteriaInterface::class);
+        $mCrit = $this->_mock(\Magento\Framework\Api\SearchCriteriaInterface::class);
+        $this->mManObj
             ->shouldReceive('create')->once()
-            ->andReturn($mEntityType);
-        // $entityType->loadByCode(ProductModel::ENTITY);
-        $mEntityType->shouldReceive('loadByCode')->once();
-        // $entityTypeId = $entityType->getId();
-        $mEntityType->shouldReceive('getId')->once()
-            ->andReturn($TYPE_ID);
-        // $attrSet = $this->_mageFactAttrSet->create();
+            ->andReturn($mCrit);
+        // $list = $this->_mageRepoAttrSet->getList($crit);
+        $mList = $this->_mock(\Magento\Eav\Api\Data\AttributeSetSearchResultsInterface::class);
+        $this->mMageRepoAttrSet
+            ->shouldReceive('getList')->once()
+            ->andReturn($mList);
+        // $items = $list->getItems();
+        // $attrSet = reset($items);
         $mAttrSet = $this->_mock(\Magento\Eav\Model\Entity\Attribute\Set::class);
-        $this->mMageFfactAttrSet
-            ->shouldReceive('create')->once()
-            ->andReturn($mAttrSet);
-        // $attrSet->load($entityTypeId, AttributeSet::KEY_ENTITY_TYPE_ID);
-        $mAttrSet->shouldReceive('load')->once();
+        $mList->shouldReceive('getItems')->once()
+            ->andReturn([$mAttrSet]);
         // $attrSetId = $attrSet->getId();
         $mAttrSet->shouldReceive('getId')->once()
             ->andReturn($ATTR_SET_ID);

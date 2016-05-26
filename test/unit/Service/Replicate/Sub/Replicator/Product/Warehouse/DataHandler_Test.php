@@ -116,9 +116,17 @@ class DataHandler_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $PRICE = 43.32;
         $PV = 54.32;
         /** === Setup Mocks === */
+        // $exist = $this->_repoWarehouseEntityStockItem->getById($stockItemRef);
+        $this->mRepoWarehouseEntityStockItem
+            ->shouldReceive('getById')->once()
+            ->andReturn('some data');
         // $this->_repoWarehouseEntityStockItem->updateById($bind, $stockItemId);
         $this->mRepoWarehouseEntityStockItem
             ->shouldReceive('updateById')->once();
+        // $registered = $this->_repoPvMod->getWarehousePv($stockItemRef);
+        $this->mRepoPvMod
+            ->shouldReceive('getWarehousePv')->once()
+            ->andReturn('some data');
         // $this->_repoPvMod->updateWarehousePv($stockItemId, $pv);
         $this->mRepoPvMod
             ->shouldReceive('updateWarehousePv')->once();
