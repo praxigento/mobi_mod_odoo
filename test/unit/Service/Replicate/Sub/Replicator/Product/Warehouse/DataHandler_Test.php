@@ -109,7 +109,7 @@ class DataHandler_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->obj->processLots($LOTS, $STOCK_ITEM);
     }
 
-    public function test_updateWarehouseData()
+    public function test_updateWarehouseData_exists_registered()
     {
         /** === Test Data === */
         $STOCK_ITEM_ID = 21;
@@ -130,6 +130,31 @@ class DataHandler_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_repoPvMod->updateWarehousePv($stockItemId, $pv);
         $this->mRepoPvMod
             ->shouldReceive('updateWarehousePv')->once();
+        /** === Call and asserts  === */
+        $this->obj->updateWarehouseData($STOCK_ITEM_ID, $PRICE, $PV);
+    }
+
+    public function test_updateWarehouseData_notExists_notRegistered()
+    {
+        /** === Test Data === */
+        $STOCK_ITEM_ID = 21;
+        $PRICE = 43.32;
+        $PV = 54.32;
+        /** === Setup Mocks === */
+        // $exist = $this->_repoWarehouseEntityStockItem->getById($stockItemRef);
+        $this->mRepoWarehouseEntityStockItem
+            ->shouldReceive('getById')->once()
+            ->andReturn(null);
+        // $this->_repoWarehouseEntityStockItem->create($bind);
+        $this->mRepoWarehouseEntityStockItem
+            ->shouldReceive('create')->once();
+        // $registered = $this->_repoPvMod->getWarehousePv($stockItemRef);
+        $this->mRepoPvMod
+            ->shouldReceive('getWarehousePv')->once()
+            ->andReturn(null);
+        // $this->_repoPvMod->registerWarehousePv($stockItemRef, $pv);
+        $this->mRepoPvMod
+            ->shouldReceive('registerWarehousePv')->once();
         /** === Call and asserts  === */
         $this->obj->updateWarehouseData($STOCK_ITEM_ID, $PRICE, $PV);
     }

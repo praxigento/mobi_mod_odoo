@@ -4,6 +4,8 @@
  */
 namespace Praxigento\Odoo\Repo\Def;
 
+use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
+
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 
 class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
@@ -27,6 +29,24 @@ class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             $this->mRepoPvProduct,
             $this->mRepoPvStockItem
         );
+    }
+
+    public function test_getWarehousePv()
+    {
+        /** === Test Data === */
+        $STOCK_ITEM_ID = 21;
+        $PV = 43;
+        $DATA = [
+            EntityPvStockItem::ATTR_PV => $PV
+        ];
+        /** === Setup Mocks === */
+        // $data = $this->_repoPvStockItem->getById($stockItemMageId);
+        $this->mRepoPvStockItem
+            ->shouldReceive('getById')->once()
+            ->andReturn($DATA);
+        /** === Call and asserts  === */
+        $res = $this->obj->getWarehousePv($STOCK_ITEM_ID);
+        $this->assertEquals($PV, $res);
     }
 
     public function test_registerProductWholesalePv()
