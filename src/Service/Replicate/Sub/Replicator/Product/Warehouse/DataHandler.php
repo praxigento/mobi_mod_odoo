@@ -92,6 +92,8 @@ class DataHandler
         }
         /* update stock item qty */
         $stockItem->setQty($qtyTotal);
+        $isInStock = ($qtyTotal > 0);
+        $stockItem->setIsInStock($isInStock);
         $this->_mageRepoStockItem->save($stockItem);
         /* cleanup extra lots */
         $this->_subLot->cleanupLots($stockItemId, $lots);

@@ -93,6 +93,7 @@ class Replicator
             if ($isActive) {
                 /* create new product in Magento */
                 $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
+                
                 $this->_repoRegistry->registerProduct($idMage, $idOdoo);
                 $this->_repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {

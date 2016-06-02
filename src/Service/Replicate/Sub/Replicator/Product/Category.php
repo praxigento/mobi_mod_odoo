@@ -5,34 +5,30 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product;
 
-use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\Data\CategoryProductLinkInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Repo\IRegistry;
 
 class Category
 {
 
-    /** @var  CategoryLinkRepositoryInterface */
+    /** @var  \Magento\Catalog\Api\CategoryLinkRepositoryInterface */
     protected $_mageRepoCatLink;
-    /** @var   CategoryRepositoryInterface */
+    /** @var   \Magento\Catalog\Api\CategoryRepositoryInterface */
     protected $_mageRepoCategory;
-    /** @var ProductRepositoryInterface */
+    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     protected $_mageRepoProd;
-    /** @var   ObjectManagerInterface */
+    /** @var   \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
-    /** @var  IRegistry */
+    /** @var  \Praxigento\Odoo\Repo\IRegistry */
     protected $_repoRegistry;
 
     public function __construct(
-        ObjectManagerInterface $manObj,
-        ProductRepositoryInterface $mageRepoProd,
-        CategoryRepositoryInterface $mageRepoCat,
-        CategoryLinkRepositoryInterface $mageRepoCatLink,
-        IRegistry $repoRegistry
+        \Magento\Framework\ObjectManagerInterface $manObj,
+        \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $mageRepoCat,
+        \Magento\Catalog\Api\CategoryLinkRepositoryInterface $mageRepoCatLink,
+        \Praxigento\Odoo\Repo\IRegistry $repoRegistry
     ) {
         $this->_manObj = $manObj;
         $this->_mageRepoProd = $mageRepoProd;
