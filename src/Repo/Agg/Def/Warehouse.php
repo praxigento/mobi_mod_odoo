@@ -124,4 +124,17 @@ class Warehouse extends BaseAggRepo implements IWarehouse
         $result = $this->_factorySelect->getSelectCountQuery();
         return $result;
     }
+
+    public function updateById($id, $data)
+    {
+        $trans = $this->_manTrans->transactionBegin();
+        try {
+            $bind = [EntityWarehouse::ATTR_ODOO_REF => $data->getData(AggWarehouse::AS_ODOO_ID)];
+            $this->_repoEntityWarehouse->updateById($id, $bind);
+            $this->_repoWrhsAggWarehouse->updateById($id, $data);
+            $this->_manTrans->transactionCommit($trans);
+        } finally {
+            $this->_manTrans->transactionClose($trans);
+        }
+    }
 }
