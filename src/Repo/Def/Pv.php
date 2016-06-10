@@ -28,8 +28,8 @@ class Pv implements IPv
     {
         $result = null;
         $data = $this->_repoPvStockItem->getById($stockItemMageId);
-        if (isset($data[EntityPvStockItem::ATTR_PV])) {
-            $result = $data[EntityPvStockItem::ATTR_PV];
+        if ($data) {
+            $result = $data->getPv();
         }
         return $result;
     }
