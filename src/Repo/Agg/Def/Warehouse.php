@@ -83,6 +83,7 @@ class Warehouse extends BaseAggRepo implements IWarehouse
      */
     public function getById($id)
     {
+        $result = null;
         $query = $this->_factorySelect->getSelectQuery();
         $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
