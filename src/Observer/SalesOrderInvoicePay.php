@@ -12,10 +12,17 @@ use Magento\Framework\Event\ObserverInterface;
  */
 class SalesOrderInvoicePay implements ObserverInterface
 {
-    /* Names for the items in the event's data */
     const DATA_INVOICE = 'invoice';
+    /* Names for the items in the event's data */
+    /** @var  \Praxigento\Warehouse\Tool\IStockManager */
+    protected $_manStock;
 
-  
+    public function __construct(
+        \Praxigento\Warehouse\Tool\IStockManager $manStock
+    ) {
+        $this->_manStock = $manStock;
+    }
+
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
 //        /** @var \Magento\Sales\Model\Order\Invoice $invoice */
