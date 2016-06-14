@@ -12,20 +12,17 @@ use Magento\Framework\Event\ObserverInterface;
  */
 class SalesOrderInvoicePay implements ObserverInterface
 {
+    /* Names for the items in the event's data */
+    const DATA_INVOICE = 'invoice';
 
-
-    public function __construct()
-    {
-
-    }
-
+  
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /** @var \Magento\Sales\Model\Order\Invoice $invoice */
-        $invoice = $observer->getData(self::DATA_INVOICE);
-        /** @var \Magento\Sales\Model\Order $order */
-        $order = $invoice->getOrder();
-        throw new \Exception('don\'t pay to the invoice');
+//        /** @var \Magento\Sales\Model\Order\Invoice $invoice */
+//        $invoice = $observer->getData(self::DATA_INVOICE);
+//        /** @var \Magento\Sales\Model\Order $order */
+//        $order = $invoice->getOrder();
+//        throw new \Exception('don\'t pay to the invoice');
         return;
     }
 
