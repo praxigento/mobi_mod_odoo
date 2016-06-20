@@ -8,6 +8,7 @@ namespace Praxigento\Odoo\Service\Replicate;
 use Praxigento\Core\Repo\ITransactionManager;
 use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\IInventory as RepoOdooIInventory;
+use Praxigento\Odoo\Repo\Odoo\ISaleOrder as RepoOdooISaleOrder;
 use Praxigento\Odoo\Service\IReplicate;
 use Praxigento\Odoo\Service\Replicate;
 
@@ -17,19 +18,21 @@ class Call implements IReplicate
     protected $_manTrans;
     /** @var RepoOdooIInventory */
     protected $_repoOdooInventory;
+    /** @var RepoOdooISaleOrder */
+    protected $_repoOdooSaleOrder;
     /** @var  Sub\Replicator */
     protected $_subReplicator;
 
-    /**
-     * Call constructor.
-     */
+
     public function __construct(
         \Praxigento\Core\Repo\ITransactionManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
+        \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\Replicator $subReplicator
     ) {
         $this->_manTrans = $manTrans;
         $this->_repoOdooInventory = $repoOdooInventory;
+        $this->_repoOdooSaleOrder = $repoOdooSaleOrder;
         $this->_subReplicator = $subReplicator;
     }
 
@@ -54,10 +57,17 @@ class Call implements IReplicate
         }
     }
 
-    /**
-     * @param Request\ProductSave $req
-     * @return  Response\ProductSave
-     */
+    /** @inheritdoc */
+    public function orderSave(Replicate\Request\OrderSave $req)
+    {
+        $result = new Response\OrderSave();
+        $order = $req->getSaleOrder();
+        $resp = $this->_repoOdooSaleOrder->save($order);
+        $result->setOdooResponse($resp);
+        return $result;
+    }
+
+    /** @inheritdoc */
     public function productSave(Request\ProductSave $req)
     {
         $result = new Response\ProductSave();
@@ -76,9 +86,7 @@ class Call implements IReplicate
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function productsFromOdoo(Request\ProductsFromOdoo $req)
     {
         $result = new Response\ProductsFromOdoo();

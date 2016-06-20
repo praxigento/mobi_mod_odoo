@@ -23,10 +23,20 @@ class Call_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $this->obj = $this->manObj->create(IReplicate::class);
     }
 
-    public function test_rep()
+    public function test_productsFromOdoo()
     {
         $req = new Request\ProductsFromOdoo();
         $resp = $this->obj->productsFromOdoo($req);
+        $this->assertNotNull($resp);
+    }
+
+    public function test_orderSave()
+    {
+        $req = new Request\OrderSave();
+        $order = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
+        $order->setWarehouseId(21);
+        $req->setSaleOrder($order);
+        $resp = $this->obj->orderSave($req);
         $this->assertNotNull($resp);
     }
 }

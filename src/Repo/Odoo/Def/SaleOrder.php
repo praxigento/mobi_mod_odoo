@@ -8,12 +8,12 @@ namespace Praxigento\Odoo\Repo\Odoo\Def;
 use Magento\Framework\Webapi\ServiceInputProcessor;
 use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
-use Praxigento\Odoo\Repo\Odoo\IInventory;
+use Praxigento\Odoo\Repo\Odoo\ISaleOrder;
 
-class Inventory implements IInventory
+class SaleOrder implements ISaleOrder
 {
-    const ODOO_IDS = 'ids';
-    const ROUTE = '/api/inventory';
+    const ODOO_DATA = 'data';
+    const ROUTE = '/api/sale_order';
     /** @var  ServiceInputProcessor */
     protected $_mageSrvInProc;
     /** @var  Rest */
@@ -28,16 +28,11 @@ class Inventory implements IInventory
     }
 
     /** @inheritdoc */
-    public function get($ids = null)
+    public function save($order)
     {
         /* prepare request parameters */
-        if (is_array($ids)) {
-            $params = [self::ODOO_IDS => $ids];
-        } elseif (is_int($ids)) {
-            $params = [self::ODOO_IDS => [$ids]];
-        } else {
-            $params = [self::ODOO_IDS => []];
-        }
+        $underscored = $order->getData();
+        $params = [self::ODOO_DATA => $underscored];
         /* perform request and extract result data */
         $cover = $this->_rest->request($params, self::ROUTE);
         $data = $cover->getResultData();

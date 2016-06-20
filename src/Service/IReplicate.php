@@ -8,6 +8,12 @@ namespace Praxigento\Odoo\Service;
 interface IReplicate
 {
     /**
+     * @param Replicate\Request\OrderSave $req
+     * @return Replicate\Response\OrderSave
+     */
+    public function orderSave(Replicate\Request\OrderSave $req);
+
+    /**
      * Save products bundle ('push' replication).
      *
      * @param Replicate\Request\ProductSave $req
@@ -22,5 +28,5 @@ interface IReplicate
      * @return Replicate\Response\ProductsFromOdoo
      */
     public function productsFromOdoo(Replicate\Request\ProductsFromOdoo $req);
-    
+
 }
