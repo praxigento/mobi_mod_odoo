@@ -41,6 +41,38 @@
                   }
                 }
               },
+              "Customer": {
+                "alias": "cust",
+                "comment": "Additional customer attributes related to Odoo replication.",
+                "attribute": {
+                  "MagentoRef": {
+                    "alias": "mage_ref",
+                    "comment": "Reference to the customer in Magento DB.",
+                    "nullable": false,
+                    "type": {"integer": {"unsigned": true}}
+                  },
+                  "OdooRef": {
+                    "alias": "odoo_ref",
+                    "comment": "Reference to the customer in Odoo DB.",
+                    "nullable": false,
+                    "type": {"integer": {"unsigned": true}}
+                  }
+                },
+                "index": {
+                  "PK": {"type": "primary", "aliases": ["mage_ref"]},
+                  "uniqueOdooReference": {"type": "unique", "aliases": ["odoo_ref"]}
+                },
+                "relation": {
+                  "Customer": {
+                    "own": {"aliases": ["mage_ref"]},
+                    "reference": {
+                      "entity": {"completeAlias": "prxgt_dwnl_customer"},
+                      "aliases": ["customer_id"]
+                    },
+                    "action": {"delete": "restrict", "update": "restrict"}
+                  }
+                }
+              },
               "Lot": {
                 "alias": "lot",
                 "comment": "Additional lot attributes related to Odoo replication.",
@@ -74,7 +106,7 @@
                 }
               },
               "Product": {
-                "alias": "product",
+                "alias": "prod",
                 "comment": "Additional product attributes related to Odoo replication.",
                 "attribute": {
                   "MagentoRef": {
@@ -100,6 +132,38 @@
                     "reference": {
                       "entity": {"completeAlias": "catalog_product_entity"},
                       "aliases": ["entity_id"]
+                    },
+                    "action": {"delete": "restrict", "update": "restrict"}
+                  }
+                }
+              },
+              "SaleOrder": {
+                "alias": "sale",
+                "comment": "Additional sale order attributes related to Odoo replication.",
+                "attribute": {
+                  "MagentoRef": {
+                    "alias": "mage_ref",
+                    "comment": "Reference to the sale order in Magento DB.",
+                    "nullable": false,
+                    "type": {"integer": {"unsigned": true}}
+                  },
+                  "OdooRef": {
+                    "alias": "odoo_ref",
+                    "comment": "Reference to the sale order in Odoo DB.",
+                    "nullable": false,
+                    "type": {"integer": {"unsigned": true}}
+                  }
+                },
+                "index": {
+                  "PK": {"type": "primary", "aliases": ["mage_ref"]},
+                  "uniqueOdooReference": {"type": "unique", "aliases": ["odoo_ref"]}
+                },
+                "relation": {
+                  "toSaleOrder": {
+                    "own": {"aliases": ["mage_ref"]},
+                    "reference": {
+                      "entity": {"completeAlias": "prxgt_pv_sale"},
+                      "aliases": ["sale_id"]
                     },
                     "action": {"delete": "restrict", "update": "restrict"}
                   }

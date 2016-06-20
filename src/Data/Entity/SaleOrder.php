@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Data\Entity;
 
-class Product extends Def\OdooEntity
+class SaleOrder extends Def\OdooEntity
 {
-    const ENTITY_NAME = 'prxgt_odoo_prod';
+    const ENTITY_NAME = 'prxgt_odoo_sale';
 }

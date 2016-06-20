@@ -6,8 +6,10 @@
 namespace Praxigento\Odoo\Setup;
 
 use Praxigento\Odoo\Data\Entity\Category;
+use Praxigento\Odoo\Data\Entity\Customer;
 use Praxigento\Odoo\Data\Entity\Lot;
 use Praxigento\Odoo\Data\Entity\Product;
+use Praxigento\Odoo\Data\Entity\SaleOrder;
 use Praxigento\Odoo\Data\Entity\Warehouse;
 
 class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
@@ -24,6 +26,11 @@ class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
         $demEntity = $demPackage->getData('entity/Category');
         $this->_toolDem->createEntity($entityAlias, $demEntity);
 
+        /* Customer */
+        $entityAlias = Customer::ENTITY_NAME;
+        $demEntity = $demPackage->getData('entity/Customer');
+        $this->_toolDem->createEntity($entityAlias, $demEntity);
+
         /* Lot */
         $entityAlias = Lot::ENTITY_NAME;
         $demEntity = $demPackage->getData('entity/Lot');
@@ -32,6 +39,11 @@ class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
         /* Product */
         $entityAlias = Product::ENTITY_NAME;
         $demEntity = $demPackage->getData('entity/Product');
+        $this->_toolDem->createEntity($entityAlias, $demEntity);
+
+        /* SaleOrder */
+        $entityAlias = SaleOrder::ENTITY_NAME;
+        $demEntity = $demPackage->getData('entity/SaleOrder');
         $this->_toolDem->createEntity($entityAlias, $demEntity);
 
         /* Warehouse */
