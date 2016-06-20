@@ -31,11 +31,12 @@ class SaleOrder implements ISaleOrder
     public function save($order)
     {
         /* prepare request parameters */
-        $underscored = $order->getData();
+        $underscored = $order->getData(null, true);
         $params = [self::ODOO_DATA => $underscored];
         /* perform request and extract result data */
         $cover = $this->_rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
+        $error = $cover->getError();
         $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
         return $result;
     }
