@@ -22,17 +22,21 @@ class Call implements IReplicate
     protected $_repoOdooSaleOrder;
     /** @var  Sub\Replicator */
     protected $_subReplicator;
+    /** @var  Sub\Collector */
+    protected $_subCollector;
 
 
     public function __construct(
         \Praxigento\Core\Repo\ITransactionManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
+        Sub\Collector $subCollector,
         Sub\Replicator $subReplicator
     ) {
         $this->_manTrans = $manTrans;
         $this->_repoOdooInventory = $repoOdooInventory;
         $this->_repoOdooSaleOrder = $repoOdooSaleOrder;
+        $this->_subCollector = $subCollector;
         $this->_subReplicator = $subReplicator;
     }
 
@@ -42,8 +46,10 @@ class Call implements IReplicate
      * @param IBundle $bundle
      * @throws \Exception
      */
-    protected function _doProductReplication(IBundle $bundle)
-    {
+    protected
+    function _doProductReplication(
+        IBundle $bundle
+    ) {
         $options = $bundle->getOption();
         $warehouses = $bundle->getWarehouses();
         $lots = $bundle->getLots();
@@ -58,18 +64,23 @@ class Call implements IReplicate
     }
 
     /** @inheritdoc */
-    public function orderSave(Replicate\Request\OrderSave $req)
-    {
+    public
+    function orderSave(
+        Replicate\Request\OrderSave $req
+    ) {
         $result = new Response\OrderSave();
-        $order = $req->getSaleOrder();
-        $resp = $this->_repoOdooSaleOrder->save($order);
+        $mageOrder = $req->getSaleOrder();
+        $odooOrder = $this->_subCollector->getOdooOrderForMageOrder($mageOrder);
+        $resp = $this->_repoOdooSaleOrder->save($mageOrder);
         $result->setOdooResponse($resp);
         return $result;
     }
 
     /** @inheritdoc */
-    public function productSave(Request\ProductSave $req)
-    {
+    public
+    function productSave(
+        Request\ProductSave $req
+    ) {
         $result = new Response\ProductSave();
         /** @var  $bundle IBundle */
         $bundle = $req->getProductBundle();
@@ -87,8 +98,10 @@ class Call implements IReplicate
     }
 
     /** @inheritdoc */
-    public function productsFromOdoo(Request\ProductsFromOdoo $req)
-    {
+    public
+    function productsFromOdoo(
+        Request\ProductsFromOdoo $req
+    ) {
         $result = new Response\ProductsFromOdoo();
         /* replicate all data in one transaction */
         $trans = $this->_manTrans->transactionBegin();

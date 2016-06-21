@@ -6,6 +6,7 @@ namespace Praxigento\Odoo\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Praxigento\Odoo\Service\Replicate\Request\OrderSave as RequestOrderSave;
 
 /**
  * Replicate paid order to Odoo on invoice payments (check/money order).
@@ -40,7 +41,7 @@ class SalesOrderInvoicePay implements ObserverInterface
             $this->_logger->debug("Call to Odoo service to replicate order.");
             $req = new RequestOrderSave();
             /** @var ResponseOrderSave $resp */
-            $resp = $this->_callReplicate->orderSave($req);
+//            $resp = $this->_callReplicate->orderSave($req);
         }
         return;
     }

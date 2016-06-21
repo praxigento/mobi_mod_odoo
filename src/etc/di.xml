@@ -43,8 +43,7 @@
             <argument name="commands" xsi:type="array">
                 <item
                         name="prxgt_odoo_replicate_products_command"
-                        xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products
-                </item>
+                        xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products</item>
             </argument>
         </arguments>
     </type>

@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Service\Replicate\Request;
 class OrderSave extends \Praxigento\Core\Service\Base\Request
 {
     /**
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder
+     * @return \Magento\Sales\Api\Data\OrderInterface
      */
     public function getSaleOrder()
     {
@@ -16,7 +16,7 @@ class OrderSave extends \Praxigento\Core\Service\Base\Request
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $data
+     * @param \Magento\Sales\Api\Data\OrderInterface $data
      */
     public function setSaleOrder($data = null)
     {
