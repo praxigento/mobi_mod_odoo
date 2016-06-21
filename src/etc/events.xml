@@ -13,7 +13,7 @@
     <event name="sales_order_invoice_pay">
         <!-- Replicate paid order to Odoo on invoice payments (check/money order). -->
         <observer
-                name="praxigento_odoo_on_checkout_submit_all_after"
+                name="praxigento_odoo_on_sales_order_invoice_pay"
                 instance="Praxigento\Odoo\Observer\SalesOrderInvoicePay"/>
     </event>
 
