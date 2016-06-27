@@ -46,8 +46,7 @@ class Call implements IReplicate
      * @param IBundle $bundle
      * @throws \Exception
      */
-    protected
-    function _doProductReplication(
+    protected function _doProductReplication(
         IBundle $bundle
     ) {
         $options = $bundle->getOption();
@@ -64,21 +63,19 @@ class Call implements IReplicate
     }
 
     /** @inheritdoc */
-    public
-    function orderSave(
+    public function orderSave(
         Replicate\Request\OrderSave $req
     ) {
         $result = new Response\OrderSave();
         $mageOrder = $req->getSaleOrder();
         $odooOrder = $this->_subCollector->getOdooOrderForMageOrder($mageOrder);
-        $resp = $this->_repoOdooSaleOrder->save($mageOrder);
+        $resp = $this->_repoOdooSaleOrder->save($odooOrder);
         $result->setOdooResponse($resp);
         return $result;
     }
 
     /** @inheritdoc */
-    public
-    function productSave(
+    public function productSave(
         Request\ProductSave $req
     ) {
         $result = new Response\ProductSave();
@@ -98,8 +95,7 @@ class Call implements IReplicate
     }
 
     /** @inheritdoc */
-    public
-    function productsFromOdoo(
+    public function productsFromOdoo(
         Request\ProductsFromOdoo $req
     ) {
         $result = new Response\ProductsFromOdoo();
