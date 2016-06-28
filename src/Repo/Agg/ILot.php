@@ -16,7 +16,7 @@ interface ILot extends \Praxigento\Core\Repo\IAggregate
      */
     const AS_ODOO = 'pol';
     const AS_WRHS = 'pwl';
-    /**#@-*/
+    /**#@- */
 
     /**
      * @param AggLot $data

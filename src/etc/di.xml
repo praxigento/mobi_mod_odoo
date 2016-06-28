@@ -48,15 +48,19 @@
         </arguments>
     </type>
 
-    <!-- Repo / Agg -->
-    <preference for="Praxigento\Odoo\Repo\Agg\ILot"
-            type="Praxigento\Odoo\Repo\Agg\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\IWarehouse"
-            type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
+    <!-- Repo -->
     <preference for="Praxigento\Odoo\Repo\IRegistry"
             type="Praxigento\Odoo\Repo\Def\Registry"/>
     <preference for="Praxigento\Odoo\Repo\IPv"
             type="\Praxigento\Odoo\Repo\Def\Pv"/>
+
+    <!-- Repo / Agg -->
+    <preference for="Praxigento\Odoo\Repo\Agg\ILot"
+            type="Praxigento\Odoo\Repo\Agg\Def\Lot"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\ISaleOrderItem"
+            type="Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\IWarehouse"
+            type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
 
     <!-- Repo / Entity -->
     <preference for="Praxigento\Odoo\Repo\Entity\ICategory"

@@ -1,7 +1,5 @@
 <?php
 /**
- * Compose SELECT query to get Warehouse aggregate.
- *
  * User: Alex Gusev <alex@flancer64.com>
  */
 namespace Praxigento\Odoo\Repo\Agg\Def\Warehouse;
@@ -13,6 +11,9 @@ use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Agg\IWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
+/**
+ * Compose SELECT query to get Warehouse aggregate.
+ */
 class SelectFactory implements \Praxigento\Core\Repo\IHasSelectQuery
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */

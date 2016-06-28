@@ -27,11 +27,12 @@ class Login implements ICached, ILogin
     const ODOO_PASSWORD = 'password';
     const ODOO_PATH_SESSION_ID = '/result/session_id';
     const ODOO_PATH_USER_ID = '/result/uid';
-    /**#@-*/
+    /**#@- */
+    
     /** @var  Adapter adapter for PHP functions to be mocked in tests */
     protected $_adapter;
     /**
-     * OpenERP connection data
+     * Odoo connection data
      */
     protected $_authBaseUrl;
     protected $_authDb;

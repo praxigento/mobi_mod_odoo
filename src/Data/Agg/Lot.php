@@ -1,6 +1,5 @@
 <?php
 /**
- * Aggregation for
  * User: Alex Gusev <alex@flancer64.com>
  */
 
@@ -8,6 +7,9 @@ namespace Praxigento\Odoo\Data\Agg;
 
 use Flancer32\Lib\DataObject;
 
+/**
+ * Aggregate for lot with Odoo related attributes.
+ */
 class Lot extends DataObject
 {
     /**#@+
@@ -17,8 +19,7 @@ class Lot extends DataObject
     const AS_EXP_DATE = 'exp_date';
     const AS_ID = 'id';
     const AS_ODOO_ID = 'odoo_id';
-
-    /**#@-*/
+    /**#@- */
 
     public function getCode()
     {
