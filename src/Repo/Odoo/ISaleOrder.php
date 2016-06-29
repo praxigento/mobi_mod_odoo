@@ -9,7 +9,7 @@ interface ISaleOrder
 {
     /**
      * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\PostResponse
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Response
      */
     public function save($order);
 }

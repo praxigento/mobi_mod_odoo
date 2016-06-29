@@ -2,13 +2,9 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Odoo;
+namespace Praxigento\Odoo\Data\Odoo\Shipment;
 
 /**
- * @method int getIdOdoo()
- * @method void setIdOdoo(int $data)
- * @method string getStatus()
- * @method void setStatus(string $data)
  * @method string getTrackingType()
  * @method void setTrackingType(string $data)
  * @method string getTrackingNumber()
@@ -18,7 +14,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method string getName()
  * @method void setName(string $data)
  */
-class Shipment extends \Flancer32\Lib\DataObject
+class TrackingInfo extends \Flancer32\Lib\DataObject
 {
 
 }

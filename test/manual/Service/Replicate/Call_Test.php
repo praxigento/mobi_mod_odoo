@@ -34,7 +34,7 @@ class Call_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $req = new Request\OrderSave();
 
         /* load Magento order */
-        $mageOrder = $this->_mageRepoSaleOrder->get(2);
+        $mageOrder = $this->_mageRepoSaleOrder->get(1);
 
 //        $order = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
 //        $order->setWarehouseId(21);

@@ -15,17 +15,21 @@ class Collector
     protected $_repoPvSaleItem;
     /** @var \Praxigento\Warehouse\Repo\Entity\Quantity\ISale */
     protected $_repoWrhsQtySale;
+    /** @var \Praxigento\Odoo\Repo\Agg\ISaleOrderItem */
+    protected $_repoAggSaleOrderItem;
 
     public function __construct(
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
-        \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale
+        \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale,
+        \Praxigento\Odoo\Repo\Agg\ISaleOrderItem $repoAggSaleOrderItem
     ) {
         $this->_manStock = $manStock;
         $this->_repoPvSale = $repoPvSale;
         $this->_repoPvSaleItem = $repoPvSaleItem;
         $this->_repoWrhsQtySale = $repoWrhsQtySale;
+        $this->_repoAggSaleOrderItem = $repoAggSaleOrderItem;
     }
 
     public function getOdooLotFormMageQtySale()
@@ -34,16 +38,16 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $mageItem
-     * @param \Praxigento\Pv\Data\Entity\Sale\Item[] $pvItems
+     * @param \Praxigento\Odoo\Data\Agg\SaleOrderItem[] $saleOrderItems
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
      */
     public function getOdooLineFormMageItem(
         \Magento\Sales\Api\Data\OrderItemInterface $mageItem,
-        $pvItems
+        $saleOrderItems
     ) {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
         /* load related data */
-        $qtySales = $this->_repoWrhsQtySale->getById($productId);
+
         /* collect data */
         $productId = 11;
         $qty = 21;
@@ -70,7 +74,7 @@ class Collector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
         $orderId = $mageOrder->getId();
         $storeId = $mageOrder->getStoreId();
-        $wrhsId = $this->_manStock->getStockIdByStoreId($storeId);
+        $stockId = $this->_manStock->getStockIdByStoreId($storeId);
         $incId = $mageOrder->getIncrementId();
         $priceDiscountTotal = $mageOrder->getBaseDiscountInvoiced();
         $priceDiscountItems = 0;
@@ -81,11 +85,11 @@ class Collector
         /** @var \Praxigento\Pv\Data\Entity\Sale $pvs */
         $pvOrder = $this->_repoPvSale->getById($orderId);
         $datePaid = $pvOrder->getDatePaid();
-        $pvItems = $this->_repoPvSaleItem->getItemsByOrderId($orderId);
+        $aggSaleOrderItems = $this->_repoAggSaleOrderItem->getByOrderAndStock($orderId, $stockId);
         /* collect items data */
         $lines = [];
         foreach ($mageOrder->getItems() as $item) {
-            $lines[] = $this->getOdooLineFormMageItem($item, $pvItems);
+            $lines[] = $this->getOdooLineFormMageItem($item, $aggSaleOrderItems);
         }
         $result->setLines($lines);
         /* Collect order itself data */
@@ -97,7 +101,7 @@ class Collector
         $result->setPriceTax($priceTax);
         $result->setShippingMethod();
         $result->setShippingPrice($priceShipping);
-        $result->setWarehouseId($wrhsId);
+        $result->setWarehouseId($stockId);
 
         return $result;
     }
