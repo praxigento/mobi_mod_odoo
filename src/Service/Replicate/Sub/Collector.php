@@ -88,8 +88,31 @@ class Collector
         $aggSaleOrderItems = $this->_repoAggSaleOrderItem->getByOrderAndStock($orderId, $stockId);
         /* collect items data */
         $lines = [];
-        foreach ($mageOrder->getItems() as $item) {
-            $lines[] = $this->getOdooLineFormMageItem($item, $aggSaleOrderItems);
+        foreach ($aggSaleOrderItems as $item) {
+            $productIdOdoo = $item->getOdooIdProduct();
+            /* process order line */
+            if (isset($lines[$productIdOdoo])) {
+                $line = $lines[$productIdOdoo];
+            } else {
+                $line = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
+                $line->setProductIdOdoo($productIdOdoo);
+                $line->setQty($item->getItemQty());
+                $line->setLots([]);
+                $line->setPriceActual($item->getPrice());
+                $line->setPriceAdjusted($item->getPrice());
+                $line->setPriceDiscount($item->getItemDiscountPrice());
+                $line->setPvActual(9999.99);
+                $line->setPvDiscount($item->getPvDiscount());
+            }
+            /* process lots for order line */
+            $lots = $line->getLots();
+            $lot = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
+            $lot->setIdOdoo($item->getOdooIdLot());
+            $lot->setQuantity($item->getLotQty());
+            /* save results into line */
+            $lots[] = $lot;
+            $line->setLots($lots);
+            $lines[$productIdOdoo] = $line;
         }
         $result->setLines($lines);
         /* Collect order itself data */

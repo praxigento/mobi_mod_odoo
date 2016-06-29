@@ -6,7 +6,6 @@
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 use Magento\Framework\Webapi\ServiceInputProcessor;
-use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\ISaleOrder;
 
@@ -37,7 +36,8 @@ class SaleOrder implements ISaleOrder
         $cover = $this->_rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
         $error = $cover->getError();
-        $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
-        return $result;
+//        $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
+        /* TODO: convert ass. array into data object */
+        return $data;
     }
 }

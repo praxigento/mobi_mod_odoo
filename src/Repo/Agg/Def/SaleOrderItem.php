@@ -48,6 +48,7 @@ class SaleOrderItem implements \Praxigento\Odoo\Repo\Agg\ISaleOrderItem
         throw new \Exception("this method is not implemented yet.");
     }
 
+    /** @inheritdoc */
     public function getByOrderAndStock($orderId, $stockId)
     {
         $result = [];

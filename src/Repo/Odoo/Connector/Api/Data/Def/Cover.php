@@ -10,7 +10,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 
 class Cover extends DataObject implements ICover
 {
-    const PATH_RESULT_DATA = '/result/data';
+    const PATH_RESULT_DATA = '/result';
 
     public function getResultData()
     {
