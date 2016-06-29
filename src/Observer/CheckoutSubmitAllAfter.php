@@ -41,6 +41,7 @@ class CheckoutSubmitAllAfter implements ObserverInterface
         if ($state == \Magento\Sales\Model\Order::STATE_PROCESSING) {
             $this->_logger->debug("Call to Odoo service to replicate order.");
             $req = new RequestOrderSave();
+            $req->setSaleOrder($order);
             /** @var ResponseOrderSave $resp */
             $resp = $this->_callReplicate->orderSave($req);
         }
