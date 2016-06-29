@@ -40,8 +40,10 @@ class SalesOrderInvoicePay implements ObserverInterface
         if ($state == \Magento\Sales\Model\Order\Invoice::STATE_PAID) {
             $this->_logger->debug("Call to Odoo service to replicate order.");
             $req = new RequestOrderSave();
+            $order = $invoice->getOrder();
+            $req->setSaleOrder($order);
             /** @var ResponseOrderSave $resp */
-//            $resp = $this->_callReplicate->orderSave($req);
+            $resp = $this->_callReplicate->orderSave($req);
         }
         return;
     }

@@ -11,44 +11,47 @@ use Praxigento\Odoo\Data\Entity\IOdooEntity;
 abstract class OdooEntity extends EntityBase implements IOdooEntity
 {
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
+    public function getDateReplicated()
+    {
+        $result = parent::getData(static::ATTR_DATE_REPLICATED);
+        return $result;
+    }
+
+    /** @inheritdoc */
     public function getMageRef()
     {
         $result = parent::getData(static::ATTR_MAGE_REF);
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getOdooRef()
     {
         $result = parent::getData(static::ATTR_ODOO_REF);
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getPrimaryKeyAttrs()
     {
         $result = [static::ATTR_MAGE_REF];
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
+    public function setDateReplicated($data)
+    {
+        parent::setData(static::ATTR_DATE_REPLICATED, $data);
+    }
+
+    /** @inheritdoc */
     public function setMageRef($data)
     {
         parent::setData(static::ATTR_MAGE_REF, $data);
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function setOdooRef($data)
     {
         parent::setData(static::ATTR_ODOO_REF, $data);
