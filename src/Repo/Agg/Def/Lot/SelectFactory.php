@@ -2,11 +2,9 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-
 namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
 
 use Magento\Framework\App\ResourceConnection;
-use Praxigento\Core\Repo\IHasSelectQuery;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Repo\Agg\ILot;
@@ -15,7 +13,8 @@ use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 /**
  * Compose SELECT query to get Lot aggregate.
  */
-class SelectFactory implements IHasSelectQuery
+class SelectFactory
+    implements \Praxigento\Core\Repo\Query\IHasSelect
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;

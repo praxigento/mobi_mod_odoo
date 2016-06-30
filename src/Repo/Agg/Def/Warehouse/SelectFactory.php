@@ -14,7 +14,7 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 /**
  * Compose SELECT query to get Warehouse aggregate.
  */
-class SelectFactory implements \Praxigento\Core\Repo\IHasSelectQuery
+class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;

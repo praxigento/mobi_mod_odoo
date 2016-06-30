@@ -15,7 +15,7 @@ use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EntityWrhsQtySale;
 /**
  * Compose SELECT query to get Sale Order Item aggregate.
  */
-class SelectFactory implements \Praxigento\Core\Repo\IHasSelectQuery
+class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
 {
     /**#@+
      * Query parameters names.
