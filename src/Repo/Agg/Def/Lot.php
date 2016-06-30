@@ -6,15 +6,15 @@
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Core\Repo\Def\Aggregate as BaseAggRepo;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
-use Praxigento\Odoo\Repo\Agg\ILot;
 use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
-class Lot extends BaseAggRepo implements ILot
+class Lot
+    extends \Praxigento\Core\Repo\Def\BaseCrud
+    implements \Praxigento\Odoo\Repo\Agg\ILot
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
