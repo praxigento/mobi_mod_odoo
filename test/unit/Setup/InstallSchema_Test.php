@@ -5,10 +5,11 @@
 namespace Praxigento\Odoo\Setup;
 
 use Praxigento\Odoo\Data\Entity\Category;
+use Praxigento\Odoo\Data\Entity\Customer;
 use Praxigento\Odoo\Data\Entity\Lot;
 use Praxigento\Odoo\Data\Entity\Product;
+use Praxigento\Odoo\Data\Entity\SaleOrder;
 use Praxigento\Odoo\Data\Entity\Warehouse;
-
 
 include_once(__DIR__ . '/../phpunit_bootstrap.php');
 
@@ -57,8 +58,10 @@ class InstallSchema_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_toolDem->createEntity($entityAlias, $demEntity);
         //
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Category::ENTITY_NAME, anything()]);
+        $this->mToolDem->shouldReceive('createEntity')->withArgs([Customer::ENTITY_NAME, anything()]);
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Lot::ENTITY_NAME, anything()]);
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Product::ENTITY_NAME, anything()]);
+        $this->mToolDem->shouldReceive('createEntity')->withArgs([SaleOrder::ENTITY_NAME, anything()]);
         $this->mToolDem->shouldReceive('createEntity')->withArgs([Warehouse::ENTITY_NAME, anything()]);
         // $setup->endSetup();
         $this->mSetup

@@ -12,7 +12,7 @@ class Cover_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_accessors()
     {
         $RESULT = 'result data';
-        $DATA = ['result' => ['data' => $RESULT]];
+        $DATA = ['result' => $RESULT];
         $obj = new Cover($DATA);
         $this->assertEquals($RESULT, $obj->getResultData());
     }

@@ -36,9 +36,11 @@ class Pv_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Test Data === */
         $STOCK_ITEM_ID = 21;
         $PV = 43;
-        $DATA = [
-            EntityPvStockItem::ATTR_PV => $PV
-        ];
+        $DATA = new \Praxigento\Pv\Data\Entity\Stock\Item(
+            [
+                EntityPvStockItem::ATTR_PV => $PV
+            ]
+        );
         /** === Setup Mocks === */
         // $data = $this->_repoPvStockItem->getById($stockItemMageId);
         $this->mRepoPvStockItem

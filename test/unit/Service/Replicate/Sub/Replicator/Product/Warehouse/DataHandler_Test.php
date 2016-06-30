@@ -99,6 +99,8 @@ class DataHandler_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->andReturn($QTY);
         // $stockItem->setQty($qtyTotal);
         $STOCK_ITEM->shouldReceive('setQty');
+        // $stockItem->setIsInStock($isInStock);
+        $STOCK_ITEM->shouldReceive('setIsInStock');
         // $this->_mageRepoStockItem->save($stockItem);
         $this->mMageRepoStockItem
             ->shouldReceive('save')->once();
