@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate;
 
-use Praxigento\Core\Repo\ITransactionManager;
+use Praxigento\Core\Repo\Transaction\IManager;
 use Praxigento\Odoo\Data\Api\IBundle;
 use Praxigento\Odoo\Repo\Odoo\IInventory as RepoOdooIInventory;
 use Praxigento\Odoo\Repo\Odoo\ISaleOrder as RepoOdooISaleOrder;
@@ -14,7 +14,7 @@ use Praxigento\Odoo\Service\Replicate;
 
 class Call implements IReplicate
 {
-    /** @var  ITransactionManager */
+    /** @var  IManager */
     protected $_manTrans;
     /** @var RepoOdooIInventory */
     protected $_repoOdooInventory;
@@ -27,7 +27,7 @@ class Call implements IReplicate
 
 
     public function __construct(
-        \Praxigento\Core\Repo\ITransactionManager $manTrans,
+        \Praxigento\Core\Repo\Transaction\IManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\Collector $subCollector,

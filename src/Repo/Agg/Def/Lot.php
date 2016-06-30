@@ -22,7 +22,7 @@ class Lot extends BaseAggRepo implements ILot
     protected $_factorySelect;
     /** @var  ObjectManagerInterface */
     protected $_manObj;
-    /** @var  \Praxigento\Core\Repo\ITransactionManager */
+    /** @var  \Praxigento\Core\Repo\Transaction\IManager */
     protected $_manTrans;
     /** @var IRepoEntityLot */
     protected $_repoEntityLot;
@@ -33,7 +33,7 @@ class Lot extends BaseAggRepo implements ILot
 
     public function __construct(
         ObjectManagerInterface $manObj,
-        \Praxigento\Core\Repo\ITransactionManager $manTrans,
+        \Praxigento\Core\Repo\Transaction\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
         IRepoWrhsEntityLot $repoWrhsEntityLot,
         IRepoEntityLot $repoEntityLot,
