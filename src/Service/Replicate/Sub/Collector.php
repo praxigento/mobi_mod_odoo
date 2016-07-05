@@ -123,7 +123,7 @@ class Collector
         $result->setPriceDiscountAdditional($priceDiscountTotal - $priceDiscountItems);
         $result->setPriceTax($priceTax);
         $result->setShippingMethod();
-        $result->setShippingPrice($priceShipping);
+        $result->setPriceShipping($priceShipping);
         $result->setWarehouseId($stockId);
 
         return $result;

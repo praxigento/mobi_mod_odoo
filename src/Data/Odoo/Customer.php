@@ -7,8 +7,8 @@ namespace Praxigento\Odoo\Data\Odoo;
 /**
  * @method int getIdMage()
  * @method void setIdMage(int $data)
- * @method string getMlmId()
- * @method void setMlmId(string $data)
+ * @method string getIdMlm()
+ * @method void setIdMlm(string $data)
  * @method string getName()
  * @method void setName(string $data)
  */

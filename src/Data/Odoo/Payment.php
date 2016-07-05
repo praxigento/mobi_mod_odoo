@@ -5,8 +5,8 @@
 namespace Praxigento\Odoo\Data\Odoo;
 
 /**
- * @method string getType()
- * @method void setType(string $data)
+ * @method string getCode()
+ * @method void setCode(string $data)
  * @method float getAmount()
  * @method void setAmount(float $data)
  */
