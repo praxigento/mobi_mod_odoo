@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Odoo;
+namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
 
 /**
  * @method int getIdMage()

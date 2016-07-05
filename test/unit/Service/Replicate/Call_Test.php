@@ -28,7 +28,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mRepoOdooInventory = $this->_mock(\Praxigento\Odoo\Repo\Odoo\IInventory::class);
         $this->mRepoOdooSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Odoo\ISaleOrder::class);
-        $this->mSubCollector = $this->_mock(Sub\Collector::class);
+        $this->mSubCollector = $this->_mock(Sub\OdooDataCollector::class);
         $this->mSubReplicator = $this->_mock(Sub\Replicator::class);
         /** create object to test */
         $this->obj = new Call(

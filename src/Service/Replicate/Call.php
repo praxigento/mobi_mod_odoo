@@ -22,7 +22,7 @@ class Call implements IReplicate
     protected $_repoOdooSaleOrder;
     /** @var  Sub\Replicator */
     protected $_subReplicator;
-    /** @var  Sub\Collector */
+    /** @var  Sub\OdooDataCollector */
     protected $_subCollector;
 
 
@@ -30,7 +30,7 @@ class Call implements IReplicate
         \Praxigento\Core\Repo\Transaction\IManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
-        Sub\Collector $subCollector,
+        Sub\OdooDataCollector $subCollector,
         Sub\Replicator $subReplicator
     ) {
         $this->_manTrans = $manTrans;
@@ -68,7 +68,7 @@ class Call implements IReplicate
     ) {
         $result = new Response\OrderSave();
         $mageOrder = $req->getSaleOrder();
-        $odooOrder = $this->_subCollector->getOdooOrderForMageOrder($mageOrder);
+        $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
         $resp = $this->_repoOdooSaleOrder->save($odooOrder);
         $result->setOdooResponse($resp);
         return $result;
