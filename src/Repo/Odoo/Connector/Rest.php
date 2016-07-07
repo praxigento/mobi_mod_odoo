@@ -60,7 +60,7 @@ class Rest
         $contextOpts = [
             'http' => [
                 'method' => $method,
-                'header' => "Content-Type: application/json; charset=utf-8\r\nCookie: session_id=$sessId",
+                'header' => "Content-Type: application/json\r\nCookie: session_id=$sessId",
                 'timeout' => $timeout,
                 'content' => $request
             ]

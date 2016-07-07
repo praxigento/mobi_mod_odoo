@@ -8,36 +8,26 @@ namespace Praxigento\Odoo\Data\Agg;
 use Flancer32\Lib\DataObject;
 
 /**
- * Aggregate for Sale Order Item data to be replicated to Odoo.
+ * Aggregate for Sale Order Item data to be replicated to Odoo. There are one or more aggregated lines for one Magento Sale Order Item (by lots used in the sale).
  */
 class SaleOrderItem extends DataObject
 {
     /**#@+
      * Aliases for data attributes.
      */
-    const AS_ITEM_DISCOUNT_PRICE = 'item_discount_price';
-    const AS_ITEM_DISCOUNT_PV = 'item_discount_pv';
     const AS_ITEM_QTY = 'item_qty';
     const AS_LOT_QTY = 'lot_qty';
     const AS_ODOO_ID_LOT = 'odoo_id_lot';
     const AS_ODOO_ID_PROD = 'odoo_id_prod';
-    const AS_PRICE = 'price';
+    const AS_PRICE_DISCOUNT = 'price_discount';
+    const AS_PRICE_TOTAL = 'price_total';
+    const AS_PRICE_UNIT = 'price_unit';
     const AS_PV_DISCOUNT = 'pv_discount';
     const AS_PV_SUBTOTAL = 'pv_subtotal';
     const AS_PV_TOTAL = 'pv_total';
-    /**#@- */
-    
-    public function getItemDiscountPrice()
-    {
-        $result = parent::getData(static::AS_ITEM_DISCOUNT_PRICE);
-        return $result;
-    }
+    const AS_PV_UNIT = 'pv_unit';
 
-    public function getItemDiscountPv()
-    {
-        $result = parent::getData(static::AS_ITEM_DISCOUNT_PV);
-        return $result;
-    }
+    /**#@- */
 
     public function getItemQty()
     {
@@ -63,9 +53,21 @@ class SaleOrderItem extends DataObject
         return $result;
     }
 
-    public function getPrice()
+    public function getPriceDiscount()
     {
-        $result = parent::getData(static::AS_PRICE);
+        $result = parent::getData(static::AS_PRICE_DISCOUNT);
+        return $result;
+    }
+
+    public function getPriceTotal()
+    {
+        $result = parent::getData(static::AS_PRICE_TOTAL);
+        return $result;
+    }
+
+    public function getPriceUnit()
+    {
+        $result = parent::getData(static::AS_PRICE_UNIT);
         return $result;
     }
 
@@ -87,15 +89,12 @@ class SaleOrderItem extends DataObject
         return $result;
     }
 
-    public function setItemDiscountPrice($data)
+    public function getPvUnit()
     {
-        parent::setData(static::AS_ITEM_DISCOUNT_PRICE, $data);
+        $result = parent::getData(static::AS_PV_UNIT);
+        return $result;
     }
 
-    public function setItemDiscountPv($data)
-    {
-        parent::setData(static::AS_ITEM_DISCOUNT_PV, $data);
-    }
 
     public function setItemQty($data)
     {
@@ -117,10 +116,21 @@ class SaleOrderItem extends DataObject
         parent::setData(static::AS_ODOO_ID_PROD, $data);
     }
 
-    public function setPrice($data)
+    public function setPriceDiscount($data)
     {
-        parent::setData(static::AS_PRICE, $data);
+        parent::setData(static::AS_PRICE_DISCOUNT, $data);
     }
+
+    public function setPriceTotal($data)
+    {
+        parent::setData(static::AS_PRICE_TOTAL, $data);
+    }
+
+    public function setPriceUnit($data)
+    {
+        parent::setData(static::AS_PRICE_UNIT, $data);
+    }
+
 
     public function setPvDiscount($data)
     {
@@ -135,6 +145,11 @@ class SaleOrderItem extends DataObject
     public function setPvTotal($data)
     {
         parent::setData(static::AS_PV_TOTAL, $data);
+    }
+
+    public function setPvUnit($data)
+    {
+        parent::setData(static::AS_PV_UNIT, $data);
     }
 
 

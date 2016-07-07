@@ -5,11 +5,13 @@
 namespace Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem;
 
 use Magento\Framework\App\ResourceConnection;
+use Magento\Sales\Api\Data\OrderItemInterface as MageEntityOrderItem;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\SaleOrderItem as Agg;
 use Praxigento\Odoo\Data\Entity\Lot as EntityOdooLot;
 use Praxigento\Odoo\Data\Entity\Product as EntityOdooProduct;
 use Praxigento\Pv\Data\Entity\Sale\Item as EntityPvSaleItem;
+use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
 use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EntityWrhsQtySale;
 
 /**
@@ -51,23 +53,28 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $asSaleItem = 'saleItem';
         $asStockItem = 'stockItem';
         $asPvSaleItem = 'pvSaleItem';
+        $asPvStockItem = 'pvStockItem';
         $asQtySale = 'wrhsQtySale';
         $asOdooProd = 'odooProd';
         $asOdooLot = 'odooLot';
         $tblSaleItem = [$asSaleItem => $this->_conn->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER_ITEM)];
         $tblStockItem = [$asStockItem => $this->_conn->getTableName(Cfg::ENTITY_MAGE_CATALOGINVENTORY_STOCK_ITEM)];
         $tblPvSaleItem = [$asPvSaleItem => EntityPvSaleItem::ENTITY_NAME];
+        $tblPvStockItem = [$asPvStockItem => EntityPvStockItem::ENTITY_NAME];
         $tblQtySale = [$asQtySale => EntityWrhsQtySale::ENTITY_NAME];
         $tblOdooProd = [$asOdooProd => EntityOdooProduct::ENTITY_NAME];
         $tblOdooLot = [$asOdooLot => EntityOdooLot::ENTITY_NAME];
         /* FROM sales_order_item */
         $cols = [
-            Agg::AS_ITEM_QTY => Cfg::E_SALE_ORDER_ITEM_A_QTY_INVOICED
+            Agg::AS_ITEM_QTY => MageEntityOrderItem::QTY_INVOICED,
+            Agg::AS_PRICE_DISCOUNT => MageEntityOrderItem::BASE_DISCOUNT_INVOICED,
+            Agg::AS_PRICE_TOTAL => MageEntityOrderItem::BASE_ROW_TOTAL,
+            Agg::AS_PRICE_UNIT => MageEntityOrderItem::BASE_PRICE,
         ];
         $result->from($tblSaleItem, $cols);
         /* LEFT JOIN cataloginventory_stock_item */
         $cols = [];
-        $on = $asStockItem . '.' . Cfg::E_CATINV_STOCK_ITEM_A_PROD_ID . '=' . $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
+        $on = $asStockItem . '.' . Cfg::E_CATINV_STOCK_ITEM_A_PROD_ID . '=' . $asSaleItem . '.' . MageEntityOrderItem::PRODUCT_ID;
         $on .= ' AND ' . $asStockItem . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:' . self::PARAM_STOCK_ID;
         $result->joinLeft($tblStockItem, $on, $cols);
         /* LEFT JOIN prxgt_odoo_prod */
@@ -82,13 +89,19 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
             Agg::AS_PV_DISCOUNT => EntityPvSaleItem::ATTR_DISCOUNT,
             Agg::AS_PV_TOTAL => EntityPvSaleItem::ATTR_TOTAL
         ];
-        $on = $asPvSaleItem . '.' . EntityPvSaleItem::ATTR_SALE_ITEM_ID . '=' . $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
+        $on = $asPvSaleItem . '.' . EntityPvSaleItem::ATTR_SALE_ITEM_ID . '=' . $asSaleItem . '.' . MageEntityOrderItem::ITEM_ID;
         $result->joinLeft($tblPvSaleItem, $on, $cols);
+        /* LEFT JOIN prxgt_pv_stock_item */
+        $cols = [
+            Agg::AS_PV_UNIT => EntityPvStockItem::ATTR_PV
+        ];
+        $on = $asPvStockItem . '.' . EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . $asSaleItem . '.' . MageEntityOrderItem::ITEM_ID;
+        $result->joinLeft($tblPvStockItem, $on, $cols);
         /* LEFT JOIN prxgt_wrhs_qty_sale */
         $cols = [
             Agg::AS_LOT_QTY => EntityWrhsQtySale::ATTR_TOTAL
         ];
-        $on = $asQtySale . '.' . EntityWrhsQtySale::ATTR_SALE_ITEM_REF . '=' . $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
+        $on = $asQtySale . '.' . EntityWrhsQtySale::ATTR_SALE_ITEM_REF . '=' . $asSaleItem . '.' . MageEntityOrderItem::ITEM_ID;
         $result->joinLeft($tblQtySale, $on, $cols);
         /* LEFT JOIN prxgt_odoo_lot */
         $cols = [
@@ -97,7 +110,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $on = $asOdooLot . '.' . EntityOdooLot::ATTR_MAGE_REF . '=' . $asQtySale . '.' . EntityWrhsQtySale::ATTR_LOT_REF;
         $result->joinLeft($tblOdooLot, $on, $cols);
         /* WHERE ... */
-        $where = $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ORDER_ID . '=:' . self::PARAM_ORDER_ID;
+        $where = $asSaleItem . '.' . MageEntityOrderItem::ORDER_ID . '=:' . self::PARAM_ORDER_ID;
         $result->where($where);
         return $result;
     }

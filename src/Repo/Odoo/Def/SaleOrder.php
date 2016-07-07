@@ -33,7 +33,7 @@ class SaleOrder implements ISaleOrder
         $underscored = $order->getData(null, true);
         $params = [self::ODOO_DATA => $underscored];
         /* perform request and extract result data */
-        $cover = $this->_rest->request($params, self::ROUTE);
+        $cover = $this->_rest->request($underscored, self::ROUTE);
         $data = $cover->getResultData();
         $error = $cover->getError();
 //        $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
