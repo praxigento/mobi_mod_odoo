@@ -59,7 +59,7 @@ class Product
     public function create($sku, $name, $isActive, $priceWholesale, $weight)
     {
         $this->_logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
-        if ($sku == '1835MY' || $sku == '2078AU'|| $sku == '2361JP') {
+        if ($sku == '1835MY' || $sku == '2078AU' || $sku == '2361JP') {
             $name = $sku . ' - ' . $name;
         }
         /**
@@ -102,6 +102,7 @@ class Product
      */
     public function update($mageId, $name, $isActive, $priceWholesale, $weight)
     {
+        $this->_logger->debug("Update product (id: $mageId; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->_mageRepoProd->getById($mageId);
         // SKU should not be changed
