@@ -32,7 +32,7 @@ class ProductReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_save()
     {
         /** === Test Data === */
-        $DATA = new \Praxigento\Odoo\Data\Api\Def\Bundle();
+        $DATA = new \Praxigento\Odoo\Data\Odoo\Inventory();
         /** === Setup Mocks === */
         // $req = $this->manObj->create(\Praxigento\Odoo\Service\Replicate\Request\ProductSave::class);
         $this->mManObj

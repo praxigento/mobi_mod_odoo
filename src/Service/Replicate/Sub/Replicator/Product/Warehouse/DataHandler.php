@@ -80,7 +80,7 @@ class DataHandler
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\ILot[] $lots
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\ILot[] $lots
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
      */
     public function processLots($lots, $stockItem)

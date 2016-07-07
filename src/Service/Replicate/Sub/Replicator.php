@@ -9,8 +9,8 @@ use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
-use Praxigento\Odoo\Data\Api\Bundle\ILot as ApiLot;
-use Praxigento\Odoo\Data\Api\Bundle\IWarehouse as ApiWarehouse;
+use Praxigento\Odoo\Data\Odoo\Inventory\Lot as ApiLot;
+use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as ApiWarehouse;
 use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
 use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoAggWarehouse;
 use Praxigento\Odoo\Repo\IPv as IRepoPv;
@@ -64,8 +64,8 @@ class Replicator
         /** @var  $data AggLot */
         $data = $this->_manObj->create(AggLot::class);
         foreach ($lots as $item) {
-            $data->setOdooId($item->getId());
-            $data->setCode($item->getCode());
+            $data->setOdooId($item->getIdOdoo());
+            $data->setCode($item->getNumber());
             $data->setExpDate($item->getExpirationDate());
             $lotExists = $this->_repoAggLot->getByOdooId($data->getOdooId());
             if (!$lotExists) {
@@ -75,25 +75,25 @@ class Replicator
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Api\Bundle\IProduct $product
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\IProduct $product
      */
     public function processProductItem($product)
     {
-        assert($product instanceof \Praxigento\Odoo\Data\Api\Bundle\IProduct);
-        $idOdoo = $product->getId();
+        assert($product instanceof \Praxigento\Odoo\Data\Odoo\Inventory\IProduct);
+        $idOdoo = $product->getIdOdoo();
         $sku = $product->getSku();
         $name = $product->getName();
         $isActive = $product->getIsActive();
         $skipReplication = false; // skip replication for inactive products are missed in Mage
         $priceWholesale = $product->getPrice();
         $weight = $product->getWeight();
-        $pvWholesale = $product->getPv();
+        $pvWholesale = $product->getPvWholesale();
         /* check does product item is already registered in Magento */
         if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
                 $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $pvWholesale, $weight);
-                
+
                 $this->_repoRegistry->registerProduct($idMage, $idOdoo);
                 $this->_repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
@@ -125,7 +125,7 @@ class Replicator
     public function processWarehouses($warehouses)
     {
         foreach ($warehouses as $item) {
-            $odooId = $item->getId();
+            $odooId = $item->getIdOdoo();
             $found = $this->_repoAggWrhs->getByOdooId($odooId);
             if (!$found) {
                 /** @var  $aggData AggWarehouse */

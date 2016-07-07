@@ -61,7 +61,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processLots()
     {
         /** === Test Data === */
-        $LOT = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\ILot::class);
+        $LOT = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\ILot::class);
         $LOT->shouldReceive('getId', 'getCode', 'getExpirationDate');
         $LOTS = [$LOT];
         /** === Setup Mocks === */
@@ -85,7 +85,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_active()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IProduct::class);
+        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
         $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
         $ID_MAGE = 21;
         /** === Setup Mocks === */
@@ -126,7 +126,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_inactive()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IProduct::class);
+        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
         $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
         /** === Setup Mocks === */
         // $isActive = $product->getIsActive();
@@ -143,7 +143,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_update()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IProduct::class);
+        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
         $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
         $ID_MAGE = 21;
         /** === Setup Mocks === */
@@ -188,7 +188,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processWarehouses()
     {
         /** === Test Data === */
-        $WRHS = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IWarehouse::class);
+        $WRHS = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IWarehouse::class);
         $WRHS->shouldReceive('getId', 'getCurrency', 'getCode');
         $WRHSS = [$WRHS];
         /** === Setup Mocks === */

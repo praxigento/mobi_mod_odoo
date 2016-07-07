@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
     <!-- Logger -->
     <virtualType name="loggerOdoo" type="Praxigento\Logging\Logger">
@@ -18,59 +17,34 @@
     </type>
 
     <!-- API -->
-    <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface"
-            type="Praxigento\Odoo\Api\Def\ProductReplicator"/>
+    <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface" type="Praxigento\Odoo\Api\Def\ProductReplicator"/>
 
     <!-- Data / API -->
-    <preference for="Praxigento\Odoo\Data\Api\IBundle"
-            type="Praxigento\Odoo\Data\Api\Def\Bundle"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\ILot"
-            type="Praxigento\Odoo\Data\Api\Bundle\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\IOption"
-            type="Praxigento\Odoo\Data\Api\Bundle\Def\Option"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\IProduct"
-            type="Praxigento\Odoo\Data\Api\Bundle\Def\Product"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\Product\IWarehouse"
-            type="Praxigento\Odoo\Data\Api\Bundle\Product\Def\Warehouse"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\ILot"
-            type="Praxigento\Odoo\Data\Api\Bundle\Product\Warehouse\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Data\Api\Bundle\IWarehouse"
-            type="Praxigento\Odoo\Data\Api\Bundle\Def\Warehouse"/>
+
 
     <!-- Console (CLI Commands) -->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item
-                        name="prxgt_odoo_replicate_products_command"
-                        xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products</item>
+                <item name="prxgt_odoo_replicate_products_command" xsi:type="object">Praxigento\Odoo\Console\Command\Replicate\Products</item>
             </argument>
         </arguments>
     </type>
 
     <!-- Repo -->
-    <preference for="Praxigento\Odoo\Repo\IRegistry"
-            type="Praxigento\Odoo\Repo\Def\Registry"/>
-    <preference for="Praxigento\Odoo\Repo\IPv"
-            type="\Praxigento\Odoo\Repo\Def\Pv"/>
+    <preference for="Praxigento\Odoo\Repo\IRegistry" type="Praxigento\Odoo\Repo\Def\Registry"/>
+    <preference for="Praxigento\Odoo\Repo\IPv" type="\Praxigento\Odoo\Repo\Def\Pv"/>
 
     <!-- Repo / Agg -->
-    <preference for="Praxigento\Odoo\Repo\Agg\ILot"
-            type="Praxigento\Odoo\Repo\Agg\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\ISaleOrderItem"
-            type="Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\IWarehouse"
-            type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\ILot" type="Praxigento\Odoo\Repo\Agg\Def\Lot"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\ISaleOrderItem" type="Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Def\Warehouse"/>
 
     <!-- Repo / Entity -->
-    <preference for="Praxigento\Odoo\Repo\Entity\ICategory"
-            type="Praxigento\Odoo\Repo\Entity\Def\Category"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\ILot"
-            type="Praxigento\Odoo\Repo\Entity\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\IProduct"
-            type="Praxigento\Odoo\Repo\Entity\Def\Product"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse"
-            type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
+    <preference for="Praxigento\Odoo\Repo\Entity\ICategory" type="Praxigento\Odoo\Repo\Entity\Def\Category"/>
+    <preference for="Praxigento\Odoo\Repo\Entity\ILot" type="Praxigento\Odoo\Repo\Entity\Def\Lot"/>
+    <preference for="Praxigento\Odoo\Repo\Entity\IProduct" type="Praxigento\Odoo\Repo\Entity\Def\Product"/>
+    <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse" type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
 
     <!-- Odoo API repo -->
     <virtualType name="odooTestConfigParams" type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params">
@@ -84,20 +58,14 @@
         </arguments>
     </virtualType>
 
-    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory"
-            type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder"
-            type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication"
-            type="odooTestConfigParams"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection"
-            type="odooTestConfigParams"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin"
-            type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory" type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication" type="odooTestConfigParams"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection" type="odooTestConfigParams"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin" type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
 
     <!-- Services -->
-    <preference for="Praxigento\Odoo\Service\IReplicate"
-            type="Praxigento\Odoo\Service\Replicate\Call"/>
+    <preference for="Praxigento\Odoo\Service\IReplicate" type="Praxigento\Odoo\Service\Replicate\Call"/>
 
 </config>

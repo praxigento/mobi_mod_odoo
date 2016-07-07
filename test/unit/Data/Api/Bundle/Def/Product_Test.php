@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Api\Bundle\Def;
+namespace Praxigento\Odoo\Data\Odoo\Inventory\Def;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
@@ -33,20 +33,20 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $WEIGHT = 'weight';
         /** === Call and asserts  === */
         $this->obj->setCategories($CATEGORIES);
-        $this->obj->setId($ID);
+        $this->obj->setIdOdoo($ID);
         $this->obj->setIsActive($IS_ACTIVE);
         $this->obj->setName($NAME);
         $this->obj->setPrice($PRICE);
-        $this->obj->setPv($PV);
+        $this->obj->setPvWholesale($PV);
         $this->obj->setSku($SKU);
         $this->obj->setWarehouses($WAREHOUSE);
         $this->obj->setWeight($WEIGHT);
         $this->assertEquals($CATEGORIES, $this->obj->getCategories());
-        $this->assertEquals($ID, $this->obj->getId());
+        $this->assertEquals($ID, $this->obj->getIdOdoo());
         $this->assertEquals($IS_ACTIVE, $this->obj->getIsActive());
         $this->assertEquals($NAME, $this->obj->getName());
         $this->assertEquals($PRICE, $this->obj->getPrice());
-        $this->assertEquals($PV, $this->obj->getPv());
+        $this->assertEquals($PV, $this->obj->getPvWholesale());
         $this->assertEquals($SKU, $this->obj->getSku());
         $this->assertEquals($WAREHOUSE, $this->obj->getWarehouses());
         $this->assertEquals($WEIGHT, $this->obj->getWeight());

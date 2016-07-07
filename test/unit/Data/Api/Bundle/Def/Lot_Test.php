@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Api\Bundle\Def;
+namespace Praxigento\Odoo\Data\Odoo\Inventory\Def;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
@@ -26,12 +26,12 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $EXP_DATE = 'exp date';
         $ID = 'id';
         /** === Call and asserts  === */
-        $this->obj->setCode($CODE);
+        $this->obj->setNumber($CODE);
         $this->obj->setExpirationDate($EXP_DATE);
-        $this->obj->setId($ID);
-        $this->assertEquals($CODE, $this->obj->getCode());
+        $this->obj->setIdOdoo($ID);
+        $this->assertEquals($CODE, $this->obj->getNumber());
         $this->assertEquals($EXP_DATE, $this->obj->getExpirationDate());
-        $this->assertEquals($ID, $this->obj->getId());
+        $this->assertEquals($ID, $this->obj->getIdOdoo());
     }
 
 }

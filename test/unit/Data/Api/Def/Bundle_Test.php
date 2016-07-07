@@ -2,21 +2,21 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Api\Def;
+namespace Praxigento\Odoo\Data\Odoo\Def;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
 
 class Bundle_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 {
-    /** @var  Bundle */
+    /** @var  Inventory */
     private $obj;
 
     protected function setUp()
     {
         parent::setUp();
         /** create object to test */
-        $this->obj = new Bundle();
+        $this->obj = new Inventory();
     }
 
     public function test_accessors()

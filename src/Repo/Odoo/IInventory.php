@@ -5,15 +5,13 @@
 
 namespace Praxigento\Odoo\Repo\Odoo;
 
-use Praxigento\Odoo\Data\Api\IBundle;
-
 interface IInventory
 {
     /**
      * Get products data from Odoo.
      *
      * @param int[] $ids Odoo IDs of the products to get data.
-     * @return IBundle
+     * @return IInventory
      */
     public function get($ids = null);
 

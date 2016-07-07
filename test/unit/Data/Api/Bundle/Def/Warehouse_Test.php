@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Data\Api\Bundle\Def;
+namespace Praxigento\Odoo\Data\Odoo\Inventory\Def;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
@@ -28,10 +28,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Call and asserts  === */
         $this->obj->setCode($CODE);
         $this->obj->setCurrency($CUR);
-        $this->obj->setId($ID);
+        $this->obj->setIdOdoo($ID);
         $this->assertEquals($CODE, $this->obj->getCode());
         $this->assertEquals($CUR, $this->obj->getCurrency());
-        $this->assertEquals($ID, $this->obj->getId());
+        $this->assertEquals($ID, $this->obj->getIdOdoo());
     }
 
 }

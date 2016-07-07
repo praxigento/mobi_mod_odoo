@@ -5,12 +5,52 @@
 namespace Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse;
 
 /**
- * @method int getIdOdoo()
- * @method void setIdOdoo(int $data)
- * @method float getQuantity()
- * @method void setQuantity(float $data)
+ * Lot data for the product on the warehouse.
+ *
+ * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
-class Lot extends \Flancer32\Lib\DataObject
+class Lot 
+    extends \Flancer32\Lib\DataObject
 {
+    /**
+     * Get Odoo ID of the lot.
+     *
+     * @return  int|null
+     */
+    public function getIdOdoo()
+    {
+        $result = parent::getIdOdoo();
+        return $result;
+    }
 
+    /**
+     * Get quantity of the product on the warehouse.
+     *
+     * @return double
+     */
+    public function getQuantity()
+    {
+        $result = parent::getQuantity();
+        return $result;
+    }
+
+    /**
+     * Set Odoo ID of the lot.
+     *
+     * @param int $data
+     */
+    public function setIdOdoo($data)
+    {
+        parent::setIdOdoo($data);
+    }
+
+    /**
+     * Set quantity of the product on the warehouse.
+     *
+     * @param double $data
+     */
+    public function setQuantity($data)
+    {
+        parent::setQuantity($data);
+    }
 }

@@ -68,7 +68,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // lots
         $WRHS1_LOT1_QTY = 10;
         $WRHS1_LOTS = [1];
-        $WRHS_1 = new \Praxigento\Odoo\Data\Api\Bundle\Product\Def\Warehouse();
+        $WRHS_1 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Def\Warehouse();
         $WRHS_1->setId($WRHS1_ID_ODOO);
         $WRHS_1->setPv($WRHS1_PV);
         $WRHS_1->setPrice($WRHS1_PRICE);
@@ -78,7 +78,7 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $WRHS2_PV = 546;
         $WRHS2_PRICE = 21.23;
         $WRHS2_LOTS = [];
-        $WRHS_2 = new \Praxigento\Odoo\Data\Api\Bundle\Product\Def\Warehouse();
+        $WRHS_2 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Def\Warehouse();
         $WRHS_2->setId($WRHS2_ID_ODOO);
         $WRHS_2->setPv($WRHS2_PV);
         $WRHS_2->setPrice($WRHS2_PRICE);

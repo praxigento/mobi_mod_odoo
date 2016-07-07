@@ -21,5 +21,5 @@ use Praxigento\Odoo\Data\Odoo\Shipment;
  */
 class Response extends \Flancer32\Lib\DataObject
 {
-   
+
 }

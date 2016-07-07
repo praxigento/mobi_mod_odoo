@@ -50,7 +50,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         /** === Test Data === */
         $PROD_ID = 21;
-        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Api\IBundle::class);
+        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
         $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
         /** === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
@@ -62,7 +62,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_doProductReplication($bundle);
         //
         // $products = $bundle->getProducts();
-        $mProd = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IProduct::class);
+        $mProd = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
         $BUNDLE->shouldReceive('getProducts')->once()
             ->andReturn([$PROD_ID => $mProd]);
         // $this->_subReplicator->processWarehouses($warehouses);
@@ -92,7 +92,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         /** === Test Data === */
         $PROD_ID_ODOO = 21;
-        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Api\IBundle::class);
+        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
         $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
         /** === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
@@ -108,7 +108,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_doProductReplication($bundle);
         //
         // $products = $bundle->getProducts();
-        $mProd = $this->_mock(\Praxigento\Odoo\Data\Api\Bundle\IProduct::class);
+        $mProd = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
         $BUNDLE->shouldReceive('getProducts')->once()
             ->andReturn([$PROD_ID_ODOO => $mProd]);
         // $this->_subReplicator->processWarehouses($warehouses);

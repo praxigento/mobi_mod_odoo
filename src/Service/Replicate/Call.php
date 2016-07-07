@@ -5,20 +5,17 @@
 
 namespace Praxigento\Odoo\Service\Replicate;
 
-use Praxigento\Core\Repo\Transaction\IManager;
-use Praxigento\Odoo\Data\Api\IBundle;
-use Praxigento\Odoo\Repo\Odoo\IInventory as RepoOdooIInventory;
-use Praxigento\Odoo\Repo\Odoo\ISaleOrder as RepoOdooISaleOrder;
+use Praxigento\Odoo\Data\Odoo\Inventory;
 use Praxigento\Odoo\Service\IReplicate;
 use Praxigento\Odoo\Service\Replicate;
 
 class Call implements IReplicate
 {
-    /** @var  IManager */
+    /** @var  \Praxigento\Core\Repo\Transaction\IManager */
     protected $_manTrans;
-    /** @var RepoOdooIInventory */
+    /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
     protected $_repoOdooInventory;
-    /** @var RepoOdooISaleOrder */
+    /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
     protected $_repoOdooSaleOrder;
     /** @var  Sub\Replicator */
     protected $_subReplicator;
@@ -43,16 +40,16 @@ class Call implements IReplicate
     /**
      * Perform products bundle replication.
      *
-     * @param IBundle $bundle
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory $inventory
      * @throws \Exception
      */
     protected function _doProductReplication(
-        IBundle $bundle
+        \Praxigento\Odoo\Data\Odoo\Inventory $inventory
     ) {
-        $options = $bundle->getOption();
-        $warehouses = $bundle->getWarehouses();
-        $lots = $bundle->getLots();
-        $products = $bundle->getProducts();
+        $options = $inventory->getOption();
+        $warehouses = $inventory->getWarehouses();
+        $lots = $inventory->getLots();
+        $products = $inventory->getProducts();
         /* replicate warehouses & lots */
         $this->_subReplicator->processWarehouses($warehouses);
         $this->_subReplicator->processLots($lots);
@@ -79,7 +76,7 @@ class Call implements IReplicate
         Request\ProductSave $req
     ) {
         $result = new Response\ProductSave();
-        /** @var  $bundle IBundle */
+        /** @var  $bundle \Praxigento\Odoo\Data\Odoo\Inventory */
         $bundle = $req->getProductBundle();
         /* replicate all data in one transaction */
         $trans = $this->_manTrans->transactionBegin();
@@ -103,7 +100,7 @@ class Call implements IReplicate
         $trans = $this->_manTrans->transactionBegin();
         try {
             $ids = $req->getOdooIds();
-            /** @var  $bundle IBundle */
+            /** @var  $bundle IInventory */
             $bundle = $this->_repoOdooInventory->get($ids);
             $this->_doProductReplication($bundle);
             $this->_manTrans->transactionCommit($trans);
