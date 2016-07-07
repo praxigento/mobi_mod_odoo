@@ -24,14 +24,14 @@ class Product
     protected $_manObj;
 
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $manObj,
         \Psr\Log\LoggerInterface $logger,
+        \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $mageRepoAttrSet,
         \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd
 
     ) {
-        $this->_manObj = $manObj;
         $this->_logger = $logger;
+        $this->_manObj = $manObj;
         $this->_mageRepoAttrSet = $mageRepoAttrSet;
         $this->_mageRepoProd = $mageRepoProd;
     }
@@ -59,9 +59,6 @@ class Product
     public function create($sku, $name, $isActive, $priceWholesale, $weight)
     {
         $this->_logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
-        if ($sku == '1835MY' || $sku == '2078AU' || $sku == '2361JP') {
-            $name = $sku . ' - ' . $name;
-        }
         /**
          * Retrieve attribute set ID.
          */
@@ -85,6 +82,7 @@ class Product
         $product->setWeight($weight);
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
+        $product->setUrlKey($sku); // MOBI-331 : use SKU as URL Key instead of Product Name
         $saved = $this->_mageRepoProd->save($product);
         /* return product ID */
         $result = $saved->getId();

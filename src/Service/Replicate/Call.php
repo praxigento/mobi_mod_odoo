@@ -21,15 +21,18 @@ class Call implements IReplicate
     protected $_subReplicator;
     /** @var  Sub\OdooDataCollector */
     protected $_subCollector;
-
+    /** @var \Psr\Log\LoggerInterface */
+    protected $_logger;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Praxigento\Core\Repo\Transaction\IManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\OdooDataCollector $subCollector,
         Sub\Replicator $subReplicator
     ) {
+        $this->_logger = $logger;
         $this->_manTrans = $manTrans;
         $this->_repoOdooInventory = $repoOdooInventory;
         $this->_repoOdooSaleOrder = $repoOdooSaleOrder;
@@ -100,15 +103,16 @@ class Call implements IReplicate
         $trans = $this->_manTrans->transactionBegin();
         try {
             $ids = $req->getOdooIds();
-            /** @var  $inventory IInventory */
+            /** @var  $inventory Inventory */
             $inventory = $this->_repoOdooInventory->get($ids);
             $this->_doProductReplication($inventory);
             $this->_manTrans->transactionCommit($trans);
             $result->markSucceed();
         } catch (\Exception $e) {
-            $msg = $e->getMessage();
-            $trace = $e->getTrace();
+            $msg = 'Product replication from Odoo is failed. Error: ' . $e->getMessage();
+            $this->_logger->emergency($msg);
             $traceStr = $e->getTraceAsString();
+            $this->_logger->emergency($$traceStr);
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);
