@@ -75,17 +75,17 @@ class Replicator
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\IProduct $product
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product $product
      */
     public function processProductItem($product)
     {
-        assert($product instanceof \Praxigento\Odoo\Data\Odoo\Inventory\IProduct);
+        assert($product instanceof \Praxigento\Odoo\Data\Odoo\Inventory\Product);
         $idOdoo = $product->getIdOdoo();
         $sku = $product->getSku();
         $name = $product->getName();
         $isActive = $product->getIsActive();
         $skipReplication = false; // skip replication for inactive products are missed in Mage
-        $priceWholesale = $product->getPrice();
+        $priceWholesale = $product->getPriceWholesale();
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
         /* check does product item is already registered in Magento */

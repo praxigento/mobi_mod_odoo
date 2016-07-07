@@ -11,25 +11,27 @@ use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
-use Magento\Framework\ObjectManagerInterface;
 
 class Product
 {
+    /** @var \Psr\Log\LoggerInterface */
+    protected $_logger;
     /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
     protected $_mageRepoAttrSet;
-    /** @var IProductRepo */
+    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     protected $_mageRepoProd;
-    /** @var   ObjectManagerInterface */
+    /** @var   \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
-
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $mageRepoAttrSet,
         \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd
 
     ) {
         $this->_manObj = $manObj;
+        $this->_logger = $logger;
         $this->_mageRepoAttrSet = $mageRepoAttrSet;
         $this->_mageRepoProd = $mageRepoProd;
     }
@@ -56,6 +58,10 @@ class Product
      */
     public function create($sku, $name, $isActive, $priceWholesale, $weight)
     {
+        $this->_logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
+        if ($sku == '1835MY' || $sku == '2078AU'|| $sku == '2361JP') {
+            $name = $sku . ' - ' . $name;
+        }
         /**
          * Retrieve attribute set ID.
          */

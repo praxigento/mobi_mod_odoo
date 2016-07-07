@@ -15,6 +15,11 @@
             <argument name="logger" xsi:type="object">loggerOdoo</argument>
         </arguments>
     </type>
+    <type name="Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product">
+        <arguments>
+            <argument name="logger" xsi:type="object">loggerOdoo</argument>
+        </arguments>
+    </type>
 
     <!-- API -->
     <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface" type="Praxigento\Odoo\Api\Def\ProductReplicator"/>

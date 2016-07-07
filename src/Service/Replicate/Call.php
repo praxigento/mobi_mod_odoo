@@ -100,11 +100,15 @@ class Call implements IReplicate
         $trans = $this->_manTrans->transactionBegin();
         try {
             $ids = $req->getOdooIds();
-            /** @var  $bundle IInventory */
-            $bundle = $this->_repoOdooInventory->get($ids);
-            $this->_doProductReplication($bundle);
+            /** @var  $inventory IInventory */
+            $inventory = $this->_repoOdooInventory->get($ids);
+            $this->_doProductReplication($inventory);
             $this->_manTrans->transactionCommit($trans);
             $result->markSucceed();
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            $trace = $e->getTrace();
+            $traceStr = $e->getTraceAsString();
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);
