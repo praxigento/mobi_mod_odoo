@@ -27,7 +27,7 @@ class Lot
      * Clean up extra lots for the stock item.
      *
      * @param int $stockItemId Magento ID for stock item.
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\ILot[] $lots list of the actual lots.
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot[] $lots list of the actual lots.
      */
     public function cleanupLots($stockItemId, $lots)
     {
@@ -42,7 +42,7 @@ class Lot
         // create map for Lots from request
         $mapOdooExist = [];
         foreach ($lots as $lot) {
-            $lotIdOdoo = $lot->getId();
+            $lotIdOdoo = $lot->getIdOdoo();
             $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
             $mapOdooExist[] = $lotIdMage;
         }
@@ -60,12 +60,12 @@ class Lot
      * Process lot data (create or update quantities).
      *
      * @param int $stockItemId Magento ID for stock item related to the lot.
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\ILot $lot
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot $lot
      * @return double quantity of the product in the lot
      */
     public function processLot($stockItemId, $lot)
     {
-        $lotIdOdoo = $lot->getId();
+        $lotIdOdoo = $lot->getIdOdoo();
         $qty = $lot->getQuantity();
         $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
         $pk = [

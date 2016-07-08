@@ -50,7 +50,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('get')->once()
             ->andReturn($LOTS_EXIST);
         // $lotIdOdoo = $lot->getId();
-        $mLot = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\ILot::class);
+        $mLot = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot::class);
         $LOTS[] = $mLot;
         $mLot->shouldReceive('getId')->once()
             ->andReturn($LOT_ID_O1);

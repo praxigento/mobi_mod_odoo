@@ -132,7 +132,7 @@ class Replicator
                 $aggData = $this->_manObj->create(AggWarehouse::class);
                 $aggData->setOdooId($odooId);
                 $aggData->setCurrency($item->getCurrency());
-                $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_BASE);
+                $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_ADMIN);
                 $aggData->setCode($item->getCode());
                 $aggData->setNote('replicated from Odoo');
                 $created = $this->_repoAggWrhs->create($aggData);

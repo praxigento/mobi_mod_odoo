@@ -112,7 +112,7 @@ class Call implements IReplicate
             $msg = 'Product replication from Odoo is failed. Error: ' . $e->getMessage();
             $this->_logger->emergency($msg);
             $traceStr = $e->getTraceAsString();
-            $this->_logger->emergency($$traceStr);
+            $this->_logger->emergency($traceStr);
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);

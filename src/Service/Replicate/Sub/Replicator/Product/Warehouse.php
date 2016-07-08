@@ -82,9 +82,9 @@ class Warehouse
         $mapItemsByStock = $this->_mapStockIds($stockItems);
         $stocksFound = [];    // array of the replicated warehouses with correspondence in $stockItems
         foreach ($warehouses as $warehouse) {
-            $stockIdOdoo = $warehouse->getId();
-            $pvWarehouse = $warehouse->getPv();
-            $priceWarehouse = $warehouse->getPrice();
+            $stockIdOdoo = $warehouse->getIdOdoo();
+            $pvWarehouse = $warehouse->getPvWarehouse();
+            $priceWarehouse = $warehouse->getPriceWarehouse();
             /* get warehouse data by Odoo ID */
             $stockIdMage = $this->_repoRegistry->getWarehouseMageIdByOdooId($stockIdOdoo);
             /* create or update product data for warehouse (stock)*/
