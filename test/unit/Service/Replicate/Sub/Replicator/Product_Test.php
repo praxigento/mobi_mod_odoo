@@ -21,11 +21,13 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         parent::setUp();
         /** create mocks */
+        $logger = $this->_mockLogger();
         $this->mManObj = $this->_mockObjectManager();
         $this->mMageRepoAttrSet = $this->_mock(\Magento\Catalog\Api\AttributeSetRepositoryInterface::class);
         $this->mMageRepoProd = $this->_mock(\Magento\Catalog\Api\ProductRepositoryInterface::class);
         /** create object to test */
         $this->obj = new Product(
+            $logger,
             $this->mManObj,
             $this->mMageRepoAttrSet,
             $this->mMageRepoProd
@@ -73,7 +75,7 @@ class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             ->shouldReceive('create')->once()
             ->andReturn($mProduct);
         $mProduct->shouldReceive('setSku', 'setName', 'setStatus', 'setPrice', 'setWeight', 'setAttributeSetId',
-            'setTypeId');
+            'setTypeId', 'setUrlKey');
         // $saved = $this->_mageRepoProd->save($product);
         $this->mMageRepoProd
             ->shouldReceive('save')->once()

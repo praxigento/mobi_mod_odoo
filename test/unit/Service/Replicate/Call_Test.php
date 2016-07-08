@@ -25,6 +25,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         parent::setUp();
         /** create mocks */
+        $logger = $this->_mockLogger();
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mRepoOdooInventory = $this->_mock(\Praxigento\Odoo\Repo\Odoo\IInventory::class);
         $this->mRepoOdooSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Odoo\ISaleOrder::class);
@@ -32,6 +33,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mSubReplicator = $this->_mock(Sub\Replicator::class);
         /** create object to test */
         $this->obj = new Call(
+            $logger,
             $this->mManTrans,
             $this->mRepoOdooInventory,
             $this->mRepoOdooSaleOrder,
@@ -49,9 +51,9 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_productSave()
     {
         /** === Test Data === */
-        $PROD_ID = 21;
-        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
-        $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
+        $BUNDLE = new \Praxigento\Odoo\Data\Odoo\Inventory();
+        $mProd = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
+        $BUNDLE->setProducts([$mProd]);
         /** === Setup Mocks === */
         // $trans = $this->_manTrans->transactionBegin();
         $mTrans = $this->_mockTransactionDefinition();
@@ -62,9 +64,6 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_doProductReplication($bundle);
         //
         // $products = $bundle->getProducts();
-        $mProd = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
-        $BUNDLE->shouldReceive('getProducts')->once()
-            ->andReturn([$PROD_ID => $mProd]);
         // $this->_subReplicator->processWarehouses($warehouses);
         $this->mSubReplicator
             ->shouldReceive('processWarehouses')->once();

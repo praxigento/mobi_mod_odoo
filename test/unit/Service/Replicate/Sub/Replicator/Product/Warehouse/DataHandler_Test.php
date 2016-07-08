@@ -84,7 +84,7 @@ class DataHandler_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processLots()
     {
         /** === Test Data === */
-        $LOT1 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Def\Lot();
+        $LOT1 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot();
         $LOTS = [$LOT1];
         $STOCK_ITEM_ID = 21;
         $STOCK_ITEM = $this->_mock(\Magento\CatalogInventory\Api\Data\StockItemInterface::class);

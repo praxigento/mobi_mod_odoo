@@ -68,20 +68,20 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // lots
         $WRHS1_LOT1_QTY = 10;
         $WRHS1_LOTS = [1];
-        $WRHS_1 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Def\Warehouse();
-        $WRHS_1->setId($WRHS1_ID_ODOO);
-        $WRHS_1->setPv($WRHS1_PV);
-        $WRHS_1->setPrice($WRHS1_PRICE);
+        $WRHS_1 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse();
+        $WRHS_1->setIdOdoo($WRHS1_ID_ODOO);
+        $WRHS_1->setPvWarehouse($WRHS1_PV);
+        $WRHS_1->setPriceWarehouse($WRHS1_PRICE);
         $WRHS_1->setLots($WRHS1_LOTS);
         /* this warehouse is missed in Mage */
         $WRHS2_ID_ODOO = 402;
         $WRHS2_PV = 546;
         $WRHS2_PRICE = 21.23;
         $WRHS2_LOTS = [];
-        $WRHS_2 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Def\Warehouse();
-        $WRHS_2->setId($WRHS2_ID_ODOO);
-        $WRHS_2->setPv($WRHS2_PV);
-        $WRHS_2->setPrice($WRHS2_PRICE);
+        $WRHS_2 = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse();
+        $WRHS_2->setIdOdoo($WRHS2_ID_ODOO);
+        $WRHS_2->setPvWarehouse($WRHS2_PV);
+        $WRHS_2->setPriceWarehouse($WRHS2_PRICE);
         $WRHS_2->setLots($WRHS2_LOTS);
         /* compose warehouses list */
         $WAREHOUSES = [$WRHS_1, $WRHS_2];

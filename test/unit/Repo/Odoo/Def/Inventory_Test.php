@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
-use Praxigento\Odoo\Data\Odoo\Inventory;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
@@ -15,7 +14,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mMageSrvInProc;
     /** @var  \Mockery\MockInterface */
     private $mRest;
-    /** @var  Inventory */
+    /** @var  \Praxigento\Odoo\Repo\Odoo\IInventory */
     private $obj;
 
     protected function setUp()
@@ -26,7 +25,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRest = $this->_mock(\Praxigento\Odoo\Repo\Odoo\Connector\Rest::class);
         /** setup mocks for constructor */
         /** create object to test */
-        $this->obj = new Inventory(
+        $this->obj = new \Praxigento\Odoo\Repo\Odoo\Def\Inventory(
             $this->mMageSrvInProc,
             $this->mRest
         );
@@ -49,7 +48,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
         $this->mMageSrvInProc
             ->shouldReceive('convertValue')->once()
-            ->with($DATA, IInventory::class)
+            ->with($DATA, \Praxigento\Odoo\Data\Odoo\Inventory::class)
             ->andReturn($RESULT);
         /** === Call and asserts  === */
         $res = $this->obj->get();
@@ -74,7 +73,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
         $this->mMageSrvInProc
             ->shouldReceive('convertValue')->once()
-            ->with($DATA, IInventory::class)
+            ->with($DATA, \Praxigento\Odoo\Data\Odoo\Inventory::class)
             ->andReturn($RESULT);
         /** === Call and asserts  === */
         $res = $this->obj->get($PARAM);
@@ -99,7 +98,7 @@ class Inventory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result = $this->_mageSrvInProc->convertValue($data, IBundle::class);
         $this->mMageSrvInProc
             ->shouldReceive('convertValue')->once()
-            ->with($DATA, IInventory::class)
+            ->with($DATA, \Praxigento\Odoo\Data\Odoo\Inventory::class)
             ->andReturn($RESULT);
         /** === Call and asserts  === */
         $res = $this->obj->get($PARAM);

@@ -33,16 +33,24 @@ class ProductReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         /** === Test Data === */
         $DATA = new \Praxigento\Odoo\Data\Odoo\Inventory();
+        $SUCCEED = true;
         /** === Setup Mocks === */
         // $req = $this->manObj->create(\Praxigento\Odoo\Service\Replicate\Request\ProductSave::class);
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn(new \Praxigento\Odoo\Service\Replicate\Request\ProductSave());
         // $resp = $this->_callOdooReplicate->productSave($req);
+        $mResp = $this->_mock(\Praxigento\Odoo\Service\Replicate\Response\ProductSave::class);
         $this->mCallOdooReplicate
-            ->shouldReceive('productSave')->once();
+            ->shouldReceive('productSave')->once()
+            ->andReturn($mResp);
+        // $result = $resp->isSucceed();
+        $mResp
+            ->shouldReceive('isSucceed')->once()
+            ->andReturn($SUCCEED);
         /** === Call and asserts  === */
-        $this->obj->save($DATA);
+        $res = $this->obj->save($DATA);
+        $this->assertEquals($SUCCEED, $res);
     }
 
 }

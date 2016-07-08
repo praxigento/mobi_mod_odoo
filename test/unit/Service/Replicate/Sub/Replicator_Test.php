@@ -61,8 +61,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processLots()
     {
         /** === Test Data === */
-        $LOT = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\ILot::class);
-        $LOT->shouldReceive('getId', 'getCode', 'getExpirationDate');
+        $LOT = new \Praxigento\Odoo\Data\Odoo\Inventory\Lot();
         $LOTS = [$LOT];
         /** === Setup Mocks === */
         // $data = $this->_manObj->create(AggLot::class);
@@ -85,13 +84,11 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_active()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
-        $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
         $ID_MAGE = 21;
+        $PROD = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
+        $PROD->setIsActive(true);
         /** === Setup Mocks === */
         // $isActive = $product->getIsActive();
-        $PROD->shouldReceive('getIsActive')->once()
-            ->andReturn(true);
         // if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
         $this->mRepoRegistry
             ->shouldReceive('isProductRegisteredInMage')->once()
@@ -107,7 +104,6 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoPv
             ->shouldReceive('registerProductWholesalePv')->once();
         // $categories = $product->getCategories();
-        $PROD->shouldReceive('getCategories')->once()->andReturn([]);
         // $this->_subProdCategory->checkCategoriesExistence($categories);
         $this->mSubProdCategory
             ->shouldReceive('checkCategoriesExistence')->once();
@@ -115,7 +111,6 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mSubProdCategory
             ->shouldReceive('replicateCategories')->once();
         // $warehouses = $product->getWarehouses();
-        $PROD->shouldReceive('getWarehouses')->once()->andReturn([]);
         // $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
         $this->mSubProdWarehouse
             ->shouldReceive('processWarehouses')->once();
@@ -126,12 +121,10 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_inactive()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
-        $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
+        $PROD = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
+        $PROD->setIsActive(false);
         /** === Setup Mocks === */
         // $isActive = $product->getIsActive();
-        $PROD->shouldReceive('getIsActive')->once()
-            ->andReturn(false);
         // if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
         $this->mRepoRegistry
             ->shouldReceive('isProductRegisteredInMage')->once()
@@ -143,13 +136,11 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processProductItem_update()
     {
         /** === Test Data === */
-        $PROD = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
-        $PROD->shouldReceive('getId', 'getSku', 'getName', 'getPrice', 'getWeight', 'getPv');
+        $PROD = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
+        $PROD->setIsActive(true);
         $ID_MAGE = 21;
         /** === Setup Mocks === */
         // $isActive = $product->getIsActive();
-        $PROD->shouldReceive('getIsActive')->once()
-            ->andReturn(true);
         // if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
         $this->mRepoRegistry
             ->shouldReceive('isProductRegisteredInMage')->once()
@@ -164,9 +155,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         $this->mRepoPv
             ->shouldReceive('updateProductWholesalePv')->once();
-
         // $categories = $product->getCategories();
-        $PROD->shouldReceive('getCategories')->once()->andReturn([]);
         // $this->_subProdCategory->checkCategoriesExistence($categories);
         $this->mSubProdCategory
             ->shouldReceive('checkCategoriesExistence')->once();
@@ -174,7 +163,6 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mSubProdCategory
             ->shouldReceive('replicateCategories')->once();
         // $warehouses = $product->getWarehouses();
-        $PROD->shouldReceive('getWarehouses')->once()->andReturn([]);
         // $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
         $this->mSubProdWarehouse
             ->shouldReceive('processWarehouses')->once();
@@ -188,8 +176,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_processWarehouses()
     {
         /** === Test Data === */
-        $WRHS = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IWarehouse::class);
-        $WRHS->shouldReceive('getId', 'getCurrency', 'getCode');
+        $WRHS = new \Praxigento\Odoo\Data\Odoo\Inventory\Warehouse();
         $WRHSS = [$WRHS];
         /** === Setup Mocks === */
         // $found = $this->_repoAggWrhs->getByOdooId($odooId);
