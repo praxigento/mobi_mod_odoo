@@ -41,7 +41,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         /* aliases and tables */
         $asStock = WrhsRepoAggWarehouse::AS_STOCK;
         $asOdoo = IWarehouse::AS_ODOO;
-        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
         /* LEFT JOIN prxgt_odoo_wrhs */
         $cols = [];
         $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
@@ -58,7 +58,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         /* aliases and tables */
         $asStock = WrhsRepoAggWarehouse::AS_STOCK;
         $asOdoo = IWarehouse::AS_ODOO;
-        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
         /* LEFT JOIN prxgt_odoo_wrhs */
         $cols = [
             AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_REF

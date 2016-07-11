@@ -34,8 +34,8 @@ class SelectFactory
         /* aliases and tables */
         $asWrhs = ILot::AS_WRHS;
         $asOdoo = ILot::AS_ODOO;
-        $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
-        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
+        $tblWrhs = [$asWrhs => $this->_resource->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityLot::ENTITY_NAME)];
         /* SELECT FROM prxgt_wrhs_lot */
         $cols = "COUNT(" . EntityWrhsLot::ATTR_ID . ")";
         $result->from($tblWrhs, $cols);
@@ -55,8 +55,8 @@ class SelectFactory
         /* aliases and tables */
         $asWrhs = ILot::AS_WRHS;
         $asOdoo = ILot::AS_ODOO;
-        $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
-        $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
+        $tblWrhs = [$asWrhs => $this->_resource->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityLot::ENTITY_NAME)];
         /* SELECT FROM prxgt_wrhs_lot */
         $cols = [
             AggLot::AS_ID => EntityWrhsLot::ATTR_ID,

@@ -57,8 +57,8 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $asQtySale = 'wrhsQtySale';
         $asOdooProd = 'odooProd';
         $asOdooLot = 'odooLot';
-        $tblSaleItem = [$asSaleItem => $this->_conn->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER_ITEM)];
-        $tblStockItem = [$asStockItem => $this->_conn->getTableName(Cfg::ENTITY_MAGE_CATALOGINVENTORY_STOCK_ITEM)];
+        $tblSaleItem = [$asSaleItem => $this->_resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER_ITEM)];
+        $tblStockItem = [$asStockItem => $this->_resource->getTableName(Cfg::ENTITY_MAGE_CATALOGINVENTORY_STOCK_ITEM)];
         $tblPvSaleItem = [$asPvSaleItem => EntityPvSaleItem::ENTITY_NAME];
         $tblPvStockItem = [$asPvStockItem => EntityPvStockItem::ENTITY_NAME];
         $tblQtySale = [$asQtySale => EntityWrhsQtySale::ENTITY_NAME];
