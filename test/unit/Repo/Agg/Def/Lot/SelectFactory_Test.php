@@ -40,9 +40,9 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mConn
             ->shouldReceive('select')->once()
             ->andReturn($mQuery);
-        // $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
-        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
-        $this->mConn
+        // $tblWrhs = [$asWrhs => $this->_resource->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        // $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityLot::ENTITY_NAME)];
+        $this->mResource
             ->shouldReceive('getTableName')->twice();
         // $result->from($tblWrhs, $cols);
         $mQuery->shouldReceive('from')->once();
@@ -59,9 +59,9 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mConn
             ->shouldReceive('select')->once()
             ->andReturn($mQuery);
-        // $tblWrhs = [$asWrhs => $this->_conn->getTableName(EntityWrhsLot::ENTITY_NAME)];
-        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityLot::ENTITY_NAME)];
-        $this->mConn
+        // $tblWrhs = [$asWrhs => $this->_resource->getTableName(EntityWrhsLot::ENTITY_NAME)];
+        // $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityLot::ENTITY_NAME)];
+        $this->mResource
             ->shouldReceive('getTableName')->twice();
         // $result->from($tblWrhs, $cols);
         $mQuery->shouldReceive('from')->once();

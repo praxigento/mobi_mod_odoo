@@ -51,8 +51,8 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsAggWarehouse
             ->shouldReceive('getQueryToSelectCount')->once()
             ->andReturn($mQuery);
-        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
-        $this->mConn
+        // $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $this->mResource
             ->shouldReceive('getTableName')->once();
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
@@ -69,8 +69,8 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsAggWarehouse
             ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
-        // $tblOdoo = [$asOdoo => $this->_conn->getTableName(EntityWarehouse::ENTITY_NAME)];
-        $this->mConn
+        // $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
+        $this->mResource
             ->shouldReceive('getTableName')->once();
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
