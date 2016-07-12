@@ -24,7 +24,8 @@ abstract class BaseOdooEntity
             is_array($items) &&
             (count($items) == 1)
         ) {
-            $result = reset($items);
+            $data = reset($items);
+            $result = new $this->_entityClassName($data);
         }
         return $result;
     }
