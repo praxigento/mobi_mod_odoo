@@ -185,13 +185,13 @@ class OdooDataCollector
         // shipping_method
         $shippingMethod = $this->_manBusinessCodes->getShippingMethodCode($mageOrder);
         // price_shipping
-        $priceShipping = $this->_manFormat->toNumber($mageOrder->getBaseShippingInvoiced());
+        $priceShipping = $this->_manFormat->toNumber($mageOrder->getBaseShippingAmount());
         // price_discount_additional
-        $priceDiscountAdditional = $this->_manFormat->toNumber($mageOrder->getBaseDiscountInvoiced());
+        $priceDiscountAdditional = $this->_manFormat->toNumber($mageOrder->getBaseDiscountAmount());
         // price_tax
-        $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxInvoiced());
+        $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
         // price_order_total
-        $priceOrderTotal = $this->_manFormat->toNumber($mageOrder->getBaseTotalInvoiced());
+        $priceOrderTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
         // pv_order_total (with date)
         $pvOrder = $this->_repoPvSale->getById($orderIdMage);
         $pvOrderTotal = $this->_manFormat->toNumber($pvOrder->getTotal());
