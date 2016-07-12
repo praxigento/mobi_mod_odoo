@@ -28,7 +28,7 @@ class Login implements ICached, ILogin
     const ODOO_PATH_SESSION_ID = '/result/session_id';
     const ODOO_PATH_USER_ID = '/result/uid';
     /**#@- */
-    
+
     /** @var  Adapter adapter for PHP functions to be mocked in tests */
     protected $_adapter;
     /**
@@ -114,9 +114,16 @@ class Login implements ICached, ILogin
             $response = $this->_adapter->decodeJson($contents);
             $respData = $this->_manObj->create(DataObject::class, ['arg1' => $response]);
             $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
-            $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
-            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using REST API. " . $this->_traceConnectionData();
-            $this->_logger->info($msg);
+            if ($this->_cachedOdooUserId) {
+                $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
+                $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using REST API. " . $this->_traceConnectionData();
+                $this->_logger->info($msg);
+            } else {
+                $this->_cachedOdooSessionId = null;
+                $msg = "Cannot be authenticated in Odoo with username '{$this->_authUser}'.";
+                $this->_logger->error($msg);
+                throw new \Exception($msg);
+            }
         }
         return $this->_cachedOdooSessionId;
     }
