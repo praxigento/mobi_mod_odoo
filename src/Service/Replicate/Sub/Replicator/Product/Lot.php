@@ -10,16 +10,16 @@ use Praxigento\Warehouse\Data\Entity\Quantity as EntityWarehouseQuantity;
 class Lot
 {
 
-    /** @var \Praxigento\Odoo\Repo\IRegistry */
-    protected $_repoRegistry;
+    /** @var \Praxigento\Odoo\Repo\Agg\ILot */
+    protected $_repoAggLot;
     /** @var  \Praxigento\Warehouse\Repo\Entity\IQuantity */
     protected $_repoWarehouseEntityQuantity;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
+        \Praxigento\Odoo\Repo\Agg\ILot $repoAggLot,
         \Praxigento\Warehouse\Repo\Entity\IQuantity $repoWarehouseEntityQuantity
     ) {
-        $this->_repoRegistry = $repoRegistry;
+        $this->_repoAggLot = $repoAggLot;
         $this->_repoWarehouseEntityQuantity = $repoWarehouseEntityQuantity;
     }
 
@@ -43,7 +43,7 @@ class Lot
         $mapOdooExist = [];
         foreach ($lots as $lot) {
             $lotIdOdoo = $lot->getIdOdoo();
-            $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
+            $lotIdMage = $this->_repoAggLot->getMageIdByOdooId($lotIdOdoo);
             $mapOdooExist[] = $lotIdMage;
         }
         $diff = array_diff($mapMageExist, $mapOdooExist);
@@ -67,7 +67,7 @@ class Lot
     {
         $lotIdOdoo = $lot->getIdOdoo();
         $qty = $lot->getQuantity();
-        $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
+        $lotIdMage = $this->_repoAggLot->getMageIdByOdooId($lotIdOdoo);
         $pk = [
             EntityWarehouseQuantity::ATTR_STOCK_ITEM_REF => $stockItemId,
             EntityWarehouseQuantity::ATTR_LOT_REF => $lotIdMage

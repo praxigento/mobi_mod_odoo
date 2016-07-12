@@ -21,6 +21,10 @@ class Lot extends DataObject
     const AS_ODOO_ID = 'odoo_id';
     /**#@- */
 
+    /** ID for the lot that is related to the Odoo products w/o lots */
+    const NULL_LOT_ID = 0;
+    const NULL_LOT_CODE = 'NULL_LOT';
+
     public function getCode()
     {
         $result = parent::getData(static::AS_CODE);

@@ -5,12 +5,9 @@
 
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
-use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
-use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
-use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
 class Lot
     extends \Praxigento\Core\Repo\Def\BaseCrud
@@ -20,23 +17,25 @@ class Lot
     protected $_conn;
     /** @var  Lot\SelectFactory */
     protected $_factorySelect;
-    /** @var  ObjectManagerInterface */
+    /** @var  bool 'true' if we know that NULL LOT is creatd */
+    protected $_isNullLotExist;
+    /** @var  \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
     /** @var  \Praxigento\Core\Repo\Transaction\IManager */
     protected $_manTrans;
-    /** @var IRepoEntityLot */
+    /** @var \Praxigento\Odoo\Repo\Entity\ILot */
     protected $_repoEntityLot;
-    /** @var  IRepoWrhsEntityLot */
+    /** @var  \Praxigento\Warehouse\Repo\Entity\ILot */
     protected $_repoWrhsEntityLot;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
 
     public function __construct(
-        ObjectManagerInterface $manObj,
+        \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Core\Repo\Transaction\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
-        IRepoWrhsEntityLot $repoWrhsEntityLot,
-        IRepoEntityLot $repoEntityLot,
+        \Praxigento\Warehouse\Repo\Entity\ILot $repoWrhsEntityLot,
+        \Praxigento\Odoo\Repo\Entity\ILot $repoEntityLot,
         Lot\SelectFactory $factorySelect
     ) {
         $this->_manObj = $manObj;
@@ -48,6 +47,25 @@ class Lot
         $this->_factorySelect = $factorySelect;
         /* init reference */
         $this->_refDataObject = new EntityLot();
+    }
+
+    /**
+     * Check that dedicated lot for Odoo products w/o lots exists (create if does not exist).
+     * @return AggLot
+     */
+    protected function _checkNullLot()
+    {
+        if (!$this->_isNullLotExist) {
+            $data = $this->_repoEntityLot->getByOdooId(AggLot::NULL_LOT_ID);
+            if (!$data) {
+                /* create NULL LOT */
+                $data = new AggLot();
+                $data->setCode(AggLot::NULL_LOT_CODE);
+                $data->setOdooId(AggLot::NULL_LOT_ID);
+                $this->create($data); // just create
+            }
+            $this->_isNullLotExist = true;
+        }
     }
 
     /** @inheritdoc */
@@ -99,6 +117,9 @@ class Lot
     public function getByOdooId($id)
     {
         $result = null;
+        if (is_null($id)) {
+            $this->_checkNullLot();
+        }
         $query = $this->_factorySelect->getSelectQuery();
         $where = static::AS_ODOO . '.' . EntityLot::ATTR_ODOO_REF . '=:id';
         $query->where($where);
@@ -114,6 +135,9 @@ class Lot
     /** @inheritdoc */
     public function getMageIdByOdooId($id)
     {
+        if (is_null($id)) {
+            $this->_checkNullLot();
+        }
         $result = $this->_repoEntityLot->getMageIdByOdooId($id);
         return $result;
     }

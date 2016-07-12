@@ -13,7 +13,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
 
     /** @var  \Mockery\MockInterface */
-    private $mRepoRegistry;
+    private $mRepoAggLot;
     /** @var  \Mockery\MockInterface */
     private $mRepoWrhsEntityQty;
     /** @var  Lot */
@@ -23,11 +23,11 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         parent::setUp();
         /** create mocks */
-        $this->mRepoRegistry = $this->_mock(\Praxigento\Odoo\Repo\IRegistry::class);
+        $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\ILot::class);
         $this->mRepoWrhsEntityQty = $this->_mock(\Praxigento\Warehouse\Repo\Entity\IQuantity::class);
         /** create object to test */
         $this->obj = new Lot(
-            $this->mRepoRegistry,
+            $this->mRepoAggLot,
             $this->mRepoWrhsEntityQty
         );
     }
@@ -53,9 +53,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $mLot = new \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot();
         $LOTS[] = $mLot;
         $mLot->setIdOdoo($LOT_ID_O1);
-        // $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
-        $this->mRepoRegistry
-            ->shouldReceive('getLotMageIdByOdooId')->once()
+        // $lotIdMage = $this->_repoAggLot->getMageIdByOdooId($lotIdOdoo);
+        $this->mRepoAggLot
+            ->shouldReceive('getMageIdByOdooId')->once()
             ->andReturn($LOT_ID_M1);
         // $this->_repoWarehouseEntityQuantity->deleteById($pk);
         $this->mRepoWrhsEntityQty
@@ -84,9 +84,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $LOT->setId($LOT_ID_O1);
         // $qty = $lot->getQuantity();
         $LOT->setQuantity($LOT_QTY);
-        // $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
-        $this->mRepoRegistry
-            ->shouldReceive('getLotMageIdByOdooId')->once()
+        // $lotIdMage = $this->_repoAggLot->getMageIdByOdooId($lotIdOdoo);
+        $this->mRepoAggLot
+            ->shouldReceive('getMageIdByOdooId')->once()
             ->andReturn($LOT_ID_M1);
         // $qtyItem = $this->_repoWarehouseEntityQuantity->getById($pk);
         $this->mRepoWrhsEntityQty
@@ -114,9 +114,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $LOT->setId($LOT_ID_O1);
         // $qty = $lot->getQuantity();
         $LOT->setQuantity($LOT_QTY);
-        // $lotIdMage = $this->_repoRegistry->getLotMageIdByOdooId($lotIdOdoo);
-        $this->mRepoRegistry
-            ->shouldReceive('getLotMageIdByOdooId')->once()
+        // $lotIdMage = $this->_repoAggLot->getMageIdByOdooId($lotIdOdoo);
+        $this->mRepoAggLot
+            ->shouldReceive('getMageIdByOdooId')->once()
             ->andReturn($LOT_ID_M1);
         // $qtyItem = $this->_repoWarehouseEntityQuantity->getById($pk);
         $this->mRepoWrhsEntityQty
