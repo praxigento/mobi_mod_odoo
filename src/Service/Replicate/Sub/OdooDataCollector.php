@@ -113,7 +113,9 @@ class OdooDataCollector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->_manFormat->toNumber($item->getLotQty());
-        $result->setIdOdoo($idOdoo);
+        if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) {
+            $result->setIdOdoo($idOdoo);
+        }
         $result->setQty($qty);
         return $result;
     }
