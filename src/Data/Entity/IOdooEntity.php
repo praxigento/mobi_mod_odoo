@@ -5,9 +5,11 @@
 
 namespace Praxigento\Odoo\Data\Entity;
 
-
 use Praxigento\Core\Data\IEntity;
 
+/**
+ * Interface for data object that has referenced Odoo entity.
+ */
 interface IOdooEntity extends IEntity
 {
     const ATTR_DATE_REPLICATED = 'date_replicated';

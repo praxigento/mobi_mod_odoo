@@ -50,9 +50,7 @@ class Lot
         $this->_refDataObject = new EntityLot();
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function create($data)
     {
         $trans = $this->_manTrans->transactionBegin();
@@ -81,9 +79,7 @@ class Lot
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getById($id)
     {
         $result = null;
@@ -99,9 +95,7 @@ class Lot
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getByOdooId($id)
     {
         $result = null;
@@ -117,9 +111,14 @@ class Lot
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
+    public function getMageIdByOdooId($id)
+    {
+        $result = $this->_repoEntityLot->getMageIdByOdooId($id);
+        return $result;
+    }
+
+    /** @inheritdoc */
     public function getQueryToSelect()
     {
         $result = $this->_factorySelect->getSelectQuery();
@@ -127,9 +126,7 @@ class Lot
 
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getQueryToSelectCount()
     {
         $result = $this->_factorySelect->getSelectCountQuery();

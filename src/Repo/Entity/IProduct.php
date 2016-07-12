@@ -5,6 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-interface IProduct extends \Praxigento\Core\Repo\IEntity
+interface IProduct 
+    extends \Praxigento\Odoo\Repo\Entity\IOdooEntity
 {
 }

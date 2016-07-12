@@ -5,10 +5,11 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-interface IWarehouse extends \Praxigento\Core\Repo\IEntity
+interface IWarehouse
+    extends \Praxigento\Odoo\Repo\Entity\IOdooEntity
 {
     /**
-     * Get the data instance by ID (ID can be an array for complex primary keys).
+     * @inheritdoc
      *
      * @param int $id
      * @return \Praxigento\Odoo\Data\Entity\Warehouse|bool Found instance data or 'false'

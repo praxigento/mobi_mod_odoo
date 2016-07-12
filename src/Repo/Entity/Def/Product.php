@@ -4,17 +4,15 @@
  */
 namespace Praxigento\Odoo\Repo\Entity\Def;
 
-use Magento\Framework\App\ResourceConnection;
-use Praxigento\Core\Repo\Def\Entity as BaseEntityRepo;
-use Praxigento\Core\Repo\IGeneric as IRepoBasic;
 use Praxigento\Odoo\Data\Entity\Product as Entity;
-use Praxigento\Odoo\Repo\Entity\IProduct as IEntityRepo;
 
-class Product extends BaseEntityRepo implements IEntityRepo
+class Product
+    extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
+    implements \Praxigento\Odoo\Repo\Entity\IProduct
 {
     public function __construct(
-        ResourceConnection $resource,
-        IRepoBasic $repoGeneric
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Praxigento\Core\Repo\IGeneric $repoGeneric
     ) {
         parent::__construct($resource, $repoGeneric, Entity::class);
     }

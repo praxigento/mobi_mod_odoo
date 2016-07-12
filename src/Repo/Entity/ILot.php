@@ -5,6 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-interface ILot extends \Praxigento\Core\Repo\IEntity
+interface ILot
+    extends \Praxigento\Odoo\Repo\Entity\IOdooEntity
 {
 }

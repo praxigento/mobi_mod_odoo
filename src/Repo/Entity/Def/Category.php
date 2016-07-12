@@ -4,17 +4,15 @@
  */
 namespace Praxigento\Odoo\Repo\Entity\Def;
 
-use Magento\Framework\App\ResourceConnection;
-use Praxigento\Core\Repo\Def\Entity as BaseEntityRepo;
-use Praxigento\Core\Repo\IGeneric as IRepoGeneric;
 use Praxigento\Odoo\Data\Entity\Category as Entity;
-use Praxigento\Odoo\Repo\Entity\ICategory as IEntityRepo;
 
-class Category extends BaseEntityRepo implements IEntityRepo
+class Category
+    extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
+    implements \Praxigento\Odoo\Repo\Entity\ICategory
 {
     public function __construct(
-        ResourceConnection $resource,
-        IRepoGeneric $repoGeneric
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Praxigento\Core\Repo\IGeneric $repoGeneric
     ) {
         parent::__construct($resource, $repoGeneric, Entity::class);
     }

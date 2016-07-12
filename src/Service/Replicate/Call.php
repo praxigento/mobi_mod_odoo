@@ -113,6 +113,7 @@ class Call implements IReplicate
             $this->_logger->emergency($msg);
             $traceStr = $e->getTraceAsString();
             $this->_logger->emergency($traceStr);
+            throw $e;
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->transactionClose($trans);

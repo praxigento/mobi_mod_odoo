@@ -5,13 +5,16 @@
 
 namespace Praxigento\Odoo\Repo;
 
-
+/**
+ * @deprecated use Aggregates & Entites repos instead.
+ */
 interface IRegistry
 {
     /**
      * Retrieve Mage ID for entity that is replicated with Odoo.
      * @param int $odooId ID in Odoo
      * @return int ID in Magento
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function getCategoryMageIdByOdooId($odooId);
 
@@ -19,6 +22,7 @@ interface IRegistry
      * Retrieve Mage ID for entity that is replicated with Odoo.     *
      * @param int $odooId ID in Odoo
      * @return int ID in Magento
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function getLotMageIdByOdooId($odooId);
 
@@ -26,6 +30,7 @@ interface IRegistry
      * Retrieve Mage ID for entity that is replicated with Odoo.
      * @param int $odooId ID in Odoo
      * @return int ID in Magento
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function getProductMageIdByOdooId($odooId);
 
@@ -33,6 +38,7 @@ interface IRegistry
      * Retrieve Mage ID for entity that is replicated with Odoo.
      * @param int $odooId ID in Odoo
      * @return int ID in Magento
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function getWarehouseMageIdByOdooId($odooId);
 
@@ -41,6 +47,7 @@ interface IRegistry
      *
      * @param int $odooId
      * @return bool
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function isProductRegisteredInMage($odooId);
 
@@ -48,6 +55,7 @@ interface IRegistry
      * Register relation between Mage & Odoo categories.
      * @param int $mageId
      * @param int $odooId
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function registerCategory($mageId, $odooId);
 
@@ -55,6 +63,7 @@ interface IRegistry
      * Register relation between Mage & Odoo products.
      * @param int $mageId
      * @param int $odooId
+     * @deprecated use Aggregates & Entites repos instead.
      */
     public function registerProduct($mageId, $odooId);
 }
