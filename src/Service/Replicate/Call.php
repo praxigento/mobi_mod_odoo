@@ -11,18 +11,18 @@ use Praxigento\Odoo\Service\Replicate;
 
 class Call implements IReplicate
 {
+    /** @var \Psr\Log\LoggerInterface */
+    protected $_logger;
     /** @var  \Praxigento\Core\Repo\Transaction\IManager */
     protected $_manTrans;
     /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
     protected $_repoOdooInventory;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
     protected $_repoOdooSaleOrder;
-    /** @var  Sub\Replicator */
-    protected $_subReplicator;
     /** @var  Sub\OdooDataCollector */
     protected $_subCollector;
-    /** @var \Psr\Log\LoggerInterface */
-    protected $_logger;
+    /** @var  Sub\Replicator */
+    protected $_subReplicator;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,

@@ -28,12 +28,16 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
 
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $_conn;
+    /** @var \Psr\Log\LoggerInterface */
+    protected $_logger;
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
 
     public function __construct(
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\App\ResourceConnection $resource
     ) {
+        $this->_logger = $logger;
         $this->_resource = $resource;
         $this->_conn = $resource->getConnection();
     }
@@ -66,10 +70,10 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $tblOdooLot = [$asOdooLot => EntityOdooLot::ENTITY_NAME];
         /* FROM sales_order_item */
         $cols = [
-            Agg::AS_ITEM_QTY => MageEntityOrderItem::QTY_INVOICED,
-            Agg::AS_PRICE_DISCOUNT => MageEntityOrderItem::BASE_DISCOUNT_INVOICED,
+            Agg::AS_ITEM_QTY => MageEntityOrderItem::QTY_ORDERED,
+            Agg::AS_PRICE_DISCOUNT => MageEntityOrderItem::BASE_DISCOUNT_AMOUNT,
             Agg::AS_PRICE_TOTAL => MageEntityOrderItem::BASE_ROW_TOTAL,
-            Agg::AS_PRICE_UNIT => MageEntityOrderItem::BASE_PRICE,
+            Agg::AS_PRICE_UNIT => MageEntityOrderItem::BASE_PRICE_INCL_TAX,
         ];
         $result->from($tblSaleItem, $cols);
         /* LEFT JOIN cataloginventory_stock_item */
@@ -112,6 +116,8 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         /* WHERE ... */
         $where = $asSaleItem . '.' . MageEntityOrderItem::ORDER_ID . '=:' . self::PARAM_ORDER_ID;
         $result->where($where);
+        /* log result SQL */
+        $this->_logger->info((string)$result);
         return $result;
     }
 }
