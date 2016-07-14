@@ -68,14 +68,14 @@ class OdooDataCollector
         $street = implode('', $street);
         $zip = $addrMage->getPostcode();
         /* init Odoo data object */
-        $result->setName($name);
-        $result->setPhone($phone);
-        $result->setEmail($email);
-        $result->setCountry($country);
-        $result->setState($state);
-        $result->setCity($city);
-        $result->setStreet($street);
-        $result->setZip($zip);
+        if ($name) $result->setName($name);
+        if ($phone) $result->setPhone($phone);
+        if ($email) $result->setEmail($email);
+        if ($country) $result->setCountry($country);
+        if ($state) $result->setState($state);
+        if ($city) $result->setCity($city);
+        if ($street) $result->setStreet($street);
+        if ($zip) $result->setZip($zip);
         return $result;
     }
 
@@ -113,9 +113,7 @@ class OdooDataCollector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->_manFormat->toNumber($item->getLotQty());
-        if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) {
-            $result->setIdOdoo($idOdoo);
-        }
+        if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
         $result->setQty($qty);
         return $result;
     }
