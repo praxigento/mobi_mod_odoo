@@ -51,9 +51,7 @@ class Warehouse
         $this->_factorySelect = $factorySelect;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function create($data)
     {
         /** @var  $result AggWarehouse */
@@ -78,9 +76,7 @@ class Warehouse
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getById($id)
     {
         $result = null;
@@ -94,9 +90,7 @@ class Warehouse
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getByOdooId($odooId)
     {
         /** @var  $result AggWarehouse */
@@ -111,21 +105,21 @@ class Warehouse
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getQueryToSelect()
     {
         $result = $this->_factorySelect->getSelectQuery();
         return $result;
     }
 
+    /** @inheritdoc */
     public function getQueryToSelectCount()
     {
         $result = $this->_factorySelect->getSelectCountQuery();
         return $result;
     }
 
+    /** @inheritdoc */
     public function updateById($id, $data)
     {
         $trans = $this->_manTrans->transactionBegin();
