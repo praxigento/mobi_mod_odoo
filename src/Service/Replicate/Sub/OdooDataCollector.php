@@ -192,7 +192,6 @@ class OdooDataCollector
         $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
         // price_order_total
         $priceOrderTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
-        $priceOrderTotal = $this->_manFormat->toNumber($priceOrderTotal - $priceTax);
         // pv_order_total (with date)
         $pvOrder = $this->_repoPvSale->getById($orderIdMage);
         $pvOrderTotal = $this->_manFormat->toNumber($pvOrder->getTotal());
@@ -284,7 +283,8 @@ class OdooDataCollector
         /* collect data */
         $magePayment = $mageOrder->getPayment();
         $code = $this->_manBusinessCodes->getPaymentMethodCode($magePayment);
-        $amount = $this->_manFormat->toNumber($magePayment->getBaseAmountPaid());
+        $ordered = $magePayment->getBaseAmountOrdered();
+        $amount = $this->_manFormat->toNumber($ordered);
         /* populate Odoo Data Object */
         $odooPayment->setCode($code);
         $odooPayment->setAmount($amount);
