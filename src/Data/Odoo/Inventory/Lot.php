@@ -73,6 +73,6 @@ class Lot
      */
     public function setNumber($data)
     {
-        parent::setCode($data);
+        parent::setNumber($data);
     }
 }
