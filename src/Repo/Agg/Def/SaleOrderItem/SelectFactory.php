@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem;
 
-use Magento\Framework\App\ResourceConnection;
 use Magento\Sales\Api\Data\OrderItemInterface as MageEntityOrderItem;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\SaleOrderItem as Agg;
@@ -99,7 +98,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $cols = [
             Agg::AS_PV_UNIT => EntityPvStockItem::ATTR_PV
         ];
-        $on = $asPvStockItem . '.' . EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . $asSaleItem . '.' . MageEntityOrderItem::ITEM_ID;
+        $on = $asPvStockItem . '.' . EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . $asStockItem . '.' . Cfg::E_CATINV_STOCK_ITEM_A_ITEM_ID;
         $result->joinLeft($tblPvStockItem, $on, $cols);
         /* LEFT JOIN prxgt_wrhs_qty_sale */
         $cols = [
