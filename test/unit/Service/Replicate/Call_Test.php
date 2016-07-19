@@ -55,11 +55,11 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $mProd = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
         $BUNDLE->setProducts([$mProd]);
         /** === Setup Mocks === */
-        // $trans = $this->_manTrans->transactionBegin();
-        $mTrans = $this->_mockTransactionDefinition();
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
         $this->mManTrans
-            ->shouldReceive('transactionBegin')->once()
-            ->andReturn($mTrans);
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
         //
         // $this->_doProductReplication($bundle);
         //
@@ -74,12 +74,12 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mSubReplicator
             ->shouldReceive('processProductItem')->once();
         //
-        // $this->_manTrans->transactionCommit($trans);
+        // $this->_manTrans->commit($def);
         $this->mManTrans
-            ->shouldReceive('transactionCommit')->once();
-        // $this->_manTrans->transactionClose($trans);
+            ->shouldReceive('commit')->once();
+        // $this->_manTrans->end($def);
         $this->mManTrans
-            ->shouldReceive('transactionClose')->once();
+            ->shouldReceive('end')->once();
         /** === Call and asserts  === */
         $req = new Request\ProductSave();
         $req->setProductBundle($BUNDLE);
@@ -94,11 +94,11 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
         $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
         /** === Setup Mocks === */
-        // $trans = $this->_manTrans->transactionBegin();
-        $mTrans = $this->_mockTransactionDefinition();
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
         $this->mManTrans
-            ->shouldReceive('transactionBegin')->once()
-            ->andReturn($mTrans);
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
         // $bundle = $this->_repoOdooInventory->get($ids);
         $this->mRepoOdooInventory
             ->shouldReceive('get')->once()
@@ -120,12 +120,12 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mSubReplicator
             ->shouldReceive('processProductItem')->once();
         //
-        // $this->_manTrans->transactionCommit($trans);
+        // $this->_manTrans->commit($def);
         $this->mManTrans
-            ->shouldReceive('transactionCommit')->once();
-        // $this->_manTrans->transactionClose($trans);
+            ->shouldReceive('commit')->once();
+        // $this->_manTrans->end($def);
         $this->mManTrans
-            ->shouldReceive('transactionClose')->once();
+            ->shouldReceive('end')->once();
         /** === Call and asserts  === */
         $req = new Request\ProductsFromOdoo();
         $req->setOdooIds($PROD_ID_ODOO);

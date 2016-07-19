@@ -21,7 +21,7 @@ class Lot
     protected $_isNullLotExist;
     /** @var  \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
-    /** @var  \Praxigento\Core\Repo\Transaction\IManager */
+    /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $_manTrans;
     /** @var \Praxigento\Odoo\Repo\Entity\ILot */
     protected $_repoEntityLot;
@@ -32,7 +32,7 @@ class Lot
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Core\Repo\Transaction\IManager $manTrans,
+        \Praxigento\Core\Transaction\Database\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Warehouse\Repo\Entity\ILot $repoWrhsEntityLot,
         \Praxigento\Odoo\Repo\Entity\ILot $repoEntityLot,
@@ -71,7 +71,7 @@ class Lot
     /** @inheritdoc */
     public function create($data)
     {
-        $trans = $this->_manTrans->transactionBegin();
+        $def = $this->_manTrans->begin();
         try {
             /* register lot in Warehouse module */
             $bind = [
@@ -86,13 +86,13 @@ class Lot
                 EntityLot::ATTR_ODOO_REF => $data->getOdooId()
             ];
             $this->_repoEntityLot->create($bind);
-            $this->_manTrans->transactionCommit($trans);
+            $this->_manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
             $result = $this->_manObj->create(AggLot::class);
             $result->setData($data);
             $result->setId($id);
         } finally {
-            $this->_manTrans->transactionClose($trans);
+            $this->_manTrans->end($def);
         }
         return $result;
     }

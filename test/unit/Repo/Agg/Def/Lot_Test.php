@@ -65,11 +65,11 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 54;
         $DATA = new AggLot([AggLot::AS_ODOO_ID => $ODOO_ID]);
         /** === Setup Mocks === */
-        // $trans = $this->_manTrans->transactionBegin();
-        $mTrans = $this->_mockTransactionDefinition();
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
         $this->mManTrans
-            ->shouldReceive('transactionBegin')->once()
-            ->andReturn($mTrans);
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
         // $id = $this->_repoWrhsEntityRepoLot->create($bind);
         $this->mRepoWrhsEntityLot
             ->shouldReceive('create')->once()
@@ -77,17 +77,15 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_repoEntityLot->create($bind);
         $this->mRepoEntityLot
             ->shouldReceive('create')->once();
-        // $this->_manTrans->transactionCommit($trans);
+        // $this->_manTrans->commit($def);
         $this->mManTrans
-            ->shouldReceive('transactionCommit')->once()
-            ->with($mTrans);
+            ->shouldReceive('commit')->once();
         // $result = $this->_manObj->create(AggLot::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggLot());
-        // $this->_manTrans->transactionClose($trans);
+        // $this->_manTrans->end($def);
         $this->mManTrans
-            ->shouldReceive('transactionClose')->once()
-            ->with($mTrans);
+            ->shouldReceive('end')->once();
         /** === Call and asserts  === */
         $res = $this->obj->create($DATA);
         $this->assertEquals($MAGE_ID, $res->getId());

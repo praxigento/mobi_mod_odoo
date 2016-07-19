@@ -66,11 +66,11 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 54;
         $DATA = new AggWarehouse([AggWarehouse::AS_ODOO_ID => $ODOO_ID]);
         /** === Setup Mocks === */
-        // $trans = $this->_manTrans->transactionBegin();
-        $mTrans = $this->_mockTransactionDefinition();
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
         $this->mManTrans
-            ->shouldReceive('transactionBegin')->once()
-            ->andReturn($mTrans);
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
         // $result = $this->_repoWrhsAggWarehouse->create($data);
         $mWrhsData = new WrhsAggWarehouse([WrhsAggWarehouse::AS_ID => $MAGE_ID]);
         $this->mRepoWrhsAggWarehouse
@@ -79,17 +79,15 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $this->_repoEntityWarehouse->create($bind);
         $this->mRepoEntityWarehouse
             ->shouldReceive('create')->once();
-        // $this->_manTrans->transactionCommit($trans);
+        // $this->_manTrans->commit($def);
         $this->mManTrans
-            ->shouldReceive('transactionCommit')->once()
-            ->with($mTrans);
+            ->shouldReceive('commit')->once();
         // $result = $this->_manObj->create(AggWarehouse::class);
         $this->mManObj->shouldReceive('create')->once()
             ->andReturn(new AggWarehouse());
-        // $this->_manTrans->transactionClose($trans);
+        // $this->_manTrans->end($def);
         $this->mManTrans
-            ->shouldReceive('transactionClose')->once()
-            ->with($mTrans);
+            ->shouldReceive('end')->once();
         /** === Call and asserts  === */
         $res = $this->obj->create($DATA);
 

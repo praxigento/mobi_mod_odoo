@@ -13,7 +13,7 @@ class Call implements IReplicate
 {
     /** @var \Psr\Log\LoggerInterface */
     protected $_logger;
-    /** @var  \Praxigento\Core\Repo\Transaction\IManager */
+    /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $_manTrans;
     /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
     protected $_repoOdooInventory;
@@ -26,7 +26,7 @@ class Call implements IReplicate
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
-        \Praxigento\Core\Repo\Transaction\IManager $manTrans,
+        \Praxigento\Core\Transaction\Database\IManager $manTrans,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\OdooDataCollector $subCollector,
@@ -82,14 +82,14 @@ class Call implements IReplicate
         /** @var  $bundle \Praxigento\Odoo\Data\Odoo\Inventory */
         $bundle = $req->getProductBundle();
         /* replicate all data in one transaction */
-        $trans = $this->_manTrans->transactionBegin();
+        $def = $this->_manTrans->begin();
         try {
             $this->_doProductReplication($bundle);
-            $this->_manTrans->transactionCommit($trans);
+            $this->_manTrans->commit($def);
             $result->markSucceed();
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
-            $this->_manTrans->transactionClose($trans);
+            $this->_manTrans->end($def);
         }
         return $result;
     }
@@ -100,13 +100,13 @@ class Call implements IReplicate
     ) {
         $result = new Response\ProductsFromOdoo();
         /* replicate all data in one transaction */
-        $trans = $this->_manTrans->transactionBegin();
+        $def = $this->_manTrans->begin();
         try {
             $ids = $req->getOdooIds();
             /** @var  $inventory Inventory */
             $inventory = $this->_repoOdooInventory->get($ids);
             $this->_doProductReplication($inventory);
-            $this->_manTrans->transactionCommit($trans);
+            $this->_manTrans->commit($def);
             $result->markSucceed();
         } catch (\Exception $e) {
             $msg = 'Product replication from Odoo is failed. Error: ' . $e->getMessage();
@@ -116,7 +116,7 @@ class Call implements IReplicate
             throw $e;
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
-            $this->_manTrans->transactionClose($trans);
+            $this->_manTrans->end($def);
         }
         return $result;
     }

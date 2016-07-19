@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Core\Repo\Transaction\IManager;
+use Praxigento\Core\Transaction\Database\IManager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
@@ -25,7 +25,7 @@ class Warehouse
     protected $_factorySelect;
     /** @var  ObjectManagerInterface */
     protected $_manObj;
-    /** @var  \Praxigento\Core\Repo\Transaction\IManager */
+    /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $_manTrans;
     /** @var  \Praxigento\Odoo\Repo\Entity\IWarehouse */
     protected $_repoEntityWarehouse;
@@ -56,7 +56,7 @@ class Warehouse
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $trans = $this->_manTrans->transactionBegin();
+        $def = $this->_manTrans->begin();
         try {
             $wrhsData = $this->_repoWrhsAggWarehouse->create($data);
             /* create odoo related entries */
@@ -65,13 +65,13 @@ class Warehouse
                 EntityWarehouse::ATTR_ODOO_REF => $data->getOdooId()
             ];
             $this->_repoEntityWarehouse->create($bind);
-            $this->_manTrans->transactionCommit($trans);
+            $this->_manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
             $result = $this->_manObj->create(AggWarehouse::class);
             $result->setData($wrhsData);
             $result->setOdooId($data->getOdooId());
         } finally {
-            $this->_manTrans->transactionClose($trans);
+            $this->_manTrans->end($def);
         }
         return $result;
     }
@@ -122,14 +122,14 @@ class Warehouse
     /** @inheritdoc */
     public function updateById($id, $data)
     {
-        $trans = $this->_manTrans->transactionBegin();
+        $def = $this->_manTrans->begin();
         try {
             $bind = [EntityWarehouse::ATTR_ODOO_REF => $data->getData(AggWarehouse::AS_ODOO_ID)];
             $this->_repoEntityWarehouse->updateById($id, $bind);
             $this->_repoWrhsAggWarehouse->updateById($id, $data);
-            $this->_manTrans->transactionCommit($trans);
+            $this->_manTrans->commit($def);
         } finally {
-            $this->_manTrans->transactionClose($trans);
+            $this->_manTrans->end($def);
         }
     }
 }
