@@ -90,9 +90,9 @@ class OdooDataCollector
         $productIdOdoo = (int)$item->getOdooIdProduct();
         $qtyLine = $this->_manFormat->toNumber($item->getItemQty());
         $priceSaleUnit = $this->_manFormat->toNumber($item->getPriceUnit());
-        $priceDiscountLine = $this->_manFormat->toNumber($item->getPriceDiscount());
+        $priceDiscountLine = abs($this->_manFormat->toNumber($item->getPriceDiscount()));
         $pvSaleUnit = $this->_manFormat->toNumber($item->getPvUnit());
-        $pvDiscountLine = $this->_manFormat->toNumber($item->getPvDiscount());
+        $pvDiscountLine = abs($this->_manFormat->toNumber($item->getPvDiscount()));
         /* init Odoo data object */
         $result->setProductIdOdoo($productIdOdoo);
         $result->setQtyLine($qtyLine);
@@ -185,7 +185,7 @@ class OdooDataCollector
         // price_shipping
         $priceShipping = $this->_manFormat->toNumber($mageOrder->getBaseShippingInclTax());
         // price_discount_additional
-        $priceDiscountAdditional = $this->_manFormat->toNumber($mageOrder->getBaseDiscountAmount());
+        $priceDiscountAdditional = abs($this->_manFormat->toNumber($mageOrder->getBaseDiscountAmount()));
         // price_tax
         $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
         // price_order_total
