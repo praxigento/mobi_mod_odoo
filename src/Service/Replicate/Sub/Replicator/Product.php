@@ -74,8 +74,8 @@ class Product
          */
         /** @var  $product ProductInterface */
         $product = $this->_manObj->create(ProductInterface::class);
-        $product->setSku($sku);
-        $product->setName($name);
+        $product->setSku(trim($sku));
+        $product->setName(trim($name));
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
         $product->setPrice($priceWholesale);
