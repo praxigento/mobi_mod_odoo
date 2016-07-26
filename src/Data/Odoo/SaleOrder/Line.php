@@ -15,12 +15,19 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setPriceSaleUnit(float $data)
  * @method float getPriceDiscountLine()
  * @method void setPriceDiscountLine(float $data)
+ * @method float getPriceTaxPercent()
+ * @method void setPriceTaxPercent(float $data)
+ * @method float getPriceTotalLine()
+ * @method void setPriceTotalLine(float $data)
+ * @method float getPriceTaxLine()
+ * @method void setPriceTaxLine(float $data)
  * @method float getPvSaleUnit()
  * @method void setPvSaleUnit(float $data)
  * @method float getPvDiscountLine()
  * @method void setPvDiscountLine(float $data)
  */
-class Line extends \Flancer32\Lib\DataObject
+class Line
+    extends \Flancer32\Lib\DataObject
 {
 
 }

@@ -15,5 +15,7 @@ class Config extends \Praxigento\Core\Config
     const MENU_CATALOG_LOTS = self::ACL_CATALOG_LOTS;
     const MENU_CATALOG_WAREHOUSES = self::ACL_CATALOG_WAREHOUSES;
     const MODULE = 'Praxigento_Odoo';
+    /** Number of digits to round to for Odoo API percents values. */
+    const ODOO_API_PERCENT_ROUND = 4;
     const ROUTE_NAME_ADMIN_CATALOG = WrhsCfg::ROUTE_NAME_ADMIN_CATALOG;
 }

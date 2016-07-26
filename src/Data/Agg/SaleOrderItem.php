@@ -20,8 +20,11 @@ class SaleOrderItem extends DataObject
     const AS_ODOO_ID_LOT = 'odoo_id_lot';
     const AS_ODOO_ID_PROD = 'odoo_id_prod';
     const AS_PRICE_DISCOUNT = 'price_discount';
+    const AS_PRICE_TAX_PERCENT = 'price_tax_percent';
     const AS_PRICE_TOTAL = 'price_total';
+    const AS_PRICE_TOTAL_WITH_TAX = 'price_total_with_tax';
     const AS_PRICE_UNIT = 'price_unit';
+    const AS_PRICE_UNIT_ORIG = 'price_unit_orig';
     const AS_PV_DISCOUNT = 'pv_discount';
     const AS_PV_SUBTOTAL = 'pv_subtotal';
     const AS_PV_TOTAL = 'pv_total';
@@ -59,15 +62,39 @@ class SaleOrderItem extends DataObject
         return $result;
     }
 
+    public function getPriceTax()
+    {
+        $result = parent::getData(static::AS_PRICE_TOTAL_WITH_TAX);
+        return $result;
+    }
+
+    public function getPriceTaxPercent()
+    {
+        $result = parent::getData(static::AS_PRICE_TAX_PERCENT);
+        return $result;
+    }
+
     public function getPriceTotal()
     {
         $result = parent::getData(static::AS_PRICE_TOTAL);
         return $result;
     }
 
+    public function getPriceTotalWithTax()
+    {
+        $result = parent::getData(static::AS_PRICE_TOTAL_WITH_TAX);
+        return $result;
+    }
+
     public function getPriceUnit()
     {
         $result = parent::getData(static::AS_PRICE_UNIT);
+        return $result;
+    }
+
+    public function getPriceUnitOrig()
+    {
+        $result = parent::getData(static::AS_PRICE_UNIT_ORIG);
         return $result;
     }
 
@@ -121,9 +148,24 @@ class SaleOrderItem extends DataObject
         parent::setData(static::AS_PRICE_DISCOUNT, $data);
     }
 
+    public function setPriceTax($data)
+    {
+        parent::setData(static::AS_PRICE_TOTAL_WITH_TAX, $data);
+    }
+
+    public function setPriceTaxPercent($data)
+    {
+        parent::setData(static::AS_PRICE_TAX_PERCENT, $data);
+    }
+
     public function setPriceTotal($data)
     {
         parent::setData(static::AS_PRICE_TOTAL, $data);
+    }
+
+    public function setPriceTotalWithTax($data)
+    {
+        parent::setData(static::AS_PRICE_TOTAL_WITH_TAX, $data);
     }
 
     public function setPriceUnit($data)
@@ -131,6 +173,10 @@ class SaleOrderItem extends DataObject
         parent::setData(static::AS_PRICE_UNIT, $data);
     }
 
+    public function setPriceUnitOrig($data)
+    {
+        parent::setData(static::AS_PRICE_UNIT_ORIG, $data);
+    }
 
     public function setPvDiscount($data)
     {

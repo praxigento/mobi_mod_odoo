@@ -34,7 +34,7 @@ class Call_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $req = new Request\OrderSave();
 
         /* load Magento order */
-        $mageOrder = $this->_mageRepoSaleOrder->get(1);
+        $mageOrder = $this->_mageRepoSaleOrder->get(3);
         $req->setSaleOrder($mageOrder);
         $resp = $this->obj->orderSave($req);
         $this->assertNotNull($resp);

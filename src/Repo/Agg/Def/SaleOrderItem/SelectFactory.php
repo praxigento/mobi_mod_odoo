@@ -71,7 +71,10 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $cols = [
             Agg::AS_ITEM_QTY => MageEntityOrderItem::QTY_ORDERED,
             Agg::AS_PRICE_DISCOUNT => MageEntityOrderItem::BASE_DISCOUNT_AMOUNT,
+            Agg::AS_PRICE_TAX_PERCENT => MageEntityOrderItem::TAX_PERCENT,
             Agg::AS_PRICE_TOTAL => MageEntityOrderItem::BASE_ROW_TOTAL,
+            Agg::AS_PRICE_TOTAL_WITH_TAX => MageEntityOrderItem::BASE_ROW_TOTAL_INCL_TAX,
+            Agg::AS_PRICE_UNIT_ORIG => MageEntityOrderItem::BASE_ORIGINAL_PRICE,
             Agg::AS_PRICE_UNIT => MageEntityOrderItem::BASE_PRICE_INCL_TAX,
         ];
         $result->from($tblSaleItem, $cols);
