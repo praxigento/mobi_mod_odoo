@@ -25,6 +25,8 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method void setPriceTotal(float $data)
  * @method float getPriceTax()
  * @method void setPriceTax(float $data)
+ * @method float getPriceDiscount()
+ * @method void setPriceDiscount(float $data)
  * @method float getPvTotal()
  * @method void setPvTotal(float $data)
  * @method SaleOrder\Line[] getLines()

@@ -11,6 +11,14 @@ use Praxigento\Odoo\Config as Cfg;
  */
 class OdooDataCollector
 {
+    /**#@+
+     * Labels for associative array with sum of totals by lines
+     */
+    const AMOUNT = 'amount';
+    const DISCOUNT = 'discount';
+    const TAX = 'tax';
+    /**#@- */
+
     /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
     protected $_manBusinessCodes;
     /** @var  \Praxigento\Core\Tool\IFormat */
@@ -91,30 +99,21 @@ class OdooDataCollector
         /* collect data */
         $productIdOdoo = (int)$item->getOdooIdProduct();
         $qtyLine = $this->_manFormat->toNumber($item->getItemQty());
-        $priceTaxPercent = $item->getPriceTaxPercent() / 100;
-        $priceTaxPercent = $this->_manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
+        /* price attributes */
+        $priceSaleUnit = $this->_manFormat->toNumber($item->getPriceUnitOrig());
         $priceDiscountLine = abs($this->_manFormat->toNumber($item->getPriceDiscount()));
+        /* price related calculated attributes */
+        $priceTaxPercent = $this->_manFormat->toNumber(
+            $item->getPriceTaxPercent() / 100,
+            Cfg::ODOO_API_PERCENT_ROUND
+        );
+        $priceTotalLine = ($qtyLine * $priceSaleUnit - $priceDiscountLine) * (1 + $priceTaxPercent);
+        $priceTotalLine = $this->_manFormat->toNumber($priceTotalLine);
+        $priceTaxLine = $priceTotalLine / (1 + $priceTaxPercent) * $priceTaxPercent;
+        $priceTaxLine = $this->_manFormat->toNumber($priceTaxLine);
+        /* PV attributes */
         $pvSaleUnit = $this->_manFormat->toNumber($item->getPvUnit());
         $pvDiscountLine = abs($this->_manFormat->toNumber($item->getPvDiscount()));
-        $unitPriceOrig = $this->_manFormat->toNumber($item->getPriceUnitOrig());
-        $unitPriceWithTax = $this->_manFormat->toNumber($item->getPriceUnit());
-        $isTaxIncluded = abs($unitPriceOrig - $unitPriceWithTax) <= Cfg::DEF_ZERO;
-        /*
-         * MOBI-361: Magento stored data is wrong for unit price (incl. mode) or for total line (excl. mode)
-         * if order level sales rules are used.
-         */
-        if ($isTaxIncluded) {
-            $priceTotalLine = $item->getPriceTotalWithTax() - $item->getPriceDiscount();
-            $priceTotalLine = $this->_manFormat->toNumber($priceTotalLine);
-            $priceSaleUnit = ($priceTotalLine / (1 + $priceTaxPercent) + $priceDiscountLine) / $qtyLine;
-            $priceSaleUnit = $this->_manFormat->toNumber($priceSaleUnit, Cfg::ODOO_API_PERCENT_ROUND);
-        } else {
-            $priceSaleUnit = $this->_manFormat->toNumber($item->getPriceUnitOrig());
-            $priceTotalLine = ($qtyLine * $priceSaleUnit - $priceDiscountLine) * (1 + $priceTaxPercent);
-            $priceTotalLine = $this->_manFormat->toNumber($priceTotalLine);
-        }
-        /* $priceTaxLine is for control purposes only */
-        $priceTaxLine = $this->_manFormat->toNumber($priceTotalLine * $priceTaxPercent);
         /* init Odoo data object */
         $result->setProductIdOdoo($productIdOdoo);
         $result->setQtyLine($qtyLine);
@@ -153,6 +152,29 @@ class OdooDataCollector
         $stockId = $this->_manStock->getStockIdByStoreId($storeId);
         $warehouse = $this->_repoWarehouse->getById($stockId);
         $result = $warehouse->getOdooRef();
+        return $result;
+    }
+
+    /**
+     * Calculates totals for all lines (amount, discount, tax).
+     *
+     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder\Line[] $lines
+     * @return array
+     */
+    private function _getLinesTotals($lines)
+    {
+        $result = [];
+        $amount = 0;
+        $discount = 0;
+        $tax = 0;
+        foreach ($lines as $line) {
+            $amount += $line->getPriceTotalLine();
+            $discount += $line->getPriceDiscountLine();
+            $tax += $line->getPriceTaxLine();
+        }
+        $result[self::AMOUNT] = $amount;
+        $result[self::DISCOUNT] = $discount;
+        $result[self::TAX] = $tax;
         return $result;
     }
 
@@ -207,10 +229,6 @@ class OdooDataCollector
         $addrShipping = $this->getAddressShipping($mageOrder);
         // price_currency
         $priceCurrency = $mageOrder->getBaseCurrencyCode();
-        // price_tax
-        $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
-        // price_total
-        $priceTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
         // pv_total (with date paid)
         $pvOrder = $this->_repoPvSale->getById($orderIdMage);
         $pvTotal = $this->_manFormat->toNumber($pvOrder->getTotal());
@@ -221,6 +239,19 @@ class OdooDataCollector
         $shipping = $this->getSaleOrderShipping($mageOrder);
         // payments
         $payments = $this->getSaleOrderPayments($mageOrder);
+        /* calculate totals */
+        $totals = $this->_getLinesTotals($lines);
+        // price_total
+        $priceTotal = $totals[self::AMOUNT] + $shipping->getPriceAmountTotal();
+        $priceTotal = $this->_manFormat->toNumber($priceTotal);
+        // $priceTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
+        // price_tax
+        $priceTax = $totals[self::TAX] + $shipping->getPriceTaxAmount();
+        $priceTax = $this->_manFormat->toNumber($priceTax);
+        // $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
+        // price_discount
+        $priceDiscount = $totals[self::DISCOUNT] + $shipping->getPriceDiscount();
+        $priceDiscount = $this->_manFormat->toNumber($priceDiscount);
         /* populate Odoo Data Object */
         $result->setIdMage($orderIdMage);
         $result->setWarehouseIdOdoo($warehouseIdOdoo);
@@ -232,6 +263,7 @@ class OdooDataCollector
         $result->setPriceCurrency($priceCurrency);
         $result->setPriceTotal($priceTotal);
         $result->setPriceTax($priceTax);
+        $result->setPriceDiscount($priceDiscount);
         $result->setPvTotal($pvTotal);
         $result->setLines($lines);
         $result->setShipping($shipping);
@@ -321,19 +353,23 @@ class OdooDataCollector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
         /* collect data */
         $code = $this->_manBusinessCodes->getShippingMethodCode($mageOrder);
-        $shippingAmount = $mageOrder->getBaseShippingAmount();
-        $shippingDiscount = $mageOrder->getBaseShippingDiscountAmount();
-        $shippingAmount = $shippingAmount - $shippingDiscount;
-        $taxAmount = $mageOrder->getBaseShippingTaxAmount();
-        $taxPercent = $taxAmount / $shippingAmount;
-        $priceShipping = $this->_manFormat->toNumber($shippingAmount);
-        $priceTaxPercent = $this->_manFormat->toNumber($taxPercent, Cfg::ODOO_API_PERCENT_ROUND);
-        $priceTaxAmount = $this->_manFormat->toNumber($taxAmount);
+        $priceAmount = $mageOrder->getBaseShippingAmount();
+        $priceAmount = $this->_manFormat->toNumber($priceAmount);
+        $priceDiscount = $mageOrder->getBaseShippingDiscountAmount();
+        $priceDiscount = $this->_manFormat->toNumber($priceDiscount);
+        $priceTaxAmount = $mageOrder->getBaseShippingTaxAmount();
+        $priceTaxAmount = $this->_manFormat->toNumber($priceTaxAmount);
+        $priceTaxPercent = $priceTaxAmount / ($priceAmount - $priceDiscount);
+        $priceTaxPercent = $this->_manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
+        $priceAmountTotal = ($priceAmount - $priceDiscount) * (1 + $priceTaxPercent);
+        $priceAmountTotal = $this->_manFormat->toNumber($priceAmountTotal);
         /* populate Odoo Data Object */
         $result->setCode($code);
-        $result->setPriceAmount($priceShipping);
+        $result->setPriceAmount($priceAmount);
+        $result->setPriceDiscount($priceDiscount);
         $result->setPriceTaxPercent($priceTaxPercent);
         $result->setPriceTaxAmount($priceTaxAmount);
+        $result->setPriceAmountTotal($priceAmountTotal);
         return $result;
     }
 }
