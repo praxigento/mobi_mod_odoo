@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Observer;
 
-use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Praxigento\Odoo\Service\Replicate\Request\OrderSave as RequestOrderSave;
 
