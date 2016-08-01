@@ -6,10 +6,8 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse;
 
 /**
  * Lot data for the product on the warehouse.
- *
- * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
-class Lot 
+class Lot
     extends \Flancer32\Lib\DataObject
 {
     /**

@@ -14,9 +14,9 @@ interface ProductReplicatorInterface
     /**
      * Save product inventory data to Magento (push replication).
      *
-     * @param \Praxigento\Odoo\Api\Data\Product\Inventory\Product\Warehouse\Lot $data
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory $data
      *
      * @return bool
      */
-    public function save(\Praxigento\Odoo\Api\Data\Product\Inventory\Product\Warehouse\Lot $data);
+    public function save(\Praxigento\Odoo\Data\Odoo\Inventory $data);
 }
