@@ -3,6 +3,7 @@
 
     <!-- API -->
     <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface" type="Praxigento\Odoo\Api\Def\ProductReplicator"/>
+    <preference for="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" type="Praxigento\Odoo\Api\Def\SaleOrderReplicator"/>
 
     <!-- Data / API -->
 

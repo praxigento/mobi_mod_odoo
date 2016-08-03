@@ -120,4 +120,27 @@ class Call implements IReplicate
         }
         return $result;
     }
+
+    /** @inheritdoc */
+    public function shipmentTrackingSave(Replicate\Request\ShipmentTrackingSave $req)
+    {
+        $result = new Response\ShipmentTrackingSave();
+        /* replicate all data in one transaction */
+        $def = $this->_manTrans->begin();
+        try {
+
+            $this->_manTrans->commit($def);
+            $result->markSucceed();
+        } catch (\Exception $e) {
+            $msg = 'Product replication from Odoo is failed. Error: ' . $e->getMessage();
+            $this->_logger->emergency($msg);
+            $traceStr = $e->getTraceAsString();
+            $this->_logger->emergency($traceStr);
+            throw $e;
+        } finally {
+            // transaction will be rolled back if commit is not done (otherwise - do nothing)
+            $this->_manTrans->end($def);
+        }
+        return $result;
+    }
 }

@@ -16,7 +16,7 @@ interface SaleOrderReplicatorInterface
      *
      * @param \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data
      *
-     * @return bool
+     * @return \Praxigento\Odoo\Service\Replicate\Response\ShipmentTrackingSave
      */
     public function shipmentTrackingSave(\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data);
 }
