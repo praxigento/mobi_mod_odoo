@@ -1,13 +1,23 @@
 <?xml version="1.0"?>
-<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <route url="/V1/prxgt/odoo/product/replicate/save/" method="POST">
+        <!-- Replicate Inventory data (products, lots, warehouses) -->
         <service class="Praxigento\Odoo\Api\ProductReplicatorInterface" method="save"/>
         <resources>
             <!-- MOBI-271, MOBI-307 -->
             <resource ref="Praxigento_Odoo::replicate"/>
             <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sales/shipmentTracking/save/" method="POST">
+        <!-- Update tracking number for existing sale order -->
+        <service class="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" method="shipmentTrackingSave"/>
+        <resources>
+            <!-- MOBI-360 -->
+            <!--<resource ref="Praxigento_Odoo::replicate"/>-->
+            <resource ref="anonymous"/>
         </resources>
     </route>
 
