@@ -334,7 +334,7 @@ class OdooDataCollector
         $odooPayment = new \Praxigento\Odoo\Data\Odoo\Payment();
         /* collect data */
         $magePayment = $mageOrder->getPayment();
-        $code = $this->_manBusinessCodes->getPaymentMethodCode($magePayment);
+        $code = $this->_manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
         $ordered = $magePayment->getBaseAmountOrdered();
         $amount = $this->_manFormat->toNumber($ordered);
         /* populate Odoo Data Object */
@@ -352,7 +352,7 @@ class OdooDataCollector
     {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
         /* collect data */
-        $code = $this->_manBusinessCodes->getShippingMethodCode($mageOrder);
+        $code = $this->_manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
         $priceAmount = $mageOrder->getBaseShippingAmount();
         $priceAmount = $this->_manFormat->toNumber($priceAmount);
         $priceDiscount = $mageOrder->getBaseShippingDiscountAmount();

@@ -20,19 +20,22 @@ class SaleOrderReplicator
     protected $_manTrans;
     /** @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader */
     protected $_shipmentLoader;
+    protected $_manBusCodes;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
         \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Core\Transaction\Database\IManager $manTrans
+        \Praxigento\Core\Transaction\Database\IManager $manTrans,
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusCodes
     ) {
         $this->_logger = $logger;
         $this->_shipmentLoader = $shipmentLoader;
         $this->_manInvoice = $manInvoice;
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
+        $this->_manBusCodes = $manBusCodes;
     }
 
     /** @inheritdoc */
@@ -44,15 +47,17 @@ class SaleOrderReplicator
         try {
             $orderIdMage = $data->getSaleOrderIdMage();
             $trackNumber = $data->getData('shipment/trackingInfo/trackingNumber');
-            $carrierCode = $data->getData('shipment/trackingInfo/shippingCode');
+            $shippingMethodCode = $data->getData('shipment/trackingInfo/shippingCode');
             $this->_shipmentLoader->setOrderId($orderIdMage);
             /** @var \Magento\Sales\Model\Order\Shipment $shipment */
             $shipment = $this->_shipmentLoader->load();
             if ($shipment) {
+                $carrierCode = $this->_manBusCodes->getMagCodeForCarrier($shippingMethodCode);
+                $title = $this->_manBusCodes->getTitleForCarrier($shippingMethodCode);
                 $track = $this->_manObj->create(\Magento\Sales\Model\Order\Shipment\Track::class);
                 $track->setNumber($trackNumber);
                 $track->setCarrierCode($carrierCode);
-                $track->setTitle('Added by script.');
+                $track->setTitle($title);
                 $shipment->addTrack($track);
                 $shipment->register();
                 $shipment->save();

@@ -7,8 +7,6 @@ namespace Praxigento\Odoo\Tool;
 
 /**
  * Define business codes (for shipping & payment methods) used in the concrete application.
- *
- * TODO: MOBI APP IMPL (interface should be implemented on app level).
  */
 interface IBusinessCodesManager
 {
@@ -18,7 +16,7 @@ interface IBusinessCodesManager
      * @param \Magento\Sales\Api\Data\OrderPaymentInterface $payment
      * @return string
      */
-    public function getPaymentMethodCode(\Magento\Sales\Api\Data\OrderPaymentInterface $payment);
+    public function getBusCodeForPaymentMethod(\Magento\Sales\Api\Data\OrderPaymentInterface $payment);
 
     /**
      * Define business code for shipping method is used in sale order.
@@ -26,5 +24,23 @@ interface IBusinessCodesManager
      * @param \Magento\Sales\Api\Data\OrderInterface $order
      * @return string
      */
-    public function getShippingMethodCode(\Magento\Sales\Api\Data\OrderInterface $order);
+    public function getBusCodeForShippingMethod(\Magento\Sales\Api\Data\OrderInterface $order);
+
+    /**
+     * Convert business code for shipping methods to Magento code of the carrier.
+     * See #getTitleForCarrier().
+     *
+     * @param string $businessCode for shipping method
+     * @return string carrier's code
+     */
+    public function getMagCodeForCarrier($businessCode);
+
+    /**
+     * Convert business code for shipping methods to title of the tracking number.
+     * See #getMagCodeForCarrier().
+     *
+     * @param string $businessCode for shipping method
+     * @return string title for tracking number
+     */
+    public function getTitleForCarrier($businessCode);
 }
