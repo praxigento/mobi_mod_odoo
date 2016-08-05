@@ -14,12 +14,6 @@ interface IReplicate
     public function orderSave(Replicate\Request\OrderSave $req);
 
     /**
-     * @param Replicate\Request\ShipmentTrackingSave $req
-     * @return Replicate\Response\ShipmentTrackingSave
-     */
-    public function shipmentTrackingSave(Replicate\Request\ShipmentTrackingSave $req);
-
-    /**
      * Save products bundle ('push' replication).
      *
      * @param Replicate\Request\ProductSave $req
