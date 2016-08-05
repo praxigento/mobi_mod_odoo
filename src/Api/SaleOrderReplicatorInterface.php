@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Api;
 interface SaleOrderReplicatorInterface
 {
     /**
-     * Save product inventory data to Magento (push replication).
+     * Save shipment data to Magento (push replication).
      *
      * @param \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data
      *
