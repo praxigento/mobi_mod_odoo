@@ -5,12 +5,12 @@
 namespace Praxigento\Odoo\Data\Odoo\Shipment;
 
 /**
- * @method string getShippingCode()
+ * Shipment tracking information.
+ *
+ * @method string getShippingCode() Business code of the shipping method.
  * @method void setShippingCode(string $data)
- * @method string getTrackingNumber()
+ * @method string getTrackingNumber() Tracking number/code.
  * @method void setTrackingNumber(string $data)
- * @method string getTrackingUrl()
- * @method void setTrackingUrl(string $data)
  */
 class TrackingInfo extends \Flancer32\Lib\DataObject
 {

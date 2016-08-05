@@ -8,9 +8,9 @@ namespace Praxigento\Odoo\Api\Data\SaleOrder\Shipment;
 use Flancer32\Lib\DataObject;
 
 /**
- * Shipment tracking information for sales orders.
+ * Shipment tracking information for sale orders.
  *
- * @method int getSaleOrderIdMage()
+ * @method int getSaleOrderIdMage() Magento ID for sale order.
  * @method void setSaleOrderIdMage(int $data)
  * @method \Praxigento\Odoo\Data\Odoo\Shipment getShipment()
  * @method void setShipment(\Praxigento\Odoo\Data\Odoo\Shipment $data)
