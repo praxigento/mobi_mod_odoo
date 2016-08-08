@@ -15,6 +15,8 @@ class Call implements IReplicate
     protected $_logger;
     /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $_manTrans;
+    /** @var \Praxigento\Odoo\Repo\Entity\ISaleOrder */
+    protected $_repoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
     protected $_repoOdooInventory;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
@@ -27,6 +29,7 @@ class Call implements IReplicate
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
+        \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\OdooDataCollector $subCollector,
@@ -34,6 +37,7 @@ class Call implements IReplicate
     ) {
         $this->_logger = $logger;
         $this->_manTrans = $manTrans;
+        $this->_repoEntitySaleOrder = $repoEntitySaleOrder;
         $this->_repoOdooInventory = $repoOdooInventory;
         $this->_repoOdooSaleOrder = $repoOdooSaleOrder;
         $this->_subCollector = $subCollector;
@@ -69,7 +73,23 @@ class Call implements IReplicate
         $result = new Response\OrderSave();
         $mageOrder = $req->getSaleOrder();
         $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
-        $resp = $this->_repoOdooSaleOrder->save($odooOrder);
+        $def = $this->_manTrans->begin();
+        try {
+            /* save order into Odoo repo */
+            $resp = $this->_repoOdooSaleOrder->save($odooOrder);
+            $odooId = $resp->getIdMage();
+            /* mark order as replicated */
+            $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
+            $registry->setMageRef($mageOrder->getEntityId());
+            $registry->setOdooRef($odooId);
+            $this->_repoEntitySaleOrder->create($registry);
+            /* finalize transaction */
+            $this->_manTrans->commit($def);
+            $result->markSucceed();
+        } finally {
+            // transaction will be rolled back if commit is not done (otherwise - do nothing)
+            $this->_manTrans->end($def);
+        }
         $result->setOdooResponse($resp);
         return $result;
     }

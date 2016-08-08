@@ -30,6 +30,7 @@
     <preference for="Praxigento\Odoo\Repo\Entity\ICategory" type="Praxigento\Odoo\Repo\Entity\Def\Category"/>
     <preference for="Praxigento\Odoo\Repo\Entity\ILot" type="Praxigento\Odoo\Repo\Entity\Def\Lot"/>
     <preference for="Praxigento\Odoo\Repo\Entity\IProduct" type="Praxigento\Odoo\Repo\Entity\Def\Product"/>
+    <preference for="Praxigento\Odoo\Repo\Entity\ISaleOrder" type="Praxigento\Odoo\Repo\Entity\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse" type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
 
     <!-- Odoo API repo -->
