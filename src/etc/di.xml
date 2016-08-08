@@ -53,6 +53,13 @@
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection" type="odooTestConfigParams"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin" type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
+    <!-- ******* -->
+    <!-- PLUGINS -->
+    <!-- ******* -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <!-- Add custom columns to the sales orders grid (is_in_odoo) -->
+        <plugin name="praxigento_odoo_plugin" type="Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory" sortOrder="100" disabled="false"/>
+    </type>
 
     <!-- Services -->
     <preference for="Praxigento\Odoo\Service\IReplicate" type="Praxigento\Odoo\Service\Replicate\Call"/>
