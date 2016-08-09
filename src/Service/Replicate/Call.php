@@ -77,10 +77,11 @@ class Call implements IReplicate
         try {
             /* save order into Odoo repo */
             $resp = $this->_repoOdooSaleOrder->save($odooOrder);
-            $odooId = $resp->getIdMage();
+            $mageId = $mageOrder->getEntityId();
+            $odooId = $resp->getIdOdoo();
             /* mark order as replicated */
             $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
-            $registry->setMageRef($mageOrder->getEntityId());
+            $registry->setMageRef($mageId);
             $registry->setOdooRef($odooId);
             $this->_repoEntitySaleOrder->create($registry);
             /* finalize transaction */

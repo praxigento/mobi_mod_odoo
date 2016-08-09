@@ -4,14 +4,13 @@
  */
 namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
 
-use Praxigento\Odoo\Data\Odoo\Invoice;
-use Praxigento\Odoo\Data\Odoo\Shipment;
-
 /**
  * Response for "/sale_order" POST operation.
  *
  * @method int getIdMage()
  * @method void setIdMage(int $data)
+ * @method int getIdOdoo()
+ * @method void setIdOdoo(int $data)
  * @method string getStatus()
  * @method void setStatus(string $data)
  * @method \Praxigento\Odoo\Data\Odoo\Invoice[] getInvoices()
