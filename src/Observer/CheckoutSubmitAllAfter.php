@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Observer;
 
-use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Praxigento\Odoo\Service\Replicate\Request\OrderSave as RequestOrderSave;
 use Praxigento\Odoo\Service\Replicate\Response\OrderSave as ResponseOrderSave;
@@ -39,11 +38,17 @@ class CheckoutSubmitAllAfter implements ObserverInterface
         $order = $observer->getData(self::DATA_ORDER);
         $state = $order->getState();
         if ($state == \Magento\Sales\Model\Order::STATE_PROCESSING) {
-            $this->_logger->debug("Call to Odoo service to replicate order.");
-            $req = new RequestOrderSave();
-            $req->setSaleOrder($order);
-            /** @var ResponseOrderSave $resp */
-            $resp = $this->_callReplicate->orderSave($req);
+            try {
+                $this->_logger->debug("Call to Odoo service to replicate order.");
+                $req = new RequestOrderSave();
+                $req->setSaleOrder($order);
+                /** @var ResponseOrderSave $resp */
+                $resp = $this->_callReplicate->orderSave($req);
+            } catch (\Exception $e) {
+                /* catch all exceptions and steal them */
+                $msg = 'Some error is occurred on sale order saving to Odoo. Error: ' . $e->getMessage();
+                $this->_logger->error($msg);
+            }
         }
         return;
     }
