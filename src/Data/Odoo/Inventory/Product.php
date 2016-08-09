@@ -75,7 +75,7 @@ class Product
      */
     public function getPvWholesale()
     {
-        $result = parent::getPv();
+        $result = parent::getPvWholesale();
         return $result;
     }
 
@@ -169,7 +169,7 @@ class Product
      */
     public function setPvWholesale($data)
     {
-        parent::setPv($data);
+        parent::setPvWholesale($data);
     }
 
     /**
