@@ -15,7 +15,7 @@ use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 class Warehouse
-    extends \Praxigento\Core\Repo\Def\BaseCrud
+    extends \Praxigento\Core\Repo\Def\Crud
     implements \Praxigento\Odoo\Repo\Agg\IWarehouse
 {
 

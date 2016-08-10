@@ -10,7 +10,7 @@ use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 class Lot
-    extends \Praxigento\Core\Repo\Def\BaseCrud
+    extends \Praxigento\Core\Repo\Def\Crud
     implements \Praxigento\Odoo\Repo\Agg\ILot
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
