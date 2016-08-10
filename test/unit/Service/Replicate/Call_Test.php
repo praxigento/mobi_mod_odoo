@@ -11,6 +11,8 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
     /** @var  \Mockery\MockInterface */
+    private $mRepoEntitySaleOrder;
+    /** @var  \Mockery\MockInterface */
     private $mRepoOdooInventory;
     /** @var  \Mockery\MockInterface */
     private $mRepoOdooSaleOrder;
@@ -27,6 +29,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** create mocks */
         $logger = $this->_mockLogger();
         $this->mManTrans = $this->_mockTransactionManager();
+        $this->mRepoEntitySaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Entity\ISaleOrder::class);
         $this->mRepoOdooInventory = $this->_mock(\Praxigento\Odoo\Repo\Odoo\IInventory::class);
         $this->mRepoOdooSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Odoo\ISaleOrder::class);
         $this->mSubCollector = $this->_mock(Sub\OdooDataCollector::class);
@@ -35,6 +38,7 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->obj = new Call(
             $logger,
             $this->mManTrans,
+            $this->mRepoEntitySaleOrder,
             $this->mRepoOdooInventory,
             $this->mRepoOdooSaleOrder,
             $this->mSubCollector,
