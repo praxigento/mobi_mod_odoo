@@ -41,7 +41,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $this->_conn = $resource->getConnection();
     }
 
-    public function getSelectCountQuery()
+    public function getQueryToSelectCount()
     {
         throw new \Exception("this method is not implemented yet.");
     }
@@ -49,7 +49,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
     /**
      * @return \Magento\Framework\DB\Select
      */
-    public function getSelectQuery()
+    public function getQueryToSelect()
     {
         $result = $this->_conn->select();
         /* aliases and tables */

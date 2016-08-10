@@ -35,7 +35,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
     /**
      * @inheritdoc
      */
-    public function getSelectCountQuery()
+    public function getQueryToSelectCount()
     {
         $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
         /* aliases and tables */
@@ -52,7 +52,7 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
     /**
      * @inheritdoc
      */
-    public function getSelectQuery()
+    public function getQueryToSelect()
     {
         $result = $this->_repoWrhsAggWarehouse->getQueryToSelect();
         /* aliases and tables */

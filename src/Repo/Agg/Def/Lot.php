@@ -101,7 +101,7 @@ class Lot
     public function getById($id)
     {
         $result = null;
-        $query = $this->_factorySelect->getSelectQuery();
+        $query = $this->_factorySelect->getQueryToSelect();
         $where = static::AS_WRHS . '.' . EntityWrhsLot::ATTR_ID . '=:id';
         $query->where($where);
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
@@ -120,7 +120,7 @@ class Lot
         if (is_null($id)) {
             $this->_checkNullLot();
         }
-        $query = $this->_factorySelect->getSelectQuery();
+        $query = $this->_factorySelect->getQueryToSelect();
         $where = static::AS_ODOO . '.' . EntityLot::ATTR_ODOO_REF . '=:id';
         $query->where($where);
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
@@ -145,7 +145,7 @@ class Lot
     /** @inheritdoc */
     public function getQueryToSelect()
     {
-        $result = $this->_factorySelect->getSelectQuery();
+        $result = $this->_factorySelect->getQueryToSelect();
         return $result;
 
     }
@@ -153,7 +153,7 @@ class Lot
     /** @inheritdoc */
     public function getQueryToSelectCount()
     {
-        $result = $this->_factorySelect->getSelectCountQuery();
+        $result = $this->_factorySelect->getQueryToSelectCount();
         return $result;
     }
 }

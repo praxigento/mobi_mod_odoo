@@ -99,10 +99,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ID = 32;
         $DATA = [AggWarehouse::AS_ID => $ID];
         /** === Setup Mocks === */
-        // $query = $this->_subSelect->getSelectQuery();
+        // $query = $this->_subSelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         // $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $mQuery->shouldReceive('where')->once();
@@ -124,10 +124,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 32;
         $DATA = [AggWarehouse::AS_ODOO_ID => $ODOO_ID];
         /** === Setup Mocks === */
-        // $query = $this->_subSelect->getSelectQuery();
+        // $query = $this->_subSelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         // $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $mQuery->shouldReceive('where')->once();
@@ -146,10 +146,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_getQueryToSelect()
     {
         /** === Setup Mocks === */
-        // $result = $this->_factorySelect->getSelectQuery();
+        // $result = $this->_factorySelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelect();
@@ -159,10 +159,10 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_getQueryToSelectCount()
     {
         /** === Setup Mocks === */
-        // $result = $this->_factorySelect->getSelectCountQuery();
+        // $result = $this->_factorySelect->getQueryToSelectCount();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectCountQuery')->once()
+            ->shouldReceive('getQueryToSelectCount')->once()
             ->andReturn($mQuery);
         /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelectCount();

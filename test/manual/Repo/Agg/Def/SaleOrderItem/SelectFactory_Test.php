@@ -30,7 +30,7 @@ class SelectFactory_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $orderId = 1;
         $stockId = 1;
         /** === Call and asserts  === */
-        $res = $this->obj->getSelectQuery();
+        $res = $this->obj->getQueryToSelect();
         /** @var \Magento\Framework\App\ResourceConnection $resr */
         $resr = $this->manObj->get(\Magento\Framework\App\ResourceConnection::class);
         $conn = $resr->getConnection();

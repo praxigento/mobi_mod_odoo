@@ -52,7 +52,7 @@ class SaleOrderItem implements \Praxigento\Odoo\Repo\Agg\ISaleOrderItem
     public function getByOrderAndStock($orderId, $stockId)
     {
         $result = [];
-        $select = $this->_factorySelect->getSelectQuery();
+        $select = $this->_factorySelect->getQueryToSelect();
         $bind = [
             self::PARAM_ORDER_ID => (int)$orderId,
             self::PARAM_STOCK_ID => (int)$stockId
@@ -74,13 +74,13 @@ class SaleOrderItem implements \Praxigento\Odoo\Repo\Agg\ISaleOrderItem
 
     public function getQueryToSelect()
     {
-        $result = $this->_factorySelect->getSelectQuery();
+        $result = $this->_factorySelect->getQueryToSelect();
         return $result;
     }
 
     public function getQueryToSelectCount()
     {
-        $result = $this->_factorySelect->getSelectCountQuery();
+        $result = $this->_factorySelect->getQueryToSelectCount();
         return $result;
     }
 }

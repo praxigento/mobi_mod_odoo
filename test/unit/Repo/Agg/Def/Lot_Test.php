@@ -97,10 +97,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ID = 32;
         $DATA = [AggLot::AS_ID => $ID];
         /** === Setup Mocks === */
-        // $query = $this->_factorySelect->getSelectQuery();
+        // $query = $this->_factorySelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         // $query->where($where);
         $mQuery->shouldReceive('where')->once();
@@ -122,10 +122,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $ODOO_ID = 32;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /** === Setup Mocks === */
-        // $query = $this->_factorySelect->getSelectQuery();
+        // $query = $this->_factorySelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         // $query->where($where);
         $mQuery->shouldReceive('where')->once();
@@ -144,10 +144,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_getQueryToSelect()
     {
         /** === Setup Mocks === */
-        // $result = $this->_factorySelect->getSelectQuery();
+        // $result = $this->_factorySelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectQuery')->once()
+            ->shouldReceive('getQueryToSelect')->once()
             ->andReturn($mQuery);
         /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelect();
@@ -157,10 +157,10 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_getQueryToSelectCount()
     {
         /** === Setup Mocks === */
-        // $result = $this->_factorySelect->getSelectCountQuery();
+        // $result = $this->_factorySelect->getQueryToSelectCount();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
-            ->shouldReceive('getSelectCountQuery')->once()
+            ->shouldReceive('getQueryToSelectCount')->once()
             ->andReturn($mQuery);
         /** === Call and asserts  === */
         $res = $this->obj->getQueryToSelectCount();

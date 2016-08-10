@@ -49,7 +49,7 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /** === Call and asserts  === */
-        $this->obj->getSelectCountQuery();
+        $this->obj->getQueryToSelectCount();
     }
 
     public function test_getSelectQuery()
@@ -68,7 +68,7 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /** === Call and asserts  === */
-        $this->obj->getSelectQuery();
+        $this->obj->getQueryToSelect();
     }
 
 }
