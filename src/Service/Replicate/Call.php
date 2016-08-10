@@ -77,16 +77,18 @@ class Call implements IReplicate
         try {
             /* save order into Odoo repo */
             $resp = $this->_repoOdooSaleOrder->save($odooOrder);
-            $mageId = $mageOrder->getEntityId();
-            $odooId = $resp->getIdOdoo();
-            /* mark order as replicated */
-            $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
-            $registry->setMageRef($mageId);
-            $registry->setOdooRef($odooId);
-            $this->_repoEntitySaleOrder->create($registry);
-            /* finalize transaction */
-            $this->_manTrans->commit($def);
-            $result->markSucceed();
+            if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
+                $mageId = $mageOrder->getEntityId();
+                $odooId = $resp->getIdOdoo();
+                /* mark order as replicated */
+                $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
+                $registry->setMageRef($mageId);
+                $registry->setOdooRef($odooId);
+                $this->_repoEntitySaleOrder->create($registry);
+                /* finalize transaction */
+                $this->_manTrans->commit($def);
+                $result->markSucceed();
+            }
         } finally {
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->_manTrans->end($def);

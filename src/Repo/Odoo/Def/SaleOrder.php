@@ -34,8 +34,12 @@ class SaleOrder implements ISaleOrder
         /* perform request and extract result data */
         $cover = $this->_rest->request($underscored, self::ROUTE);
         $data = $cover->getResultData();
-        //$error = $cover->getError();
-        $result = $this->_mageSrvInProc->convertValue($data, \Praxigento\Odoo\Data\Odoo\SaleOrder\Response::class);
+        if ($data) {
+            $result = $this->_mageSrvInProc->convertValue($data, \Praxigento\Odoo\Data\Odoo\SaleOrder\Response::class);
+        } else {
+            $error = $cover->getError();
+            $result = $this->_mageSrvInProc->convertValue($error, \Praxigento\Odoo\Data\Odoo\Error::class);
+        }
         return $result;
     }
 }

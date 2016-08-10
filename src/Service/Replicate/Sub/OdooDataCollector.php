@@ -29,6 +29,8 @@ class OdooDataCollector
     protected $_repoAggSaleOrderItem;
     /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
     protected $_repoDwnlCustomer;
+    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
+    protected $_repoMageCustomer;
     /** @var \Praxigento\Pv\Repo\Entity\ISale */
     protected $_repoPvSale;
     /** @var \Praxigento\Pv\Repo\Entity\Sale\IItem */
@@ -39,6 +41,7 @@ class OdooDataCollector
     protected $_repoWrhsQtySale;
 
     public function __construct(
+        \Magento\Customer\Api\CustomerRepositoryInterface $repoMageCustomer,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
@@ -49,6 +52,7 @@ class OdooDataCollector
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat
     ) {
+        $this->_repoMageCustomer = $repoMageCustomer;
         $this->_manStock = $manStock;
         $this->_repoDwnlCustomer = $repoDwnlCustomer;
         $this->_repoPvSale = $repoPvSale;
@@ -283,10 +287,13 @@ class OdooDataCollector
         $dwnlCust = $this->_repoDwnlCustomer->getById($custMageId);
         $ref = $dwnlCust->getHumanRef();
         $name = $mageOrder->getCustomerName();
+        $mageCust = $this->_repoMageCustomer->getById($custMageId);
+        $groupCode = $this->_manBusinessCodes->getBusCodeForCustomerGroup($mageCust);
         /* init Odoo data object */
         $result->setIdMage($custMageId);
         $result->setIdMlm($ref);
         $result->setName($name);
+        $result->setGroupCode($groupCode);
         return $result;
     }
 

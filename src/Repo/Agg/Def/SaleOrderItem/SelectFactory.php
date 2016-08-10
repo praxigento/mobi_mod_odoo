@@ -62,11 +62,11 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $asOdooLot = 'odooLot';
         $tblSaleItem = [$asSaleItem => $this->_resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER_ITEM)];
         $tblStockItem = [$asStockItem => $this->_resource->getTableName(Cfg::ENTITY_MAGE_CATALOGINVENTORY_STOCK_ITEM)];
-        $tblPvSaleItem = [$asPvSaleItem => EntityPvSaleItem::ENTITY_NAME];
-        $tblPvStockItem = [$asPvStockItem => EntityPvStockItem::ENTITY_NAME];
-        $tblQtySale = [$asQtySale => EntityWrhsQtySale::ENTITY_NAME];
-        $tblOdooProd = [$asOdooProd => EntityOdooProduct::ENTITY_NAME];
-        $tblOdooLot = [$asOdooLot => EntityOdooLot::ENTITY_NAME];
+        $tblPvSaleItem = [$asPvSaleItem => $this->_resource->getTableName(EntityPvSaleItem::ENTITY_NAME)];
+        $tblPvStockItem = [$asPvStockItem => $this->_resource->getTableName(EntityPvStockItem::ENTITY_NAME)];
+        $tblQtySale = [$asQtySale => $this->_resource->getTableName(EntityWrhsQtySale::ENTITY_NAME)];
+        $tblOdooProd = [$asOdooProd => $this->_resource->getTableName(EntityOdooProduct::ENTITY_NAME)];
+        $tblOdooLot = [$asOdooLot => $this->_resource->getTableName(EntityOdooLot::ENTITY_NAME)];
         /* FROM sales_order_item */
         $cols = [
             Agg::AS_ITEM_QTY => MageEntityOrderItem::QTY_ORDERED,

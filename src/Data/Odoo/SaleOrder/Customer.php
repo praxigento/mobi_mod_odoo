@@ -11,6 +11,8 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setIdMlm(string $data)
  * @method string getName()
  * @method void setName(string $data)
+ * @method string getGroupCode()
+ * @method void setGroupCode(string $data)
  */
 class Customer extends \Flancer32\Lib\DataObject
 {
