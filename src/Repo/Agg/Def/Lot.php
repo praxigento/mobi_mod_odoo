@@ -98,6 +98,19 @@ class Lot
     }
 
     /** @inheritdoc */
+    public function get(
+        $where = null,
+        $order = null,
+        $limit = null,
+        $offset = null,
+        $columns = null,
+        $group = null,
+        $having = null
+    ) {
+        throw new \Exception('Method is not implemented yet.');
+    }
+
+    /** @inheritdoc */
     public function getById($id)
     {
         $result = null;
