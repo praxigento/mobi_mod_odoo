@@ -8,4 +8,5 @@ namespace Praxigento\Odoo\Repo\Entity;
 interface ISaleOrder
     extends \Praxigento\Odoo\Repo\Entity\IOdooEntity
 {
+
 }
