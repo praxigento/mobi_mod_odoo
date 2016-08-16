@@ -22,6 +22,8 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mSubReplicator;
     /** @var  Call */
     private $obj;
+    /** @var array Constructor arguments for object mocking */
+    private $objArgs = [];
 
     protected function setUp()
     {
@@ -34,6 +36,16 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoOdooSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Odoo\ISaleOrder::class);
         $this->mSubCollector = $this->_mock(Sub\OdooDataCollector::class);
         $this->mSubReplicator = $this->_mock(Sub\Replicator::class);
+        /** reset args. to create mock of the tested object */
+        $this->objArgs = [
+            $logger,
+            $this->mManTrans,
+            $this->mRepoEntitySaleOrder,
+            $this->mRepoOdooInventory,
+            $this->mRepoOdooSaleOrder,
+            $this->mSubCollector,
+            $this->mSubReplicator
+        ];
         /** create object to test */
         $this->obj = new Call(
             $logger,
@@ -44,6 +56,41 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             $this->mSubCollector,
             $this->mSubReplicator
         );
+    }
+
+    public function test__doProductReplication()
+    {
+        /** === Test Data === */
+        $INVENTORY = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
+        /** === Setup Mocks === */
+        // $warehouses = $inventory->getWarehouses();
+        $mWarehouses = 'warehouses';
+        $INVENTORY
+            ->shouldReceive('getWarehouses')->once()
+            ->andReturn($mWarehouses);
+        // $lots = $inventory->getLots();
+        $mLots = 'lots';
+        $INVENTORY
+            ->shouldReceive('getLots')->once()
+            ->andReturn($mLots);
+        // $products = $inventory->getProducts();
+        $mProducts = ['products'];
+        $INVENTORY
+            ->shouldReceive('getProducts')->once()
+            ->andReturn($mProducts);
+        // $this->_subReplicator->processWarehouses($warehouses);
+        $this->mSubReplicator
+            ->shouldReceive('processWarehouses')->once()
+            ->with($mWarehouses);
+        // $this->_subReplicator->processLots($lots);
+        $this->mSubReplicator
+            ->shouldReceive('processLots')->once()
+            ->with($mLots);
+        // $this->_subReplicator->processProductItem($prod);
+        $this->mSubReplicator
+            ->shouldReceive('processProductItem')->once();
+        /** === Call and asserts  === */
+        $this->obj->_doProductReplication($INVENTORY);
     }
 
     public function test_constructor()
@@ -58,26 +105,17 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $BUNDLE = new \Praxigento\Odoo\Data\Odoo\Inventory();
         $mProd = new \Praxigento\Odoo\Data\Odoo\Inventory\Product();
         $BUNDLE->setProducts([$mProd]);
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(Call::class . '[_doProductReplication]', $this->objArgs);
         /** === Setup Mocks === */
         // $def = $this->_manTrans->begin();
         $mDef = $this->_mockTransactionDefinition();
         $this->mManTrans
             ->shouldReceive('begin')->once()
             ->andReturn($mDef);
-        //
         // $this->_doProductReplication($bundle);
-        //
-        // $products = $bundle->getProducts();
-        // $this->_subReplicator->processWarehouses($warehouses);
-        $this->mSubReplicator
-            ->shouldReceive('processWarehouses')->once();
-        // $this->_subReplicator->processLots($lots);
-        $this->mSubReplicator
-            ->shouldReceive('processLots')->once();
-        // $this->_subReplicator->processProductItem($prod);
-        $this->mSubReplicator
-            ->shouldReceive('processProductItem')->once();
-        //
+        $this->obj
+            ->shouldReceive('_doProductReplication')->once();
         // $this->_manTrans->commit($def);
         $this->mManTrans
             ->shouldReceive('commit')->once();
@@ -91,12 +129,44 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->assertTrue($res->isSucceed());
     }
 
-    public function test_productsFromOdoo()
+    /**
+     * @expectedException \Exception
+     */
+    public function test_productsFromOdoo_fail()
     {
         /** === Test Data === */
         $PROD_ID_ODOO = 21;
         $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
         $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(Call::class . '[_doProductReplication]', $this->objArgs);
+        /** === Setup Mocks === */
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
+        $this->mManTrans
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
+        // $bundle = $this->_repoOdooInventory->get($ids);
+        $this->mRepoOdooInventory
+            ->shouldReceive('get')->once()
+            ->andThrow(new \Exception());
+        // $this->_manTrans->end($def);
+        $this->mManTrans
+            ->shouldReceive('end')->once();
+        /** === Call and asserts  === */
+        $req = new Request\ProductsFromOdoo();
+        $req->setOdooIds($PROD_ID_ODOO);
+        $this->obj->productsFromOdoo($req);
+    }
+
+    public function test_productsFromOdoo_success()
+    {
+        /** === Test Data === */
+        $PROD_ID_ODOO = 21;
+        $BUNDLE = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory::class);
+        $BUNDLE->shouldReceive('getOption', 'getWarehouses', 'getLots');
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(Call::class . '[_doProductReplication]', $this->objArgs);
         /** === Setup Mocks === */
         // $def = $this->_manTrans->begin();
         $mDef = $this->_mockTransactionDefinition();
@@ -107,23 +177,9 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoOdooInventory
             ->shouldReceive('get')->once()
             ->andReturn($BUNDLE);
-        //
         // $this->_doProductReplication($bundle);
-        //
-        // $products = $bundle->getProducts();
-        $mProd = $this->_mock(\Praxigento\Odoo\Data\Odoo\Inventory\IProduct::class);
-        $BUNDLE->shouldReceive('getProducts')->once()
-            ->andReturn([$PROD_ID_ODOO => $mProd]);
-        // $this->_subReplicator->processWarehouses($warehouses);
-        $this->mSubReplicator
-            ->shouldReceive('processWarehouses')->once();
-        // $this->_subReplicator->processLots($lots);
-        $this->mSubReplicator
-            ->shouldReceive('processLots')->once();
-        // $this->_subReplicator->processProductItem($prod);
-        $this->mSubReplicator
-            ->shouldReceive('processProductItem')->once();
-        //
+        $this->obj
+            ->shouldReceive('_doProductReplication')->once();
         // $this->_manTrans->commit($def);
         $this->mManTrans
             ->shouldReceive('commit')->once();
@@ -136,4 +192,61 @@ class Call_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $res = $this->obj->productsFromOdoo($req);
         $this->assertTrue($res->isSucceed());
     }
+
+    public function test_orderSave()
+    {
+        /** === Test Data === */
+        $ORDER_ID_MAGE = 4;
+        $ORDER_ID_ODOO = 16;
+        $REQ = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+        /** === Setup Mocks === */
+        // $mageOrder = $req->getSaleOrder();
+        $mMageOrder = $this->_mock(\Magento\Sales\Api\Data\OrderInterface::class);
+        $REQ->setSaleOrder($mMageOrder);
+        // $orderIdMage = $mageOrder->getEntityId();
+        $mMageOrder
+            ->shouldReceive('getEntityId')->once()
+            ->andReturn($ORDER_ID_MAGE);
+        // $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
+        $mRegisteredOrder = null;
+        $this->mRepoEntitySaleOrder
+            ->shouldReceive('getById')->once()
+            ->with($ORDER_ID_MAGE)
+            ->andReturn($mRegisteredOrder);
+        // $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
+        $mOdooOrder = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
+        $this->mSubCollector
+            ->shouldReceive('getSaleOrder')->once()
+            ->andReturn($mOdooOrder);
+        // $def = $this->_manTrans->begin();
+        $mDef = $this->_mockTransactionDefinition();
+        $this->mManTrans
+            ->shouldReceive('begin')->once()
+            ->andReturn($mDef);
+        // $resp = $this->_repoOdooSaleOrder->save($odooOrder);
+        $mResp = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder\Response::class);
+        $this->mRepoOdooSaleOrder
+            ->shouldReceive('save')->once()
+            ->andReturn($mResp);
+        // $mageId = $mageOrder->getEntityId();
+        $mMageOrder->shouldReceive('getEntityId')->once()
+            ->andReturn($ORDER_ID_MAGE);
+        // $odooId = $resp->getIdOdoo();
+        $mResp->shouldReceive('getIdOdoo')->once()
+            ->andReturn($ORDER_ID_ODOO);
+        // $this->_repoEntitySaleOrder->create($registry);
+        $this->mRepoEntitySaleOrder
+            ->shouldReceive('create')->once();
+        // $this->_manTrans->commit($def);
+        $this->mManTrans
+            ->shouldReceive('commit')->once();
+        // $this->_manTrans->end($def);
+        $this->mManTrans
+            ->shouldReceive('end')->once();
+        /** === Call and asserts  === */
+        $res = $this->obj->orderSave($REQ);
+        $this->assertTrue($res instanceof \Praxigento\Odoo\Service\Replicate\Response\OrderSave);
+        $this->assertTrue($res->isSucceed());
+    }
+
 }

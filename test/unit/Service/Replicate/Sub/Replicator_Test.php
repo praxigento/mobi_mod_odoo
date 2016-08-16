@@ -173,7 +173,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     /**
      * @expectedException \Exception
      */
-    public function test_processWarehouses()
+    public function test_processWarehouses_exception()
     {
         /** === Test Data === */
         $WRHS = new \Praxigento\Odoo\Data\Odoo\Inventory\Warehouse();
@@ -192,6 +192,32 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoAggWrhs
             ->shouldReceive('create')->once()
             ->andReturn($mAggData);
+        /** === Call and asserts  === */
+        $this->obj->processWarehouses($WRHSS);
+    }
+
+    public function test_processWarehouses_success()
+    {
+        /** === Test Data === */
+        $WRHS = new \Praxigento\Odoo\Data\Odoo\Inventory\Warehouse();
+        $WRHSS = [$WRHS];
+        $ID = 4;
+        /** === Setup Mocks === */
+        // $found = $this->_repoAggWrhs->getByOdooId($odooId);
+        $this->mRepoAggWrhs
+            ->shouldReceive('getByOdooId')->once()
+            ->andReturn(false);
+        // $aggData = $this->_manObj->create(AggWarehouse::class);
+        $mAggData = new \Praxigento\Odoo\Data\Agg\Warehouse();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->andReturn($mAggData);
+        // $created = $this->_repoAggWrhs->create($aggData);
+        $this->mRepoAggWrhs
+            ->shouldReceive('create')->once()
+            ->andReturn($mAggData);
+        // if (!$created->getId()) {}
+        $mAggData->setId($ID);
         /** === Call and asserts  === */
         $this->obj->processWarehouses($WRHSS);
     }

@@ -50,10 +50,10 @@ class Call implements IReplicate
      * @param \Praxigento\Odoo\Data\Odoo\Inventory $inventory
      * @throws \Exception
      */
-    protected function _doProductReplication(
+    public function _doProductReplication(
         \Praxigento\Odoo\Data\Odoo\Inventory $inventory
     ) {
-        $options = $inventory->getOption();
+        // $options = $inventory->getOption();
         $warehouses = $inventory->getWarehouses();
         $lots = $inventory->getLots();
         $products = $inventory->getProducts();
@@ -61,7 +61,7 @@ class Call implements IReplicate
         $this->_subReplicator->processWarehouses($warehouses);
         $this->_subReplicator->processLots($lots);
         /* replicate products */
-        foreach ($products as $odooId => $prod) {
+        foreach ($products as $prod) {
             $this->_subReplicator->processProductItem($prod);
         }
     }

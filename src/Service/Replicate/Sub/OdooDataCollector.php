@@ -23,6 +23,7 @@ class OdooDataCollector
     protected $_manBusinessCodes;
     /** @var  \Praxigento\Core\Tool\IFormat */
     protected $_manFormat;
+    protected $_manObj;
     /** @var \Praxigento\Warehouse\Tool\IStockManager */
     protected $_manStock;
     /** @var \Praxigento\Odoo\Repo\Agg\ISaleOrderItem */
@@ -41,36 +42,38 @@ class OdooDataCollector
     protected $_repoWrhsQtySale;
 
     public function __construct(
+        \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoMageCustomer,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
+        \Praxigento\Core\Tool\IFormat $manFormat,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
         \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale,
         \Praxigento\Odoo\Repo\Agg\ISaleOrderItem $repoAggSaleOrderItem,
-        \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
-        \Praxigento\Core\Tool\IFormat $manFormat
+        \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse
     ) {
+        $this->_manObj = $manObj;
         $this->_repoMageCustomer = $repoMageCustomer;
         $this->_manStock = $manStock;
+        $this->_manBusinessCodes = $manBusinessCodes;
+        $this->_manFormat = $manFormat;
         $this->_repoDwnlCustomer = $repoDwnlCustomer;
         $this->_repoPvSale = $repoPvSale;
         $this->_repoPvSaleItem = $repoPvSaleItem;
         $this->_repoWrhsQtySale = $repoWrhsQtySale;
         $this->_repoAggSaleOrderItem = $repoAggSaleOrderItem;
         $this->_repoWarehouse = $repoWarehouse;
-        $this->_manBusinessCodes = $manBusinessCodes;
-        $this->_manFormat = $manFormat;
     }
 
     /**
      * @param \Magento\Sales\Api\Data\OrderAddressInterface $addrMage
      * @return \Praxigento\Odoo\Data\Odoo\Contact
      */
-    protected function _extractContact(\Magento\Sales\Api\Data\OrderAddressInterface $addrMage)
+    public function _extractContact(\Magento\Sales\Api\Data\OrderAddressInterface $addrMage)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\Contact();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\Contact::class);
         /* collect data */
         $name = $addrMage->getName();
         $phone = $addrMage->getTelephone();
@@ -97,9 +100,9 @@ class OdooDataCollector
      * @param \Praxigento\Odoo\Data\Agg\SaleOrderItem $item
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
      */
-    protected function _extractLine(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
+    public function _extractLine(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line::class);
         /* collect data */
         $productIdOdoo = (int)$item->getOdooIdProduct();
         $qtyLine = $this->_manFormat->toNumber($item->getItemQty());
@@ -136,9 +139,9 @@ class OdooDataCollector
      * @param \Praxigento\Odoo\Data\Agg\SaleOrderItem $item
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot
      */
-    protected function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
+    public function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\LotLine::class);
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->_manFormat->toNumber($item->getLotQty());
         if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
@@ -150,7 +153,7 @@ class OdooDataCollector
      * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
      * @return int
      */
-    protected function _extractWarehouseIdOdoo(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
+    public function _extractWarehouseIdOdoo(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $storeId = $mageOrder->getStoreId();
         $stockId = $this->_manStock->getStockIdByStoreId($storeId);
@@ -165,7 +168,7 @@ class OdooDataCollector
      * @param \Praxigento\Odoo\Data\Odoo\SaleOrder\Line[] $lines
      * @return array
      */
-    private function _getLinesTotals($lines)
+    public function _getLinesTotals($lines)
     {
         $result = [];
         $amount = 0;
