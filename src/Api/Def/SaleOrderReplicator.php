@@ -12,6 +12,8 @@ class SaleOrderReplicator
 {
     /** @var \Psr\Log\LoggerInterface */
     protected $_logger;
+    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    protected $_manBusCodes;
     /** @var  \Magento\Sales\Model\Service\InvoiceService */
     protected $_manInvoice;
     /** @var \Magento\Framework\ObjectManagerInterface */
@@ -20,22 +22,21 @@ class SaleOrderReplicator
     protected $_manTrans;
     /** @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader */
     protected $_shipmentLoader;
-    protected $_manBusCodes;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader,
-        \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Magento\Framework\ObjectManagerInterface $manObj,
+        \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusCodes
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusCodes,
+        \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader
     ) {
         $this->_logger = $logger;
-        $this->_shipmentLoader = $shipmentLoader;
-        $this->_manInvoice = $manInvoice;
         $this->_manObj = $manObj;
+        $this->_manInvoice = $manInvoice;
         $this->_manTrans = $manTrans;
         $this->_manBusCodes = $manBusCodes;
+        $this->_shipmentLoader = $shipmentLoader;
     }
 
     /** @inheritdoc */
