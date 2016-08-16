@@ -16,7 +16,8 @@ use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EntityWrhsQtySale;
 /**
  * Compose SELECT query to get Sale Order Item aggregate.
  */
-class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
+class SelectFactory
+    implements \Praxigento\Core\Repo\Query\IHasSelect
 {
     /**#@+
      * Query parameters names.
@@ -39,11 +40,6 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $this->_logger = $logger;
         $this->_resource = $resource;
         $this->_conn = $resource->getConnection();
-    }
-
-    public function getQueryToSelectCount()
-    {
-        throw new \Exception("this method is not implemented yet.");
     }
 
     /**
@@ -121,5 +117,10 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         /* log result SQL */
         $this->_logger->info((string)$result);
         return $result;
+    }
+
+    public function getQueryToSelectCount()
+    {
+        throw new \Exception("this method is not implemented yet.");
     }
 }

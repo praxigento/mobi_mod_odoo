@@ -28,6 +28,8 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     private $mResource;
     /** @var  Lot */
     private $obj;
+    /** @var array Constructor arguments for object mocking */
+    private $objArgs = [];
 
     protected function setUp()
     {
@@ -40,7 +42,15 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
         $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
         $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
-        /** setup mocks for constructor */
+        /** reset args. to create mock of the tested object */
+        $this->objArgs = [
+            $this->mManObj,
+            $this->mManTrans,
+            $this->mResource,
+            $this->mRepoWrhsEntityLot,
+            $this->mRepoEntityLot,
+            $this->mFactorySelect
+        ];
         /** create object to test */
         $this->obj = new Lot(
             $this->mManObj,
@@ -50,6 +60,26 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
             $this->mRepoEntityLot,
             $this->mFactorySelect
         );
+    }
+
+    public function test__checkNullLot()
+    {
+        /** === Test Data === */
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(
+            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[create]',
+            $this->objArgs
+        );
+        /** === Setup Mocks === */
+        // $data = $this->_repoEntityLot->getByOdooId(AggLot::NULL_LOT_ID);
+        $this->mRepoEntityLot
+            ->shouldReceive('getByOdooId')->once()
+            ->andReturn(null);
+        // $this->create($data);
+        $this->obj
+            ->shouldReceive('create')->once();
+        /** === Call and asserts  === */
+        $this->obj->_checkNullLot();
     }
 
     public function test_constructor()
@@ -119,9 +149,18 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     public function test_getByOdooId()
     {
         /** === Test Data === */
-        $ODOO_ID = 32;
+        $ODOO_ID = null;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(
+            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
+            $this->objArgs
+        );
         /** === Setup Mocks === */
+        // $this->_checkNullLot();
+        $this->obj
+            ->shouldReceive('_checkNullLot')->once();
+        //
         // $query = $this->_factorySelect->getQueryToSelect();
         $mQuery = $this->_mockDbSelect();
         $this->mFactorySelect
@@ -139,6 +178,29 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         /** === Call and asserts  === */
         $res = $this->obj->getByOdooId($ODOO_ID);
         $this->assertEquals($ODOO_ID, $res->getOdooId());
+    }
+
+    public function test_getMageIdByOdooId()
+    {
+        /** === Test Data === */
+        $ODOO_ID = null;
+        $RESULT = 'result';
+        /** === Mock object itself === */
+        $this->obj = \Mockery::mock(
+            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
+            $this->objArgs
+        );
+        /** === Setup Mocks === */
+        $this->obj
+            ->shouldReceive('_checkNullLot')->once();
+        // $result = $this->_repoEntityLot->getMageIdByOdooId($id);
+        $this->mRepoEntityLot
+            ->shouldReceive('getMageIdByOdooId')->once()
+            ->with($ODOO_ID)
+            ->andReturn($RESULT);
+        /** === Call and asserts  === */
+        $res = $this->obj->getMageIdByOdooId($ODOO_ID);
+        $this->assertEquals($RESULT, $res);
     }
 
     public function test_getQueryToSelect()

@@ -36,15 +36,12 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
 
     public function test_constructor()
     {
-        /** === Test Data === */
-        /** === Setup Mocks === */
         /** === Call and asserts  === */
         $this->assertInstanceOf(SelectFactory::class, $this->obj);
     }
 
-    public function test_getSelectCountQuery()
+    public function test_getQueryToSelectCount()
     {
-        /** === Test Data === */
         /** === Setup Mocks === */
         // $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
         $mQuery = $this->_mockDbSelect();
@@ -57,12 +54,12 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /** === Call and asserts  === */
-        $this->obj->getQueryToSelectCount();
+        $res = $this->obj->getQueryToSelectCount();
+        $this->assertTrue($res instanceof \Magento\Framework\DB\Select);
     }
 
-    public function test_getSelectQuery()
+    public function test_getQueryToSelect()
     {
-        /** === Test Data === */
         /** === Setup Mocks === */
         // $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
         $mQuery = $this->_mockDbSelect();
@@ -75,7 +72,8 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         // $result->joinLeft($tblOdoo, $on, $cols);
         $mQuery->shouldReceive('joinLeft')->once();
         /** === Call and asserts  === */
-        $this->obj->getQueryToSelect();
+        $res = $this->obj->getQueryToSelect();
+        $this->assertTrue($res instanceof \Magento\Framework\DB\Select);
     }
 
 }

@@ -27,8 +27,6 @@ class Lot
     protected $_repoEntityLot;
     /** @var  \Praxigento\Warehouse\Repo\Entity\ILot */
     protected $_repoWrhsEntityLot;
-    /** @var \Magento\Framework\App\ResourceConnection */
-    protected $_resource;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
@@ -40,20 +38,17 @@ class Lot
     ) {
         $this->_manObj = $manObj;
         $this->_manTrans = $manTrans;
-        $this->_resource = $resource;
         $this->_conn = $resource->getConnection();
         $this->_repoWrhsEntityLot = $repoWrhsEntityLot;
         $this->_repoEntityLot = $repoEntityLot;
         $this->_factorySelect = $factorySelect;
-        /* init reference */
-        $this->_refDataObject = new EntityLot();
     }
 
     /**
      * Check that dedicated lot for Odoo products w/o lots exists (create if does not exist).
      * @return AggLot
      */
-    protected function _checkNullLot()
+    public function _checkNullLot()
     {
         if (!$this->_isNullLotExist) {
             $data = $this->_repoEntityLot->getByOdooId(AggLot::NULL_LOT_ID);
@@ -95,19 +90,6 @@ class Lot
             $this->_manTrans->end($def);
         }
         return $result;
-    }
-
-    /** @inheritdoc */
-    public function get(
-        $where = null,
-        $order = null,
-        $limit = null,
-        $offset = null,
-        $columns = null,
-        $group = null,
-        $having = null
-    ) {
-        throw new \Exception('Method is not implemented yet.');
     }
 
     /** @inheritdoc */
