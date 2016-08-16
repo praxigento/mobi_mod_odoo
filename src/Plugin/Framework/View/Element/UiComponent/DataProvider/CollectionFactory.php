@@ -2,7 +2,6 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-
 namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider;
 
 use Praxigento\Odoo\Config as Cfg;
