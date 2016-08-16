@@ -98,7 +98,7 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     /**
      * @expectedException \Exception
      */
-    public function test_getSessionId_failed()
+    public function test_getSessionId_failedInOdoo()
     {
         /** === Test Data === */
         $PARAMS_JSON = 'json params';
@@ -122,15 +122,55 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $this->obj->getSessionId();
     }
 
+    /**
+     * @expectedException \Exception
+     */
+    public function test_getSessionId_wrongAuth()
+    {
+        /** === Test Data === */
+        $PARAMS_JSON = 'json params';
+        $CONTENTS = 'odoo response';
+        $RESPONSE = [];
+        $USER_ID = 32;
+        $SESS_ID = 'sessionId';
+        /** === Setup Mocks === */
+        // $request = $this->_adapter->encodeJson($params);
+        $this->mAdapter
+            ->shouldReceive('encodeJson')->once()
+            ->andReturn($PARAMS_JSON);
+        // $context = $this->_adapter->createContext($contextOpts);
+        $this->mAdapter
+            ->shouldReceive('createContext')->once()
+            ->andReturn($PARAMS_JSON);
+        // $contents = $this->_adapter->getContents($uri, $context);
+        $this->mAdapter
+            ->shouldReceive('getContents')->once()
+            ->andReturn($CONTENTS);
+        // $response = $this->_adapter->decodeJson($contents);
+        $this->mAdapter
+            ->shouldReceive('decodeJson')->once()
+            ->andReturn($RESPONSE);
+        // $respData = $this->_manObj->create(DataObject::class, ['arg1' => $response]);
+        $mRespData = $this->_mock(\Flancer32\Lib\DataObject::class);
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->andReturn($mRespData);
+        // $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
+        $mRespData
+            ->shouldReceive('getData')->once()
+            ->with(\Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login::ODOO_PATH_USER_ID)
+            ->andReturn(null);
+        /** === Call and asserts  === */
+        $this->obj->getSessionId();
+    }
+
     public function test_getUserId()
     {
         /** === Test Data === */
         $USER_ID = 'user id';
-        $SESS_ID = 'session id';
         $REQUEST = 'xml request';
         $CONTEXT = 'context';
         $CONTENT = 'content';
-        $CONTENT_DATA = 'content data';
         /** === Setup Mocks === */
         // $request = $this->_adapter->encodeXml('login', $params, $outOpts);
         $this->mAdapter
@@ -164,11 +204,8 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
     {
         /** === Test Data === */
         $USER_ID = 'user id';
-        $SESS_ID = 'session id';
         $REQUEST = 'xml request';
         $CONTEXT = 'context';
-        $CONTENT = 'content';
-        $CONTENT_DATA = 'content data';
         /** === Setup Mocks === */
         // $request = $this->_adapter->encodeXml('login', $params, $outOpts);
         $this->mAdapter
@@ -189,5 +226,4 @@ class Login_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $res = $this->obj->getUserId();
         $this->assertEquals($USER_ID, $res);
     }
-
 }

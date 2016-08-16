@@ -2,25 +2,21 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-
 namespace Praxigento\Odoo\Repo\Odoo\Def;
-
-use Magento\Framework\Webapi\ServiceInputProcessor;
-use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 
 class Inventory
     implements \Praxigento\Odoo\Repo\Odoo\IInventory
 {
     const ODOO_IDS = 'ids';
     const ROUTE = '/api/inventory';
-    /** @var  ServiceInputProcessor */
+    /** @var  \Magento\Framework\Webapi\ServiceInputProcessor */
     protected $_mageSrvInProc;
-    /** @var  Rest */
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Rest */
     protected $_rest;
 
     public function __construct(
-        ServiceInputProcessor $mageSrvInProc,
-        Rest $rest
+        \Magento\Framework\Webapi\ServiceInputProcessor $mageSrvInProc,
+        \Praxigento\Odoo\Repo\Odoo\Connector\Rest $rest
     ) {
         $this->_mageSrvInProc = $mageSrvInProc;
         $this->_rest = $rest;
