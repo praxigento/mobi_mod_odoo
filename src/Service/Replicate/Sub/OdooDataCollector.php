@@ -186,7 +186,7 @@ class OdooDataCollector
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder $mageOrder
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
      * @return \Praxigento\Odoo\Data\Odoo\Contact
      */
     public function getAddressBilling(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
@@ -198,13 +198,11 @@ class OdooDataCollector
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder $mageOrder
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
      * @return \Praxigento\Odoo\Data\Odoo\Contact
      */
     public function getAddressShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\Contact();
-        /* collect data */
         /** @var \Magento\Sales\Api\Data\OrderAddressInterface $addrMage */
         $addrMage = $mageOrder->getShippingAddress();
         $result = $this->_extractContact($addrMage);
@@ -219,7 +217,7 @@ class OdooDataCollector
      */
     public function getSaleOrder(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
         /* Collect order data */
         // id_mage
         $orderIdMage = (int)$mageOrder->getId();
@@ -284,7 +282,7 @@ class OdooDataCollector
      */
     public function getSaleOrderCustomer(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Customer::class);
         /* collect data */
         $custMageId = (int)$mageOrder->getCustomerId();
         $dwnlCust = $this->_repoDwnlCustomer->getById($custMageId);
@@ -341,7 +339,7 @@ class OdooDataCollector
     public function getSaleOrderPayments(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $result = [];
-        $odooPayment = new \Praxigento\Odoo\Data\Odoo\Payment();
+        $odooPayment = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\Payment::class);
         /* collect data */
         $magePayment = $mageOrder->getPayment();
         $code = $this->_manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
@@ -360,7 +358,7 @@ class OdooDataCollector
      */
     public function getSaleOrderShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping::class);
         /* collect data */
         $code = $this->_manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
         $priceAmount = $mageOrder->getBaseShippingAmount();
