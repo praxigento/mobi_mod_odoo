@@ -119,17 +119,4 @@ class Warehouse
         return $result;
     }
 
-    /** @inheritdoc */
-    public function updateById($id, $data)
-    {
-        $def = $this->_manTrans->begin();
-        try {
-            $bind = [EntityWarehouse::ATTR_ODOO_REF => $data->getData(AggWarehouse::AS_ODOO_ID)];
-            $this->_repoEntityWarehouse->updateById($id, $bind);
-            $this->_repoWrhsAggWarehouse->updateById($id, $data);
-            $this->_manTrans->commit($def);
-        } finally {
-            $this->_manTrans->end($def);
-        }
-    }
 }

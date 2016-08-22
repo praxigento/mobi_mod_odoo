@@ -168,31 +168,4 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
         $res = $this->obj->getQueryToSelectCount();
         $this->assertInstanceOf(\Magento\Framework\DB\Select::class, $res);
     }
-
-    public function test_updateById()
-    {
-        /** === Test Data === */
-        $ID = 4;
-        $DATA = new \Praxigento\Odoo\Data\Agg\Warehouse();
-        /** === Setup Mocks === */
-        // $def = $this->_manTrans->begin();
-        $mDef = $this->_mockTransactionDefinition();
-        $this->mManTrans
-            ->shouldReceive('begin')->once()
-            ->andReturn($mDef);
-        // $this->_repoEntityWarehouse->updateById($id, $bind);
-        $this->mRepoEntityWarehouse
-            ->shouldReceive('updateById')->once();
-        // $this->_repoWrhsAggWarehouse->updateById($id, $data);
-        $this->mRepoWrhsAggWarehouse
-            ->shouldReceive('updateById')->once();
-        // $this->_manTrans->commit($def);
-        $this->mManTrans
-            ->shouldReceive('commit')->once();
-        // $this->_manTrans->end($def);
-        $this->mManTrans
-            ->shouldReceive('end')->once();
-        /** === Call and asserts  === */
-        $res = $this->obj->updateById($ID, $DATA);
-    }
 }
