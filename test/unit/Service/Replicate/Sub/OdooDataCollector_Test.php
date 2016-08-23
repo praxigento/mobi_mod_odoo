@@ -154,7 +154,7 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** === Test Data === */
         /** @var \Praxigento\Odoo\Data\Agg\SaleOrderItem $ITEM */
         $ITEM = $this->_mock(\Praxigento\Odoo\Data\Agg\SaleOrderItem::class);
-        $ITEM->shouldReceive('getOdooIdLot')->once()->andReturn('OdooIdLot');
+        $ITEM->shouldReceive('getOdooIdLot')->once()->andReturn(500);
         $ITEM->shouldReceive('getLotQty')->once()->andReturn('LotQty');
         /** === Setup Mocks === */
         // $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
@@ -162,7 +162,7 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mResult);
-        //
+        // $qty = $this->_manFormat->toNumber($item->getLotQty());
         $this->mManFormat->shouldReceive('toNumber')->andReturn('formatted');
         //
         $mResult->shouldReceive('setIdOdoo')->once();
@@ -464,16 +464,15 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mRepoAggSaleOrderItem
             ->shouldReceive('getByOrderAndStock')->once()
             ->andReturn($mAggSaleOrderItems);
-        // First Iteration
+        //
+        // FIRST ITERATION
+        //
         // $productIdOdoo = $item->getOdooIdProduct();
         $mItem1->shouldReceive('getOdooIdProduct')->once()->andReturn($PROD_ID_ODOO);
         // $line = $this->_extractLine($item);
         $mLine = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line::class);
         $this->obj->shouldReceive('_extractLine')->once()->andReturn($mLine);
         // $lots = $line->getLots();
-        $mLot1 = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
-        $mLine->shouldReceive('getLots')->once()->andReturn([$mLot1]);
-        // $lot = $this->_extractLineLot($item);
         $mLine->shouldReceive('getLots')->once()->andReturn([]); // empty array on first iteration
         // $lot = $this->_extractLineLot($item);
         $mLot1 = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
@@ -482,7 +481,8 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         // $line->setLots($lots);
         $mLine->shouldReceive('setLots')->with([$mLot1])->once();
         //
-        // Second Iteration
+        // SECOND ITERATION
+        //
         // $productIdOdoo = $item->getOdooIdProduct();
         $mItem2->shouldReceive('getOdooIdProduct')->once()->andReturn($PROD_ID_ODOO);
         // $lots = $line->getLots();

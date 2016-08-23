@@ -48,6 +48,7 @@ class QueryModifier_UnitTest
     public function test_populateSelect()
     {
         /** === Test Data === */
+        $TBL_SALE_ORDER = 'sale order table';
         $mCollection = $this->_mock(\Magento\Sales\Model\ResourceModel\Order\Grid\Collection::class);
         /** === Setup Mocks === */
         // $select = $collection->getSelect();
@@ -55,6 +56,11 @@ class QueryModifier_UnitTest
         $mCollection
             ->shouldReceive('getSelect')->once()
             ->andReturn($mSelect);
+        // $tbl = [self::AS_TBL_ODOO_SALE => $this->_resource->getTableName(SaleOrder::ENTITY_NAME)];
+        $this->mResource
+            ->shouldReceive('getTableName')->once()
+            ->with(\Praxigento\Odoo\Data\Entity\SaleOrder::ENTITY_NAME)
+            ->andReturn();
         /** === Call and asserts  === */
         $this->obj->populateSelect($mCollection);
     }

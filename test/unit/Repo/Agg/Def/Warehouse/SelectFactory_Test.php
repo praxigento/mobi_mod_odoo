@@ -8,14 +8,11 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
-class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+class SelectFactory_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
     /** @var  \Mockery\MockInterface */
-    private $mConn;
-    /** @var  \Mockery\MockInterface */
     private $mRepoWrhsAggWarehouse;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  SelectFactory */
     private $obj;
 
@@ -23,8 +20,6 @@ class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     {
         parent::setUp();
         /** create mocks */
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
         /** setup mocks for constructor */
         /** create object to test */

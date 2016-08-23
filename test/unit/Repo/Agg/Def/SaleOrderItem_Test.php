@@ -6,14 +6,11 @@ namespace Praxigento\Odoo\Repo\Agg\Def;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class SaleOrderItem_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+class SaleOrderItem_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
     /** @var  \Mockery\MockInterface */
-    private $mConn;
-    /** @var  \Mockery\MockInterface */
     private $mFactorySelect;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  Lot */
     private $obj;
     /** @var array Constructor arguments for object mocking */
@@ -23,8 +20,6 @@ class SaleOrderItem_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     {
         parent::setUp();
         /** create mocks */
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mFactorySelect = $this->_mock(SaleOrderItem\SelectFactory::class);
         /** reset args. to create mock of the tested object */
         $this->objArgs = [

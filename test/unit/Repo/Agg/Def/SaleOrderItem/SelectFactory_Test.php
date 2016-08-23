@@ -7,14 +7,10 @@ namespace Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem;
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
 class SelectFactory_UnitTest
-    extends \Praxigento\Core\Test\BaseCase\Mockery
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
     /** @var  \Mockery\MockInterface */
-    private $mConn;
-    /** @var  \Mockery\MockInterface */
     private $mLogger;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  SelectFactory */
     private $obj;
 
@@ -23,8 +19,6 @@ class SelectFactory_UnitTest
         parent::setUp();
         /** create mocks */
         $this->mLogger = $this->_mockLogger();
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         /** create object to test */
         $this->obj = new SelectFactory(
             $this->mLogger,

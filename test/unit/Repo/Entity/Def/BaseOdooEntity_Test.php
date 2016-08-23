@@ -10,7 +10,8 @@ class BaseOdooEntityToTest extends BaseOdooEntity
 {
 }
 
-class BaseOdooEntity_UnitTest extends \Praxigento\Core\Test\BaseCase\Repo\Entity
+class BaseOdooEntity_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo\Entity
 {
     /** @var  BaseOdooEntity */
     private $obj;
@@ -61,6 +62,9 @@ class BaseOdooEntity_UnitTest extends \Praxigento\Core\Test\BaseCase\Repo\Entity
         $ODOO_ID = 4;
         $MAGE_ID = 16;
         /** === Mock object itself === */
+        $this->mResource
+            ->shouldReceive('getConnection')->once()
+            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(BaseOdooEntityToTest::class . '[getByOdooId]', $this->objArgs);
         /** === Setup Mocks === */
         // $item = $this->getByOdooId($id);

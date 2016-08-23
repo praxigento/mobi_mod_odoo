@@ -23,7 +23,7 @@ class OdooDataCollector
     protected $_manBusinessCodes;
     /** @var  \Praxigento\Core\Tool\IFormat */
     protected $_manFormat;
-    /** @var \Magento\Framework\ObjectManagerInterface  */
+    /** @var \Magento\Framework\ObjectManagerInterface */
     protected $_manObj;
     /** @var \Praxigento\Warehouse\Tool\IStockManager */
     protected $_manStock;

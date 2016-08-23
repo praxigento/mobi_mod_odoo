@@ -138,6 +138,9 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         // $stockItem = $this->_subDataHandler->createWarehouseData($productIdMage, $stockIdMage, $priceWarehouse, $pvWarehouse);
         $this->mSubDataHandler
             ->shouldReceive('createWarehouseData')->once();
+        // $this->_subDataHandler->processLots($lots, $stockItem);
+        $this->mSubDataHandler
+            ->shouldReceive('processLots')->once();
         /** === Call and asserts  === */
         $this->obj->processWarehouses($PRODUCT_ID, $WAREHOUSES);
     }

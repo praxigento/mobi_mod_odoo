@@ -6,21 +6,15 @@ namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
-class SelectFactory_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+class SelectFactory_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
-    /** @var  \Mockery\MockInterface */
-    private $mConn;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  SelectFactory */
     private $obj;
 
     protected function setUp()
     {
         parent::setUp();
-        /** create mocks */
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         /** create object to test */
         $this->obj = new SelectFactory(
             $this->mResource

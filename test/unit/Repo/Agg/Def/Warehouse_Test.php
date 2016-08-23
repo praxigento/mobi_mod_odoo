@@ -11,10 +11,9 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+class Warehouse_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
-    /** @var  \Mockery\MockInterface */
-    private $mConn;
     /** @var  \Mockery\MockInterface */
     private $mFactorySelect;
     /** @var  \Mockery\MockInterface */
@@ -25,8 +24,6 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     private $mRepoEntityWarehouse;
     /** @var  \Mockery\MockInterface */
     private $mRepoWrhsAggWarehouse;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  Warehouse */
     private $obj;
 
@@ -36,8 +33,6 @@ class Warehouse_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsAggWarehouse = $this->_mock(WrhsRepoAggWarehouse::class);
         $this->mRepoEntityWarehouse = $this->_mock(RepoEntityWarehouse::class);
         $this->mFactorySelect = $this->_mock(Warehouse\SelectFactory::class);

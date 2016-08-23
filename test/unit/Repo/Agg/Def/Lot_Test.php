@@ -10,10 +10,9 @@ use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+class Lot_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Repo
 {
-    /** @var  \Mockery\MockInterface */
-    private $mConn;
     /** @var  \Mockery\MockInterface */
     private $mFactorySelect;
     /** @var  \Mockery\MockInterface */
@@ -24,8 +23,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     private $mRepoEntityLot;
     /** @var  \Mockery\MockInterface */
     private $mRepoWrhsEntityLot;
-    /** @var  \Mockery\MockInterface */
-    private $mResource;
     /** @var  Lot */
     private $obj;
     /** @var array Constructor arguments for object mocking */
@@ -37,8 +34,6 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
-        $this->mConn = $this->_mockConn();
-        $this->mResource = $this->_mockResourceConnection($this->mConn);
         $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
         $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
         $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
@@ -66,6 +61,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     {
         /** === Test Data === */
         /** === Mock object itself === */
+        $this->mResource
+            ->shouldReceive('getConnection')->once()
+            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[create]',
             $this->objArgs
@@ -152,6 +150,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $ODOO_ID = null;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /** === Mock object itself === */
+        $this->mResource
+            ->shouldReceive('getConnection')->once()
+            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
             $this->objArgs
@@ -186,6 +187,9 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $ODOO_ID = null;
         $RESULT = 'result';
         /** === Mock object itself === */
+        $this->mResource
+            ->shouldReceive('getConnection')->once()
+            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
             $this->objArgs

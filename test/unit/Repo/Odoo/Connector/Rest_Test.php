@@ -24,7 +24,7 @@ class Rest_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     protected function setUp()
     {
         parent::setUp();
-        $this->mLogger = $this->_mockLogger();
+        $this->mLogger = $this->_mockLogger(false);
         $this->mManObj = $this->_mockObjectManager();
         $this->mAdapter = $this->_mock(\Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter::class);
         $this->mConfig = $this->_mock(\Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection::class);
