@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def;
 
 include_once(__DIR__ . '/../../../../../../phpunit_bootstrap.php');
 
-class Cover_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class Cover_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
 
     public function test_accessors()

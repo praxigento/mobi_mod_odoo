@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
-class Product_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class Product_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mMageRepoAttrSet;

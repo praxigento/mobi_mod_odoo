@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mManBusinessCodes;

@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Rest_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class Rest_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mAdapter;

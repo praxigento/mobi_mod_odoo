@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Api\Def;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 
-class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mLogger;

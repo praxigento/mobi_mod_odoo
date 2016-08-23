@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Observer;
 
 include_once(__DIR__ . '/../phpunit_bootstrap.php');
 
-class SalesOrderInvoicePay_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class SalesOrderInvoicePay_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mCallReplicate;

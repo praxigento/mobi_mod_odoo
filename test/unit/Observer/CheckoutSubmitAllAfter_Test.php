@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Observer;
 
 include_once(__DIR__ . '/../phpunit_bootstrap.php');
 
-class CheckoutSubmitAllAfter_UnitTest extends \Praxigento\Core\Test\BaseMockeryCase
+class CheckoutSubmitAllAfter_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
 {
     /** @var  \Mockery\MockInterface */
     private $mCallReplicate;
