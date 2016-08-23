@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Entity\Def;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class Category_UnitTest extends \Praxigento\Core\Test\BaseRepoEntityCase
+class Category_UnitTest extends \Praxigento\Core\Test\BaseCase\Repo\Entity
 {
     /** @var  Category */
     private $obj;

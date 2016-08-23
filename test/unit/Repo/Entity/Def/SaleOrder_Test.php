@@ -6,7 +6,7 @@ namespace Praxigento\Odoo\Repo\Entity\Def;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 
-class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseRepoEntityCase
+class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseCase\Repo\Entity
 {
     /** @var  SaleOrder */
     private $obj;

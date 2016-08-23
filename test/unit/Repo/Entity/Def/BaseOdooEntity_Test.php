@@ -10,7 +10,7 @@ class BaseOdooEntityToTest extends BaseOdooEntity
 {
 }
 
-class BaseOdooEntity_UnitTest extends \Praxigento\Core\Test\BaseRepoEntityCase
+class BaseOdooEntity_UnitTest extends \Praxigento\Core\Test\BaseCase\Repo\Entity
 {
     /** @var  BaseOdooEntity */
     private $obj;
