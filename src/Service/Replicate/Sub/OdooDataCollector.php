@@ -142,7 +142,7 @@ class OdooDataCollector
      */
     public function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\LotLine::class);
+        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->_manFormat->toNumber($item->getLotQty());
         if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
