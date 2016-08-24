@@ -82,6 +82,7 @@ class Call implements IReplicate
             try {
                 /* save order into Odoo repo */
                 $resp = $this->_repoOdooSaleOrder->save($odooOrder);
+                $result->setOdooResponse($resp);
                 if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
                     $mageId = $mageOrder->getEntityId();
                     $odooId = $resp->getIdOdoo();
@@ -98,7 +99,6 @@ class Call implements IReplicate
                 // transaction will be rolled back if commit is not done (otherwise - do nothing)
                 $this->_manTrans->end($def);
             }
-            $result->setOdooResponse($resp);
         }
         return $result;
     }

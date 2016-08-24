@@ -11,14 +11,24 @@
         </resources>
     </route>
 
+    <route url="/V1/prxgt/odoo/sales/order/pushRepeat/" method="POST">
+        <!-- MOBI-412: Request orders push to Odoo -->
+        <service class="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" method="orderPushRepeat"/>
+        <resources>
+            <!--<resource ref="Praxigento_Odoo::replicate"/>-->
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
     <route url="/V1/prxgt/odoo/sales/shipmentTracking/save/" method="POST">
         <!-- Update tracking number for existing sale order -->
         <service class="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" method="shipmentTrackingSave"/>
         <resources>
             <!-- MOBI-360 -->
-            <!--<resource ref="Praxigento_Odoo::replicate"/>-->
-            <resource ref="anonymous"/>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
         </resources>
     </route>
+
 
 </routes>

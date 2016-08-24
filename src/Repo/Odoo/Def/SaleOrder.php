@@ -35,6 +35,11 @@ class SaleOrder
         } else {
             $error = $cover->getError();
             $result = $this->_mageSrvInProc->convertValue($error, \Praxigento\Odoo\Data\Odoo\Error::class);
+            /** TODO : delete tmp code (cannot use getData as getter for property) */
+            $debug = $error['data']['debug'];
+            $name = $error['data']['name'];
+            $result->setDebug($debug);
+            $result->setName($name);
         }
         return $result;
     }
