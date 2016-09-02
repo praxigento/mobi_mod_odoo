@@ -33,19 +33,19 @@
     <preference for="Praxigento\Odoo\Repo\Entity\ISaleOrder" type="Praxigento\Odoo\Repo\Entity\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse" type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
 
-    <!-- Odoo API repo -->
-    <virtualType name="odooTestConfigParams" type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params">
-        <arguments>
-            <argument xsi:type="array" name="arg1">
-                <item name="baseUri" xsi:type="string">http://lion.host.prxgt.com:8122</item>
-                <item name="dbName" xsi:type="string">odoo_mobi_test</item>
-                <item name="userName" xsi:type="string">magento</item>
-                <item name="userPassword" xsi:type="string">v5WzTHjLatKHLeTB</item>
-                <!--<item name="userName" xsi:type="string">admin</item>-->
-                <!--<item name="userPassword" xsi:type="string">admin</item>-->
-            </argument>
-        </arguments>
-    </virtualType>
+    <!-- Odoo API repo : see "praxigento/mobi_app_generic_mage2/src/etc/di.xml" -->
+    <!--<virtualType name="odooTestConfigParams" type="Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params">-->
+    <!--<arguments>-->
+    <!--<argument xsi:type="array" name="arg1">-->
+    <!--<item name="baseUri" xsi:type="string">http://lion.host.prxgt.com:8122</item>-->
+    <!--<item name="dbName" xsi:type="string">odoo_mobi_test</item>-->
+    <!--<item name="userName" xsi:type="string">magento</item>-->
+    <!--<item name="userPassword" xsi:type="string">v5WzTHjLatKHLeTB</item>-->
+    <!--&lt;!&ndash;<item name="userName" xsi:type="string">admin</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="userPassword" xsi:type="string">admin</item>&ndash;&gt;-->
+    <!--</argument>-->
+    <!--</arguments>-->
+    <!--</virtualType>-->
 
     <preference for="Praxigento\Odoo\Repo\Odoo\IInventory" type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
