@@ -6,7 +6,6 @@
 namespace Praxigento\Odoo\Console\Command\Replicate;
 
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Setup\Model\ObjectManagerProvider;
 use Praxigento\Odoo\Service\IReplicate;
 use Praxigento\Odoo\Service\Replicate\Request\ProductsFromOdoo as ProductsFromOdooRequest;
 use Praxigento\Odoo\Service\Replicate\Response\ProductsFromOdoo as ProductsFromOdooResponse;
@@ -39,17 +38,25 @@ class Products extends Command
 
     /**
      * Sets area code to start a session for replication.
+     * TODO: move \Praxigento\App\Generic2\Console\Command\Init\Base into the Core
      */
     private function _setAreaCode()
     {
-        $areaCode = 'adminhtml';
+        /* Magento related config (Object Manager) */
         /** @var \Magento\Framework\App\State $appState */
         $appState = $this->_manObj->get(\Magento\Framework\App\State::class);
-        $appState->setAreaCode($areaCode);
-        /** @var \Magento\Framework\ObjectManager\ConfigLoaderInterface $configLoader */
-        $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
-        $config = $configLoader->load($areaCode);
-        $this->_manObj->configure($config);
+        try {
+            /* area code should be set only once */
+            $appState->getAreaCode();
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            /* exception will be thrown if no area code is set */
+            $areaCode = 'adminhtml';
+            $appState->setAreaCode($areaCode);
+            /** @var \Magento\Framework\ObjectManager\ConfigLoaderInterface $configLoader */
+            $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
+            $config = $configLoader->load($areaCode);
+            $this->_manObj->configure($config);
+        }
     }
 
     /**
