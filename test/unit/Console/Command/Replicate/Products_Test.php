@@ -71,8 +71,14 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mManObj
             ->shouldReceive('get')->once()
             ->andReturn($mAppState);
+        // $appState->getAreaCode();
+        $mAppState->shouldReceive('getAreaCode')->once()
+            ->andThrow(new \Magento\Framework\Exception\LocalizedException(
+                new \Magento\Framework\Phrase('exception message')
+            ));
         // $appState->setAreaCode($areaCode);
-        $mAppState->shouldReceive('setAreaCode')->once();
+        $mAppState->shouldReceive('setAreaCode')->once()
+            ->with('adminhtml');
         // $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
         $mConfigLoader = $this->_mock(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);
         $this->mManObj
@@ -121,6 +127,11 @@ class Products_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mManObj
             ->shouldReceive('get')->once()
             ->andReturn($mAppState);
+        // $appState->getAreaCode();
+        $mAppState->shouldReceive('getAreaCode')->once()
+            ->andThrow(new \Magento\Framework\Exception\LocalizedException(
+                new \Magento\Framework\Phrase('exception message')
+            ));
         // $appState->setAreaCode($areaCode);
         $mAppState->shouldReceive('setAreaCode')->once();
         // $configLoader = $this->_manObj->get(\Magento\Framework\ObjectManager\ConfigLoaderInterface::class);

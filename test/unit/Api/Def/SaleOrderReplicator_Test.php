@@ -19,7 +19,11 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
     /** @var  \Mockery\MockInterface */
+    private $mCallReplicate;
+    /** @var  \Mockery\MockInterface */
     private $mShipmentLoader;
+    /** @var  \Mockery\MockInterface */
+    private $mCollector;
     /** @var  SaleOrderReplicator */
     private $obj;
 
@@ -33,6 +37,8 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         $this->mManTrans = $this->_mock(\Praxigento\Core\Transaction\Database\IManager::class);
         $this->mManBusCodes = $this->_mock(\Praxigento\Odoo\Tool\IBusinessCodesManager::class);
         $this->mShipmentLoader = $this->_mock(\Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader::class);
+        $this->mCallReplicate = $this->_mock(\Praxigento\Odoo\Service\IReplicate::class);
+        $this->mCollector = $this->_mock(\Praxigento\Odoo\Api\Def\SaleOrderReplicator\Collector::class);
         /** setup mocks for constructor */
         /** create object to test */
         $this->obj = new SaleOrderReplicator(
@@ -41,7 +47,9 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
             $this->mManInvoice,
             $this->mManTrans,
             $this->mManBusCodes,
-            $this->mShipmentLoader
+            $this->mShipmentLoader,
+            $this->mCallReplicate,
+            $this->mCollector
         );
     }
 

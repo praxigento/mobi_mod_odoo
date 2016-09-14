@@ -55,7 +55,7 @@ class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
             ->shouldReceive('getResultData')->once()
             ->andReturn($mData);
         // $error = $cover->getError();
-        $mError = 'error';
+        $mError = ['data' => ['debug' => 'data debug', 'name' => 'data name']];
         $mCover
             ->shouldReceive('getError')->once()
             ->andReturn($mError);
@@ -64,6 +64,10 @@ class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mMageSrvInProc
             ->shouldReceive('convertValue')->once()
             ->andReturn($mResult);
+        // $result->setDebug($debug);
+        $mResult->shouldReceive('setDebug')->once()->with('data debug');
+        // $result->setName($name);
+        $mResult->shouldReceive('setName')->once()->with('data name');
         /** === Call and asserts  === */
         $res = $this->obj->save($ORDER);
         $this->assertTrue($res instanceof \Praxigento\Odoo\Data\Odoo\Error);
