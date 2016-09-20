@@ -33,6 +33,7 @@ class Warehouse extends BaseDataProvider
         parent::__construct(
             $url,
             $criteriaAdapter,
+            null,
             $repo,
             $reporting,
             $searchCriteriaBuilder,
