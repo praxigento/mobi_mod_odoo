@@ -61,9 +61,6 @@ class Lot_UnitTest
     {
         /** === Test Data === */
         /** === Mock object itself === */
-        $this->mResource
-            ->shouldReceive('getConnection')->once()
-            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[create]',
             $this->objArgs
@@ -150,9 +147,6 @@ class Lot_UnitTest
         $ODOO_ID = null;
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /** === Mock object itself === */
-        $this->mResource
-            ->shouldReceive('getConnection')->once()
-            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
             $this->objArgs
@@ -187,9 +181,6 @@ class Lot_UnitTest
         $ODOO_ID = null;
         $RESULT = 'result';
         /** === Mock object itself === */
-        $this->mResource
-            ->shouldReceive('getConnection')->once()
-            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(
             \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
             $this->objArgs

@@ -62,9 +62,6 @@ class BaseOdooEntity_UnitTest
         $ODOO_ID = 4;
         $MAGE_ID = 16;
         /** === Mock object itself === */
-        $this->mResource
-            ->shouldReceive('getConnection')->once()
-            ->andReturn($this->mConn);
         $this->obj = \Mockery::mock(BaseOdooEntityToTest::class . '[getByOdooId]', $this->objArgs);
         /** === Setup Mocks === */
         // $item = $this->getByOdooId($id);
