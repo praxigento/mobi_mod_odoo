@@ -10,7 +10,6 @@ use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
-use Magento\Store\Model\StoreManagerInterface;
 use Praxigento\Core\Repo\Query\Criteria\IAdapter as ICriteriaAdapter;
 use Praxigento\Core\Ui\DataProvider\Base as BaseDataProvider;
 use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
@@ -18,12 +17,17 @@ use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
 class Lot extends BaseDataProvider
 {
 
+    /**
+     * @inheritdoc
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         UrlInterface $url,
-        ICriteriaAdapter $criteriaAdapter,
+        ICriteriaAdapter $critAdapter,
         IRepoAggLot $repo,
         Reporting $reporting,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        SearchCriteriaBuilder $searchCritBuilder,
         RequestInterface $request,
         FilterBuilder $filterBuilder,
         $name,
@@ -32,11 +36,11 @@ class Lot extends BaseDataProvider
     ) {
         parent::__construct(
             $url,
-            $criteriaAdapter,
+            $critAdapter,
             null,
             $repo,
             $reporting,
-            $searchCriteriaBuilder,
+            $searchCritBuilder,
             $request,
             $filterBuilder,
             $name,
