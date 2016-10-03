@@ -14,19 +14,8 @@ use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
  * Compose SELECT query to get Lot aggregate.
  */
 class SelectFactory
-    implements \Praxigento\Core\Repo\Query\IHasSelect
+    extends \Praxigento\Core\Repo\Agg\BaseSelectFactory
 {
-    /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
-    protected $_conn;
-    /** @var \Magento\Framework\App\ResourceConnection */
-    protected $_resource;
-
-    public function __construct(
-        ResourceConnection $resource
-    ) {
-        $this->_resource = $resource;
-        $this->_conn = $resource->getConnection();
-    }
 
     public function getQueryToSelectCount()
     {
@@ -41,14 +30,11 @@ class SelectFactory
         $result->from($tblWrhs, $cols);
         /* LEFT JOIN prxgt_odoo_lot */
         $cols = [];
-        $on = $asOdoo . '.' . EntityLot::ATTR_MAGE_REF . '=' . $asWrhs . '.' . EntityWrhsLot::ATTR_ID;
-        $result->joinLeft($tblOdoo, $on, $cols);
+        $cond = $asOdoo . '.' . EntityLot::ATTR_MAGE_REF . '=' . $asWrhs . '.' . EntityWrhsLot::ATTR_ID;
+        $result->joinLeft($tblOdoo, $cond, $cols);
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getQueryToSelect()
     {
         $result = $this->_conn->select();
@@ -68,8 +54,8 @@ class SelectFactory
         $cols = [
             AggLot::AS_ODOO_ID => EntityLot::ATTR_ODOO_REF
         ];
-        $on = $asOdoo . '.' . EntityLot::ATTR_MAGE_REF . '=' . $asWrhs . '.' . EntityWrhsLot::ATTR_ID;
-        $result->joinLeft($tblOdoo, $on, $cols);
+        $cond = $asOdoo . '.' . EntityLot::ATTR_MAGE_REF . '=' . $asWrhs . '.' . EntityWrhsLot::ATTR_ID;
+        $result->joinLeft($tblOdoo, $cond, $cols);
         return $result;
     }
 }

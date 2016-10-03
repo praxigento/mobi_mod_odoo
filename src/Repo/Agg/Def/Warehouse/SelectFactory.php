@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Repo\Agg\Def\Warehouse;
 
-use Magento\Framework\App\ResourceConnection;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
@@ -12,49 +11,40 @@ use Praxigento\Odoo\Repo\Agg\IWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 /**
- * Compose SELECT query to get Warehouse aggregate.
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
-class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
+class SelectFactory
+    extends \Praxigento\Core\Repo\Agg\BaseSelectFactory
 {
-    /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
-    protected $_conn;
     /** @var  WrhsRepoAggWarehouse */
-    protected $_repoWrhsAggWarehouse;
-    /** @var \Magento\Framework\App\ResourceConnection */
-    protected $_resource;
+    protected $_repoAggWarehouse;
 
     public function __construct(
-        ResourceConnection $resource,
-        WrhsRepoAggWarehouse $repoWrhsAggWarehouse
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Praxigento\Warehouse\Repo\Agg\Def\Warehouse $repoWrhsAggWarehouse
     ) {
-        $this->_resource = $resource;
-        $this->_conn = $resource->getConnection();
-        $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
+        parent::__construct($resource);
+        $this->_repoAggWarehouse = $repoWrhsAggWarehouse;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getQueryToSelectCount()
     {
-        $result = $this->_repoWrhsAggWarehouse->getQueryToSelectCount();
+        $result = $this->_repoAggWarehouse->getQueryToSelectCount();
         /* aliases and tables */
         $asStock = WrhsRepoAggWarehouse::AS_STOCK;
         $asOdoo = IWarehouse::AS_ODOO;
         $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
         /* LEFT JOIN prxgt_odoo_wrhs */
         $cols = [];
-        $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
-        $result->joinLeft($tblOdoo, $on, $cols);
+        $cond = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
+        $result->joinLeft($tblOdoo, $cond, $cols);
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getQueryToSelect()
     {
-        $result = $this->_repoWrhsAggWarehouse->getQueryToSelect();
+        $result = $this->_repoAggWarehouse->getQueryToSelect();
         /* aliases and tables */
         $asStock = WrhsRepoAggWarehouse::AS_STOCK;
         $asOdoo = IWarehouse::AS_ODOO;
@@ -63,8 +53,8 @@ class SelectFactory implements \Praxigento\Core\Repo\Query\IHasSelect
         $cols = [
             AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_REF
         ];
-        $on = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
-        $result->joinLeft($tblOdoo, $on, $cols);
+        $cond = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
+        $result->joinLeft($tblOdoo, $cond, $cols);
         return $result;
     }
 }

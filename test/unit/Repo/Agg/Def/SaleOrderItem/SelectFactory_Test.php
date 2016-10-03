@@ -6,22 +6,21 @@ namespace Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseClassName)
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+ */
 class SelectFactory_UnitTest
     extends \Praxigento\Core\Test\BaseCase\Repo
 {
-    /** @var  \Mockery\MockInterface */
-    private $mLogger;
     /** @var  SelectFactory */
     private $obj;
 
     protected function setUp()
     {
         parent::setUp();
-        /** create mocks */
-        $this->mLogger = $this->_mockLogger();
         /** create object to test */
         $this->obj = new SelectFactory(
-            $this->mLogger,
             $this->mResource
         );
     }
