@@ -6,12 +6,15 @@ namespace Praxigento\Odoo\Api\Def;
 
 /**
  * Implementation of the \Praxigento\Odoo\Api\SaleOrderReplicatorInterface.
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SaleOrderReplicator
     implements \Praxigento\Odoo\Api\SaleOrderReplicatorInterface
 {
     /** @var \Praxigento\Odoo\Service\IReplicate */
-    protected $_callSaleOrder;
+    protected $_callReplicate;
     /** @var  \Praxigento\Odoo\Api\Def\SaleOrderReplicator\Collector */
     protected $_collector;
     /** @var \Psr\Log\LoggerInterface */
@@ -43,11 +46,10 @@ class SaleOrderReplicator
         $this->_manTrans = $manTrans;
         $this->_manBusCodes = $manBusCodes;
         $this->_shipmentLoader = $shipmentLoader;
-        $this->_callSaleOrder = $callReplicate;
+        $this->_callReplicate = $callReplicate;
         $this->_collector = $collector;
     }
 
-    /** @inheritdoc */
     public function orderPushRepeat()
     {
         /** @var \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report $result */
@@ -59,18 +61,18 @@ class SaleOrderReplicator
             $req = $this->_manObj->create(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class);
             $req->setSaleOrder($order);
             /** @var \Praxigento\Odoo\Service\Replicate\Response\OrderSave $resp */
-            $resp = $this->_callSaleOrder->orderSave($req);
-            $line = $resp->getOdooResponse();
+            $resp = $this->_callReplicate->orderSave($req);
+            $respOdoo = $resp->getOdooResponse();
             /** @var \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry $reportEntry */
             $reportEntry = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class);
             $id = $order->getEntityId();
             $number = $order->getIncrementId();
             $reportEntry->setIdMage($id);
             $reportEntry->setNumber($number);
-            if ($line instanceof \Praxigento\Odoo\Data\Odoo\Error) {
+            if ($respOdoo instanceof \Praxigento\Odoo\Data\Odoo\Error) {
                 $reportEntry->setIsSucceed(false);
-                $debug = $line->getDebug();
-                $name = $line->getName();
+                $debug = $respOdoo->getDebug();
+                $name = $respOdoo->getName();
                 $reportEntry->setDebug($debug);
                 $reportEntry->setErrorName($name);
             } else {
@@ -82,7 +84,6 @@ class SaleOrderReplicator
         return $result;
     }
 
-    /** @inheritdoc */
     public function shipmentTrackingSave(\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data)
     {
         $result = false;

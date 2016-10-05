@@ -6,8 +6,18 @@ namespace Praxigento\Odoo\Api\Def;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 
-class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseClassName)
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class SaleOrderReplicator_UnitTest
+    extends \Praxigento\Core\Test\BaseCase\Mockery
 {
+    /** @var  \Mockery\MockInterface */
+    private $mCallReplicate;
+    /** @var  \Mockery\MockInterface */
+    private $mCollector;
     /** @var  \Mockery\MockInterface */
     private $mLogger;
     /** @var  \Mockery\MockInterface */
@@ -19,11 +29,7 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
     /** @var  \Mockery\MockInterface */
     private $mManTrans;
     /** @var  \Mockery\MockInterface */
-    private $mCallReplicate;
-    /** @var  \Mockery\MockInterface */
     private $mShipmentLoader;
-    /** @var  \Mockery\MockInterface */
-    private $mCollector;
     /** @var  SaleOrderReplicator */
     private $obj;
 
@@ -59,25 +65,131 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         $this->assertInstanceOf(\Praxigento\Odoo\Api\SaleOrderReplicatorInterface::class, $this->obj);
     }
 
+    public function test_orderPushRepeat_error()
+    {
+        /** === Test Data === */
+        /** === Setup Mocks === */
+        // $result = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report::class);
+        $mResult = new \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report::class)
+            ->andReturn($mResult);
+        // $orders = $this->_collector->getOrdersToReplicate();
+        $mOrder = $this->_mock(\Magento\Sales\Api\Data\OrderInterface::class);
+        $mOrders = [$mOrder];
+        $this->mCollector
+            ->shouldReceive('getOrdersToReplicate')->once()
+            ->andReturn($mOrders);
+        // $req = $this->_manObj->create(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class);
+        $mReq = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class)
+            ->andReturn($mReq);
+        // $resp = $this->_callReplicate->orderSave($req);
+        $mResp = new \Praxigento\Odoo\Service\Replicate\Response\OrderSave();
+        $this->mCallReplicate
+            ->shouldReceive('orderSave')->once()
+            ->with($mReq)
+            ->andReturn($mResp);
+        // $respOdoo = $resp->getOdooResponse();
+        $mRespOdoo = new \Praxigento\Odoo\Data\Odoo\Error();
+        $mResp->setOdooResponse($mRespOdoo);
+        // $reportEntry = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class);
+        $mReportEntry = new \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class)
+            ->andReturn($mReportEntry);
+        // $id = $order->getEntityId();
+        $mId = 32;
+        $mOrder->shouldReceive('getEntityId')->once()
+            ->andReturn($mId);
+        // $number = $order->getIncrementId();
+        $mNumber = 64;
+        $mOrder->shouldReceive('getIncrementId')->once()
+            ->andReturn($mNumber);
+        //
+        /** === Call and asserts  === */
+        $res = $this->obj->orderPushRepeat();
+        $entries = $res->getEntries();
+        $entry = current($entries);
+        $this->assertFalse($entry->getIsSucceed());
+    }
+
+    public function test_orderPushRepeat_success()
+    {
+        /** === Test Data === */
+        /** === Setup Mocks === */
+        // $result = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report::class);
+        $mResult = new \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report::class)
+            ->andReturn($mResult);
+        // $orders = $this->_collector->getOrdersToReplicate();
+        $mOrder = $this->_mock(\Magento\Sales\Api\Data\OrderInterface::class);
+        $mOrders = [$mOrder];
+        $this->mCollector
+            ->shouldReceive('getOrdersToReplicate')->once()
+            ->andReturn($mOrders);
+        // $req = $this->_manObj->create(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class);
+        $mReq = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class)
+            ->andReturn($mReq);
+        // $resp = $this->_callReplicate->orderSave($req);
+        $mResp = new \Praxigento\Odoo\Service\Replicate\Response\OrderSave();
+        $this->mCallReplicate
+            ->shouldReceive('orderSave')->once()
+            ->with($mReq)
+            ->andReturn($mResp);
+        // $respOdoo = $resp->getOdooResponse();
+        $mRespOdoo = 'odoo data';
+        $mResp->setOdooResponse($mRespOdoo);
+        // $reportEntry = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class);
+        $mReportEntry = new \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry();
+        $this->mManObj
+            ->shouldReceive('create')->once()
+            ->with(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class)
+            ->andReturn($mReportEntry);
+        // $id = $order->getEntityId();
+        $mId = 32;
+        $mOrder->shouldReceive('getEntityId')->once()
+            ->andReturn($mId);
+        // $number = $order->getIncrementId();
+        $mNumber = 64;
+        $mOrder->shouldReceive('getIncrementId')->once()
+            ->andReturn($mNumber);
+        //
+        /** === Call and asserts  === */
+        $res = $this->obj->orderPushRepeat();
+        $entries = $res->getEntries();
+        $entry = current($entries);
+        $this->assertTrue($entry->getIsSucceed());
+    }
+
     /**
      * @expectedException \Exception
      */
     public function test_shipmentTrackingSave_exception()
     {
         /** === Test Data === */
-        $ORDER_ID_MAGE = 16;
-        $SHIPMENT_ID_ODOO = 32;
-        $SHIPPING_CODE = 'shipping code';
-        $TRACKING_NUM = 'tracking number';
-        $TRACK_INFO = new \Praxigento\Odoo\Data\Odoo\Shipment\TrackingInfo();
-        $TRACK_INFO->setShippingCode($SHIPPING_CODE);
-        $TRACK_INFO->setTrackingNumber($TRACKING_NUM);
-        $SHIPMENT = new \Praxigento\Odoo\Data\Odoo\Shipment();
-        $SHIPMENT->setIdOdoo($SHIPMENT_ID_ODOO);
-        $SHIPMENT->setTrackingInfo($TRACK_INFO);
-        $DATA = new \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking ();
-        $DATA->setSaleOrderIdMage($ORDER_ID_MAGE);
-        $DATA->setShipment($SHIPMENT);
+        $orderIdMage = 16;
+        $shipmentIdOdoo = 32;
+        $shippingCode = 'shipping code';
+        $trackingNum = 'tracking number';
+        $trackInfo = new \Praxigento\Odoo\Data\Odoo\Shipment\TrackingInfo();
+        $trackInfo->setShippingCode($shippingCode);
+        $trackInfo->setTrackingNumber($trackingNum);
+        $shipment = new \Praxigento\Odoo\Data\Odoo\Shipment();
+        $shipment->setIdOdoo($shipmentIdOdoo);
+        $shipment->setTrackingInfo($trackInfo);
+        $data = new \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking ();
+        $data->setSaleOrderIdMage($orderIdMage);
+        $data->setShipment($shipment);
         /** === Setup Mocks === */
         // $def = $this->_manTrans->begin();
         $mDef = $this->_mock(\Praxigento\Core\Transaction\Database\IDefinition::class);
@@ -87,33 +199,33 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         // $this->_shipmentLoader->setOrderId($orderIdMage);
         $this->mShipmentLoader
             ->shouldReceive('setOrderId')->once()
-            ->with($ORDER_ID_MAGE)
+            ->with($orderIdMage)
             ->andThrow(new \Exception());
         // $this->_manTrans->end($def);
         $this->mManTrans
             ->shouldReceive('end')->once();
         /** === Call and asserts  === */
-        $this->obj->shipmentTrackingSave($DATA);
+        $this->obj->shipmentTrackingSave($data);
     }
 
     public function test_shipmentTrackingSave_success()
     {
         /** === Test Data === */
-        $ORDER_ID_MAGE = 16;
-        $SHIPMENT_ID_ODOO = 32;
-        $SHIPPING_CODE = 'shipping code';
-        $TRACKING_NUM = 'tracking number';
-        $CARRIER_CODE = 'carrier code';
-        $TITLE = 'carrier title';
-        $TRACK_INFO = new \Praxigento\Odoo\Data\Odoo\Shipment\TrackingInfo();
-        $TRACK_INFO->setShippingCode($SHIPPING_CODE);
-        $TRACK_INFO->setTrackingNumber($TRACKING_NUM);
-        $SHIPMENT = new \Praxigento\Odoo\Data\Odoo\Shipment();
-        $SHIPMENT->setIdOdoo($SHIPMENT_ID_ODOO);
-        $SHIPMENT->setTrackingInfo($TRACK_INFO);
-        $DATA = new \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking ();
-        $DATA->setSaleOrderIdMage($ORDER_ID_MAGE);
-        $DATA->setShipment($SHIPMENT);
+        $orderIdMage = 16;
+        $shipmentIdOdoo = 32;
+        $shippingCode = 'shipping code';
+        $trackingNum = 'tracking number';
+        $carrierCode = 'carrier code';
+        $title = 'carrier title';
+        $trackInfo = new \Praxigento\Odoo\Data\Odoo\Shipment\TrackingInfo();
+        $trackInfo->setShippingCode($shippingCode);
+        $trackInfo->setTrackingNumber($trackingNum);
+        $shipment = new \Praxigento\Odoo\Data\Odoo\Shipment();
+        $shipment->setIdOdoo($shipmentIdOdoo);
+        $shipment->setTrackingInfo($trackInfo);
+        $data = new \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking ();
+        $data->setSaleOrderIdMage($orderIdMage);
+        $data->setShipment($shipment);
         /** === Setup Mocks === */
         // $def = $this->_manTrans->begin();
         $mDef = $this->_mock(\Praxigento\Core\Transaction\Database\IDefinition::class);
@@ -123,7 +235,7 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         // $this->_shipmentLoader->setOrderId($orderIdMage);
         $this->mShipmentLoader
             ->shouldReceive('setOrderId')->once()
-            ->with($ORDER_ID_MAGE);
+            ->with($orderIdMage);
         // $shipment = $this->_shipmentLoader->load();
         $mShipment = $this->_mock(\Magento\Sales\Api\Data\ShipmentInterface::class);
         $this->mShipmentLoader
@@ -132,11 +244,11 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         // $carrierCode = $this->_manBusCodes->getMagCodeForCarrier($shippingMethodCode);
         $this->mManBusCodes
             ->shouldReceive('getMagCodeForCarrier')->once()
-            ->andReturn($CARRIER_CODE);
+            ->andReturn($carrierCode);
         // $title = $this->_manBusCodes->getTitleForCarrier($shippingMethodCode);
         $this->mManBusCodes
             ->shouldReceive('getTitleForCarrier')->once()
-            ->andReturn($TITLE);
+            ->andReturn($title);
         // $track = $this->_manObj->create(\Magento\Sales\Model\Order\Shipment\Track::class);
         $mTrack = $this->_mock(\Magento\Sales\Model\Order\Shipment\Track::class);
         $this->mManObj
@@ -177,6 +289,7 @@ class SaleOrderReplicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mocker
         $this->mManTrans
             ->shouldReceive('end')->once();
         /** === Call and asserts  === */
-        $res = $this->obj->shipmentTrackingSave($DATA);
+        $res = $this->obj->shipmentTrackingSave($data);
+        $this->assertTrue($res);
     }
 }

@@ -8,6 +8,8 @@ use Praxigento\Odoo\Config as Cfg;
 
 /**
  * Collect orders according to conditions.
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Collector
 {
@@ -17,7 +19,6 @@ class Collector
     protected $_repoSaleOrder;
 
     public function __construct(
-
         \Magento\Sales\Api\OrderRepositoryInterface $repoMageSalesOrder,
         \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoSaleOrder
     ) {

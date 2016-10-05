@@ -19,7 +19,6 @@ class SaleOrder
         parent::__construct($resource, $repoGeneric, Entity::class);
     }
 
-    /** @inheritdoc */
     public function getIdsToSaveToOdoo()
     {
         /* aliases and tables */
@@ -32,11 +31,11 @@ class SaleOrder
         $cols = [Cfg::E_SALE_ORDER_A_ENTITY_ID];
         $query->from($tblSaleOrder, $cols);
         // LEFT OUTER JOIN prxgt_odoo_sale
-        $on = $asOdooReg . '.' . Entity::ATTR_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $cond = $asOdooReg . '.' . Entity::ATTR_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $cols = [];
-        $query->joinLeft($tblOdooReg, $on, $cols);
+        $query->joinLeft($tblOdooReg, $cond, $cols);
         /* WHERE */
-        $where = new Expression('ISNULL(' . $asOdooReg. '.' . Entity::ATTR_MAGE_REF . ')');
+        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::ATTR_MAGE_REF . ')');
         $query->where($where);
         /* fetch data */
         $result = $this->_conn->fetchAll($query);
