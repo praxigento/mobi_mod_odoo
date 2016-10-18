@@ -76,7 +76,7 @@ class Call implements IReplicate
         $orderIdMage = $mageOrder->getEntityId();
         /** @var  $registeredOrder */
         $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
-        if (!$registeredOrder) {
+        if ($orderIdMage && !$registeredOrder) {
             $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
             $def = $this->_manTrans->begin();
             try {
