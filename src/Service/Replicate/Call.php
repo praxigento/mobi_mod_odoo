@@ -66,7 +66,6 @@ class Call implements IReplicate
         }
     }
 
-    /** @inheritdoc */
     public function orderSave(
         Replicate\Request\OrderSave $req
     ) {
@@ -103,7 +102,6 @@ class Call implements IReplicate
         return $result;
     }
 
-    /** @inheritdoc */
     public function productSave(
         Request\ProductSave $req
     ) {
@@ -123,7 +121,6 @@ class Call implements IReplicate
         return $result;
     }
 
-    /** @inheritdoc */
     public function productsFromOdoo(
         Request\ProductsFromOdoo $req
     ) {

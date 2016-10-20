@@ -22,7 +22,6 @@ class SaleOrder
         $this->_rest = $rest;
     }
 
-    /** @inheritdoc */
     public function save($order)
     {
         /* prepare request parameters */
