@@ -20,34 +20,34 @@ class OdooDataCollector
     /**#@- */
 
     /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
-    protected $_manBusinessCodes;
+    protected $manBusinessCodes;
     /** @var  \Praxigento\Core\Tool\IFormat */
-    protected $_manFormat;
+    protected $manFormat;
     /** @var \Magento\Framework\ObjectManagerInterface */
-    protected $_manObj;
+    protected $manObj;
     /** @var \Praxigento\Warehouse\Tool\IStockManager */
-    protected $_manStock;
+    protected $manStock;
     /** @var \Praxigento\Odoo\Repo\Agg\ISaleOrderItem */
-    protected $_repoAggSaleOrderItem;
-    /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
-    protected $_repoDwnlCustomer;
+    protected $repoAggSaleOrderItem;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $_repoMageCustomer;
+    protected $repoCustomer;
+    /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
+    protected $repoDwnlCustomer;
     /** @var \Praxigento\Pv\Repo\Entity\ISale */
-    protected $_repoPvSale;
+    protected $repoPvSale;
     /** @var \Praxigento\Pv\Repo\Entity\Sale\IItem */
-    protected $_repoPvSaleItem;
+    protected $repoPvSaleItem;
     /** @var \Praxigento\Odoo\Repo\Entity\IWarehouse */
-    protected $_repoWarehouse;
+    protected $repoWarehouse;
     /** @var \Praxigento\Warehouse\Repo\Entity\Quantity\ISale */
-    protected $_repoWrhsQtySale;
+    protected $repoWrhsQtySale;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Magento\Customer\Api\CustomerRepositoryInterface $repoMageCustomer,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat,
+        \Magento\Customer\Api\CustomerRepositoryInterface\Proxy $repoCustomer,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
@@ -55,17 +55,17 @@ class OdooDataCollector
         \Praxigento\Odoo\Repo\Agg\ISaleOrderItem $repoAggSaleOrderItem,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse
     ) {
-        $this->_manObj = $manObj;
-        $this->_repoMageCustomer = $repoMageCustomer;
-        $this->_manStock = $manStock;
-        $this->_manBusinessCodes = $manBusinessCodes;
-        $this->_manFormat = $manFormat;
-        $this->_repoDwnlCustomer = $repoDwnlCustomer;
-        $this->_repoPvSale = $repoPvSale;
-        $this->_repoPvSaleItem = $repoPvSaleItem;
-        $this->_repoWrhsQtySale = $repoWrhsQtySale;
-        $this->_repoAggSaleOrderItem = $repoAggSaleOrderItem;
-        $this->_repoWarehouse = $repoWarehouse;
+        $this->manObj = $manObj;
+        $this->manStock = $manStock;
+        $this->manBusinessCodes = $manBusinessCodes;
+        $this->manFormat = $manFormat;
+        $this->repoCustomer = $repoCustomer;
+        $this->repoDwnlCustomer = $repoDwnlCustomer;
+        $this->repoPvSale = $repoPvSale;
+        $this->repoPvSaleItem = $repoPvSaleItem;
+        $this->repoWrhsQtySale = $repoWrhsQtySale;
+        $this->repoAggSaleOrderItem = $repoAggSaleOrderItem;
+        $this->repoWarehouse = $repoWarehouse;
     }
 
     /**
@@ -74,7 +74,7 @@ class OdooDataCollector
      */
     public function _extractContact(\Magento\Sales\Api\Data\OrderAddressInterface $addrMage)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\Contact::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\Contact::class);
         /* collect data */
         $name = $addrMage->getName();
         $phone = $addrMage->getTelephone();
@@ -103,25 +103,25 @@ class OdooDataCollector
      */
     public function _extractLine(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line::class);
         /* collect data */
         $productIdOdoo = (int)$item->getOdooIdProduct();
-        $qtyLine = $this->_manFormat->toNumber($item->getItemQty());
+        $qtyLine = $this->manFormat->toNumber($item->getItemQty());
         /* price attributes */
-        $priceSaleUnit = $this->_manFormat->toNumber($item->getPriceUnitOrig());
-        $priceDiscountLine = abs($this->_manFormat->toNumber($item->getPriceDiscount()));
+        $priceSaleUnit = $this->manFormat->toNumber($item->getPriceUnitOrig());
+        $priceDiscountLine = abs($this->manFormat->toNumber($item->getPriceDiscount()));
         /* price related calculated attributes */
-        $priceTaxPercent = $this->_manFormat->toNumber(
+        $priceTaxPercent = $this->manFormat->toNumber(
             $item->getPriceTaxPercent() / 100,
             Cfg::ODOO_API_PERCENT_ROUND
         );
         $priceTotalLine = ($qtyLine * $priceSaleUnit - $priceDiscountLine) * (1 + $priceTaxPercent);
-        $priceTotalLine = $this->_manFormat->toNumber($priceTotalLine);
+        $priceTotalLine = $this->manFormat->toNumber($priceTotalLine);
         $priceTaxLine = $priceTotalLine / (1 + $priceTaxPercent) * $priceTaxPercent;
-        $priceTaxLine = $this->_manFormat->toNumber($priceTaxLine);
+        $priceTaxLine = $this->manFormat->toNumber($priceTaxLine);
         /* PV attributes */
-        $pvSaleUnit = $this->_manFormat->toNumber($item->getPvUnit());
-        $pvDiscountLine = abs($this->_manFormat->toNumber($item->getPvDiscount()));
+        $pvSaleUnit = $this->manFormat->toNumber($item->getPvUnit());
+        $pvDiscountLine = abs($this->manFormat->toNumber($item->getPvDiscount()));
         /* init Odoo data object */
         $result->setProductIdOdoo($productIdOdoo);
         $result->setQtyLine($qtyLine);
@@ -142,9 +142,9 @@ class OdooDataCollector
      */
     public function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
         $idOdoo = (int)$item->getOdooIdLot();
-        $qty = $this->_manFormat->toNumber($item->getLotQty());
+        $qty = $this->manFormat->toNumber($item->getLotQty());
         if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
         $result->setQty($qty);
         return $result;
@@ -157,8 +157,8 @@ class OdooDataCollector
     public function _extractWarehouseIdOdoo(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $storeId = $mageOrder->getStoreId();
-        $stockId = $this->_manStock->getStockIdByStoreId($storeId);
-        $warehouse = $this->_repoWarehouse->getById($stockId);
+        $stockId = $this->manStock->getStockIdByStoreId($storeId);
+        $warehouse = $this->repoWarehouse->getById($stockId);
         $result = $warehouse->getOdooRef();
         return $result;
     }
@@ -218,7 +218,7 @@ class OdooDataCollector
      */
     public function getSaleOrder(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
         /* Collect order data */
         // id_mage
         $orderIdMage = (int)$mageOrder->getId();
@@ -236,8 +236,8 @@ class OdooDataCollector
         // price_currency
         $priceCurrency = $mageOrder->getBaseCurrencyCode();
         // pv_total (with date paid)
-        $pvOrder = $this->_repoPvSale->getById($orderIdMage);
-        $pvTotal = $this->_manFormat->toNumber($pvOrder->getTotal());
+        $pvOrder = $this->repoPvSale->getById($orderIdMage);
+        $pvTotal = $this->manFormat->toNumber($pvOrder->getTotal());
         $datePaid = $pvOrder->getDatePaid();
         // lines
         $lines = $this->getSaleOrderLines($mageOrder);
@@ -249,15 +249,15 @@ class OdooDataCollector
         $totals = $this->_getLinesTotals($lines);
         // price_total
         $priceTotal = $totals[self::AMOUNT] + $shipping->getPriceAmountTotal();
-        $priceTotal = $this->_manFormat->toNumber($priceTotal);
+        $priceTotal = $this->manFormat->toNumber($priceTotal);
         // $priceTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
         // price_tax
         $priceTax = $totals[self::TAX] + $shipping->getPriceTaxAmount();
-        $priceTax = $this->_manFormat->toNumber($priceTax);
+        $priceTax = $this->manFormat->toNumber($priceTax);
         // $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
         // price_discount
         $priceDiscount = $totals[self::DISCOUNT] + $shipping->getPriceDiscount();
-        $priceDiscount = $this->_manFormat->toNumber($priceDiscount);
+        $priceDiscount = $this->manFormat->toNumber($priceDiscount);
         /* populate Odoo Data Object */
         $result->setIdMage($orderIdMage);
         $result->setWarehouseIdOdoo($warehouseIdOdoo);
@@ -283,14 +283,14 @@ class OdooDataCollector
      */
     public function getSaleOrderCustomer(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Customer::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Customer::class);
         /* collect data */
         $custMageId = (int)$mageOrder->getCustomerId();
-        $dwnlCust = $this->_repoDwnlCustomer->getById($custMageId);
+        $dwnlCust = $this->repoDwnlCustomer->getById($custMageId);
         $ref = $dwnlCust->getHumanRef();
         $name = $mageOrder->getCustomerName();
-        $mageCust = $this->_repoMageCustomer->getById($custMageId);
-        $groupCode = $this->_manBusinessCodes->getBusCodeForCustomerGroup($mageCust);
+        $mageCust = $this->repoCustomer->getById($custMageId);
+        $groupCode = $this->manBusinessCodes->getBusCodeForCustomerGroup($mageCust);
         /* init Odoo data object */
         $result->setIdMage($custMageId);
         $result->setIdMlm($ref);
@@ -309,8 +309,8 @@ class OdooDataCollector
         /* collect data */
         $orderId = $mageOrder->getId();
         $storeId = $mageOrder->getStoreId();
-        $stockId = $this->_manStock->getStockIdByStoreId($storeId);
-        $aggSaleOrderItems = $this->_repoAggSaleOrderItem->getByOrderAndStock($orderId, $stockId);
+        $stockId = $this->manStock->getStockIdByStoreId($storeId);
+        $aggSaleOrderItems = $this->repoAggSaleOrderItem->getByOrderAndStock($orderId, $stockId);
         foreach ($aggSaleOrderItems as $item) {
             $productIdOdoo = $item->getOdooIdProduct();
             /* process order line */
@@ -340,12 +340,12 @@ class OdooDataCollector
     public function getSaleOrderPayments(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $result = [];
-        $odooPayment = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\Payment::class);
+        $odooPayment = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\Payment::class);
         /* collect data */
         $magePayment = $mageOrder->getPayment();
-        $code = $this->_manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
+        $code = $this->manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
         $ordered = $magePayment->getBaseAmountOrdered();
-        $amount = $this->_manFormat->toNumber($ordered);
+        $amount = $this->manFormat->toNumber($ordered);
         /* populate Odoo Data Object */
         $odooPayment->setCode($code);
         $odooPayment->setAmount($amount);
@@ -359,19 +359,19 @@ class OdooDataCollector
      */
     public function getSaleOrderShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->_manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping::class);
+        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping::class);
         /* collect data */
-        $code = $this->_manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
+        $code = $this->manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
         $priceAmount = $mageOrder->getBaseShippingAmount();
-        $priceAmount = $this->_manFormat->toNumber($priceAmount);
+        $priceAmount = $this->manFormat->toNumber($priceAmount);
         $priceDiscount = $mageOrder->getBaseShippingDiscountAmount();
-        $priceDiscount = $this->_manFormat->toNumber($priceDiscount);
+        $priceDiscount = $this->manFormat->toNumber($priceDiscount);
         $priceTaxAmount = $mageOrder->getBaseShippingTaxAmount();
-        $priceTaxAmount = $this->_manFormat->toNumber($priceTaxAmount);
+        $priceTaxAmount = $this->manFormat->toNumber($priceTaxAmount);
         $priceTaxPercent = $priceTaxAmount / ($priceAmount - $priceDiscount);
-        $priceTaxPercent = $this->_manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
+        $priceTaxPercent = $this->manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
         $priceAmountTotal = ($priceAmount - $priceDiscount) * (1 + $priceTaxPercent);
-        $priceAmountTotal = $this->_manFormat->toNumber($priceAmountTotal);
+        $priceAmountTotal = $this->manFormat->toNumber($priceAmountTotal);
         /* populate Odoo Data Object */
         $result->setCode($code);
         $result->setPriceAmount($priceAmount);

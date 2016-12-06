@@ -15,25 +15,25 @@ use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 class Product
 {
     /** @var \Psr\Log\LoggerInterface */
-    protected $_logger;
-    /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
-    protected $_mageRepoAttrSet;
-    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
-    protected $_mageRepoProd;
+    protected $logger;
     /** @var   \Magento\Framework\ObjectManagerInterface */
-    protected $_manObj;
+    protected $manObj;
+    /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
+    protected $repoAttrSet;
+    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
+    protected $repoProd;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Magento\Catalog\Api\AttributeSetRepositoryInterface $mageRepoAttrSet,
-        \Magento\Catalog\Api\ProductRepositoryInterface $mageRepoProd
+        \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
+        \Magento\Catalog\Api\ProductRepositoryInterface\Proxy $repoProd
 
     ) {
-        $this->_logger = $logger;
-        $this->_manObj = $manObj;
-        $this->_mageRepoAttrSet = $mageRepoAttrSet;
-        $this->_mageRepoProd = $mageRepoProd;
+        $this->logger = $logger;
+        $this->manObj = $manObj;
+        $this->repoAttrSet = $repoAttrSet;
+        $this->repoProd = $repoProd;
     }
 
     /**
@@ -58,14 +58,14 @@ class Product
      */
     public function create($sku, $name, $isActive, $priceWholesale, $weight)
     {
-        $this->_logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
+        $this->logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
         /**
          * Retrieve attribute set ID.
          */
         /** @var \Magento\Framework\Api\SearchCriteriaInterface $crit */
-        $crit = $this->_manObj->create(\Magento\Framework\Api\SearchCriteriaInterface::class);
+        $crit = $this->manObj->create(\Magento\Framework\Api\SearchCriteriaInterface::class);
         /** @var \Magento\Eav\Model\Entity\Attribute\Set $attrSet */
-        $list = $this->_mageRepoAttrSet->getList($crit);
+        $list = $this->repoAttrSet->getList($crit);
         $items = $list->getItems();
         $attrSet = reset($items);
         $attrSetId = $attrSet->getId();
@@ -73,7 +73,7 @@ class Product
          * Create simple product.
          */
         /** @var  $product ProductInterface */
-        $product = $this->_manObj->create(ProductInterface::class);
+        $product = $this->manObj->create(ProductInterface::class);
         $product->setSku(trim($sku));
         $product->setName(trim($name));
         $status = $this->_getStatus($isActive);
@@ -83,7 +83,7 @@ class Product
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
         $product->setUrlKey($sku); // MOBI-331 : use SKU as URL Key instead of Product Name
-        $saved = $this->_mageRepoProd->save($product);
+        $saved = $this->repoProd->save($product);
         /* return product ID */
         $result = $saved->getId();
         return $result;
@@ -100,15 +100,15 @@ class Product
      */
     public function update($mageId, $name, $isActive, $priceWholesale, $weight)
     {
-        $this->_logger->debug("Update product (id: $mageId; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
+        $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
-        $product = $this->_mageRepoProd->getById($mageId);
+        $product = $this->repoProd->getById($mageId);
         // SKU should not be changed
         $product->setName($name);
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
         $product->setPrice($priceWholesale);
         $product->setWeight($weight);
-        $this->_mageRepoProd->save($product);
+        $this->repoProd->save($product);
     }
 }

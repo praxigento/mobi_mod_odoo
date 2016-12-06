@@ -16,33 +16,33 @@ use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockIte
 
 class DataHandler
 {
-    /** @var   StockItemRepositoryInterface */
-    protected $_mageRepoStockItem;
     /** @var   ObjectManagerInterface */
-    protected $_manObj;
+    protected $manObj;
     /** @var  IRepoPvModule */
-    protected $_repoPvMod;
+    protected $repoPvMod;
     /** @var IRepoPvStockItem */
-    protected $_repoPvStockItem;
+    protected $repoPvStockItem;
+    /** @var   StockItemRepositoryInterface */
+    protected $repoStockItem;
     /** @var  IRepoWarehouseEntityStockItem */
-    protected $_repoWarehouseEntityStockItem;
+    protected $repoWarehouseEntityStockItem;
     /** @var  SubLot */
-    protected $_subLot;
+    protected $subLot;
 
     public function __construct(
         ObjectManagerInterface $manObj,
-        StockItemRepositoryInterface $mageRepoStockItem,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface\Proxy $mageRepoStockItem,
         IRepoPvModule $repoPvMod,
         IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
         IRepoPvStockItem $repoPvStockItem,
         SubLot $subLot
     ) {
-        $this->_manObj = $manObj;
-        $this->_mageRepoStockItem = $mageRepoStockItem;
-        $this->_repoPvMod = $repoPvMod;
-        $this->_repoWarehouseEntityStockItem = $repoWarehouseEntityStockItem;
-        $this->_repoPvStockItem = $repoPvStockItem;
-        $this->_subLot = $subLot;
+        $this->manObj = $manObj;
+        $this->repoStockItem = $mageRepoStockItem;
+        $this->repoPvMod = $repoPvMod;
+        $this->repoWarehouseEntityStockItem = $repoWarehouseEntityStockItem;
+        $this->repoPvStockItem = $repoPvStockItem;
+        $this->subLot = $subLot;
     }
 
     /**
@@ -57,25 +57,25 @@ class DataHandler
     public function createWarehouseData($prodId, $stockId, $price, $pv)
     {
         /** @var StockItemInterface $result */
-        $result = $this->_manObj->create(StockItemInterface::class);
+        $result = $this->manObj->create(StockItemInterface::class);
         $result->setProductId($prodId);
         $result->setStockId($stockId);
         $result->setIsInStock(true);
         $result->setManageStock(true);
-        $result = $this->_mageRepoStockItem->save($result);
+        $result = $this->repoStockItem->save($result);
         $stockItemId = $result->getItemId();
         /* register warehouse price */
         $bind = [
             EntityWarehouseStockItem::ATTR_STOCK_ITEM_REF => $stockItemId,
             EntityWarehouseStockItem::ATTR_PRICE => $price
         ];
-        $this->_repoWarehouseEntityStockItem->create($bind);
+        $this->repoWarehouseEntityStockItem->create($bind);
         /* register warehouse PV */
         $bind = [
             EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemId,
             EntityPvStockItem::ATTR_PV => $pv
         ];
-        $this->_repoPvStockItem->create($bind);
+        $this->repoPvStockItem->create($bind);
         return $result;
     }
 
@@ -88,15 +88,15 @@ class DataHandler
         $qtyTotal = 0;
         $stockItemId = $stockItem->getItemId();
         foreach ($lots as $lot) {
-            $qtyTotal += $this->_subLot->processLot($stockItemId, $lot);
+            $qtyTotal += $this->subLot->processLot($stockItemId, $lot);
         }
         /* update stock item qty */
         $stockItem->setQty($qtyTotal);
         $isInStock = ($qtyTotal > 0);
         $stockItem->setIsInStock($isInStock);
-        $this->_mageRepoStockItem->save($stockItem);
+        $this->repoStockItem->save($stockItem);
         /* cleanup extra lots */
-        $this->_subLot->cleanupLots($stockItemId, $lots);
+        $this->subLot->cleanupLots($stockItemId, $lots);
     }
 
     /**
@@ -110,22 +110,22 @@ class DataHandler
     {
         /* update or create warehouse entry */
         $bind = [EntityWarehouseStockItem::ATTR_PRICE => $price];
-        $exist = $this->_repoWarehouseEntityStockItem->getById($stockItemRef);
+        $exist = $this->repoWarehouseEntityStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
             $bind[EntityWarehouseStockItem::ATTR_STOCK_ITEM_REF] = $stockItemRef;
-            $this->_repoWarehouseEntityStockItem->create($bind);
+            $this->repoWarehouseEntityStockItem->create($bind);
         } else {
-            $this->_repoWarehouseEntityStockItem->updateById($stockItemRef, $bind);
+            $this->repoWarehouseEntityStockItem->updateById($stockItemRef, $bind);
         }
         /* update or create warehouse PV */
-        $registered = $this->_repoPvMod->getWarehousePv($stockItemRef);
+        $registered = $this->repoPvMod->getWarehousePv($stockItemRef);
         if (is_null($registered)) {
             /* create PV */
-            $this->_repoPvMod->registerWarehousePv($stockItemRef, $pv);
+            $this->repoPvMod->registerWarehousePv($stockItemRef, $pv);
         } else {
             /* update PV */
-            $this->_repoPvMod->updateWarehousePv($stockItemRef, $pv);
+            $this->repoPvMod->updateWarehousePv($stockItemRef, $pv);
         }
     }
 }
