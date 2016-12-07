@@ -112,7 +112,7 @@ class Login implements ICached, ILogin
                 throw new \Exception($msg);
             }
             $response = $this->_adapter->decodeJson($contents);
-            $respData = $this->_manObj->create(DataObject::class, ['arg1' => $response]);
+            $respData = new \Flancer32\Lib\DataObject($response);
             $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
             if ($this->_cachedOdooUserId) {
                 $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
