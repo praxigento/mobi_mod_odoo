@@ -24,7 +24,7 @@ class Category
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Magento\Catalog\Api\CategoryLinkRepositoryInterface\Proxy $repoCatLink,
+        \Magento\Catalog\Api\CategoryLinkRepositoryInterface $repoCatLink,
         \Magento\Catalog\Api\CategoryRepositoryInterface $repoCat,
         \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry

@@ -27,7 +27,7 @@ class Product
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
-        \Magento\Catalog\Api\ProductRepositoryInterface\Proxy $repoProd
+        \Magento\Catalog\Api\ProductRepositoryInterface $repoProd
 
     ) {
         $this->logger = $logger;

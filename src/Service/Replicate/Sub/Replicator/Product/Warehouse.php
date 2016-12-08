@@ -23,7 +23,7 @@ class Warehouse
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
-        \Magento\CatalogInventory\Api\StockItemRepositoryInterface\Proxy $repoStockItem,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
         \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot $subLot,
         \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Warehouse\DataHandler $subDataHandler
     ) {

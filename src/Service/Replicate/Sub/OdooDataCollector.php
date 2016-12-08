@@ -47,7 +47,7 @@ class OdooDataCollector
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat,
-        \Magento\Customer\Api\CustomerRepositoryInterface\Proxy $repoCustomer,
+        \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,

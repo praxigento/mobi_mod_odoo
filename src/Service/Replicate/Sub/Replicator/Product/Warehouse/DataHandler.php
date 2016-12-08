@@ -31,7 +31,7 @@ class DataHandler
 
     public function __construct(
         ObjectManagerInterface $manObj,
-        \Magento\CatalogInventory\Api\StockItemRepositoryInterface\Proxy $mageRepoStockItem,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $mageRepoStockItem,
         IRepoPvModule $repoPvMod,
         IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
         IRepoPvStockItem $repoPvStockItem,
