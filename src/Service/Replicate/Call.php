@@ -77,7 +77,7 @@ class Call implements IReplicate
         $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
         if ($orderIdMage && !$registeredOrder) {
             $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
-            $def = $this->_manTrans->begin();
+            //$def = $this->_manTrans->begin();
             try {
                 /* save order into Odoo repo */
                 $resp = $this->_repoOdooSaleOrder->save($odooOrder);
@@ -91,12 +91,12 @@ class Call implements IReplicate
                     $registry->setOdooRef($odooId);
                     $this->_repoEntitySaleOrder->create($registry);
                     /* finalize transaction */
-                    $this->_manTrans->commit($def);
+                    //$this->_manTrans->commit($def);
                     $result->markSucceed();
                 }
             } finally {
                 // transaction will be rolled back if commit is not done (otherwise - do nothing)
-                $this->_manTrans->end($def);
+                //$this->_manTrans->end($def);
             }
         }
         return $result;
