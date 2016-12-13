@@ -6,16 +6,13 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
-use Flancer32\Lib\DataObject;
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Core\ICached;
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
-use Psr\Log\LoggerInterface;
 
-class Login implements ICached, ILogin
+class Login
+    implements \Praxigento\Core\ICached, \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
 {
     /* TIMEOUTS: INTR-653 */
     const HTTP_TIMEOUT_SEC_LOGIN = 15;
@@ -49,7 +46,7 @@ class Login implements ICached, ILogin
 
 
     function __construct(
-        LoggerInterface $logger,
+        \Praxigento\Core\Fw\Logger\App $logger,
         ObjectManagerInterface $manObj,
         Adapter $adapter,
         IAuthentication $params

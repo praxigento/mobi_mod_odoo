@@ -20,7 +20,7 @@ class CheckoutSubmitAllAfter
     protected $_callReplicate;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\Fw\Logger\App $logger,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Service\IReplicate $callReplicate
     ) {

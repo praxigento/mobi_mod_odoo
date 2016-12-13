@@ -27,7 +27,7 @@ class Call implements IReplicate
     protected $_subReplicator;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\Fw\Logger\App $logger,
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
         \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,

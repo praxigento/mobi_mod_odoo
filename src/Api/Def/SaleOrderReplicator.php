@@ -31,7 +31,7 @@ class SaleOrderReplicator
     protected $_shipmentLoader;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\Fw\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Praxigento\Core\Transaction\Database\IManager $manTrans,

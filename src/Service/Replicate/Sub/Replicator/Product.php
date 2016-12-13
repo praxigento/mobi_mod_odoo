@@ -24,7 +24,7 @@ class Product
     protected $repoProd;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\Fw\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
         \Magento\Catalog\Api\ProductRepositoryInterface $repoProd
