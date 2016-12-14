@@ -50,40 +50,6 @@ class SaleOrderReplicator
         $this->_collector = $collector;
     }
 
-    public function orderPushRepeat()
-    {
-        /** @var \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report $result */
-        $result = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report::class);
-        $orders = $this->_collector->getOrdersToReplicate();
-        $entries = [];
-        foreach ($orders as $order) {
-            /** @var \Praxigento\Odoo\Service\Replicate\Request\OrderSave $req */
-            $req = $this->_manObj->create(\Praxigento\Odoo\Service\Replicate\Request\OrderSave::class);
-            $req->setSaleOrder($order);
-            /** @var \Praxigento\Odoo\Service\Replicate\Response\OrderSave $resp */
-            $resp = $this->_callReplicate->orderSave($req);
-            $respOdoo = $resp->getOdooResponse();
-            /** @var \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry $reportEntry */
-            $reportEntry = $this->_manObj->create(\Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry::class);
-            $id = $order->getEntityId();
-            $number = $order->getIncrementId();
-            $reportEntry->setIdMage($id);
-            $reportEntry->setNumber($number);
-            if ($respOdoo instanceof \Praxigento\Odoo\Data\Odoo\Error) {
-                $reportEntry->setIsSucceed(false);
-                $debug = $respOdoo->getDebug();
-                $name = $respOdoo->getName();
-                $reportEntry->setDebug($debug);
-                $reportEntry->setErrorName($name);
-            } else {
-                $reportEntry->setIsSucceed(true);
-            }
-            $entries[] = $reportEntry;
-        }
-        $result->setEntries($entries);
-        return $result;
-    }
-
     public function shipmentTrackingSave(\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data)
     {
         $result = false;

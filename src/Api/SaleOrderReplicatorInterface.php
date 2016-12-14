@@ -19,9 +19,4 @@ interface SaleOrderReplicatorInterface
      * @return boolean
      */
     public function shipmentTrackingSave(\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data);
-
-    /**
-     * @return \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report
-     */
-    public function orderPushRepeat();
 }

@@ -4,7 +4,7 @@
     <!-- API -->
     <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface" type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
     <preference for="\Praxigento\Odoo\Api\Product\Replicate\SaveInterface" type="\Praxigento\Odoo\Api\Product\Replicate\Save"/>
-    <preference for="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" type="Praxigento\Odoo\Api\Def\SaleOrderReplicator"/>
+    <preference for="\Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface" type="\Praxigento\Odoo\Api\Sales\Order\PushRepeat"/>
 
     <!-- Data / API -->
 
