@@ -9,6 +9,7 @@ use Praxigento\Odoo\Data\Entity\Category;
 use Praxigento\Odoo\Data\Entity\Customer;
 use Praxigento\Odoo\Data\Entity\Lot;
 use Praxigento\Odoo\Data\Entity\Product;
+use Praxigento\Odoo\Data\Entity\Registry\Request;
 use Praxigento\Odoo\Data\Entity\SaleOrder;
 use Praxigento\Odoo\Data\Entity\Warehouse;
 
@@ -20,6 +21,11 @@ class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
         $pathToFile = __DIR__ . '/../etc/dem.json';
         $pathToNode = '/dBEAR/package/Praxigento/package/Odoo';
         $demPackage = $this->_toolDem->readDemPackage($pathToFile, $pathToNode);
+
+        /* Registry / Request */
+        $entityAlias = Request::ENTITY_NAME;
+        $demEntity = $demPackage->getData('package/Registry/entity/Request');
+        $this->_toolDem->createEntity($entityAlias, $demEntity);
 
         /* Category */
         $entityAlias = Category::ENTITY_NAME;
