@@ -13,7 +13,7 @@
 
     <route url="/V1/prxgt/odoo/product/replicate/save/" method="POST">
         <!-- Replicate Inventory data (products, lots, warehouses) -->
-        <service class="Praxigento\Odoo\Api\ProductReplicatorInterface" method="save"/>
+        <service class="Praxigento\Odoo\Api\Product\Replicate\SaveInterface" method="execute"/>
         <resources>
             <!-- MOBI-271, MOBI-307 -->
             <resource ref="Praxigento_Odoo::replicate"/>
