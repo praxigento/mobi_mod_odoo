@@ -2,6 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
     <!-- API -->
+    <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface" type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
     <preference for="Praxigento\Odoo\Api\ProductReplicatorInterface" type="Praxigento\Odoo\Api\Def\ProductReplicator"/>
     <preference for="Praxigento\Odoo\Api\SaleOrderReplicatorInterface" type="Praxigento\Odoo\Api\Def\SaleOrderReplicator"/>
 

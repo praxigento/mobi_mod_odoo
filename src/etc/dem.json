@@ -8,6 +8,33 @@
           "Odoo": {
             "alias": "odoo",
             "comment": "Top level package for Praxigento_Odoo module",
+            "package": {
+              "alias": "reg",
+              "comment": "Registries in Odoo module",
+              "entity": {
+                "Request": {
+                  "alias": "request",
+                  "comment": "Odoo requests references registry.",
+                  "attribute": {
+                    "RequestType": {
+                      "alias": "type_code",
+                      "comment": "Code of the request type.",
+                      "nullable": false,
+                      "type": {"integer": {"unsigned": true}}
+                    },
+                    "OdooRef": {
+                      "alias": "odoo_ref",
+                      "comment": "Odoo reference for this type of the request.",
+                      "nullable": false,
+                      "type": {"text": {}}
+                    }
+                  },
+                  "index": {
+                    "PK": {"type": "primary", "aliases": ["type_code", "odoo_ref"]}
+                  }
+                }
+              }
+            },
             "entity": {
               "Category": {
                 "alias": "cat",
