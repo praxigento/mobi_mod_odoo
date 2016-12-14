@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Api\Customer\Pv;
 interface AddInterface
 {
     /**
-     * Save product inventory data to Magento (push replication).
+     * Command to add PV to customer account.
      *
      * @param \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Request $data
      *

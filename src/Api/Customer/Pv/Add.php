@@ -4,22 +4,26 @@
  */
 namespace Praxigento\Odoo\Api\Customer\Pv;
 
-
 class Add
     implements \Praxigento\Odoo\Api\Customer\Pv\AddInterface
 {
     const ODOO_REF_TYPE_CODE = \Praxigento\Odoo\Helper\Code\Request::CUSTOMER_PV_ADD;
+    /** @var \Praxigento\Pv\Service\ITransfer */
+    protected $callPvTransfer;
+    /** @var \Psr\Log\LoggerInterface */
+    protected $logger;
     /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
     protected $repoCustomer;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\IRequest */
     protected $repoRegRequest;
-    protected $callPvTransfer;
 
     public function __construct(
+        \Praxigento\Core\Fw\Logger\App $logger,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoCustomer,
         \Praxigento\Odoo\Repo\Entity\Registry\IRequest $repoRegRequest,
         \Praxigento\Pv\Service\ITransfer $callPvTransfer
     ) {
+        $this->logger = $logger;
         $this->repoCustomer = $repoCustomer;
         $this->repoRegRequest = $repoRegRequest;
         $this->callPvTransfer = $callPvTransfer;
@@ -41,19 +45,23 @@ class Add
         ];
         $found = $this->repoRegRequest->getById($key);
         if ($found) {
-            throw new \Exception ("Odoo request referenced as '$odooRef' is already processed.");
+            $msg = "Odoo request referenced as '$odooRef' is already processed.";
+            $this->logger->error($msg);
+            throw new \Exception($msg);
         }
         /* find customer by MLM ID */
         $customer = $this->repoCustomer->getByMlmId($customerMlmId);
         if (!$customer) {
-            throw new \Exception ("Customer #$customerMlmId is not found.");
+            $msg = "Customer #$customerMlmId is not found.";
+            $this->logger->error($msg);
+            throw new \Exception($msg);
         }
         /* add PV to account */
         $req = new \Praxigento\Pv\Service\Transfer\Request\CreditToCustomer();
         $req->setToCustomerId($customer->getCustomerId());
         $req->setValue($pv);
         $req->setDateApplied($dateApplied);
-        $note = "PV is added from Odoo (ref.#$odooRef).";
+        $note = "PV is added from Odoo (ref. #$odooRef).";
         $req->setNoteOperation($note);
         $req->setNoteTransaction($note);
         $resp = $this->callPvTransfer->creditToCustomer($req);
@@ -65,6 +73,8 @@ class Add
             $transIds = $resp->getTransactionsIds();
             $oneId = reset($transIds);
             $result->setTransactionId($oneId);
+            $msg = "$pv PV are credit to customer #$customerMlmId (odoo ref. #$odooRef).";
+            $this->logger->info();
         }
         return $result;
     }
