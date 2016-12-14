@@ -6,8 +6,8 @@
         <service class="Praxigento\Odoo\Api\Customer\Pv\AddInterface" method="execute"/>
         <resources>
             <!-- MOBI-271, MOBI-307 -->
-            <!--<resource ref="Praxigento_Odoo::replicate"/>-->
-            <resource ref="anonymous"/>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
         </resources>
     </route>
 
