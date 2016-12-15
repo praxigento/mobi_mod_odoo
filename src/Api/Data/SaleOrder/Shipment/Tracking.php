@@ -2,21 +2,54 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-
 namespace Praxigento\Odoo\Api\Data\SaleOrder\Shipment;
 
-use Flancer32\Lib\DataObject;
 
 /**
- * Shipment tracking information for sale orders.
- *
- * @method int getSaleOrderIdMage() Magento ID for sale order.
- * @method void setSaleOrderIdMage(int $data)
- * @method \Praxigento\Odoo\Data\Odoo\Shipment getShipment()
- * @method void setShipment(\Praxigento\Odoo\Data\Odoo\Shipment $data)
+ * Shipment tracking information for sale orders received from Odoo.
  */
 class Tracking
-    extends DataObject
+    extends \Flancer32\Lib\DataObject
 {
+    /**
+     * Magento ID for sale order.
+     *
+     * @return int
+     */
+    public function getSaleOrderIdMage()
+    {
+        $result = parent::getSaleOrderIdMage();
+        return $result;
+    }
+
+    /**
+     * Shipment data to process.
+     *
+     * @return \Praxigento\Odoo\Data\Odoo\Shipment
+     */
+    public function getShipment()
+    {
+        $result = parent::getShipment();
+        return $result;
+    }
+
+    /**
+     * Magento ID for sale order.
+     *
+     * @param int $data
+     * @return int
+     */
+    public function setSaleOrderIdMage($data)
+    {
+        parent::setSaleOrderIdMage($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Data\Odoo\Shipment $data
+     */
+    public function setShipment(\Praxigento\Odoo\Data\Odoo\Shipment $data)
+    {
+        parent::setShipment($data);
+    }
 
 }

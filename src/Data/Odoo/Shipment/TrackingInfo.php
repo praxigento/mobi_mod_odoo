@@ -6,13 +6,48 @@ namespace Praxigento\Odoo\Data\Odoo\Shipment;
 
 /**
  * Shipment tracking information.
- *
- * @method string getShippingCode() Business code of the shipping method.
- * @method void setShippingCode(string $data)
- * @method string getTrackingNumber() Tracking number/code.
- * @method void setTrackingNumber(string $data)
  */
 class TrackingInfo extends \Flancer32\Lib\DataObject
 {
+    /**
+     * Business code of the shipping method.
+     *
+     * @return string
+     */
+    public function getShippingCode()
+    {
+        $result = parent::getShippingCode();
+        return $result;
+    }
 
+    /**
+     * Tracking number/code.
+     *
+     * @return string
+     */
+    public function getTrackingNumber()
+    {
+        $result = parent::getTrackingNumber();
+        return $result;
+    }
+
+    /**
+     * Business code of the shipping method.
+     *
+     * @param string $data
+     */
+    public function setShippingCode($data)
+    {
+        parent::setShippingCode($data);
+    }
+
+    /**
+     * Tracking number/code.
+     *
+     * @param string $data
+     */
+    public function setTrackingNumber($data)
+    {
+        parent::setTrackingNumber($data);
+    }
 }

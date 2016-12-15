@@ -5,9 +5,12 @@
     <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface" type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
     <preference for="\Praxigento\Odoo\Api\Product\Replicate\SaveInterface" type="\Praxigento\Odoo\Api\Product\Replicate\Save"/>
     <preference for="\Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface" type="\Praxigento\Odoo\Api\Sales\Order\PushRepeat"/>
+    <preference for="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveDeprecatedInterface" type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
+    <preference for="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface" type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
 
-    <!-- Data / API -->
-
+    <!-- API / Data -->
+    <preference for="\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\ITracking"
+            type="\Flancer32\Lib\DataObject"/>
 
     <!-- Console (CLI Commands) -->
     <type name="Magento\Framework\Console\CommandList">
