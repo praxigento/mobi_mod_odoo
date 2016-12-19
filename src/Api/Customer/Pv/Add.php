@@ -18,7 +18,7 @@ class Add
     protected $repoRegRequest;
 
     public function __construct(
-        \Praxigento\Core\Fw\Logger\App $logger,
+        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoCustomer,
         \Praxigento\Odoo\Repo\Entity\Registry\IRequest $repoRegRequest,
         \Praxigento\Pv\Service\ITransfer $callPvTransfer

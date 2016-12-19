@@ -19,7 +19,7 @@ class PushRepeat
     protected $logger;
 
     public function __construct(
-        \Praxigento\Core\Fw\Logger\App $logger,
+        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
         \Praxigento\Odoo\Service\IReplicate $callReplicate,
         \Praxigento\Odoo\Api\Sales\Order\PushRepeat\Collector $collector
     ) {
