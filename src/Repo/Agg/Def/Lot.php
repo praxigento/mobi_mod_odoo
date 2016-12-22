@@ -84,7 +84,7 @@ class Lot
             $this->_manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
             $result = $this->_manObj->create(AggLot::class);
-            $result->setData($data);
+            $result->set($data);
             $result->setId($id);
         } finally {
             $this->_manTrans->end($def);
@@ -103,7 +103,7 @@ class Lot
         if ($data) {
             /** @var  $result AggLot */
             $result = $this->_manObj->create(AggLot::class);
-            $result->setData($data);
+            $result->set($data);
         }
         return $result;
     }
@@ -122,7 +122,7 @@ class Lot
         if ($data) {
             /** @var  $result AggLot */
             $result = $this->_manObj->create(AggLot::class);
-            $result->setData($data);
+            $result->set($data);
         }
         return $result;
     }

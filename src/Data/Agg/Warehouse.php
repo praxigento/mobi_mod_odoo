@@ -16,13 +16,13 @@ class Warehouse extends WrhsWarehouse
 
     public function getOdooId()
     {
-        $result = parent::getData(self::AS_ODOO_ID);
+        $result = parent::get(self::AS_ODOO_ID);
         return $result;
     }
 
     public function setOdooId($data)
     {
-        parent::setData(self::AS_ODOO_ID, $data);
+        parent::set(self::AS_ODOO_ID, $data);
     }
 
 }

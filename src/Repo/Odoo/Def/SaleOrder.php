@@ -25,7 +25,7 @@ class SaleOrder
     public function save($order)
     {
         /* prepare request parameters */
-        $underscored = $order->getData(null, true);
+        $underscored = $order->get(null, true);
         /* perform request and extract result data */
         $cover = $this->_rest->request($underscored, self::ROUTE);
         $data = $cover->getResultData();

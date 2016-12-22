@@ -110,9 +110,9 @@ class Login
             }
             $response = $this->_adapter->decodeJson($contents);
             $respData = new \Flancer32\Lib\DataObject($response);
-            $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
+            $this->_cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
             if ($this->_cachedOdooUserId) {
-                $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
+                $this->_cachedOdooSessionId = $respData->get(self::ODOO_PATH_SESSION_ID);
                 $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using REST API. " . $this->_traceConnectionData();
                 $this->_logger->info($msg);
             } else {

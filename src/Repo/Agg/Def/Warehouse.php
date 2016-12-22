@@ -68,7 +68,7 @@ class Warehouse
             $this->_manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
             $result = $this->_manObj->create(AggWarehouse::class);
-            $result->setData($wrhsData);
+            $result->set($wrhsData);
             $result->setOdooId($data->getOdooId());
         } finally {
             $this->_manTrans->end($def);
@@ -85,7 +85,7 @@ class Warehouse
         $data = $this->_conn->fetchRow($query, ['id' => $id]);
         if ($data) {
             $result = $this->_manObj->create(AggWarehouse::class);
-            $result->setData($data);
+            $result->set($data);
         }
         return $result;
     }
@@ -100,7 +100,7 @@ class Warehouse
         $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
             $result = $this->_manObj->create(AggWarehouse::class);
-            $result->setData($data);
+            $result->set($data);
         }
         return $result;
     }

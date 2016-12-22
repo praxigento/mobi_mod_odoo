@@ -86,10 +86,10 @@ class Login_UnitTest
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mRespData);
-        // $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
+        // $this->_cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
         $mRespData->shouldReceive('getData')->once()
             ->andReturn($USER_ID);
-        // $this->_cachedOdooSessionId = $respData->getData(self::ODOO_PATH_SESSION_ID);
+        // $this->_cachedOdooSessionId = $respData->get(self::ODOO_PATH_SESSION_ID);
         $mRespData->shouldReceive('getData')->once()
             ->andReturn($SESS_ID);
         // $this->_logger->info($msg);
@@ -160,7 +160,7 @@ class Login_UnitTest
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mRespData);
-        // $this->_cachedOdooUserId = $respData->getData(self::ODOO_PATH_USER_ID);
+        // $this->_cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
         $mRespData
             ->shouldReceive('getData')->once()
             ->with(\Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login::ODOO_PATH_USER_ID)

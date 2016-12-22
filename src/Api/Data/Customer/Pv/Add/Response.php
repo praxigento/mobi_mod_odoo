@@ -12,7 +12,7 @@ class Response
      */
     public function getData()
     {
-        $result = parent::getData();
+        $result = parent::get();
         return $result;
     }
 
@@ -21,7 +21,7 @@ class Response
      */
     public function setData($data)
     {
-        parent::setData($data);
+        parent::set($data);
     }
 
 }

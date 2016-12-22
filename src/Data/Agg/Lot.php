@@ -27,46 +27,46 @@ class Lot extends DataObject
 
     public function getCode()
     {
-        $result = parent::getData(static::AS_CODE);
+        $result = parent::get(static::AS_CODE);
         return $result;
     }
 
     public function getExpDate()
     {
-        $result = parent::getData(static::AS_EXP_DATE);
+        $result = parent::get(static::AS_EXP_DATE);
         return $result;
     }
 
     public function getId()
     {
-        $result = parent::getData(static::AS_ID);
+        $result = parent::get(static::AS_ID);
         return $result;
     }
 
     public function getOdooId()
     {
-        $result = parent::getData(static::AS_ODOO_ID);
+        $result = parent::get(static::AS_ODOO_ID);
         return $result;
     }
 
     public function setCode($data)
     {
-        parent::setData(static::AS_CODE, $data);
+        parent::set(static::AS_CODE, $data);
     }
 
     public function setExpDate($data)
     {
-        parent::setData(static::AS_EXP_DATE, $data);
+        parent::set(static::AS_EXP_DATE, $data);
     }
 
     public function setId($data)
     {
-        parent::setData(static::AS_ID, $data);
+        parent::set(static::AS_ID, $data);
     }
 
     public function setOdooId($data)
     {
-        parent::setData(static::AS_ODOO_ID, $data);
+        parent::set(static::AS_ODOO_ID, $data);
     }
 
 }

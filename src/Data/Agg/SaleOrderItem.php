@@ -34,168 +34,168 @@ class SaleOrderItem extends DataObject
 
     public function getItemQty()
     {
-        $result = parent::getData(static::AS_ITEM_QTY);
+        $result = parent::get(static::AS_ITEM_QTY);
         return $result;
     }
 
     public function getLotQty()
     {
-        $result = parent::getData(static::AS_LOT_QTY);
+        $result = parent::get(static::AS_LOT_QTY);
         return $result;
     }
 
     public function getOdooIdLot()
     {
-        $result = parent::getData(static::AS_ODOO_ID_LOT);
+        $result = parent::get(static::AS_ODOO_ID_LOT);
         return $result;
     }
 
     public function getOdooIdProduct()
     {
-        $result = parent::getData(static::AS_ODOO_ID_PROD);
+        $result = parent::get(static::AS_ODOO_ID_PROD);
         return $result;
     }
 
     public function getPriceDiscount()
     {
-        $result = parent::getData(static::AS_PRICE_DISCOUNT);
+        $result = parent::get(static::AS_PRICE_DISCOUNT);
         return $result;
     }
 
     public function getPriceTax()
     {
-        $result = parent::getData(static::AS_PRICE_TOTAL_WITH_TAX);
+        $result = parent::get(static::AS_PRICE_TOTAL_WITH_TAX);
         return $result;
     }
 
     public function getPriceTaxPercent()
     {
-        $result = parent::getData(static::AS_PRICE_TAX_PERCENT);
+        $result = parent::get(static::AS_PRICE_TAX_PERCENT);
         return $result;
     }
 
     public function getPriceTotal()
     {
-        $result = parent::getData(static::AS_PRICE_TOTAL);
+        $result = parent::get(static::AS_PRICE_TOTAL);
         return $result;
     }
 
     public function getPriceTotalWithTax()
     {
-        $result = parent::getData(static::AS_PRICE_TOTAL_WITH_TAX);
+        $result = parent::get(static::AS_PRICE_TOTAL_WITH_TAX);
         return $result;
     }
 
     public function getPriceUnit()
     {
-        $result = parent::getData(static::AS_PRICE_UNIT);
+        $result = parent::get(static::AS_PRICE_UNIT);
         return $result;
     }
 
     public function getPriceUnitOrig()
     {
-        $result = parent::getData(static::AS_PRICE_UNIT_ORIG);
+        $result = parent::get(static::AS_PRICE_UNIT_ORIG);
         return $result;
     }
 
     public function getPvDiscount()
     {
-        $result = parent::getData(static::AS_PV_DISCOUNT);
+        $result = parent::get(static::AS_PV_DISCOUNT);
         return $result;
     }
 
     public function getPvSubtotal()
     {
-        $result = parent::getData(static::AS_PV_SUBTOTAL);
+        $result = parent::get(static::AS_PV_SUBTOTAL);
         return $result;
     }
 
     public function getPvTotal()
     {
-        $result = parent::getData(static::AS_PV_TOTAL);
+        $result = parent::get(static::AS_PV_TOTAL);
         return $result;
     }
 
     public function getPvUnit()
     {
-        $result = parent::getData(static::AS_PV_UNIT);
+        $result = parent::get(static::AS_PV_UNIT);
         return $result;
     }
 
 
     public function setItemQty($data)
     {
-        parent::setData(static::AS_ITEM_QTY, $data);
+        parent::set(static::AS_ITEM_QTY, $data);
     }
 
     public function setLotQty($data)
     {
-        parent::setData(static::AS_LOT_QTY, $data);
+        parent::set(static::AS_LOT_QTY, $data);
     }
 
     public function setOdooIdLot($data)
     {
-        parent::setData(static::AS_ODOO_ID_LOT, $data);
+        parent::set(static::AS_ODOO_ID_LOT, $data);
     }
 
     public function setOdooIdProduct($data)
     {
-        parent::setData(static::AS_ODOO_ID_PROD, $data);
+        parent::set(static::AS_ODOO_ID_PROD, $data);
     }
 
     public function setPriceDiscount($data)
     {
-        parent::setData(static::AS_PRICE_DISCOUNT, $data);
+        parent::set(static::AS_PRICE_DISCOUNT, $data);
     }
 
     public function setPriceTax($data)
     {
-        parent::setData(static::AS_PRICE_TOTAL_WITH_TAX, $data);
+        parent::set(static::AS_PRICE_TOTAL_WITH_TAX, $data);
     }
 
     public function setPriceTaxPercent($data)
     {
-        parent::setData(static::AS_PRICE_TAX_PERCENT, $data);
+        parent::set(static::AS_PRICE_TAX_PERCENT, $data);
     }
 
     public function setPriceTotal($data)
     {
-        parent::setData(static::AS_PRICE_TOTAL, $data);
+        parent::set(static::AS_PRICE_TOTAL, $data);
     }
 
     public function setPriceTotalWithTax($data)
     {
-        parent::setData(static::AS_PRICE_TOTAL_WITH_TAX, $data);
+        parent::set(static::AS_PRICE_TOTAL_WITH_TAX, $data);
     }
 
     public function setPriceUnit($data)
     {
-        parent::setData(static::AS_PRICE_UNIT, $data);
+        parent::set(static::AS_PRICE_UNIT, $data);
     }
 
     public function setPriceUnitOrig($data)
     {
-        parent::setData(static::AS_PRICE_UNIT_ORIG, $data);
+        parent::set(static::AS_PRICE_UNIT_ORIG, $data);
     }
 
     public function setPvDiscount($data)
     {
-        parent::setData(static::AS_PV_DISCOUNT, $data);
+        parent::set(static::AS_PV_DISCOUNT, $data);
     }
 
     public function setPvSubtotal($data)
     {
-        parent::setData(static::AS_PV_SUBTOTAL, $data);
+        parent::set(static::AS_PV_SUBTOTAL, $data);
     }
 
     public function setPvTotal($data)
     {
-        parent::setData(static::AS_PV_TOTAL, $data);
+        parent::set(static::AS_PV_TOTAL, $data);
     }
 
     public function setPvUnit($data)
     {
-        parent::setData(static::AS_PV_UNIT, $data);
+        parent::set(static::AS_PV_UNIT, $data);
     }
 
 

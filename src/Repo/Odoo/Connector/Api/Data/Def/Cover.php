@@ -14,7 +14,7 @@ class Cover extends DataObject implements ICover
 
     public function getResultData()
     {
-        $result = parent::getData(self::PATH_RESULT_DATA);
+        $result = parent::get(self::PATH_RESULT_DATA);
         return $result;
     }
 

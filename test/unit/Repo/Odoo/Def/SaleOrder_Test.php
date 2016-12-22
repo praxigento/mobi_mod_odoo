@@ -40,7 +40,7 @@ class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** === Test Data === */
         $ORDER = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
         /** === Setup Mocks === */
-        // $underscored = $order->getData(null, true);
+        // $underscored = $order->get(null, true);
         $mUnderscored = [];
         $ORDER->shouldReceive('getData')->once()
             ->andReturn($mUnderscored);
@@ -78,7 +78,7 @@ class SaleOrder_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** === Test Data === */
         $ORDER = $this->_mock(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
         /** === Setup Mocks === */
-        // $underscored = $order->getData(null, true);
+        // $underscored = $order->get(null, true);
         $mUnderscored = [];
         $ORDER->shouldReceive('getData')->once()
             ->andReturn($mUnderscored);

@@ -43,8 +43,8 @@ class Save
         $def = $this->manTrans->begin();
         try {
             $orderIdMage = $data->getSaleOrderIdMage();
-            $trackNumber = $data->getData('shipment/trackingInfo/trackingNumber');
-            $shippingMethodCode = $data->getData('shipment/trackingInfo/shippingCode');
+            $trackNumber = $data->get('shipment/trackingInfo/trackingNumber');
+            $shippingMethodCode = $data->get('shipment/trackingInfo/shippingCode');
             $this->shipmentLoader->setOrderId($orderIdMage);
             /** @var \Magento\Sales\Model\Order\Shipment $shipment */
             $shipment = $this->shipmentLoader->load();
