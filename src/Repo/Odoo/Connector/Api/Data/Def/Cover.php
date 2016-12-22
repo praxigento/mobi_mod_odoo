@@ -12,6 +12,16 @@ class Cover extends DataObject implements ICover
 {
     const PATH_RESULT_DATA = '/result';
 
+    /**
+     * Define constructor explicitly to use with Object Manager (init data on construct).
+     *
+     * @param $data
+     */
+    public function __construct($data)
+    {
+        parent::__construct($data);
+    }
+
     public function getResultData()
     {
         $result = parent::get(self::PATH_RESULT_DATA);

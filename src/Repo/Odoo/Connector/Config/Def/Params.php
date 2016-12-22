@@ -14,6 +14,15 @@ class Params
     extends \Flancer32\Lib\DataObject
     implements \Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication
 {
+    /**
+     * Define constructor explicitly to use with Object Manager (init data on construct).
+     *
+     * @param $data
+     */
+    public function __construct($data)
+    {
+        parent::__construct($data);
+    }
 
     public function getBaseUri()
     {

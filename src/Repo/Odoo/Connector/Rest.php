@@ -79,7 +79,7 @@ class Rest
         }
         $this->_logger->debug("Response:\t\n$contents");
         $data = $this->_adapter->decodeJson($contents);
-        $result = $this->_manObj->create(Cover::class, ['arg1' => $data]);
+        $result = $this->_manObj->create(Cover::class, ['data' => $data]);
         return $result;
     }
 }
