@@ -16,7 +16,10 @@ class Response
         return $result;
     }
 
-    public function setData(\Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response\Data $data)
+    /**
+     * @param \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response\Data $data
+     */
+    public function setData($data)
     {
         parent::setData($data);
     }
