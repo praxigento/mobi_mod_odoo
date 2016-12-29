@@ -74,7 +74,7 @@ class OdooDataCollector
      */
     public function _extractContact(\Magento\Sales\Api\Data\OrderAddressInterface $addrMage)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\Contact::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\Contact();
         /* collect data */
         $name = $addrMage->getName();
         $phone = $addrMage->getTelephone();
@@ -103,7 +103,7 @@ class OdooDataCollector
      */
     public function _extractLine(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
         /* collect data */
         $productIdOdoo = (int)$item->getOdooIdProduct();
         $qtyLine = $this->manFormat->toNumber($item->getItemQty());
@@ -142,7 +142,7 @@ class OdooDataCollector
      */
     public function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->manFormat->toNumber($item->getLotQty());
         if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
@@ -218,7 +218,7 @@ class OdooDataCollector
      */
     public function getSaleOrder(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
         /* Collect order data */
         // id_mage
         $orderIdMage = (int)$mageOrder->getId();
@@ -283,7 +283,7 @@ class OdooDataCollector
      */
     public function getSaleOrderCustomer(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Customer::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer();
         /* collect data */
         $custMageId = (int)$mageOrder->getCustomerId();
         $dwnlCust = $this->repoDwnlCustomer->getById($custMageId);
@@ -340,7 +340,7 @@ class OdooDataCollector
     public function getSaleOrderPayments(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $result = [];
-        $odooPayment = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\Payment::class);
+        $odooPayment = new \Praxigento\Odoo\Data\Odoo\Payment();
         /* collect data */
         $magePayment = $mageOrder->getPayment();
         $code = $this->manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
@@ -359,7 +359,7 @@ class OdooDataCollector
      */
     public function getSaleOrderShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = $this->manObj->create(\Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping::class);
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
         /* collect data */
         $code = $this->manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
         $priceAmount = $mageOrder->getBaseShippingAmount();

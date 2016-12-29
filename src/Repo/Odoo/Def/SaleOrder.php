@@ -15,6 +15,7 @@ class SaleOrder
     protected $rest;
     /** @var \Magento\Framework\Webapi\ServiceOutputProcessor */
     protected $mageSrvOutProc;
+
     public function __construct(
         \Magento\Framework\Webapi\ServiceOutputProcessor $mageSrvOutProc,
         \Magento\Framework\Webapi\ServiceInputProcessor $mageSrvInProc,
@@ -46,7 +47,8 @@ class SaleOrder
     protected function _convertToUnderScored($data)
     {
         $result = [];
-        foreach ($data as $key => $item) {
+        $array = is_array($data) ? $data : get_object_vars($data); // stdObj is not an array
+        foreach ($array as $key => $item) {
             $underKey = $this->_fromCamelCase($key);
             if (is_array($item)) {
                 foreach ($item as $subKey => $subItem) {
@@ -64,6 +66,7 @@ class SaleOrder
         }
         return $result;
     }
+
     public function save($order)
     {
         /* prepare request parameters */
