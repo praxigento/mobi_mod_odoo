@@ -55,7 +55,11 @@ class SaleOrder
                     if (!is_int($subKey)) {
                         $subKey = $this->_fromCamelCase($subKey);
                     }
-                    $subData = $this->_convertToUnderScored($subItem);
+                    if ($subItem instanceof \Flancer32\Lib\Data) {
+                        $subData = $this->_convertToUnderScored($subItem->get());
+                    } else {
+                        $subData = $this->_convertToUnderScored($subItem);
+                    }
                     $result[$underKey][$subKey] = $subData;
                 }
             } elseif ($item instanceof \Flancer32\Lib\Data) {
