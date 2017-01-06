@@ -27,10 +27,12 @@ interface IBusinessCodesManager
     public function getBusCodeForShippingMethod(\Magento\Sales\Api\Data\OrderInterface $order);
 
     /**
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * Get 'distributor' value by '1' value.
+     *
+     * @param int $groupId
      * @return string
      */
-    public function getBusCodeForCustomerGroup(\Magento\Customer\Api\Data\CustomerInterface $customer);
+    public function getBusCodeForCustomerGroupById($groupId);
 
     /**
      * Convert business code for shipping methods to Magento code of the carrier.

@@ -290,7 +290,8 @@ class OdooDataCollector
         $ref = $dwnlCust->getHumanRef();
         $name = $mageOrder->getCustomerName();
         $mageCust = $this->repoCustomer->getById($custMageId);
-        $groupCode = $this->manBusinessCodes->getBusCodeForCustomerGroup($mageCust);
+        $groupId = $mageCust->getGroupId();
+        $groupCode = $this->manBusinessCodes->getBusCodeForCustomerGroupById($groupId);
         /* init Odoo data object */
         $result->setIdMage($custMageId);
         $result->setIdMlm($ref);
