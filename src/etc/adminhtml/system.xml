@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="praxigento_odoo" translate="label"
+                sortOrder="1024" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Odoo</label>
+            <tab>praxigento_mobi</tab>
+            <resource>Praxigento_Odoo::odoo</resource>
+            <group id="connect" translate="label" type="text"
+                    sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Connect</label>
+                <field id="uri" translate="label comment" type="text"
+                        sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Base URI</label>
+                    <comment>Base URL for Odoo instance.</comment>
+                    <tooltip>http://lion.host.prxgt.com:8122</tooltip>
+                </field>
+                <field id="database" translate="label comment" type="text"
+                        sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Database</label>
+                    <comment>Name of the database to be used.</comment>
+                    <tooltip>odoo_mobi_test_shop</tooltip>
+                </field>
+                <field id="user" translate="label comment tooltip" type="text"
+                        sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>User</label>
+                    <comment>User name to connect to Odoo database.</comment>
+                    <tooltip>magento</tooltip>
+                </field>
+                <field id="password" translate="label comment tooltip" type="text"
+                        sortOrder="400" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Password</label>
+                    <comment>Password to connect to Odoo database.</comment>
+                    <tooltip>v5WzTtKHLeTBHjLa</tooltip>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

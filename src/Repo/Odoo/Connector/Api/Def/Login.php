@@ -7,7 +7,6 @@
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
 use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 
@@ -27,71 +26,54 @@ class Login
     /**#@- */
 
     /** @var  Adapter adapter for PHP functions to be mocked in tests */
-    protected $_adapter;
+    protected $adapter;
     /**
      * Odoo connection data
      */
-    protected $_authBaseUrl;
-    protected $_authDb;
-    protected $_authPasswd;
-    protected $_authUser;
+    protected $authBaseUrl;
+    protected $authDb;
+    protected $authPasswd;
+    protected $authUser;
     /** @var int cache for Session ID of the authenticated Odoo REST API user. */
-    protected $_cachedOdooSessionId = null;
+    protected $cachedOdooSessionId = null;
     /** @var int cache for User ID of the authenticated Odoo XML RPC API user. */
-    protected $_cachedOdooUserId = null;
+    protected $cachedOdooUserId = null;
     /** @var  LoggerInterface separate channel to log Odoo activity */
-    protected $_logger;
+    protected $logger;
     /** @var ObjectManagerInterface */
-    protected $_manObj;
-
+    protected $manObj;
 
     function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         ObjectManagerInterface $manObj,
         Adapter $adapter,
-        IAuthentication $params
+        \Praxigento\Odoo\Helper\Config $hlpConfig
     ) {
-        $this->_logger = $logger;
-        $this->_manObj = $manObj;
-        $this->_adapter = $adapter;
-        $this->_authBaseUrl = $params->getBaseUri();
-        $this->_authDb = $params->getDbName();
-        $this->_authUser = $params->getUserName();
-        $this->_authPasswd = $params->getUserPassword();
+        $this->logger = $logger;
+        $this->manObj = $manObj;
+        $this->adapter = $adapter;
+        $this->authBaseUrl = $hlpConfig->getConnectUri();
+        $this->authDb = $hlpConfig->getConnectDb();
+        $this->authUser = $hlpConfig->getConnectUser();
+        $this->authPasswd = $hlpConfig->getConnectPassword();
     }
 
-    /**
-     * Short method to get connection data to trace into log.
-     * @return string
-     */
-    private function _traceConnectionData()
-    {
-        $result = "Odoo connection data (url/db/user): {$this->_authBaseUrl} / {$this->_authDb} / {$this->_authUser}.";
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function cacheReset()
     {
-        $this->_cachedOdooUserId = null;
-        $this->_cachedOdooSessionId = null;
+        $this->cachedOdooUserId = null;
+        $this->cachedOdooSessionId = null;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getSessionId()
     {
-        if (is_null($this->_cachedOdooSessionId)) {
+        if (is_null($this->cachedOdooSessionId)) {
             /* request User ID from Odoo */
             $params = [
-                self::ODOO_DB_NAME => $this->_authDb,
-                self::ODOO_LOGIN => $this->_authUser,
-                self::ODOO_PASSWORD => $this->_authPasswd
+                self::ODOO_DB_NAME => $this->authDb,
+                self::ODOO_LOGIN => $this->authUser,
+                self::ODOO_PASSWORD => $this->authPasswd
             ];
-            $request = $this->_adapter->encodeJson($params);
+            $request = $this->adapter->encodeJson($params);
             $ctxOpts = [
                 'http' => [
                     'method' => Rest::HTTP_METHOD_POST,
@@ -100,41 +82,38 @@ class Login
                     'content' => $request
                 ]
             ];
-            $context = $this->_adapter->createContext($ctxOpts);
-            $uri = $this->_authBaseUrl . '/api/auth';
-            $contents = $this->_adapter->getContents($uri, $context);
+            $context = $this->adapter->createContext($ctxOpts);
+            $uri = $this->authBaseUrl . '/api/auth';
+            $contents = $this->adapter->getContents($uri, $context);
             if ($contents === false) {
-                $msg = "Cannot log in to Odoo REST API. " . $this->_traceConnectionData();
-                $this->_logger->critical($msg);
+                $msg = "Cannot log in to Odoo REST API. " . $this->traceConnectionData();
+                $this->logger->critical($msg);
                 throw new \Exception($msg);
             }
-            $response = $this->_adapter->decodeJson($contents);
+            $response = $this->adapter->decodeJson($contents);
             $respData = new \Flancer32\Lib\DataObject($response);
-            $this->_cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
-            if ($this->_cachedOdooUserId) {
-                $this->_cachedOdooSessionId = $respData->get(self::ODOO_PATH_SESSION_ID);
-                $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using REST API. " . $this->_traceConnectionData();
-                $this->_logger->info($msg);
+            $this->cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
+            if ($this->cachedOdooUserId) {
+                $this->cachedOdooSessionId = $respData->get(self::ODOO_PATH_SESSION_ID);
+                $msg = "Logged in to Odoo as user with id '{$this->cachedOdooUserId}' using REST API. " . $this->traceConnectionData();
+                $this->logger->info($msg);
             } else {
-                $this->_cachedOdooSessionId = null;
-                $msg = "Cannot be authenticated in Odoo with username '{$this->_authUser}'.";
-                $this->_logger->error($msg);
+                $this->cachedOdooSessionId = null;
+                $msg = "Cannot be authenticated in Odoo with username '{$this->authUser}'.";
+                $this->logger->error($msg);
                 throw new \Exception($msg);
             }
         }
-        return $this->_cachedOdooSessionId;
+        return $this->cachedOdooSessionId;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getUserId()
     {
-        if (is_null($this->_cachedOdooUserId)) {
+        if (is_null($this->cachedOdooUserId)) {
             /* request User ID from Odoo */
-            $params = [$this->_authDb, $this->_authUser, $this->_authPasswd];
+            $params = [$this->authDb, $this->authUser, $this->authPasswd];
             $outOpts = ['encoding' => 'utf-8', 'escaping' => 'markup'];
-            $request = $this->_adapter->encodeXml('login', $params, $outOpts);
+            $request = $this->adapter->encodeXml('login', $params, $outOpts);
             $ctxOpts = [
                 'http' => [
                     'method' => Rest::HTTP_METHOD_POST,
@@ -143,18 +122,29 @@ class Login
                     'content' => $request
                 ]
             ];
-            $context = $this->_adapter->createContext($ctxOpts);
-            $uri = $this->_authBaseUrl . '/xmlrpc/common';
-            $contents = $this->_adapter->getContents($uri, $context);
+            $context = $this->adapter->createContext($ctxOpts);
+            $uri = $this->authBaseUrl . '/xmlrpc/common';
+            $contents = $this->adapter->getContents($uri, $context);
             if ($contents === false) {
-                $msg = "Cannot log in to Odoo XML RPC API. " . $this->_traceConnectionData();
-                $this->_logger->critical($msg);
+                $msg = "Cannot log in to Odoo XML RPC API. " . $this->traceConnectionData();
+                $this->logger->critical($msg);
                 throw new \Exception($msg);
             }
-            $this->_cachedOdooUserId = $this->_adapter->decodeXml($contents);
-            $msg = "Logged in to Odoo as user with id '{$this->_cachedOdooUserId}' using XML RPC. " . $this->_traceConnectionData();
-            $this->_logger->info($msg);
+            $this->cachedOdooUserId = $this->adapter->decodeXml($contents);
+            $msg = "Logged in to Odoo as user with id '{$this->cachedOdooUserId}' using XML RPC. " . $this->traceConnectionData();
+            $this->logger->info($msg);
         }
-        return $this->_cachedOdooUserId;
+        return $this->cachedOdooUserId;
+    }
+
+    /**
+     * Short method to get connection data to trace into log.
+     *
+     * @return string
+     */
+    private function traceConnectionData()
+    {
+        $result = "Odoo connection data (url/db/user): {$this->authBaseUrl} / {$this->authDb} / {$this->authUser}.";
+        return $result;
     }
 }
