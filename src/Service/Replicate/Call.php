@@ -73,9 +73,11 @@ class Call implements IReplicate
         /** @var \Magento\Sales\Api\Data\OrderInterface $mageOrder */
         $mageOrder = $req->getSaleOrder();
         $orderIdMage = $mageOrder->getEntityId();
+        $customerIdMage = $mageOrder->getCustomerId();
         /** @var  $registeredOrder */
         $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
-        if ($orderIdMage && !$registeredOrder) {
+        /* skip processing for registered orders or guest checkouted */
+        if ($orderIdMage && !$registeredOrder && $customerIdMage) {
             $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
             //$def = $this->_manTrans->begin();
             try {
