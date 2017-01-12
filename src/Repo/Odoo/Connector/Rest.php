@@ -2,11 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-
 namespace Praxigento\Odoo\Repo\Odoo\Connector;
 
-use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def\Cover;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
@@ -25,18 +22,14 @@ class Rest
     protected $logger;
     /** @var  Login */
     protected $login;
-    /** @var ObjectManagerInterface */
-    protected $manObj;
 
     public function __construct(
         LoggerInterface $logger,
-        ObjectManagerInterface $manObj,
         Adapter $adapter,
         ILogin $login,
         \Praxigento\Odoo\Helper\Config $hlpConfig
     ) {
         $this->logger = $logger;
-        $this->manObj = $manObj;
         $this->adapter = $adapter;
         $this->baseUri = $hlpConfig->getConnectUri();
         $this->login = $login;
@@ -78,7 +71,7 @@ class Rest
         }
         $this->logger->debug("Response:\t\n$contents");
         $data = $this->adapter->decodeJson($contents);
-        $result = $this->manObj->create(Cover::class, ['data' => $data]);
+        $result = new \Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def\Cover($data);
         return $result;
     }
 }

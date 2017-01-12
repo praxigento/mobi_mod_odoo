@@ -24,10 +24,10 @@ class SaleOrder
         /* aliases and tables */
         $asSaleOrder = 'so';
         $asOdooReg = 'pos';
-        $tblSaleOrder = [$asSaleOrder => $this->_resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER)];
-        $tblOdooReg = [$asOdooReg => $this->_resource->getTableName(Entity::ENTITY_NAME)];
+        $tblSaleOrder = [$asSaleOrder => $this->resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER)];
+        $tblOdooReg = [$asOdooReg => $this->resource->getTableName(Entity::ENTITY_NAME)];
         /* SELECT FROM sales_order */
-        $query = $this->_conn->select();
+        $query = $this->conn->select();
         $cols = [Cfg::E_SALE_ORDER_A_ENTITY_ID];
         $query->from($tblSaleOrder, $cols);
         // LEFT OUTER JOIN prxgt_odoo_sale
@@ -38,7 +38,7 @@ class SaleOrder
         $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::ATTR_MAGE_REF . ')');
         $query->where($where);
         /* fetch data */
-        $result = $this->_conn->fetchAll($query);
+        $result = $this->conn->fetchAll($query);
         return $result;
     }
 }

@@ -24,7 +24,7 @@ class SaleOrderItem
         \Magento\Framework\App\ResourceConnection $resource,
         SaleOrderItem\SelectFactory $factorySelect
     ) {
-        $this->_conn = $resource->getConnection();
+        $this->conn = $resource->getConnection();
         $this->_factorySelect = $factorySelect;
     }
 
@@ -37,7 +37,7 @@ class SaleOrderItem
             self::PARAM_ORDER_ID => (int)$orderId,
             self::PARAM_STOCK_ID => (int)$stockId
         ];
-        $data = $this->_conn->fetchAll($select, $bind);
+        $data = $this->conn->fetchAll($select, $bind);
         if ($data) {
             foreach ($data as $row) {
                 $item = new Agg($row);

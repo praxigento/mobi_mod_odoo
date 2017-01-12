@@ -72,9 +72,6 @@ class Products extends Command
         parent::configure();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* parse arguments */
@@ -89,8 +86,7 @@ class Products extends Command
         /* setup session */
         $this->_setAreaCode();
         /* call service operation */
-        /** @var ProductsFromOdooRequest $req */
-        $req = $this->_manObj->create(ProductsFromOdooRequest::class);
+        $req = new \Praxigento\Odoo\Service\Replicate\Request\ProductsFromOdoo();
         $req->setOdooIds($ids);
         /** @var ProductsFromOdooResponse $resp */
         $resp = $this->_callReplicate->productsFromOdoo($req);

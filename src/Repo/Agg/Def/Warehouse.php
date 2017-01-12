@@ -6,7 +6,6 @@
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Core\Transaction\Database\IManager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
@@ -18,104 +17,94 @@ class Warehouse
     extends \Praxigento\Core\Repo\Def\Crud
     implements \Praxigento\Odoo\Repo\Agg\IWarehouse
 {
-
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
-    protected $_conn;
+    protected $conn;
     /** @var  Warehouse\SelectFactory */
-    protected $_factorySelect;
-    /** @var  ObjectManagerInterface */
-    protected $_manObj;
+    protected $factorySelect;
     /** @var  \Praxigento\Core\Transaction\Database\IManager */
-    protected $_manTrans;
+    protected $manTrans;
     /** @var  \Praxigento\Odoo\Repo\Entity\IWarehouse */
-    protected $_repoEntityWarehouse;
+    protected $repoEntityWarehouse;
     /** @var  WrhsRepoAggWarehouse */
-    protected $_repoWrhsAggWarehouse;
+    protected $repoWrhsAggWarehouse;
     /** @var \Magento\Framework\App\ResourceConnection */
-    protected $_resource;
+    protected $resource;
 
     public function __construct(
-        ObjectManagerInterface $manObj,
         IManager $manTrans,
         ResourceConnection $resource,
         WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
         RepoEntityWarehouse $repoEntityWarehouse,
         Warehouse\SelectFactory $factorySelect
     ) {
-        $this->_manObj = $manObj;
-        $this->_manTrans = $manTrans;
-        $this->_resource = $resource;
-        $this->_conn = $resource->getConnection();
-        $this->_repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
-        $this->_repoEntityWarehouse = $repoEntityWarehouse;
-        $this->_factorySelect = $factorySelect;
+        $this->manTrans = $manTrans;
+        $this->resource = $resource;
+        $this->conn = $resource->getConnection();
+        $this->repoWrhsAggWarehouse = $repoWrhsAggWarehouse;
+        $this->repoEntityWarehouse = $repoEntityWarehouse;
+        $this->factorySelect = $factorySelect;
     }
 
-    /** @inheritdoc */
     public function create($data)
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $def = $this->_manTrans->begin();
+        $def = $this->manTrans->begin();
         try {
-            $wrhsData = $this->_repoWrhsAggWarehouse->create($data);
+            $wrhsData = $this->repoWrhsAggWarehouse->create($data);
             /* create odoo related entries */
             $bind = [
                 EntityWarehouse::ATTR_MAGE_REF => $wrhsData->getId(),
                 EntityWarehouse::ATTR_ODOO_REF => $data->getOdooId()
             ];
-            $this->_repoEntityWarehouse->create($bind);
-            $this->_manTrans->commit($def);
+            $this->repoEntityWarehouse->create($bind);
+            $this->manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
-            $result = $this->_manObj->create(AggWarehouse::class);
+            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
             $result->set($wrhsData);
             $result->setOdooId($data->getOdooId());
         } finally {
-            $this->_manTrans->end($def);
+            $this->manTrans->end($def);
         }
         return $result;
     }
 
-    /** @inheritdoc */
     public function getById($id)
     {
         $result = null;
-        $query = $this->_factorySelect->getQueryToSelect();
+        $query = $this->factorySelect->getQueryToSelect();
         $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
-        $data = $this->_conn->fetchRow($query, ['id' => $id]);
+        $data = $this->conn->fetchRow($query, ['id' => $id]);
         if ($data) {
-            $result = $this->_manObj->create(AggWarehouse::class);
+            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
             $result->set($data);
         }
         return $result;
     }
 
-    /** @inheritdoc */
     public function getByOdooId($odooId)
     {
         /** @var  $result AggWarehouse */
         $result = null;
-        $query = $this->_factorySelect->getQueryToSelect();
+        $query = $this->factorySelect->getQueryToSelect();
         $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
-        $data = $this->_conn->fetchRow($query, ['id' => $odooId]);
+        $data = $this->conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
-            $result = $this->_manObj->create(AggWarehouse::class);
+            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
             $result->set($data);
         }
         return $result;
     }
 
-    /** @inheritdoc */
     public function getQueryToSelect()
     {
-        $result = $this->_factorySelect->getQueryToSelect();
+        $result = $this->factorySelect->getQueryToSelect();
         return $result;
     }
 
-    /** @inheritdoc */
     public function getQueryToSelectCount()
     {
-        $result = $this->_factorySelect->getQueryToSelectCount();
+        $result = $this->factorySelect->getQueryToSelectCount();
         return $result;
     }
 
