@@ -5,10 +5,8 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sub;
 
-use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Agg\Lot as AggLot;
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Odoo\Inventory\Lot as ApiLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as ApiWarehouse;
 use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
@@ -18,25 +16,22 @@ use Praxigento\Odoo\Repo\IRegistry;
 
 class Replicator
 {
-    /** @var   ObjectManagerInterface */
-    protected $_manObj;
     /** @var  IRepoAggLot */
-    protected $_repoAggLot;
+    protected $repoAggLot;
     /** @var  IRepoAggWarehouse */
-    protected $_repoAggWrhs;
+    protected $repoAggWrhs;
     /** @var  IRepoPv */
-    protected $_repoPv;
+    protected $repoPv;
     /** @var IRegistry */
-    protected $_repoRegistry;
+    protected $repoRegistry;
     /** @var Replicator\Product\Category */
-    protected $_subProdCategory;
+    protected $subProdCategory;
     /** @var Replicator\Product\Warehouse */
-    protected $_subProdWarehouse;
+    protected $subProdWarehouse;
     /** @var Replicator\Product */
-    protected $_subProduct;
+    protected $subProduct;
 
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
         \Praxigento\Odoo\Repo\Agg\ILot $repoAggLot,
         \Praxigento\Odoo\Repo\IPv $repoPv,
@@ -45,14 +40,13 @@ class Replicator
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse
     ) {
-        $this->_manObj = $manObj;
-        $this->_repoRegistry = $repoRegistry;
-        $this->_repoAggLot = $repoAggLot;
-        $this->_repoPv = $repoPv;
-        $this->_repoAggWrhs = $repoAggWrhs;
-        $this->_subProduct = $subProduct;
-        $this->_subProdCategory = $subProdCategory;
-        $this->_subProdWarehouse = $subProdWarehouse;
+        $this->repoRegistry = $repoRegistry;
+        $this->repoAggLot = $repoAggLot;
+        $this->repoPv = $repoPv;
+        $this->repoAggWrhs = $repoAggWrhs;
+        $this->subProduct = $subProduct;
+        $this->subProdCategory = $subProdCategory;
+        $this->subProdWarehouse = $subProdWarehouse;
     }
 
     /**
@@ -62,14 +56,14 @@ class Replicator
     public function processLots($lots)
     {
         /** @var  $data AggLot */
-        $data = $this->_manObj->create(AggLot::class);
+        $data = new \Praxigento\Odoo\Data\Agg\Lot();
         foreach ($lots as $item) {
             $data->setOdooId($item->getIdOdoo());
             $data->setCode($item->getNumber());
             $data->setExpDate($item->getExpirationDate());
-            $lotExists = $this->_repoAggLot->getByOdooId($data->getOdooId());
+            $lotExists = $this->repoAggLot->getByOdooId($data->getOdooId());
             if (!$lotExists) {
-                $this->_repoAggLot->create($data);
+                $this->repoAggLot->create($data);
             }
         }
     }
@@ -89,31 +83,31 @@ class Replicator
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
         /* check does product item is already registered in Magento */
-        if (!$this->_repoRegistry->isProductRegisteredInMage($idOdoo)) {
+        if (!$this->repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
-                $idMage = $this->_subProduct->create($sku, $name, $isActive, $priceWholesale, $weight);
-                $this->_repoRegistry->registerProduct($idMage, $idOdoo);
-                $this->_repoPv->registerProductWholesalePv($idMage, $pvWholesale);
+                $idMage = $this->subProduct->create($sku, $name, $isActive, $priceWholesale, $weight);
+                $this->repoRegistry->registerProduct($idMage, $idOdoo);
+                $this->repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
                 $skipReplication = true;
             }
         } else {
             /* update attributes for magento product */
-            $idMage = $this->_repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->_subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
-            $this->_repoPv->updateProductWholesalePv($idMage, $pvWholesale);
+            $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
+            $this->subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
+            $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipReplication) {
             /* check that categories are registered in Magento */
             $categories = $product->getCategories();
-            $this->_subProdCategory->checkCategoriesExistence($categories);
+            $this->subProdCategory->checkCategoriesExistence($categories);
             /* check product to categories links (add/remove) */
-            $this->_subProdCategory->replicateCategories($idMage, $categories);
+            $this->subProdCategory->replicateCategories($idMage, $categories);
             /* update warehouse/lot/qty data  */
             $warehouses = $product->getWarehouses();
-            $this->_subProdWarehouse->processWarehouses($idMage, $warehouses);
+            $this->subProdWarehouse->processWarehouses($idMage, $warehouses);
         }
     }
 
@@ -125,16 +119,15 @@ class Replicator
     {
         foreach ($warehouses as $item) {
             $odooId = $item->getIdOdoo();
-            $found = $this->_repoAggWrhs->getByOdooId($odooId);
+            $found = $this->repoAggWrhs->getByOdooId($odooId);
             if (!$found) {
-                /** @var  $aggData AggWarehouse */
-                $aggData = $this->_manObj->create(AggWarehouse::class);
+                $aggData = new \Praxigento\Odoo\Data\Agg\Warehouse();
                 $aggData->setOdooId($odooId);
                 $aggData->setCurrency($item->getCurrency());
                 $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_ADMIN);
                 $aggData->setCode($item->getCode());
                 $aggData->setNote('replicated from Odoo');
-                $created = $this->_repoAggWrhs->create($aggData);
+                $created = $this->repoAggWrhs->create($aggData);
                 if (!$created->getId()) {
                     throw new \Exception('Cannot replicate warehouse.');
                 }
