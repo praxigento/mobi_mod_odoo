@@ -9,6 +9,9 @@ use Praxigento\Core\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Entity\SaleOrder;
 
+/**
+ * TODO: this plugin is not plugged. Remove it or plug.
+ */
 class QueryModifier
 {
     const AS_FLD_IS_IN_ODOO = 'prxgt_is_in_odoo';

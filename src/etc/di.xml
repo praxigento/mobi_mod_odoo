@@ -37,8 +37,6 @@
     <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse" type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\IInventory" type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication" type="odooTestConfigParams"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Config\IConnection" type="odooTestConfigParams"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin" type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
     <!-- ******* -->
@@ -47,6 +45,10 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <!-- Add custom columns to the sales orders grid (is_in_odoo) -->
         <plugin name="praxigento_odoo_plugin" type="Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory" sortOrder="100" disabled="false"/>
+    </type>
+    <type name="\Magento\Sales\Model\Order\CustomerManagement">
+        <!-- Replicate orders for new signed customers (anons & referrals) -->
+        <plugin name="praxigento_odoo_plugin" type="\Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement" sortOrder="100" disabled="false"/>
     </type>
 
     <!-- Services -->

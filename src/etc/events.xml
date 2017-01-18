@@ -6,13 +6,6 @@
         <observer name="praxigento_odoo_observer" instance="Praxigento\Odoo\Observer\CheckoutSubmitAllAfter"/>
     </event>
 
-    <event name="customer_save_after_data_object">
-        <!-- Replicate all orders to Odoo for new customers. -->
-        <observer
-                name="praxigento_odoo_observer"
-                instance="Praxigento\Odoo\Observer\CustomerSaveAfterDataObject"/>
-    </event>
-
     <event name="sales_order_invoice_pay">
         <!-- Replicate paid order to Odoo on invoice payments (check/money order). -->
         <observer name="praxigento_odoo_observer" instance="Praxigento\Odoo\Observer\SalesOrderInvoicePay"/>
