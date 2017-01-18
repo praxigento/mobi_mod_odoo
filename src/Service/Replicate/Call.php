@@ -76,30 +76,28 @@ class Call implements IReplicate
         $customerIdMage = $mageOrder->getCustomerId();
         /** @var  $registeredOrder */
         $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
+        $isRegistered = (bool)$registeredOrder;
         /* skip processing for registered orders or guest checkouted */
-        if ($orderIdMage && !$registeredOrder && $customerIdMage) {
+        if ($orderIdMage && !$isRegistered && $customerIdMage) {
             $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
-            //$def = $this->_manTrans->begin();
-            try {
-                /* save order into Odoo repo */
-                $resp = $this->_repoOdooSaleOrder->save($odooOrder);
-                $result->setOdooResponse($resp);
-                if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
-                    $mageId = $mageOrder->getEntityId();
-                    $odooId = $resp->getIdOdoo();
-                    /* mark order as replicated */
-                    $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
-                    $registry->setMageRef($mageId);
-                    $registry->setOdooRef($odooId);
-                    $this->_repoEntitySaleOrder->create($registry);
-                    /* finalize transaction */
-                    //$this->_manTrans->commit($def);
-                    $result->markSucceed();
-                }
-            } finally {
-                // transaction will be rolled back if commit is not done (otherwise - do nothing)
-                //$this->_manTrans->end($def);
+            /* save order into Odoo repo */
+            $resp = $this->_repoOdooSaleOrder->save($odooOrder);
+            $result->setOdooResponse($resp);
+            if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
+                $mageId = $mageOrder->getEntityId();
+                $odooId = $resp->getIdOdoo();
+                /* mark order as replicated */
+                $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
+                $registry->setMageRef($mageId);
+                $registry->setOdooRef($odooId);
+                $this->_repoEntitySaleOrder->create($registry);
+                /* finalize transaction */
+                $result->markSucceed();
             }
+        } else {
+            $msg = "Cannot replicate order to Odoo (id/is_registered/customer_id): $orderIdMage/"
+                . (string)$isRegistered . "/$customerIdMage.";
+            $this->_logger->info($msg);
         }
         return $result;
     }
