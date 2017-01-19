@@ -47,6 +47,15 @@ class Warehouse
     }
 
     /**
+     * @return \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[]
+     */
+    public function getPrices()
+    {
+        $result = parent::getPrices();
+        return $result;
+    }
+
+    /**
      * Get PV for the product on the concrete warehouse.
      *
      * @return double
@@ -85,6 +94,14 @@ class Warehouse
     public function setPriceWarehouse($data)
     {
         parent::setPriceWarehouse($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $data
+     */
+    public function setPrices($data)
+    {
+        parent::setPrices($data);
     }
 
     /**

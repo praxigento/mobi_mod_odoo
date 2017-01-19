@@ -35,6 +35,14 @@ interface IBusinessCodesManager
     public function getBusCodeForCustomerGroupById($groupId);
 
     /**
+     * Get '1' value by 'distributor' value.
+     *
+     * @param string $groupCode
+     * @return int
+     */
+    public function getMageIdForCustomerGroupByCode($groupCode);
+
+    /**
      * Convert business code for shipping methods to Magento code of the carrier.
      * See #getTitleForCarrier().
      *

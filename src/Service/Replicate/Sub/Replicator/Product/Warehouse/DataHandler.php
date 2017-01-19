@@ -4,44 +4,42 @@
  */
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Warehouse;
 
-use Magento\CatalogInventory\Api\Data\StockItemInterface;
-use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
-use Magento\Framework\ObjectManagerInterface;
-use Praxigento\Odoo\Repo\IPv as IRepoPvModule;
-use Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot as SubLot;
-use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
-use Praxigento\Pv\Repo\Entity\Stock\IItem as IRepoPvStockItem;
-use Praxigento\Warehouse\Data\Entity\Stock\Item as EntityWarehouseStockItem;
-use Praxigento\Warehouse\Repo\Entity\Stock\IItem as IRepoWarehouseEntityStockItem;
-
 class DataHandler
 {
-    /** @var   ObjectManagerInterface */
+    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    protected $hlpBusCodes;
+    /** @var   \Magento\Framework\ObjectManagerInterface */
     protected $manObj;
-    /** @var  IRepoPvModule */
+    /** @var \Praxigento\Warehouse\Repo\Entity\Group\IPrice */
+    protected $repoGroupPrice;
+    /** @var  \Praxigento\Odoo\Repo\IPv */
     protected $repoPvMod;
-    /** @var IRepoPvStockItem */
+    /** @var \Praxigento\Pv\Repo\Entity\Stock\IItem */
     protected $repoPvStockItem;
-    /** @var   StockItemRepositoryInterface */
+    /** @var   \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
     protected $repoStockItem;
-    /** @var  IRepoWarehouseEntityStockItem */
-    protected $repoWarehouseEntityStockItem;
-    /** @var  SubLot */
+    /** @var  \Praxigento\Warehouse\Repo\Entity\Stock\IItem */
+    protected $repoWrhsStockItem;
+    /** @var  \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot */
     protected $subLot;
 
     public function __construct(
-        ObjectManagerInterface $manObj,
+        \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\CatalogInventory\Api\StockItemRepositoryInterface $mageRepoStockItem,
-        IRepoPvModule $repoPvMod,
-        IRepoWarehouseEntityStockItem $repoWarehouseEntityStockItem,
-        IRepoPvStockItem $repoPvStockItem,
-        SubLot $subLot
+        \Praxigento\Odoo\Repo\IPv $repoPvMod,
+        \Praxigento\Warehouse\Repo\Entity\Stock\IItem $repoWrhsStockItem,
+        \Praxigento\Pv\Repo\Entity\Stock\IItem $repoPvStockItem,
+        \Praxigento\Warehouse\Repo\Entity\Group\IPrice $repoGroupPrice,
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusCodes,
+        \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot $subLot
     ) {
         $this->manObj = $manObj;
         $this->repoStockItem = $mageRepoStockItem;
         $this->repoPvMod = $repoPvMod;
-        $this->repoWarehouseEntityStockItem = $repoWarehouseEntityStockItem;
+        $this->repoWrhsStockItem = $repoWrhsStockItem;
         $this->repoPvStockItem = $repoPvStockItem;
+        $this->repoGroupPrice = $repoGroupPrice;
+        $this->hlpBusCodes = $hlpBusCodes;
         $this->subLot = $subLot;
     }
 
@@ -52,12 +50,12 @@ class DataHandler
      * @param int $stockId
      * @param double $price
      * @param double $pv
-     * @return StockItemInterface
+     * @return \Magento\CatalogInventory\Api\Data\StockItemInterface
      */
     public function createWarehouseData($prodId, $stockId, $price, $pv)
     {
-        /** @var StockItemInterface $result */
-        $result = $this->manObj->create(StockItemInterface::class);
+        /** @var \Magento\CatalogInventory\Api\Data\StockItemInterface $result */
+        $result = $this->manObj->create(\Magento\CatalogInventory\Api\Data\StockItemInterface::class);
         $result->setProductId($prodId);
         $result->setStockId($stockId);
         $result->setIsInStock(true);
@@ -66,14 +64,14 @@ class DataHandler
         $stockItemId = $result->getItemId();
         /* register warehouse price */
         $bind = [
-            EntityWarehouseStockItem::ATTR_STOCK_ITEM_REF => $stockItemId,
-            EntityWarehouseStockItem::ATTR_PRICE => $price
+            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
+            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PRICE => $price
         ];
-        $this->repoWarehouseEntityStockItem->create($bind);
+        $this->repoWrhsStockItem->create($bind);
         /* register warehouse PV */
         $bind = [
-            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemId,
-            EntityPvStockItem::ATTR_PV => $pv
+            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
+            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PV => $pv
         ];
         $this->repoPvStockItem->create($bind);
         return $result;
@@ -100,6 +98,32 @@ class DataHandler
     }
 
     /**
+     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
+     * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
+     */
+    public function processPrices($prices, $stockItem)
+    {
+        $stockItemId = $stockItem->getItemId();
+        /* cleanup prices */
+        $where = \Praxigento\Warehouse\Data\Entity\Group\Price::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemId;
+        $this->repoGroupPrice->delete($where);
+        /* save new prices */
+        $data = new \Praxigento\Warehouse\Data\Entity\Group\Price();
+        $data->setStockItemRef($stockItemId);
+        foreach ($prices as $item) {
+            $price = $item->getPrice();
+            $groupCode = $item->getGroupCode();
+            $groupId = $this->hlpBusCodes->getMageIdForCustomerGroupByCode($groupCode);
+            /* don't save prices for unknown groups */
+            if (!is_null($groupId)) {
+                $data->setCustomerGroupRef($groupId);
+                $data->setPrice($price);
+                $this->repoGroupPrice->create($data);
+            }
+        }
+    }
+
+    /**
      * Create existing warehouse data for the stock item in Magento.
      *
      * @param int $stockItemRef Mage ID for related stock item
@@ -109,14 +133,14 @@ class DataHandler
     public function updateWarehouseData($stockItemRef, $price, $pv)
     {
         /* update or create warehouse entry */
-        $bind = [EntityWarehouseStockItem::ATTR_PRICE => $price];
-        $exist = $this->repoWarehouseEntityStockItem->getById($stockItemRef);
+        $bind = [\Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PRICE => $price];
+        $exist = $this->repoWrhsStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
-            $bind[EntityWarehouseStockItem::ATTR_STOCK_ITEM_REF] = $stockItemRef;
-            $this->repoWarehouseEntityStockItem->create($bind);
+            $bind[\Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
+            $this->repoWrhsStockItem->create($bind);
         } else {
-            $this->repoWarehouseEntityStockItem->updateById($stockItemRef, $bind);
+            $this->repoWrhsStockItem->updateById($stockItemRef, $bind);
         }
         /* update or create warehouse PV */
         $registered = $this->repoPvMod->getWarehousePv($stockItemRef);

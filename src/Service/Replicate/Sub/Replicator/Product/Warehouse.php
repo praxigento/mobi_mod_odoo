@@ -101,6 +101,9 @@ class Warehouse
             /* create or update lot/quantity data */
             $lots = $warehouse->getLots();
             $this->subDataHandler->processLots($lots, $stockItem);
+            /* process Custermer groups prices */
+            $prices = $warehouse->getPrices();
+//            $this->subDataHandler->processPrices($prices, $stockItem);
         }
     }
 }
