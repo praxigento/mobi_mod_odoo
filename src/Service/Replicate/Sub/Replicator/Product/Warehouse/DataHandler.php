@@ -70,8 +70,8 @@ class DataHandler
         $this->repoWrhsStockItem->create($bind);
         /* register warehouse PV */
         $bind = [
-            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
-            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PV => $pv
+            \Praxigento\Pv\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
+            \Praxigento\Pv\Data\Entity\Stock\Item::ATTR_PV => $pv
         ];
         $this->repoPvStockItem->create($bind);
         return $result;
