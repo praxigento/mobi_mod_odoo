@@ -21,7 +21,7 @@ class Shipment extends \Flancer32\Lib\DataObject
     }
 
     /**
-     * Status of the shipment in Odoo.
+     * Status of the shipment in Odoo (deprecated).
      *
      * @return string
      *
