@@ -108,4 +108,29 @@ class Warehouse
         return $result;
     }
 
+    /**
+     * @param array|int|string $id
+     * @param array|\Flancer32\Lib\DataObject $data
+     * @return null
+     */
+    public function updateById($id, $data)
+    {
+        /** @var  $result AggWarehouse */
+        $result = null;
+        $def = $this->manTrans->begin();
+        try {
+            $this->repoWrhsAggWarehouse->updateById($id, $data);
+            /* update odoo related entries */
+            $bind = [
+                EntityWarehouse::ATTR_MAGE_REF => $data->getId(),
+                EntityWarehouse::ATTR_ODOO_REF => $data->getOdooId()
+            ];
+            $this->repoEntityWarehouse->updateById($id, $bind);
+            $this->manTrans->commit($def);
+        } finally {
+            $this->manTrans->end($def);
+        }
+    }
+
+
 }
