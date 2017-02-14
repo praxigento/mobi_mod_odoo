@@ -66,7 +66,8 @@ class Category
         /** @var  $category CategoryInterface */
         $category = $this->manObj->create(CategoryInterface::class);
         $category->setName($name);
-        $category->setIsActive(false);
+        /* MOBI-624 */
+        $category->setIsActive(true);
         $saved = $this->repoCategory->save($category);
         $result = $saved->getId();
         return $result;
