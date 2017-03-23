@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory;
  *
  */
 class Warehouse
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
     /**
      * Get short code to identify warehouse by humans.

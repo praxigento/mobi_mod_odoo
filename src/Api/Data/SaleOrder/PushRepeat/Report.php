@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat;
  *
  */
 class Report
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
 
     /**

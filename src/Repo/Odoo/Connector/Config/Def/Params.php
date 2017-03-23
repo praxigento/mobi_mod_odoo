@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector\Config\Def;
  * @method void setUserPassword(string $data)
  */
 class Params
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
     implements \Praxigento\Odoo\Repo\Odoo\Connector\Config\IAuthentication
 {
     /**

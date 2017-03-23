@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Data\Agg;
 
-use Flancer32\Lib\DataObject;
+use Flancer32\Lib\Data as DataObject;
 
 /**
  * Aggregate for Sale Order Item data to be replicated to Odoo. There are one or more aggregated lines for one Magento Sale Order Item (by lots used in the sale).

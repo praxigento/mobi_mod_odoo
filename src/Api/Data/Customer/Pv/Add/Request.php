@@ -16,7 +16,7 @@ namespace Praxigento\Odoo\Api\Data\Customer\Pv\Add;
  *
  */
 class Request
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
     /**
      * MLM ID for customer.

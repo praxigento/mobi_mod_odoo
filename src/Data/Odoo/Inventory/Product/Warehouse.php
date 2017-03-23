@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory\Product;
  *
  */
 class Warehouse 
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
     /**
      * Get Odoo ID of the warehouse.

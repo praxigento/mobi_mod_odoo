@@ -10,7 +10,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder\Line;
  * @method float getQty()
  * @method void setQty(float $data)
  */
-class Lot extends \Flancer32\Lib\DataObject
+class Lot extends \Flancer32\Lib\Data
 {
 
 }

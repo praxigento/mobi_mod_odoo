@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
-use Flancer32\Lib\DataObject;
+use Flancer32\Lib\Data as DataObject;
 
 include_once(__DIR__ . '/../../../../../phpunit_bootstrap.php');
 
@@ -156,7 +156,7 @@ class Login_UnitTest
             ->shouldReceive('decodeJson')->once()
             ->andReturn($RESPONSE);
         // $respData = $this->_manObj->create(DataObject::class, ['arg1' => $response]);
-        $mRespData = $this->_mock(\Flancer32\Lib\DataObject::class);
+        $mRespData = $this->_mock(\Flancer32\Lib\Data::class);
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mRespData);

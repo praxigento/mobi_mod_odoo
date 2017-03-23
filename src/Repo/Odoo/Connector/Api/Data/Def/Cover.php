@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def;
 
-use Flancer32\Lib\DataObject;
+use Flancer32\Lib\Data as DataObject;
 use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 
 class Cover extends DataObject implements ICover

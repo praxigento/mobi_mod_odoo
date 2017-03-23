@@ -10,7 +10,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory;
  * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
 class Option
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
     /**
      * Get currency for wholesale prices ('EUR').

@@ -18,7 +18,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method float getPriceAmountTotal()
  * @method void setPriceAmountTotal(float $data)
  */
-class Shipping extends \Flancer32\Lib\DataObject
+class Shipping extends \Flancer32\Lib\Data
 {
 
 }

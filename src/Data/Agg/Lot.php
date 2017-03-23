@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Data\Agg;
 
-use Flancer32\Lib\DataObject;
+use Flancer32\Lib\Data as DataObject;
 
 /**
  * Aggregate for lot with Odoo related attributes.

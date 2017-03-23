@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Data\Odoo;
 /**
  * Shipment data corresponded to sale order.
  */
-class Shipment extends \Flancer32\Lib\DataObject
+class Shipment extends \Flancer32\Lib\Data
 {
     /**
      * ID of the shipment in Odoo.

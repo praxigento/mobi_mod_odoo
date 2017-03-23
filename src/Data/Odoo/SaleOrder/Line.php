@@ -27,7 +27,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setPvDiscountLine(float $data)
  */
 class Line
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
 
 }

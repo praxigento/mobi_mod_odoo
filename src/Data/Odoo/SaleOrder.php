@@ -38,7 +38,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  *
  */
 class SaleOrder
-    extends \Flancer32\Lib\DataObject
+    extends \Flancer32\Lib\Data
 {
 
 }

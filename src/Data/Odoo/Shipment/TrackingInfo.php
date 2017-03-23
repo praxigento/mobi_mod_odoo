@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Data\Odoo\Shipment;
 /**
  * Shipment tracking information.
  */
-class TrackingInfo extends \Flancer32\Lib\DataObject
+class TrackingInfo extends \Flancer32\Lib\Data
 {
     /**
      * Business code of the shipping method.
