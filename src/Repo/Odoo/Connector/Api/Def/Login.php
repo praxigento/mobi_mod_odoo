@@ -4,6 +4,7 @@
  *
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
 
 use Magento\Framework\ObjectManagerInterface;
@@ -101,6 +102,7 @@ class Login
                 $this->cachedOdooSessionId = null;
                 $msg = "Cannot be authenticated in Odoo with username '{$this->authUser}'.";
                 $this->logger->error($msg);
+                $this->logger->error("Response from Odoo: " . $contents);
                 throw new \Exception($msg);
             }
         }
