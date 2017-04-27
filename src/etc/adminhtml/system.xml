@@ -14,7 +14,7 @@
                 <field id="uri" translate="label comment" type="text"
                         sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Base URI</label>
-                    <comment>Base URL for Odoo instance.</comment>
+                    <comment>Base URL for Odoo instance (w/o ending '/').</comment>
                     <tooltip>http://lion.host.prxgt.com:8122</tooltip>
                 </field>
                 <field id="database" translate="label comment" type="text"
