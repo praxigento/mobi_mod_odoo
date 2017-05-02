@@ -2,9 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Service\Replicate\Request;
 
-use Praxigento\Odoo\Data\Odoo\Inventory;
+namespace Praxigento\Odoo\Service\Replicate\Request;
 
 class ProductSave extends \Praxigento\Core\Service\Base\Request
 {
@@ -15,7 +14,11 @@ class ProductSave extends \Praxigento\Core\Service\Base\Request
     public function getProductBundle()
     {
         $data = parent::getProductBundle();
-        $result = new \Praxigento\Odoo\Data\Odoo\Inventory($data);
+        if ($data instanceof \Praxigento\Odoo\Data\Odoo\Inventory) {
+            $result = $data;
+        } else {
+            $result = new \Praxigento\Odoo\Data\Odoo\Inventory($data);
+        }
         return $result;
     }
 
