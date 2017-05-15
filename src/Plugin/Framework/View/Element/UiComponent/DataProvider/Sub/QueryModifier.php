@@ -63,7 +63,7 @@ class QueryModifier
         /* MOBI-718: dumb realization of the feature */
         $tbl = $this->_resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER);
         $as = self::AS_SALE_ORDER;
-        $on = $as . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID . '=' . self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF;
+        $on = $as . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID . '=' . Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $cols = [Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS];
         $select->joinLeft([$as => $tbl], $on, $cols);
 
