@@ -96,7 +96,7 @@ class Replicator
         } else {
             /* update attributes for magento product */
             $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->subProduct->update($idMage, $name, $isActive, $priceWholesale, $weight);
+            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceWholesale, $weight);
             $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipReplication) {

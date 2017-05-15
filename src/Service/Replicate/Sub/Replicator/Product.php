@@ -6,11 +6,8 @@
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator;
 
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface as IProductRepo;
-use Magento\Catalog\Model\Product as ProductModel;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
-use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 
 class Product
 {
@@ -90,20 +87,23 @@ class Product
     }
 
     /**
-     * Create simple product.
+     * Update simple product.
      *
      * @param int $mageId
+     * @param string $sku
      * @param string $name
      * @param bool $isActive
      * @param double $priceWholesale
      * @param double $weight
      */
-    public function update($mageId, $name, $isActive, $priceWholesale, $weight)
+    public function update($mageId, $sku, $name, $isActive, $priceWholesale, $weight)
     {
         $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; price: $priceWholesale; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->repoProd->getById($mageId);
-        // SKU should not be changed
+        /* MOBI-717: SKU also can be changed */
+        $product->setSku($sku);
+        $product->setUrlKey($sku);
         $product->setName($name);
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
