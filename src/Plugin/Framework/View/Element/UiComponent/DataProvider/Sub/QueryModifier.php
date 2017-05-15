@@ -14,8 +14,15 @@ use Praxigento\Odoo\Data\Entity\SaleOrder;
  */
 class QueryModifier
 {
-    const AS_FLD_IS_IN_ODOO = 'prxgt_is_in_odoo';
-    const AS_TBL_ODOO_SALE = 'prxgtOdooSales';
+
+
+    /* Tables aliases */
+    const AS_SALE_ORDER = 'saleOrder';
+    const AS_ODOO_SALE = 'prxgtOdooSales';
+
+    /* Columns aliases */
+    const A_IS_IN_ODOO = 'prxgt_is_in_odoo';
+
 
     /** @var \Magento\Framework\App\ResourceConnection */
     protected $_resource;
@@ -30,9 +37,14 @@ class QueryModifier
         \Magento\Sales\Model\ResourceModel\Order\Grid\Collection $collection
     ) {
         // is_in_odoo
-        $fieldAlias = self::AS_FLD_IS_IN_ODOO;
-        $fieldFullName = self::AS_TBL_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF;
+        $fieldAlias = self::A_IS_IN_ODOO;
+        $fieldFullName = self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF;
         $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* MOBI-718: applied_rule_ids */
+        $fieldAlias = Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS;
+        $fieldFullName = self::AS_SALE_ORDER . '.' . Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+
     }
 
     public function populateSelect(
@@ -40,13 +52,21 @@ class QueryModifier
     ) {
         $select = $collection->getSelect();
         /* LEFT JOIN `prxgt_odoo_sale` */
-        $tbl = [self::AS_TBL_ODOO_SALE => $this->_resource->getTableName(SaleOrder::ENTITY_NAME)];
-        $on = self::AS_TBL_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . '=main_table.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
-        $exp = new Expression('!ISNULL(' . self::AS_TBL_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . ')');
+        $tbl = [self::AS_ODOO_SALE => $this->_resource->getTableName(SaleOrder::ENTITY_NAME)];
+        $on = self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . '=main_table.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $exp = new Expression('!ISNULL(' . self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . ')');
         $cols = [
-            self::AS_FLD_IS_IN_ODOO => $exp
+            self::A_IS_IN_ODOO => $exp
         ];
         $select->joinLeft($tbl, $on, $cols);
+
+        /* MOBI-718: dumb realization of the feature */
+        $tbl = Cfg::ENTITY_MAGE_SALES_ORDER;
+        $as = self::AS_SALE_ORDER;
+        $on = $as . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID . '=' . self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF;
+        $cols = [Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS];
+        $select->joinLeft([$as => $tbl], $on, $cols);
+
         return $select;
     }
 
