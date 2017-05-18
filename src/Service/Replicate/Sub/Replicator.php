@@ -75,8 +75,8 @@ class Replicator
     {
         assert($product instanceof \Praxigento\Odoo\Data\Odoo\Inventory\Product);
         $idOdoo = $product->getIdOdoo();
-        $sku = $product->getSku();
-        $name = $product->getName();
+        $sku = trim($product->getSku());
+        $name = trim($product->getName());
         $isActive = $product->getIsActive();
         $skipReplication = false; // skip replication for inactive products are missed in Mage
         $priceWholesale = $product->getPriceWholesale();
