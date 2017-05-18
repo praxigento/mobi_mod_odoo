@@ -2,7 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Console\Command\Replicate;
+
+namespace Praxigento\Odoo\Cli\Cmd\Replicate;
 
 class Products
     extends \Praxigento\Core\Cli\Cmd\Base
@@ -22,7 +23,7 @@ class Products
     ) {
         parent::__construct(
             $manObj,
-            'prxgt:odoo:replicate-products',
+            'prxgt:odoo:replicate:products',
             'Pull products list from Odoo and replicate data into Magento.'
         );
         $this->callReplicate = $callReplicate;
