@@ -17,7 +17,7 @@ class Report
     /**
      * Report entries with results for each order.
      *
-     * @return \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry[]
+     * @return \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry[]
      */
     public function getEntries()
     {
@@ -26,7 +26,7 @@ class Report
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report\Entry[] $data
+     * @param \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry[] $data
      */
     public function setEntries($data)
     {

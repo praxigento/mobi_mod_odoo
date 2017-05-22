@@ -5,24 +5,24 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sale\Orders;
 
-use Praxigento\Odoo\Config as Cfg;
+use Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder as QBGetOrders;
 
 /**
  * Collect orders for Odoo push according to default conditions (still not replicated).
  */
 class Collector
 {
+    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder */
+    protected $qbld;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
     protected $repoMageSalesOrder;
-    /** @var \Praxigento\Odoo\Repo\Entity\ISaleOrder */
-    protected $repoSaleOrder;
 
     public function __construct(
         \Magento\Sales\Api\OrderRepositoryInterface $repoMageSalesOrder,
-        \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoSaleOrder
+        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder $qbld
     ) {
         $this->repoMageSalesOrder = $repoMageSalesOrder;
-        $this->repoSaleOrder = $repoSaleOrder;
+        $this->qbld = $qbld;
     }
 
     /**
@@ -31,9 +31,11 @@ class Collector
     public function getOrdersToReplicate()
     {
         $result = [];
-        $orders = $this->repoSaleOrder->getIdsToSaveToOdoo();
+        $query = $this->qbld->build();
+        $conn = $query->getConnection();
+        $orders = $conn->fetchAll($query);
         foreach ($orders as $data) {
-            $id = $data[Cfg::E_SALE_ORDER_A_ENTITY_ID];
+            $id = $data[QBGetOrders::A_ORDER_ID];
             $order = $this->repoMageSalesOrder->get($id);
             $result[$id] = $order;
         }

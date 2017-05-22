@@ -48,7 +48,7 @@ class Builder
         $cols = [self::A_ORDER_ID => Cfg::E_SALE_ORDER_A_ENTITY_ID];
         $result->from([$as => $tbl], $cols);
 
-        // LEFT OUTER JOIN prxgt_odoo_sale
+        /* LEFT OUTER JOIN prxgt_odoo_sale */
         $tbl = $this->resource->getTableName(Entity::ENTITY_NAME);
         $as = $asOdooReg;
         $cond = $as . '.' . Entity::ATTR_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;

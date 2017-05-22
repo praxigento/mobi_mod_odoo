@@ -52,7 +52,14 @@
         <plugin name="praxigento_odoo_plugin" type="\Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement" sortOrder="100" disabled="false"/>
     </type>
 
+    <!-- ******** -->
     <!-- Services -->
-    <preference for="Praxigento\Odoo\Service\IReplicate" type="Praxigento\Odoo\Service\Replicate\Call"/>
+    <!-- ******** -->
+    <preference
+            for="Praxigento\Odoo\Service\IReplicate"
+            type="Praxigento\Odoo\Service\Replicate\Call"/>
+    <preference
+            for="\Praxigento\Odoo\Service\Replicate\Sale\IOrders"
+            type="\Praxigento\Odoo\Service\Replicate\Sale\Orders"/>
 
 </config>
