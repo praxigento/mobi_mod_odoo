@@ -103,7 +103,7 @@ class Warehouse
             $this->subDataHandler->processLots($lots, $stockItem);
             /* process Custermer groups prices */
             $prices = $warehouse->getPrices();
-            $this->subDataHandler->processPrices($prices, $stockItem);
+            $this->subDataHandler->processPrices($prices, $stockItem, $priceWarehouse);
         }
     }
 }

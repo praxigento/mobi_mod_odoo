@@ -6,10 +6,14 @@ namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Warehouse;
 
 class DataHandler
 {
+    /** @var  array */
+    protected $cachedCustomerGroupsIds;
     /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
     protected $hlpBusCodes;
     /** @var   \Magento\Framework\ObjectManagerInterface */
     protected $manObj;
+    /** @var \Magento\Customer\Api\GroupRepositoryInterface */
+    protected $repoCustGroup;
     /** @var \Praxigento\Warehouse\Repo\Entity\Group\IPrice */
     protected $repoGroupPrice;
     /** @var  \Praxigento\Odoo\Repo\IPv */
@@ -25,7 +29,8 @@ class DataHandler
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $mageRepoStockItem,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
+        \Magento\Customer\Api\GroupRepositoryInterface $repoCustGroup,
         \Praxigento\Odoo\Repo\IPv $repoPvMod,
         \Praxigento\Warehouse\Repo\Entity\Stock\IItem $repoWrhsStockItem,
         \Praxigento\Pv\Repo\Entity\Stock\IItem $repoPvStockItem,
@@ -34,7 +39,8 @@ class DataHandler
         \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot $subLot
     ) {
         $this->manObj = $manObj;
-        $this->repoStockItem = $mageRepoStockItem;
+        $this->repoStockItem = $repoStockItem;
+        $this->repoCustGroup = $repoCustGroup;
         $this->repoPvMod = $repoPvMod;
         $this->repoWrhsStockItem = $repoWrhsStockItem;
         $this->repoPvStockItem = $repoPvStockItem;
@@ -77,6 +83,21 @@ class DataHandler
         return $result;
     }
 
+    protected function getCustomerGroupsIds()
+    {
+        if (is_null($this->cachedCustomerGroupsIds)) {
+            $this->cachedCustomerGroupsIds = [];
+            $crit = new \Magento\Framework\Api\SearchCriteria();
+            $list = $this->repoCustGroup->getList($crit);
+            /** @var \Magento\Customer\Model\Data\Group $item */
+            foreach ($list->getItems() as $item) {
+                $id = $item->getId();
+                $this->cachedCustomerGroupsIds[] = $id;
+            }
+        }
+        return $this->cachedCustomerGroupsIds;
+    }
+
     /**
      * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot[] $lots
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
@@ -98,12 +119,18 @@ class DataHandler
     }
 
     /**
+     * Process custoemr group prices for warehouses.
+     *
      * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
+     * @param float $priceWarehouse (MOBI-734)
      */
-    public function processPrices($prices, $stockItem)
+    public function processPrices($prices, $stockItem, $priceWarehouse)
     {
         $stockItemId = $stockItem->getItemId();
+        /* MOBI-734: get customer groups  */
+        $groupsIdsAll = $this->getCustomerGroupsIds();
+        $groupsIdsProcessed = [];
         /* cleanup prices */
         $where = \Praxigento\Warehouse\Data\Entity\Group\Price::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemId;
         $this->repoGroupPrice->delete($where);
@@ -114,10 +141,19 @@ class DataHandler
             $price = $item->getPrice();
             $groupCode = $item->getGroupCode();
             $groupId = $this->hlpBusCodes->getMageIdForCustomerGroupByCode($groupCode);
+            $groupsIdsProcessed[] = $groupId;
             /* don't save prices for unknown groups */
             if (!is_null($groupId)) {
                 $data->setCustomerGroupRef($groupId);
                 $data->setPrice($price);
+                $this->repoGroupPrice->create($data);
+            }
+        }
+        /* MOBI-734: set warehouse price ad default for missed groups */
+        foreach ($groupsIdsAll as $groupId) {
+            if (!in_array($groupId, $groupsIdsProcessed)) {
+                $data->setCustomerGroupRef($groupId);
+                $data->setPrice($priceWarehouse);
                 $this->repoGroupPrice->create($data);
             }
         }
