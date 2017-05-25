@@ -10,7 +10,7 @@ use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Lot as ApiLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as ApiWarehouse;
 use Praxigento\Odoo\Repo\Agg\Store\ILot as IRepoAggLot;
-use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoAggWarehouse;
+use Praxigento\Odoo\Repo\Agg\Store\IWarehouse as IRepoAggWarehouse;
 use Praxigento\Odoo\Repo\IPv as IRepoPv;
 use Praxigento\Odoo\Repo\IRegistry;
 
@@ -35,7 +35,7 @@ class Replicator
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
         \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
         \Praxigento\Odoo\Repo\IPv $repoPv,
-        \Praxigento\Odoo\Repo\Agg\IWarehouse $repoAggWrhs,
+        \Praxigento\Odoo\Repo\Agg\Store\IWarehouse $repoAggWrhs,
         Replicator\Product $subProduct,
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse

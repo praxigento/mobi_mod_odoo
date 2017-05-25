@@ -22,7 +22,7 @@ class Warehouse_UnitTest
     {
         parent::setUp();
         /** create mocks */
-        $this->mRepo = $this->_mock(\Praxigento\Odoo\Repo\Agg\IWarehouse::class);
+        $this->mRepo = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\IWarehouse::class);
         /** create object to test */
         $this->obj = new Warehouse(
             $this->mUrl,

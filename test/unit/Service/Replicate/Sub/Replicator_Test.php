@@ -35,7 +35,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mRepoRegistry = $this->_mock(\Praxigento\Odoo\Repo\IRegistry::class);
         $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\ILot::class);
         $this->mRepoPv = $this->_mock(\Praxigento\Odoo\Repo\IPv::class);
-        $this->mRepoAggWrhs = $this->_mock(\Praxigento\Odoo\Repo\Agg\IWarehouse::class);
+        $this->mRepoAggWrhs = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\IWarehouse::class);
         $this->mSubProduct = $this->_mock(Replicator\Product::class);
         $this->mSubProdCategory = $this->_mock(Replicator\Product\Category::class);
         $this->mSubProdWarehouse = $this->_mock(Replicator\Product\Warehouse::class);

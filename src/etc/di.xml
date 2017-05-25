@@ -26,8 +26,8 @@
 
     <!-- Repo / Agg -->
     <preference for="Praxigento\Odoo\Repo\Agg\Store\ILot" type="Praxigento\Odoo\Repo\Agg\Store\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\ISaleOrderItem" type="Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Store\Warehouse"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem" type="Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem"/>
+    <preference for="Praxigento\Odoo\Repo\Agg\Store\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Store\Warehouse"/>
 
     <!-- Repo / Entity -->
     <preference for="\Praxigento\Odoo\Repo\Entity\Registry\IRequest" type="\Praxigento\Odoo\Repo\Entity\Registry\Def\Request"/>

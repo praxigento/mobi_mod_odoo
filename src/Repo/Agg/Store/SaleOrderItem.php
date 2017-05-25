@@ -8,7 +8,7 @@ use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 
 class SaleOrderItem
     extends \Praxigento\Core\Repo\Def\Crud
-    implements \Praxigento\Odoo\Repo\Agg\ISaleOrderItem
+    implements \Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem
 {
     /**#@+
      * Select query parameters names.

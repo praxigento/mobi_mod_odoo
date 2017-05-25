@@ -48,7 +48,7 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $this->mRepoPvSale = $this->_mock(\Praxigento\Pv\Repo\Entity\ISale::class);
         $this->mRepoPvSaleItem = $this->_mock(\Praxigento\Pv\Repo\Entity\Sale\IItem::class);
         $this->mRepoWrhsQtySale = $this->_mock(\Praxigento\Warehouse\Repo\Entity\Quantity\ISale::class);
-        $this->mRepoAggSaleOrderItem = $this->_mock(\Praxigento\Odoo\Repo\Agg\ISaleOrderItem::class);
+        $this->mRepoAggSaleOrderItem = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem::class);
         $this->mRepoWarehouse = $this->_mock(\Praxigento\Odoo\Repo\Entity\IWarehouse::class);
         /** reset args. to create mock of the tested object */
         $this->objArgs = [

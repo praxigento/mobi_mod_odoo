@@ -15,7 +15,7 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 class Warehouse
     extends \Praxigento\Core\Repo\Def\Crud
-    implements \Praxigento\Odoo\Repo\Agg\IWarehouse
+    implements \Praxigento\Odoo\Repo\Agg\Store\IWarehouse
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $conn;

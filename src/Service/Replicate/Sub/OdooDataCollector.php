@@ -27,7 +27,7 @@ class OdooDataCollector
     protected $manObj;
     /** @var \Praxigento\Warehouse\Tool\IStockManager */
     protected $manStock;
-    /** @var \Praxigento\Odoo\Repo\Agg\ISaleOrderItem */
+    /** @var \Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem */
     protected $repoAggSaleOrderItem;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $repoCustomer;
@@ -52,7 +52,7 @@ class OdooDataCollector
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
         \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale,
-        \Praxigento\Odoo\Repo\Agg\ISaleOrderItem $repoAggSaleOrderItem,
+        \Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem $repoAggSaleOrderItem,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse
     ) {
         $this->manObj = $manObj;
