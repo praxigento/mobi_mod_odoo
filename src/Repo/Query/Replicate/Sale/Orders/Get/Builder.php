@@ -31,12 +31,11 @@ class Builder
      * WHERE ((ISNULL(reg.mage_ref)))
      *
      * @param \Magento\Framework\DB\Select|null $source
-     * @return \Magento\Framework\DB\Select
      */
     public function build(\Magento\Framework\DB\Select $source = null)
     {
-        /* this is a root builder */
-        $result = $this->conn->select();
+        /* is this a root builder or a queued builder? */
+        $result = is_null($source) ? $this->conn->select() : clone $source;
 
         /* define tables aliases */
         $asSaleOrder = self::AS_ORDER;
