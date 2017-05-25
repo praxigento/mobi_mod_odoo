@@ -23,7 +23,7 @@ class Lot_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     {
         parent::setUp();
         /** create mocks */
-        $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\ILot::class);
+        $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\ILot::class);
         $this->mRepoWrhsEntityQty = $this->_mock(\Praxigento\Warehouse\Repo\Entity\IQuantity::class);
         /** create object to test */
         $this->obj = new Lot(

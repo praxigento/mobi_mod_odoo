@@ -2,10 +2,10 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Agg\Def\Warehouse;
+namespace Praxigento\Odoo\Repo\Agg\Store\Warehouse;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Agg\IWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;

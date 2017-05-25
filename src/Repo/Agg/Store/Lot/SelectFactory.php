@@ -2,12 +2,12 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
 
-use Magento\Framework\App\ResourceConnection;
-use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+namespace Praxigento\Odoo\Repo\Agg\Store\Lot;
+
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
-use Praxigento\Odoo\Repo\Agg\ILot;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
+use Praxigento\Odoo\Repo\Agg\Store\ILot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 /**

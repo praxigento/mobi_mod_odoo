@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Agg;
+namespace Praxigento\Odoo\Repo\Agg\Data;
 
 use Praxigento\Warehouse\Data\Agg\Warehouse as WrhsWarehouse;
 

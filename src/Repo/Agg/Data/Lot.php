@@ -3,14 +3,13 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Agg;
-
-use Flancer32\Lib\Data as DataObject;
+namespace Praxigento\Odoo\Repo\Agg\Data;
 
 /**
  * Aggregate for lot with Odoo related attributes.
  */
-class Lot extends DataObject
+class Lot
+    extends \Flancer32\Lib\Data
 {
     /**#@+
      * Aliases for data attributes.
@@ -21,9 +20,10 @@ class Lot extends DataObject
     const AS_ODOO_ID = 'odoo_id';
     /**#@- */
 
+    const NULL_LOT_CODE = 'NULL_LOT';
+
     /** ID for the lot that is related to the Odoo products w/o lots */
     const NULL_LOT_ID = 0;
-    const NULL_LOT_CODE = 'NULL_LOT';
 
     public function getCode()
     {

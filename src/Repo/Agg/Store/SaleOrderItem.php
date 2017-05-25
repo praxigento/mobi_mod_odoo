@@ -2,9 +2,9 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Agg\Def;
+namespace Praxigento\Odoo\Repo\Agg\Store;
 
-use Praxigento\Odoo\Data\Agg\SaleOrderItem as Agg;
+use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 
 class SaleOrderItem
     extends \Praxigento\Core\Repo\Def\Crud

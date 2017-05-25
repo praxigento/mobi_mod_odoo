@@ -6,10 +6,10 @@
 namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Lot as ApiLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as ApiWarehouse;
-use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
+use Praxigento\Odoo\Repo\Agg\Store\ILot as IRepoAggLot;
 use Praxigento\Odoo\Repo\Agg\IWarehouse as IRepoAggWarehouse;
 use Praxigento\Odoo\Repo\IPv as IRepoPv;
 use Praxigento\Odoo\Repo\IRegistry;
@@ -33,7 +33,7 @@ class Replicator
 
     public function __construct(
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
-        \Praxigento\Odoo\Repo\Agg\ILot $repoAggLot,
+        \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
         \Praxigento\Odoo\Repo\IPv $repoPv,
         \Praxigento\Odoo\Repo\Agg\IWarehouse $repoAggWrhs,
         Replicator\Product $subProduct,
@@ -56,7 +56,7 @@ class Replicator
     public function processLots($lots)
     {
         /** @var  $data AggLot */
-        $data = new \Praxigento\Odoo\Data\Agg\Lot();
+        $data = new \Praxigento\Odoo\Repo\Agg\Data\Lot();
         foreach ($lots as $item) {
             $data->setOdooId($item->getIdOdoo());
             $data->setCode($item->getNumber());
@@ -121,7 +121,7 @@ class Replicator
             $odooId = $item->getIdOdoo();
             $found = $this->repoAggWrhs->getByOdooId($odooId);
             if (!$found) {
-                $aggData = new \Praxigento\Odoo\Data\Agg\Warehouse();
+                $aggData = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
                 $aggData->setOdooId($odooId);
                 $aggData->setCurrency($item->getCurrency());
                 $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_ADMIN);

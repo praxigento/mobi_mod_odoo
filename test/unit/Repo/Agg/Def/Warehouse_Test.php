@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Data\Agg\Warehouse as WrhsAggWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;

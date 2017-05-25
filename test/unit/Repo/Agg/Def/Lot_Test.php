@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
-use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
 use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
@@ -62,7 +62,7 @@ class Lot_UnitTest
         /** === Test Data === */
         /** === Mock object itself === */
         $this->obj = \Mockery::mock(
-            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[create]',
+            \Praxigento\Odoo\Repo\Agg\Store\Lot::class . '[create]',
             $this->objArgs
         );
         /** === Setup Mocks === */
@@ -148,7 +148,7 @@ class Lot_UnitTest
         $DATA = [AggLot::AS_ODOO_ID => $ODOO_ID];
         /** === Mock object itself === */
         $this->obj = \Mockery::mock(
-            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
+            \Praxigento\Odoo\Repo\Agg\Store\Lot::class . '[_checkNullLot]',
             $this->objArgs
         );
         /** === Setup Mocks === */
@@ -182,7 +182,7 @@ class Lot_UnitTest
         $RESULT = 'result';
         /** === Mock object itself === */
         $this->obj = \Mockery::mock(
-            \Praxigento\Odoo\Repo\Agg\Def\Lot::class . '[_checkNullLot]',
+            \Praxigento\Odoo\Repo\Agg\Store\Lot::class . '[_checkNullLot]',
             $this->objArgs
         );
         /** === Setup Mocks === */

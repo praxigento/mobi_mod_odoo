@@ -3,9 +3,9 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Agg;
+namespace Praxigento\Odoo\Repo\Agg\Store;
 
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Warehouse\Repo\Agg\IWarehouse as WrhsIWarehouse;
 
 interface IWarehouse extends WrhsIWarehouse

@@ -33,7 +33,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mRepoRegistry = $this->_mock(\Praxigento\Odoo\Repo\IRegistry::class);
-        $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\ILot::class);
+        $this->mRepoAggLot = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\ILot::class);
         $this->mRepoPv = $this->_mock(\Praxigento\Odoo\Repo\IPv::class);
         $this->mRepoAggWrhs = $this->_mock(\Praxigento\Odoo\Repo\Agg\IWarehouse::class);
         $this->mSubProduct = $this->_mock(Replicator\Product::class);
@@ -65,7 +65,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
         $LOTS = [$LOT];
         /** === Setup Mocks === */
         // $data = $this->_manObj->create(AggLot::class);
-        $mData = $this->_mock(\Praxigento\Odoo\Data\Agg\Lot::class);
+        $mData = $this->_mock(\Praxigento\Odoo\Repo\Agg\Data\Lot::class);
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mData);
@@ -184,7 +184,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
             ->shouldReceive('getByOdooId')->once()
             ->andReturn(false);
         // $aggData = $this->_manObj->create(AggWarehouse::class);
-        $mAggData = new \Praxigento\Odoo\Data\Agg\Warehouse();
+        $mAggData = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mAggData);
@@ -208,7 +208,7 @@ class Replicator_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
             ->shouldReceive('getByOdooId')->once()
             ->andReturn(false);
         // $aggData = $this->_manObj->create(AggWarehouse::class);
-        $mAggData = new \Praxigento\Odoo\Data\Agg\Warehouse();
+        $mAggData = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
         $this->mManObj
             ->shouldReceive('create')->once()
             ->andReturn($mAggData);

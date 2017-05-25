@@ -3,15 +3,15 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Agg\Def;
+namespace Praxigento\Odoo\Repo\Agg\Store;
 
-use Praxigento\Odoo\Data\Agg\Lot as AggLot;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 class Lot
     extends \Praxigento\Core\Repo\Def\Crud
-    implements \Praxigento\Odoo\Repo\Agg\ILot
+    implements \Praxigento\Odoo\Repo\Agg\Store\ILot
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $conn;
@@ -78,7 +78,7 @@ class Lot
             $this->repoEntityLot->create($bind);
             $this->manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
-            $result = new \Praxigento\Odoo\Data\Agg\Lot();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Lot();
             $result->set($data);
             $result->setId($id);
         } finally {
@@ -95,7 +95,7 @@ class Lot
         $query->where($where);
         $data = $this->conn->fetchRow($query, ['id' => $id]);
         if ($data) {
-            $result = new \Praxigento\Odoo\Data\Agg\Lot();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Lot();
             $result->set($data);
         }
         return $result;
@@ -112,7 +112,7 @@ class Lot
         $query->where($where);
         $data = $this->conn->fetchRow($query, ['id' => $id]);
         if ($data) {
-            $result = new \Praxigento\Odoo\Data\Agg\Lot();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Lot();
             $result->set($data);
         }
         return $result;

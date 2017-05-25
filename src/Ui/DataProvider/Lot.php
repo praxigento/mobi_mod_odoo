@@ -12,7 +12,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Reporting;
 use Praxigento\Core\Repo\Query\Criteria\IAdapter as ICriteriaAdapter;
 use Praxigento\Core\Ui\DataProvider\Base as BaseDataProvider;
-use Praxigento\Odoo\Repo\Agg\ILot as IRepoAggLot;
+use Praxigento\Odoo\Repo\Agg\Store\ILot as IRepoAggLot;
 
 class Lot extends BaseDataProvider
 {

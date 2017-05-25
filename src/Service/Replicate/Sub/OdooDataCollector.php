@@ -98,10 +98,10 @@ class OdooDataCollector
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Agg\SaleOrderItem $item
+     * @param \Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $item
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
      */
-    public function _extractLine(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
+    public function _extractLine(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $item)
     {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
         /* collect data */
@@ -137,15 +137,15 @@ class OdooDataCollector
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Agg\SaleOrderItem $item
+     * @param \Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $item
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot
      */
-    public function _extractLineLot(\Praxigento\Odoo\Data\Agg\SaleOrderItem $item)
+    public function _extractLineLot(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $item)
     {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
         $idOdoo = (int)$item->getOdooIdLot();
         $qty = $this->manFormat->toNumber($item->getLotQty());
-        if ($idOdoo != \Praxigento\Odoo\Data\Agg\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
+        if ($idOdoo != \Praxigento\Odoo\Repo\Agg\Data\Lot::NULL_LOT_ID) $result->setIdOdoo($idOdoo);
         $result->setQty($qty);
         return $result;
     }

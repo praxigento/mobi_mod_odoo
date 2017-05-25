@@ -10,13 +10,13 @@ use Praxigento\Warehouse\Data\Entity\Quantity as EntityWarehouseQuantity;
 class Lot
 {
 
-    /** @var \Praxigento\Odoo\Repo\Agg\ILot */
+    /** @var \Praxigento\Odoo\Repo\Agg\Store\ILot */
     protected $_repoAggLot;
     /** @var  \Praxigento\Warehouse\Repo\Entity\IQuantity */
     protected $_repoWarehouseEntityQuantity;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Agg\ILot $repoAggLot,
+        \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
         \Praxigento\Warehouse\Repo\Entity\IQuantity $repoWarehouseEntityQuantity
     ) {
         $this->_repoAggLot = $repoAggLot;

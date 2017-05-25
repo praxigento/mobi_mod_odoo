@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Agg\Def\Lot;
+namespace Praxigento\Odoo\Repo\Agg\Store\Lot;
 
 include_once(__DIR__ . '/../../../../phpunit_bootstrap.php');
 

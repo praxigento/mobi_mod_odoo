@@ -3,14 +3,13 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Agg;
-
-use Flancer32\Lib\Data as DataObject;
+namespace Praxigento\Odoo\Repo\Agg\Data;
 
 /**
  * Aggregate for Sale Order Item data to be replicated to Odoo. There are one or more aggregated lines for one Magento Sale Order Item (by lots used in the sale).
  */
-class SaleOrderItem extends DataObject
+class SaleOrderItem
+    extends \Flancer32\Lib\Data
 {
     /**#@+
      * Aliases for data attributes.

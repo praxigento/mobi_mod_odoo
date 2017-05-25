@@ -2,11 +2,11 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Agg\Def\SaleOrderItem;
+namespace Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem;
 
 use Magento\Sales\Api\Data\OrderItemInterface as MageEntityOrderItem;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Agg\SaleOrderItem as Agg;
+use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 use Praxigento\Odoo\Data\Entity\Lot as EntityOdooLot;
 use Praxigento\Odoo\Data\Entity\Product as EntityOdooProduct;
 use Praxigento\Pv\Data\Entity\Sale\Item as EntityPvSaleItem;

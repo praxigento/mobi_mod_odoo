@@ -3,12 +3,12 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Agg\Def;
+namespace Praxigento\Odoo\Repo\Agg\Store;
 
 use Magento\Framework\App\ResourceConnection;
 use Praxigento\Core\Transaction\Database\IManager;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Agg\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Entity\IWarehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
@@ -60,7 +60,7 @@ class Warehouse
             $this->repoEntityWarehouse->create($bind);
             $this->manTrans->commit($def);
             /* compose result from warehouse module's data and odoo module's data */
-            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
             $result->set($wrhsData);
             $result->setOdooId($data->getOdooId());
         } finally {
@@ -76,7 +76,7 @@ class Warehouse
         $query->where(WrhsRepoAggWarehouse::AS_STOCK . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID . '=:id');
         $data = $this->conn->fetchRow($query, ['id' => $id]);
         if ($data) {
-            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
             $result->set($data);
         }
         return $result;
@@ -90,7 +90,7 @@ class Warehouse
         $query->where(static::AS_ODOO . '.' . EntityWarehouse::ATTR_ODOO_REF . '=:id');
         $data = $this->conn->fetchRow($query, ['id' => $odooId]);
         if ($data) {
-            $result = new \Praxigento\Odoo\Data\Agg\Warehouse();
+            $result = new \Praxigento\Odoo\Repo\Agg\Data\Warehouse();
             $result->set($data);
         }
         return $result;

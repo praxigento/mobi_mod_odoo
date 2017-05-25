@@ -22,7 +22,7 @@ class Lot_UnitTest
     {
         parent::setUp();
         /** create mocks */
-        $this->mRepo = $this->_mock(\Praxigento\Odoo\Repo\Agg\ILot::class);
+        $this->mRepo = $this->_mock(\Praxigento\Odoo\Repo\Agg\Store\ILot::class);
         /** create object to test */
         $this->obj = new Lot(
             $this->mUrl,

@@ -116,8 +116,8 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     public function test__extractLine()
     {
         /** === Test Data === */
-        /** @var \Praxigento\Odoo\Data\Agg\SaleOrderItem $ITEM */
-        $ITEM = $this->_mock(\Praxigento\Odoo\Data\Agg\SaleOrderItem::class);
+        /** @var \Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $ITEM */
+        $ITEM = $this->_mock(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem::class);
         $ITEM->shouldReceive('getOdooIdProduct')->once()->andReturn('21');
         $ITEM->shouldReceive('getItemQty')->once()->andReturn('ItemQty');
         $ITEM->shouldReceive('getPriceUnitOrig')->once()->andReturn('PriceUnitOrig');
@@ -152,8 +152,8 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     public function test__extractLineLot()
     {
         /** === Test Data === */
-        /** @var \Praxigento\Odoo\Data\Agg\SaleOrderItem $ITEM */
-        $ITEM = $this->_mock(\Praxigento\Odoo\Data\Agg\SaleOrderItem::class);
+        /** @var \Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem $ITEM */
+        $ITEM = $this->_mock(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem::class);
         $ITEM->shouldReceive('getOdooIdLot')->once()->andReturn(500);
         $ITEM->shouldReceive('getLotQty')->once()->andReturn('LotQty');
         /** === Setup Mocks === */
@@ -458,8 +458,8 @@ class OdooDataCollector_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
             ->shouldReceive('getStockIdByStoreId')->once()
             ->andReturn($STOCK_ID);
         // $aggSaleOrderItems = $this->_repoAggSaleOrderItem->getByOrderAndStock($orderId, $stockId);
-        $mItem1 = $this->_mock(\Praxigento\Odoo\Data\Agg\SaleOrderItem::class);
-        $mItem2 = $this->_mock(\Praxigento\Odoo\Data\Agg\SaleOrderItem::class);
+        $mItem1 = $this->_mock(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem::class);
+        $mItem2 = $this->_mock(\Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem::class);
         $mAggSaleOrderItems = [$mItem1, $mItem2];
         $this->mRepoAggSaleOrderItem
             ->shouldReceive('getByOrderAndStock')->once()

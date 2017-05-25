@@ -87,6 +87,6 @@ class SaleOrderItem_UnitTest
         $res = $this->obj->getByOrderAndStock($ORDER_ID, $STOCK_ID);
         $this->assertTrue(is_array($res));
         $item = reset($res);
-        $this->assertTrue($item instanceof \Praxigento\Odoo\Data\Agg\SaleOrderItem);
+        $this->assertTrue($item instanceof \Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem);
     }
 }
