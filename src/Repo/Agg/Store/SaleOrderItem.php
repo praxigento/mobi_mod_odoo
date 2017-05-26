@@ -13,26 +13,34 @@ class SaleOrderItem
     /**#@+
      * Select query parameters names.
      */
-    const PARAM_ORDER_ID = SaleOrderItem\SelectFactory::PARAM_ORDER_ID;
-    const PARAM_STOCK_ID = SaleOrderItem\SelectFactory::PARAM_STOCK_ID;
+    const PARAM_ORDER_ID = \Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get\Builder::BIND_ORDER_ID;
+    const PARAM_STOCK_ID = \Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get\Builder::BIND_STOCK_ID;
     /**#@- */
 
-    /** @var  SaleOrderItem\SelectFactory */
-    protected $_factorySelect;
+    /**
+     * @var  SaleOrderItem\SelectFactory
+     *
+     * @deprecated use $qbldGet
+     */
+    protected $factorySelect;
+    /** @var \Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get\Builder */
+    protected $qbldGet;
 
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
-        SaleOrderItem\SelectFactory $factorySelect
+        SaleOrderItem\SelectFactory $factorySelect,
+        \Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get\Builder $qbldGet
     ) {
         $this->conn = $resource->getConnection();
-        $this->_factorySelect = $factorySelect;
+        $this->factorySelect = $factorySelect;
+        $this->qbldGet = $qbldGet;
     }
 
     /** @inheritdoc */
     public function getByOrderAndStock($orderId, $stockId)
     {
         $result = [];
-        $select = $this->_factorySelect->getQueryToSelect();
+        $select = $this->qbldGet->build();
         $bind = [
             self::PARAM_ORDER_ID => (int)$orderId,
             self::PARAM_STOCK_ID => (int)$stockId
@@ -49,13 +57,13 @@ class SaleOrderItem
 
     public function getQueryToSelect()
     {
-        $result = $this->_factorySelect->getQueryToSelect();
+        $result = $this->qbldGet->build();
         return $result;
     }
 
     public function getQueryToSelectCount()
     {
-        $result = $this->_factorySelect->getQueryToSelectCount();
+        $result = $this->factorySelect->getQueryToSelectCount();
         return $result;
     }
 }

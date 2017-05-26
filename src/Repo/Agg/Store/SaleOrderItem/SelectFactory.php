@@ -6,15 +6,17 @@ namespace Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem;
 
 use Magento\Sales\Api\Data\OrderItemInterface as MageEntityOrderItem;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 use Praxigento\Odoo\Data\Entity\Lot as EntityOdooLot;
 use Praxigento\Odoo\Data\Entity\Product as EntityOdooProduct;
+use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 use Praxigento\Pv\Data\Entity\Sale\Item as EntityPvSaleItem;
 use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
 use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EntityWrhsQtySale;
 
 /**
  * Compose SELECT query to get Sale Order Item aggregate.
+ *
+ * @deprecated use \Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get\Builder
  */
 class SelectFactory
     extends \Praxigento\Core\Repo\Agg\BaseSelectFactory
