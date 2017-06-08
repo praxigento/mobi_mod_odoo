@@ -6,9 +6,9 @@
 namespace Praxigento\Odoo\Service\Replicate\Sub;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Lot as ApiLot;
 use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as ApiWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Repo\Agg\Store\ILot as IRepoAggLot;
 use Praxigento\Odoo\Repo\Agg\Store\IWarehouse as IRepoAggWarehouse;
 use Praxigento\Odoo\Repo\IPv as IRepoPv;
@@ -80,13 +80,15 @@ class Replicator
         $isActive = $product->getIsActive();
         $skipReplication = false; // skip replication for inactive products are missed in Mage
         $priceWholesale = $product->getPriceWholesale();
+        $priceRetail = $product->getPriceRetail();
+        $priceRetail = is_null($priceRetail) ? $priceWholesale : $priceRetail; // MOBI-765
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
         /* check does product item is already registered in Magento */
         if (!$this->repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
-                $idMage = $this->subProduct->create($sku, $name, $isActive, $priceWholesale, $weight);
+                $idMage = $this->subProduct->create($sku, $name, $isActive, $priceRetail, $weight);
                 $this->repoRegistry->registerProduct($idMage, $idOdoo);
                 $this->repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
@@ -96,7 +98,7 @@ class Replicator
         } else {
             /* update attributes for magento product */
             $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceWholesale, $weight);
+            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceRetail, $weight);
             $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipReplication) {

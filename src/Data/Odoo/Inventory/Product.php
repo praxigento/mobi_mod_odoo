@@ -58,9 +58,22 @@ class Product
     }
 
     /**
+     * Get retail price for the product (see /option/currency for the currency).
+     *
+     * @return float
+     */
+    public function getPriceRetail()
+    {
+        $result = parent::getPriceRetail();
+        return $result;
+    }
+
+    /**
      * Get wholesale price for the product (see /option/currency to get wholesale currency).
      *
      * @return float
+     *
+     * @deprecated use getPriceRetail()
      */
     public function getPriceWholesale()
     {
@@ -153,9 +166,21 @@ class Product
     }
 
     /**
+     * Set куефшд price for the product (see /option/currency for the currency).
+     *
+     * @param float $data
+     */
+    public function setPriceRetail($data)
+    {
+        parent::setPriceWholesale($data);
+    }
+
+    /**
      * Set wholesale price for the product (see /option/currency to get wholesale currency).
      *
      * @param float $data
+     *
+     * @deprecated use setPriceRetail()
      */
     public function setPriceWholesale($data)
     {
