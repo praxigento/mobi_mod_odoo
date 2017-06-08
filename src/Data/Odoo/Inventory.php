@@ -27,6 +27,8 @@ class Inventory
      * Get products bundle options.
      *
      * @return \Praxigento\Odoo\Data\Odoo\Inventory\Option
+     *
+     * @deprecated MOBI-765
      */
     public function getOption()
     {
@@ -70,6 +72,8 @@ class Inventory
      * Set products bundle options.
      *
      * @param \Praxigento\Odoo\Data\Odoo\Inventory\Option $data
+     *
+     * @deprecated MOBI-765
      */
     public function setOption($data = null)
     {

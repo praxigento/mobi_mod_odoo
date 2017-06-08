@@ -61,6 +61,8 @@ class Product
      * Get retail price for the product (see /option/currency for the currency).
      *
      * @return float
+     *
+     * @deprecated MOBI-765
      */
     public function getPriceRetail()
     {
@@ -73,7 +75,7 @@ class Product
      *
      * @return float
      *
-     * @deprecated use getPriceRetail()
+     * @deprecated MOBI-765
      */
     public function getPriceWholesale()
     {
@@ -169,6 +171,8 @@ class Product
      * Set куефшд price for the product (see /option/currency for the currency).
      *
      * @param float $data
+     *
+     * @deprecated MOBI-765
      */
     public function setPriceRetail($data)
     {
@@ -180,7 +184,7 @@ class Product
      *
      * @param float $data
      *
-     * @deprecated use setPriceRetail()
+     * @deprecated MOBI-765
      */
     public function setPriceWholesale($data)
     {

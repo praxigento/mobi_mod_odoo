@@ -79,9 +79,6 @@ class Replicator
         $name = trim($product->getName());
         $isActive = $product->getIsActive();
         $skipReplication = false; // skip replication for inactive products are missed in Mage
-        $priceWholesale = $product->getPriceWholesale();
-        $priceRetail = $product->getPriceRetail();
-        $priceRetail = is_null($priceRetail) ? $priceWholesale : $priceRetail; // MOBI-765
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
         /* check does product item is already registered in Magento */

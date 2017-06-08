@@ -49,13 +49,12 @@ class Product
      * @param string $sku
      * @param string $name
      * @param bool $isActive
-     * @param double $priceRetail
      * @param double $weight
      * @return int
      */
-    public function create($sku, $name, $isActive, $priceRetail, $weight)
+    public function create($sku, $name, $isActive, $weight)
     {
-        $this->logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; price: $priceRetail; weight: $weight.)");
+        $this->logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; weight: $weight.)");
         /**
          * Retrieve attribute set ID.
          */
@@ -75,7 +74,7 @@ class Product
         $product->setName(trim($name));
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
-        $product->setPrice($priceRetail);
+        $product->setPrice(1000); // MOBI-765
         $product->setWeight($weight);
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
@@ -93,12 +92,11 @@ class Product
      * @param string $sku
      * @param string $name
      * @param bool $isActive
-     * @param double $priceRetail
      * @param double $weight
      */
-    public function update($mageId, $sku, $name, $isActive, $priceRetail, $weight)
+    public function update($mageId, $sku, $name, $isActive, $weight)
     {
-        $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; price: $priceRetail; weight: $weight.)");
+        $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->repoProd->getById($mageId);
         /* MOBI-717: SKU also can be changed */
@@ -107,7 +105,7 @@ class Product
         $product->setName($name);
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
-        $product->setPrice($priceRetail);
+        $product->setPrice(1000); // MOBI-765
         $product->setWeight($weight);
         $this->repoProd->save($product);
     }
