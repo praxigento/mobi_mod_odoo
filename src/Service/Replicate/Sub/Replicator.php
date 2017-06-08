@@ -85,7 +85,7 @@ class Replicator
         if (!$this->repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
-                $idMage = $this->subProduct->create($sku, $name, $isActive, $priceRetail, $weight);
+                $idMage = $this->subProduct->create($sku, $name, $isActive, $weight);
                 $this->repoRegistry->registerProduct($idMage, $idOdoo);
                 $this->repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
@@ -95,7 +95,7 @@ class Replicator
         } else {
             /* update attributes for magento product */
             $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceRetail, $weight);
+            $this->subProduct->update($idMage, $sku, $name, $isActive, $weight);
             $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipReplication) {
