@@ -3,14 +3,40 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <!-- ************************* -->
+    <!-- PSR LOGGERS CONFIGURATION -->
+    <!-- ************************* -->
+    <virtualType name="loggerOdooInternal" type="\Praxigento\Logging\Logger">
+        <!-- Configure Praxigento_Logger to be used inside this module's logger -->
+        <arguments>
+            <!-- Config file path is related to Magento 2 base directory. Absolute path can be used too. -->
+            <argument name="configFile" xsi:type="string">var/log/logging.yaml</argument>
+            <!-- Name of the logger in configuration file. Default: "odoo".  -->
+            <argument name="loggerName" xsi:type="string">odoo</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="loggerOdoo" type="\Praxigento\Odoo\Fw\Logger\Odoo">
+        <!-- Configure this module's logger -->
+        <arguments>
+            <!-- Previously initiated logger as constructor argument -->
+            <argument name="logger" xsi:type="object">loggerOdooInternal</argument>
+        </arguments>
+    </virtualType>
+
+
+    <!-- *** -->
     <!-- API -->
+    <!-- *** -->
     <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface" type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
     <preference for="\Praxigento\Odoo\Api\Product\Replicate\SaveInterface" type="\Praxigento\Odoo\Api\Product\Replicate\Save"/>
     <preference for="\Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface" type="\Praxigento\Odoo\Api\Sales\Order\PushRepeat"/>
     <preference for="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveDeprecatedInterface" type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
     <preference for="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface" type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
 
-    <!-- Console (CLI Commands) -->
+
+    <!-- *** -->
+    <!-- CLI -->
+    <!-- *** -->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -20,14 +46,19 @@
         </arguments>
     </type>
 
+
+    <!-- **** -->
     <!-- Repo -->
+    <!-- **** -->
     <preference for="Praxigento\Odoo\Repo\IRegistry" type="Praxigento\Odoo\Repo\Def\Registry"/>
     <preference for="Praxigento\Odoo\Repo\IPv" type="\Praxigento\Odoo\Repo\Def\Pv"/>
+
 
     <!-- Repo / Agg -->
     <preference for="Praxigento\Odoo\Repo\Agg\Store\ILot" type="Praxigento\Odoo\Repo\Agg\Store\Lot"/>
     <preference for="Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem" type="Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem"/>
     <preference for="Praxigento\Odoo\Repo\Agg\Store\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Store\Warehouse"/>
+
 
     <!-- Repo / Entity -->
     <preference for="\Praxigento\Odoo\Repo\Entity\Registry\IRequest" type="\Praxigento\Odoo\Repo\Entity\Registry\Def\Request"/>
@@ -40,6 +71,7 @@
     <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin" type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
+
     <!-- ******* -->
     <!-- PLUGINS -->
     <!-- ******* -->
@@ -51,6 +83,7 @@
         <!-- Replicate orders for new signed customers (anons & referrals) -->
         <plugin name="praxigento_odoo_plugin" type="\Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement" sortOrder="100" disabled="false"/>
     </type>
+
 
     <!-- ******** -->
     <!-- Services -->

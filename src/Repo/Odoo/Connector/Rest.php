@@ -4,29 +4,25 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Connector;
 
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin;
-use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
-use Psr\Log\LoggerInterface;
-
 class Rest
 {
     const DEF_TIMEOUT_SEC = 60;
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_POST = 'POST';
-    /** @var  Adapter adapter for PHP functions to be mocked in tests */
+
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter adapter for PHP functions to be mocked in tests */
     protected $adapter;
     /** @var  string */
     protected $baseUri;
-    /** @var  LoggerInterface separate channel to log Odoo activity */
+    /** @var  \Praxigento\Odoo\Fw\Logger\Odoo separate channel to log Odoo activity */
     protected $logger;
-    /** @var  Login */
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin */
     protected $login;
 
     public function __construct(
-        LoggerInterface $logger,
-        Adapter $adapter,
-        ILogin $login,
+        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
+        \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter $adapter,
+        \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin $login,
         \Praxigento\Odoo\Helper\Config $hlpConfig
     ) {
         $this->logger = $logger;
@@ -40,7 +36,7 @@ class Rest
      * @param $route
      * @param string $method
      * @param int $timeout
-     * @return ICover
+     * @return \Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover
      * @throws \Exception
      */
     public function request($params, $route, $method = self::HTTP_METHOD_POST, $timeout = self::DEF_TIMEOUT_SEC)
