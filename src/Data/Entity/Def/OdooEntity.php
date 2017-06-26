@@ -5,10 +5,9 @@
 
 namespace Praxigento\Odoo\Data\Entity\Def;
 
-use Praxigento\Core\Data\Entity\Base as EntityBase;
-use Praxigento\Odoo\Data\Entity\IOdooEntity;
-
-abstract class OdooEntity extends EntityBase implements IOdooEntity
+abstract class OdooEntity
+    extends \Praxigento\Core\Data\Entity\Base
+    implements \Praxigento\Odoo\Data\Entity\IOdooEntity
 {
 
     /** @inheritdoc */
