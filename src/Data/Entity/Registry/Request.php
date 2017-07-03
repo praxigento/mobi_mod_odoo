@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Data\Entity\Registry;
 
 /**
@@ -13,6 +14,40 @@ class Request
     const ATTR_ODOO_REF = 'odoo_ref';
     const ATTR_TYPE_CODE = 'type_code';
     const ENTITY_NAME = 'prxgt_odoo_reg_request';
+
+    /**
+     * @return string
+     */
+    public function getOdooRef()
+    {
+        $result = parent::get(self::ATTR_ODOO_REF);
+        return $result;
+    }
+
+    /**
+     * @param string $data
+     */
+    public function setOdooRef($data)
+    {
+        parent::set(self::ATTR_ODOO_REF, $data);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTypeCode()
+    {
+        $result = parent::get(self::ATTR_TYPE_CODE);
+        return $result;
+    }
+
+    /**
+     * @param integer $data
+     */
+    public function setTypeCode($data)
+    {
+        parent::set(self::ATTR_TYPE_CODE, $data);
+    }
 
     public function getPrimaryKeyAttrs()
     {
