@@ -107,7 +107,7 @@ class Builder
             self::A_PRICE_TAX_PERCENT => EOrderItem::TAX_PERCENT,
             self::A_PRICE_TOTAL => EOrderItem::BASE_ROW_TOTAL,
             self::A_PRICE_TOTAL_WITH_TAX => EOrderItem::BASE_ROW_TOTAL_INCL_TAX,
-            self::A_PRICE_UNIT_ORIG => EOrderItem::BASE_ORIGINAL_PRICE,
+            self::A_PRICE_UNIT_ORIG => EOrderItem::BASE_PRICE,
             self::A_PRICE_UNIT => EOrderItem::BASE_PRICE_INCL_TAX,
         ];
         $result->from([$as => $tbl], $cols);    // standard names for the variables

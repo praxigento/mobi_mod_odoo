@@ -369,7 +369,12 @@ class OdooDataCollector
         $priceDiscount = $this->manFormat->toNumber($priceDiscount);
         $priceTaxAmount = $mageOrder->getBaseShippingTaxAmount();
         $priceTaxAmount = $this->manFormat->toNumber($priceTaxAmount);
-        $priceTaxPercent = $priceTaxAmount / ($priceAmount - $priceDiscount);
+        if (($priceAmount + $priceDiscount + $priceTaxAmount) < Cfg::DEF_ZERO) {
+            /* free shipping */
+            $priceTaxPercent = 0;
+        } else {
+            $priceTaxPercent = $priceTaxAmount / ($priceAmount - $priceDiscount);
+        }
         $priceTaxPercent = $this->manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
         $priceAmountTotal = ($priceAmount - $priceDiscount) * (1 + $priceTaxPercent);
         $priceAmountTotal = $this->manFormat->toNumber($priceAmountTotal);
