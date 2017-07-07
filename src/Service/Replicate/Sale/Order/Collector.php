@@ -341,10 +341,57 @@ class Collector
         $result->setLines($lines);
         $result->setShipping($shipping);
         $result->setPayments($payments);
-
+        /* calculate prices & taxes according to Odoo formula */
+        $this->calcTaxes($result);
         return $result;
     }
 
+    /**
+     * Re-calculate taxes according Odoo formula.
+     *
+     * https://confluence.prxgt.com/x/BYBoB
+     *
+     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
+     */
+    protected function calcTaxes(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
+    {
+        /* calculate really paid amount */
+        $payments = $order->getPayments();
+        $paid = 0;
+        foreach ($payments as $payment) {
+            $paid += $payment->getAmount();
+        }
+        /* calculate lines summary */
+        $lines = $order->getLines();
+        $totalLines = 0;
+        foreach ($lines as $line) {
+            $total = $line->getPriceTotalLine();
+            $totalLines += $total;
+        }
+        /* get $k coefficient */
+        $k = $paid / $totalLines;
+        /* fix all lines */
+        foreach ($lines as $line) {
+            /* base data for calculation */
+            $qty = $line->getQtyLine();
+            $unitPrice = $line->getPriceSaleUnit();
+            $taxPercent = $line->getPriceTaxPercent();
+            $totalLine = $line->getPriceTotalLine();
+            /* calc fixed values */
+            $fixedTotal = $totalLine * $k;
+            $fixedTotal = $this->manFormat->toNumber($fixedTotal);
+            $woDiscountTotal = $qty * $unitPrice * (1 + $taxPercent);
+            $fixedDiscountWithTax = $woDiscountTotal - $fixedTotal;
+            $fixedDiscount = $fixedDiscountWithTax / (1 + $taxPercent);
+            $fixedDiscount = $this->manFormat->toNumber($fixedDiscount);
+            $fixedTaxAmount = ($qty * $unitPrice - $fixedDiscount) * $taxPercent;
+            $fixedTaxAmount = $this->manFormat->toNumber($fixedTaxAmount);
+            /* put fixed values back to $line */
+            $line->setPriceDiscountLine($fixedDiscount);
+            $line->setPriceTaxLine($fixedTaxAmount);
+            $line->setPriceTotalLine($fixedTotal);
+        }
+    }
     /**
      * Extract Odoo compatible customer data from Magento order.
      *

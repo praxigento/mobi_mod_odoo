@@ -14,7 +14,7 @@ class Order_Test
     {
         /** @var \Magento\Sales\Api\OrderRepositoryInterface $repo */
         $repo = $this->manObj->get(\Magento\Sales\Api\OrderRepositoryInterface::class);
-        $result = $repo->get(1);
+        $result = $repo->get(4);
         return $result;
     }
 

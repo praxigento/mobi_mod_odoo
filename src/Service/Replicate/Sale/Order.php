@@ -44,8 +44,6 @@ class Order
         /** @var \Praxigento\Odoo\Data\Entity\SaleOrder $registeredOrder */
         $registeredOrder = $this->repoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
-        /* TODO: remove reverted value */
-        $isRegistered = !$isRegistered;
         /* skip processing for registered orders or guest checkouted */
         if ($orderIdMage && !$isRegistered && $customerIdMage) {
             $odooOrder = $this->subCollector->getSaleOrder($mageOrder);
