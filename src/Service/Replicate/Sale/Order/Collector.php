@@ -169,6 +169,7 @@ class Collector
         $taxPercent = $taxPercent / 100;
         $priceTaxPercent = $this->manFormat->toNumber($taxPercent, Cfg::ODOO_API_PERCENT_ROUND);
         $priceTotalLine = $item->get($this->qbOrderItems::A_BASE_ROW_TOTAL_INCL_TAX);
+        $priceTotalLine = $this->manFormat->toNumber($priceTotalLine);
         $priceTaxLine = 0;  // to be calculated later
         /* PV attributes */
         $pvSubtotal = $item->get($this->qbOrderItems::A_PV_SUBTOTAL);

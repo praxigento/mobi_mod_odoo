@@ -5,7 +5,9 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sale;
 
-
+/**
+ * @see \Praxigento\Odoo\Service\Replicate\Call::orderSave
+ */
 class Order
     extends \Praxigento\Core\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
@@ -14,16 +16,21 @@ class Order
     protected $repoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector */
     protected $subCollector;
+    /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
+    protected $repoOdooSaleOrder;
+
 
     public function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
+        \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
     )
     {
         parent::__construct($logger, $manObj);
         $this->repoEntitySaleOrder = $repoEntitySaleOrder;
+        $this->repoOdooSaleOrder = $repoOdooSaleOrder;
         $this->subCollector = $collector;
     }
 
@@ -43,7 +50,19 @@ class Order
         if ($orderIdMage && !$isRegistered && $customerIdMage) {
             $odooOrder = $this->subCollector->getSaleOrder($mageOrder);
             /* save order into Odoo repo */
-
+            $resp = $this->repoOdooSaleOrder->save($odooOrder);
+            $result->setOdooResponse($resp);
+            if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
+                $mageId = $mageOrder->getEntityId();
+                $odooId = $resp->getIdOdoo();
+                /* mark order as replicated */
+                $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
+                $registry->setMageRef($mageId);
+                $registry->setOdooRef($odooId);
+                $this->repoEntitySaleOrder->create($registry);
+                /* finalize transaction */
+                $result->markSucceed();
+            }
         } else {
             $msg = "Order replication to Odoo is skipped (id/is_registered/customer_id): $orderIdMage/"
                 . (string)$isRegistered . "/$customerIdMage.";
