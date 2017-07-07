@@ -342,18 +342,18 @@ class Collector
         $result->setShipping($shipping);
         $result->setPayments($payments);
         /* calculate prices & taxes according to Odoo formula */
-        $this->calcTaxes($result);
+        $this->calcAmounts($result);
         return $result;
     }
 
     /**
-     * Re-calculate taxes according Odoo formula.
+     * Re-calculate amounts according Odoo formula.
      *
      * https://confluence.prxgt.com/x/BYBoB
      *
      * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
      */
-    protected function calcTaxes(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
+    protected function calcAmounts(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
     {
         /* calculate really paid amount */
         $payments = $order->getPayments();
@@ -370,7 +370,10 @@ class Collector
         }
         /* get $k coefficient */
         $k = $paid / $totalLines;
-        /* fix all lines */
+        /* fix all lines and totals */
+        $orderTax = 0;
+        $orderDiscount = 0;
+        $orderTotal = 0;
         foreach ($lines as $line) {
             /* base data for calculation */
             $qty = $line->getQtyLine();
@@ -390,7 +393,14 @@ class Collector
             $line->setPriceDiscountLine($fixedDiscount);
             $line->setPriceTaxLine($fixedTaxAmount);
             $line->setPriceTotalLine($fixedTotal);
+            /* collect order totals */
+            $orderTotal += $fixedTotal;
+            $orderDiscount += $fixedDiscount;
+            $orderTax += $fixedTaxAmount;
         }
+        $order->setPriceTotal($orderTotal);
+        $order->setPriceDiscount($orderDiscount);
+        $order->setPriceTax($orderTax);
     }
     /**
      * Extract Odoo compatible customer data from Magento order.

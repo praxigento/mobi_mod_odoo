@@ -21,8 +21,6 @@ class Call implements IReplicate
     protected $_repoOdooInventory;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
     protected $_repoOdooSaleOrder;
-    /** @var  Sub\OdooDataCollector */
-    protected $_subCollector;
     /** @var  Sub\Replicator */
     protected $_subReplicator;
 
@@ -32,7 +30,6 @@ class Call implements IReplicate
         \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
-        Sub\OdooDataCollector $subCollector,
         Sub\Replicator $subReplicator
     ) {
         $this->_logger = $logger;
@@ -40,7 +37,6 @@ class Call implements IReplicate
         $this->_repoEntitySaleOrder = $repoEntitySaleOrder;
         $this->_repoOdooInventory = $repoOdooInventory;
         $this->_repoOdooSaleOrder = $repoOdooSaleOrder;
-        $this->_subCollector = $subCollector;
         $this->_subReplicator = $subReplicator;
     }
 
@@ -69,37 +65,7 @@ class Call implements IReplicate
     public function orderSave(
         Replicate\Request\OrderSave $req
     ) {
-        $result = new Response\OrderSave();
-        /** @var \Magento\Sales\Api\Data\OrderInterface $mageOrder */
-        $mageOrder = $req->getSaleOrder();
-        $orderIdMage = $mageOrder->getEntityId();
-        $customerIdMage = $mageOrder->getCustomerId();
-        /** @var  $registeredOrder */
-        $registeredOrder = $this->_repoEntitySaleOrder->getById($orderIdMage);
-        $isRegistered = (bool)$registeredOrder;
-        /* skip processing for registered orders or guest checkouted */
-        if ($orderIdMage && !$isRegistered && $customerIdMage) {
-            $odooOrder = $this->_subCollector->getSaleOrder($mageOrder);
-            /* save order into Odoo repo */
-            $resp = $this->_repoOdooSaleOrder->save($odooOrder);
-            $result->setOdooResponse($resp);
-            if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
-                $mageId = $mageOrder->getEntityId();
-                $odooId = $resp->getIdOdoo();
-                /* mark order as replicated */
-                $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
-                $registry->setMageRef($mageId);
-                $registry->setOdooRef($odooId);
-                $this->_repoEntitySaleOrder->create($registry);
-                /* finalize transaction */
-                $result->markSucceed();
-            }
-        } else {
-            $msg = "Cannot replicate order to Odoo (id/is_registered/customer_id): $orderIdMage/"
-                . (string)$isRegistered . "/$customerIdMage.";
-            $this->_logger->info($msg);
-        }
-        return $result;
+        throw new \Exception("Deprecated. Use \Praxigento\Odoo\Service\Replicate\Sale\IOrder.");
     }
 
     public function productSave(

@@ -4,7 +4,6 @@
  */
 namespace Praxigento\Odoo\Service\Replicate;
 
-use Magento\Framework\App\ObjectManager;
 use Praxigento\Odoo\Service\IReplicate;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
@@ -29,14 +28,4 @@ class Call_ManualTest extends \Praxigento\Core\Test\BaseIntegrationTest
         $this->assertNotNull($resp);
     }
 
-    public function test_orderSave()
-    {
-        $req = new Request\OrderSave();
-
-        /* load Magento order */
-        $mageOrder = $this->_mageRepoSaleOrder->get(70);
-        $req->setSaleOrder($mageOrder);
-        $resp = $this->obj->orderSave($req);
-        $this->assertNotNull($resp);
-    }
 }

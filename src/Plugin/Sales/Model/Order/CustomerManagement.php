@@ -7,14 +7,14 @@ namespace Praxigento\Odoo\Plugin\Sales\Model\Order;
 
 class CustomerManagement
 {
-    /** @var  \Praxigento\Odoo\Service\IReplicate */
+    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
     protected $callReplicate;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
     protected $repoOrder;
 
     public function __construct(
         \Magento\Sales\Api\OrderRepositoryInterface $repoOrder,
-        \Praxigento\Odoo\Service\IReplicate $callReplicate
+        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
     ) {
         $this->repoOrder = $repoOrder;
         $this->callReplicate = $callReplicate;
@@ -26,10 +26,10 @@ class CustomerManagement
         $orderId
     ) {
         $result = $proceed($orderId);
-        $req = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+        $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
         $order = $this->repoOrder->get($orderId);
         $req->setSaleOrder($order);
-        $this->callReplicate->orderSave($req);
+        $this->callReplicate->exec($req);
         return $result;
     }
 }

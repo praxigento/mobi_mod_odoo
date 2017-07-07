@@ -10,19 +10,19 @@ class Orders
     extends \Praxigento\Core\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrders
 {
-    /** @var \Praxigento\Odoo\Service\IReplicate */
-    protected $callReplicate;
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
+    protected $callOrder;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector */
     protected $subCollector;
 
     public function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Service\IReplicate $callReplicate,
+        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector $subCollector
     ) {
         parent::__construct($logger, $manObj);
-        $this->callReplicate = $callReplicate;
+        $this->callOrder = $callOrder;
         $this->subCollector = $subCollector;
     }
 
@@ -34,10 +34,10 @@ class Orders
         $this->logger->info("There are $count orders to push to Odoo.");
         $entries = [];
         foreach ($orders as $order) {
-            $req = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+            $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
             $req->setSaleOrder($order);
-            /** @var \Praxigento\Odoo\Service\Replicate\Response\OrderSave $resp */
-            $resp = $this->callReplicate->orderSave($req);
+            /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Response $resp */
+            $resp = $this->callOrder->exec($req);
             $respOdoo = $resp->getOdooResponse();
             $entry = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry();
             $id = $order->getEntityId();

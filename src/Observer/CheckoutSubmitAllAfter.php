@@ -13,20 +13,20 @@ class CheckoutSubmitAllAfter
     /* Names for the items in the event's data */
     const DATA_ORDER = 'order';
     /** @var \Psr\Log\LoggerInterface */
-    protected $_logger;
+    protected $logger;
     /** @var  \Praxigento\Warehouse\Tool\IStockManager */
-    protected $_manStock;
-    /** @var  \Praxigento\Odoo\Service\IReplicate */
-    protected $_callReplicate;
+    protected $manStock;
+    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
+    protected $callReplicate;
 
     public function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
-        \Praxigento\Odoo\Service\IReplicate $callReplicate
+        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
     ) {
-        $this->_logger = $logger;
-        $this->_manStock = $manStock;
-        $this->_callReplicate = $callReplicate;
+        $this->logger = $logger;
+        $this->manStock = $manStock;
+        $this->callReplicate = $callReplicate;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -36,14 +36,14 @@ class CheckoutSubmitAllAfter
         $state = $order->getState();
         if ($state == \Magento\Sales\Model\Order::STATE_PROCESSING) {
             try {
-                $this->_logger->debug("Call to Odoo service to replicate order.");
-                $req = new \Praxigento\Odoo\Service\Replicate\Request\OrderSave();
+                $this->logger->debug("Call to Odoo service to replicate order.");
+                $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
                 $req->setSaleOrder($order);
-                $this->_callReplicate->orderSave($req);
+                $this->callReplicate->exec($req);
             } catch (\Exception $e) {
                 /* catch all exceptions and steal them */
                 $msg = 'Some error is occurred on sale order saving to Odoo. Error: ' . $e->getMessage();
-                $this->_logger->error($msg);
+                $this->logger->error($msg);
             }
         }
     }
