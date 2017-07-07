@@ -361,6 +361,10 @@ class Collector
         foreach ($payments as $payment) {
             $paid += $payment->getAmount();
         }
+        $shipping = $order->getShipping();
+        $shippingPrice = $shipping->getPriceAmountTotal();
+        $shippingTax = $shipping->getPriceTaxAmount();
+        $paid -= $shippingPrice;
         /* calculate lines summary */
         $lines = $order->getLines();
         $totalLines = 0;
@@ -371,9 +375,9 @@ class Collector
         /* get $k coefficient */
         $k = $paid / $totalLines;
         /* fix all lines and totals */
-        $orderTax = 0;
-        $orderDiscount = 0;
-        $orderTotal = 0;
+        $orderTax = $shippingTax;
+        $orderDiscount = $shipping->getPriceDiscount();
+        $orderTotal = $shippingPrice;
         foreach ($lines as $line) {
             /* base data for calculation */
             $qty = $line->getQtyLine();
