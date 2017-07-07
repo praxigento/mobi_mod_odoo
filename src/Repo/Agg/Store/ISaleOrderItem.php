@@ -7,6 +7,9 @@ namespace Praxigento\Odoo\Repo\Agg\Store;
 
 /**
  * DS-repo to get data to replicate Sale Order Items to Odoo.
+ *
+ * @deprecated
+ * @see \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Get\Builder
  */
 interface ISaleOrderItem extends \Praxigento\Core\Repo\IDataSource
 {

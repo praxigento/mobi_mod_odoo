@@ -92,6 +92,9 @@
             for="Praxigento\Odoo\Service\IReplicate"
             type="Praxigento\Odoo\Service\Replicate\Call"/>
     <preference
+            for="\Praxigento\Odoo\Service\Replicate\Sale\IOrder"
+            type="\Praxigento\Odoo\Service\Replicate\Sale\Order"/>
+    <preference
             for="\Praxigento\Odoo\Service\Replicate\Sale\IOrders"
             type="\Praxigento\Odoo\Service\Replicate\Sale\Orders"/>
 

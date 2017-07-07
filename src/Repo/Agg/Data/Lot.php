@@ -20,10 +20,9 @@ class Lot
     const AS_ODOO_ID = 'odoo_id';
     /**#@- */
 
-    const NULL_LOT_CODE = 'NULL_LOT';
-
-    /** ID for the lot that is related to the Odoo products w/o lots */
-    const NULL_LOT_ID = 0;
+    /** ID & code for the virtual lot that is related to the Odoo products w/o lots */
+    const NULL_LOT_CODE = \Praxigento\Odoo\Config::NULL_LOT_CODE;
+    const NULL_LOT_ID = \Praxigento\Odoo\Config::NULL_LOT_ID;
 
     public function getCode()
     {

@@ -10,6 +10,8 @@ interface IReplicate
     /**
      * @param Replicate\Request\OrderSave $req
      * @return Replicate\Response\OrderSave
+     *
+     * @deprecated use \Praxigento\Odoo\Service\Replicate\Sale\IOrder
      */
     public function orderSave(Replicate\Request\OrderSave $req);
 

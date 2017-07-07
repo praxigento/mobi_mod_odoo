@@ -18,4 +18,11 @@ class Config extends \Praxigento\Core\Config
     /** Number of digits to round to for Odoo API percents values. */
     const ODOO_API_PERCENT_ROUND = 4;
     const ROUTE_NAME_ADMIN_CATALOG = WrhsCfg::ROUTE_NAME_ADMIN_CATALOG;
+
+
+    /** ID & code for the virtual lot that is related to the Odoo products w/o lots */
+    const NULL_LOT_CODE = 'NULL_LOT';
+    const NULL_LOT_ID = 0;
+
+
 }
