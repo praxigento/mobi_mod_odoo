@@ -361,23 +361,29 @@ class Collector
         foreach ($payments as $payment) {
             $paid += $payment->getAmount();
         }
+        /* reduce paid amount on shipping price (get total for lines only) */
         $shipping = $order->getShipping();
-        $shippingPrice = $shipping->getPriceAmountTotal();
-        $shippingTax = $shipping->getPriceTaxAmount();
-        $paid -= $shippingPrice;
+        $shippingPriceTotal = $shipping->getPriceAmountTotal();
+        $paid -= $shippingPriceTotal;
         /* calculate lines summary */
         $lines = $order->getLines();
         $totalLines = 0;
+        $taxPercentLine = 0; // assume that all taxes
         foreach ($lines as $line) {
+            $taxPercentLine = $line->getPriceTaxPercent();
             $total = $line->getPriceTotalLine();
             $totalLines += $total;
         }
+        /* recalculate shipping values using tax value for lines (TODO: use shipping tax directly or remove todo) */
+//        $shippingTax = $shipping->getPriceTaxAmount();
+        $shippingPriceBefore = $shippingPriceTotal / (1 + $taxPercentLine);
         /* get $k coefficient */
         $k = $paid / $totalLines;
         /* fix all lines and totals */
-        $orderTax = $shippingTax;
+//        $orderTax = $shippingTax;
+        $orderTax = $shipping->getPriceTaxAmount();
         $orderDiscount = $shipping->getPriceDiscount();
-        $orderTotal = $shippingPrice;
+        $orderTotal = $shippingPriceTotal;
         foreach ($lines as $line) {
             /* base data for calculation */
             $qty = $line->getQtyLine();
