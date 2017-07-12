@@ -44,6 +44,7 @@ class Products
         \Symfony\Component\Console\Output\OutputInterface $output
     )
     {
+        $this->checkAreaCode(); // to prevent "Area code not set" exception.
         /* parse arguments */
         $argIds = $input->getArgument(static::ARG_IDS);
         if (is_null($argIds)) {
