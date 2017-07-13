@@ -35,8 +35,9 @@ class Lot
         $lotsExist = $this->_repoWarehouseEntityQuantity->get($where);
         // create map of the Magento IDs for existing lots
         $mapMageExist = [];
+        /** @var \Praxigento\Warehouse\Data\Entity\Quantity $item */
         foreach ($lotsExist as $item) {
-            $lotIdMage = $item[EntityWarehouseQuantity::ATTR_LOT_REF];
+            $lotIdMage = $item->getLotRef();
             $mapMageExist[] = $lotIdMage;
         }
         // create map for Lots from request
