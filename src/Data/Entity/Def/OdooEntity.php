@@ -32,7 +32,7 @@ abstract class OdooEntity
     }
 
     /** @inheritdoc */
-    public function getPrimaryKeyAttrs()
+    public static function getPrimaryKeyAttrs()
     {
         $result = [static::ATTR_MAGE_REF];
         return $result;
