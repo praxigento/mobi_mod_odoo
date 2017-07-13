@@ -49,7 +49,7 @@ class Request
         parent::set(self::ATTR_TYPE_CODE, $data);
     }
 
-    public function getPrimaryKeyAttrs()
+    public static function getPrimaryKeyAttrs()
     {
         return [self::ATTR_TYPE_CODE, self::ATTR_ODOO_REF];
     }
