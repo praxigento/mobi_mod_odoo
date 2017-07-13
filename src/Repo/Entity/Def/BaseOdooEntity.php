@@ -19,13 +19,13 @@ abstract class BaseOdooEntity
     {
         $result = null;
         $where = IOdooEntity::ATTR_ODOO_REF . '=' . (int)$id;
-        $items = $this->_repoGeneric->getEntities($this->_entityName, null, $where);
+        $items = $this->repoGeneric->getEntities($this->entityName, null, $where);
         if (
             is_array($items) &&
             (count($items) == 1)
         ) {
             $data = reset($items);
-            $result = new $this->_entityClassName($data);
+            $result = new $this->entityClassName($data);
         }
         return $result;
     }
