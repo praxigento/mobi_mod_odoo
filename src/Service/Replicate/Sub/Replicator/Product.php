@@ -49,10 +49,11 @@ class Product
      * @param string $sku
      * @param string $name
      * @param bool $isActive
+     * @param float $priceRetail
      * @param double $weight
      * @return int
      */
-    public function create($sku, $name, $isActive, $weight)
+    public function create($sku, $name, $isActive, $priceRetail, $weight)
     {
         $this->logger->debug("Create new product (sku: $sku; name: $name; active: $isActive; weight: $weight.)");
         /**
@@ -74,7 +75,7 @@ class Product
         $product->setName(trim($name));
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
-        $product->setPrice(1000); // MOBI-765
+        $product->setPrice($priceRetail);
         $product->setWeight($weight);
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
@@ -92,9 +93,10 @@ class Product
      * @param string $sku
      * @param string $name
      * @param bool $isActive
+     * @param float $priceRetail
      * @param double $weight
      */
-    public function update($mageId, $sku, $name, $isActive, $weight)
+    public function update($mageId, $sku, $name, $isActive, $priceRetail, $weight)
     {
         $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
@@ -105,7 +107,7 @@ class Product
         $product->setName($name);
         $status = $this->_getStatus($isActive);
         $product->setStatus($status);
-        $product->setPrice(1000); // MOBI-765
+        $product->setPrice($priceRetail);
         $product->setWeight($weight);
         $this->repoProd->save($product);
     }

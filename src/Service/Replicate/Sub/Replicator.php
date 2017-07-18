@@ -16,6 +16,13 @@ use Praxigento\Odoo\Repo\IRegistry;
 
 class Replicator
 {
+    /**
+     * Odoo ID for default stock (warehouse).
+     * @var int
+     */
+    protected $cachedWrhsOdooId = null;
+    /** @var \Praxigento\Warehouse\Tool\IStockManager */
+    protected $manStock;
     /** @var  IRepoAggLot */
     protected $repoAggLot;
     /** @var  IRepoAggWarehouse */
@@ -32,6 +39,7 @@ class Replicator
     protected $subProduct;
 
     public function __construct(
+        \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
         \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
         \Praxigento\Odoo\Repo\IPv $repoPv,
@@ -40,6 +48,7 @@ class Replicator
         Replicator\Product\Category $subProdCategory,
         Replicator\Product\Warehouse $subProdWarehouse
     ) {
+        $this->manStock = $manStock;
         $this->repoRegistry = $repoRegistry;
         $this->repoAggLot = $repoAggLot;
         $this->repoPv = $repoPv;
@@ -47,6 +56,39 @@ class Replicator
         $this->subProduct = $subProduct;
         $this->subProdCategory = $subProdCategory;
         $this->subProdWarehouse = $subProdWarehouse;
+    }
+
+    /**
+     * MOBI-765: Extract warehouse price for default warehouse or use 1000 of money if missed.
+     *
+     * @return float
+     */
+    protected function getRetailPrice(\Praxigento\Odoo\Data\Odoo\Inventory\Product $product)
+    {
+        $result = 1000;
+        $wrhsTargetId = $this->getWrhsOdooId();
+        $warehouses = $product->getWarehouses();
+        foreach ($warehouses as $warehouse) {
+            $wrhsCurrentId = $warehouse->getIdOdoo();
+            if ($wrhsTargetId == $wrhsCurrentId) {
+                $result = $warehouse->getPriceWarehouse();
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get default stock (warehouse), load warehouse data, cache and return Odoo ID for default warehouse.
+     */
+    protected function getWrhsOdooId()
+    {
+        if (is_null($this->cachedWrhsOdooId)) {
+            $stockId = $this->manStock->getCurrentStockId();
+            $wrhs = $this->repoAggWrhs->getById($stockId);
+            $this->cachedWrhsOdooId = $wrhs->getOdooId();
+        }
+        return $this->cachedWrhsOdooId;
     }
 
     /**
@@ -81,11 +123,12 @@ class Replicator
         $skipReplication = false; // skip replication for inactive products are missed in Mage
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
+        $priceRetail = $this->getRetailPrice($product);
         /* check does product item is already registered in Magento */
         if (!$this->repoRegistry->isProductRegisteredInMage($idOdoo)) {
             if ($isActive) {
                 /* create new product in Magento */
-                $idMage = $this->subProduct->create($sku, $name, $isActive, $weight);
+                $idMage = $this->subProduct->create($sku, $name, $isActive, $priceRetail, $weight);
                 $this->repoRegistry->registerProduct($idMage, $idOdoo);
                 $this->repoPv->registerProductWholesalePv($idMage, $pvWholesale);
             } else {
@@ -95,7 +138,7 @@ class Replicator
         } else {
             /* update attributes for magento product */
             $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->subProduct->update($idMage, $sku, $name, $isActive, $weight);
+            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceRetail, $weight);
             $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
         }
         if (!$skipReplication) {
