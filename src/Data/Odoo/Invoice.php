@@ -10,7 +10,8 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method string getStatus()
  * @method void setStatus(string $data)
  */
-class Invoice extends \Flancer32\Lib\Data
+class Invoice
+    extends \Flancer32\Lib\Data
 {
 
 }

@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Data\Odoo;
 
 /**
@@ -13,29 +14,22 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method void setNumber(string $data)
  * @method string getDatePaid()
  * @method void setDatePaid(string $data)
- * @method Customer getCustomer()
- * @method void setCustomer(Customer $data)
- * @method Contact getAddrBilling()
- * @method void setAddrBilling(Contact $data)
- * @method Contact getAddrShipping()
- * @method void setAddrShipping(Contact $data)
- * @method string getPriceCurrency()
- * @method void setPriceCurrency(string $data)
- * @method float getPriceTotal()
- * @method void setPriceTotal(float $data)
- * @method float getPriceTax()
- * @method void setPriceTax(float $data)
- * @method float getPriceDiscount()
- * @method void setPriceDiscount(float $data)
+ * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer getCustomer()
+ * @method void setCustomer(\Praxigento\Odoo\Data\Odoo\SaleOrder\Customer $data)
+ * @method \Praxigento\Odoo\Data\Odoo\Contact getAddrBilling()
+ * @method void setAddrBilling(\Praxigento\Odoo\Data\Odoo\Contact $data)
+ * @method \Praxigento\Odoo\Data\Odoo\Contact getAddrShipping()
+ * @method void setAddrShipping(\Praxigento\Odoo\Data\Odoo\Contact $data)
  * @method float getPvTotal()
  * @method void setPvTotal(float $data)
- * @method SaleOrder\Line[] getLines()
- * @method void setLines(SaleOrder\Line[] $data)
- * @method SaleOrder\Shipping getShipping()
- * @method void setShipping(SaleOrder\Shipping $data)
- * @method Payment[] getPayments()
- * @method void setPayments(Payment[] $data)
- *
+ * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Price getPrice()
+ * @method void setPrice(\Praxigento\Odoo\Data\Odoo\SaleOrder\Price $data)
+ * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Line[] getLines()
+ * @method void setLines(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line [] $data)
+ * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping getShipping()
+ * @method void setShipping(\Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping $data)
+ * @method \Praxigento\Odoo\Data\Odoo\Payment[] getPayments()
+ * @method void setPayments(\Praxigento\Odoo\Data\Odoo\Payment [] $data)
  */
 class SaleOrder
     extends \Flancer32\Lib\Data

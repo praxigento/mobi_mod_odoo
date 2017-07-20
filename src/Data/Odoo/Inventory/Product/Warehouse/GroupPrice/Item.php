@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice;
 
 /**
- * Cusotmer group price for product in the warehouse.
+ * Customer group price for product in the warehouse.
  *
  * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */

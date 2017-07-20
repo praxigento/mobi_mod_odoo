@@ -22,7 +22,8 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method string getZip()
  * @method void setZip(string $data)
  */
-class Contact extends \Flancer32\Lib\Data
+class Contact
+    extends \Flancer32\Lib\Data
 {
 
 
