@@ -75,6 +75,73 @@ class Collector
     }
 
     /**
+     * Re-calculate amounts according Odoo formula.
+     *
+     * https://confluence.prxgt.com/x/BYBoB
+     *
+     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
+     */
+    protected function calcAmounts(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
+    {
+        /* calculate really paid amount */
+        $payments = $order->getPayments();
+        $paid = 0;
+        foreach ($payments as $payment) {
+            $paid += $payment->getAmount();
+        }
+        /* reduce paid amount on shipping price (get total for lines only) */
+        $shipping = $order->getShipping();
+        $shippingPriceTotal = $shipping->getPriceAmountTotal();
+        $paid -= $shippingPriceTotal;
+        /* calculate lines summary */
+        $lines = $order->getLines();
+        $totalLines = 0;
+        $taxPercentLine = 0; // assume that all taxes
+        foreach ($lines as $line) {
+            $taxPercentLine = $line->getPriceTaxPercent();
+            $total = $line->getPriceTotalLine();
+            $totalLines += $total;
+        }
+        /* recalculate shipping values using tax value for lines (TODO: use shipping tax directly or remove todo) */
+//        $shippingTax = $shipping->getPriceTaxAmount();
+        $shippingPriceBefore = $shippingPriceTotal / (1 + $taxPercentLine);
+        /* get $k coefficient */
+        $k = $paid / $totalLines;
+        /* fix all lines and totals */
+//        $orderTax = $shippingTax;
+        $orderTax = $shipping->getPriceTaxAmount();
+        $orderDiscount = $shipping->getPriceDiscount();
+        $orderTotal = $shippingPriceTotal;
+        foreach ($lines as $line) {
+            /* base data for calculation */
+            $qty = $line->getQtyLine();
+            $unitPrice = $line->getPriceSaleUnit();
+            $taxPercent = $line->getPriceTaxPercent();
+            $totalLine = $line->getPriceTotalLine();
+            /* calc fixed values */
+            $fixedTotal = $totalLine * $k;
+            $fixedTotal = $this->manFormat->toNumber($fixedTotal);
+            $woDiscountTotal = $qty * $unitPrice * (1 + $taxPercent);
+            $fixedDiscountWithTax = $woDiscountTotal - $fixedTotal;
+            $fixedDiscount = $fixedDiscountWithTax / (1 + $taxPercent);
+            $fixedDiscount = $this->manFormat->toNumber($fixedDiscount);
+            $fixedTaxAmount = ($qty * $unitPrice - $fixedDiscount) * $taxPercent;
+            $fixedTaxAmount = $this->manFormat->toNumber($fixedTaxAmount);
+            /* put fixed values back to $line */
+            $line->setPriceDiscountLine($fixedDiscount);
+            $line->setPriceTaxLine($fixedTaxAmount);
+            $line->setPriceTotalLine($fixedTotal);
+            /* collect order totals */
+            $orderTotal += $fixedTotal;
+            $orderDiscount += $fixedDiscount;
+            $orderTax += $fixedTaxAmount;
+        }
+        $order->setPriceTotal($orderTotal);
+        $order->setPriceDiscount($orderDiscount);
+        $order->setPriceTax($orderTax);
+    }
+
+    /**
      * Get magento data for lots related to order item to be converted into Odoo format.
      *
      * @param $itemId
@@ -300,31 +367,18 @@ class Collector
         $addrBilling = $this->getAddressBilling($mageOrder);
         // addr_shipping
         $addrShipping = $this->getAddressShipping($mageOrder);
-        // price_currency
-        $priceCurrency = $mageOrder->getBaseCurrencyCode();
         // pv_total (with date paid)
         $pvOrder = $this->repoPvSale->getById($orderIdMage);
         $pvTotal = $this->manFormat->toNumber($pvOrder->getTotal());
         $datePaid = $pvOrder->getDatePaid();
+        // price
+        $price = $this->getSaleOrderPrice($mageOrder);
         // lines
         $lines = $this->getSaleOrderLines($mageOrder);
         // shipping
         $shipping = $this->getSaleOrderShipping($mageOrder);
         // payments
         $payments = $this->getSaleOrderPayments($mageOrder);
-        /* calculate totals */
-        $totals = $this->getLinesTotals($lines);
-        // price_total
-        $priceTotal = $totals[self::AMOUNT] + $shipping->getPriceAmountTotal();
-        $priceTotal = $this->manFormat->toNumber($priceTotal);
-        // $priceTotal = $this->_manFormat->toNumber($mageOrder->getBaseGrandTotal());
-        // price_tax
-        $priceTax = $totals[self::TAX] + $shipping->getPriceTaxAmount();
-        $priceTax = $this->manFormat->toNumber($priceTax);
-        // $priceTax = $this->_manFormat->toNumber($mageOrder->getBaseTaxAmount());
-        // price_discount
-        $priceDiscount = $totals[self::DISCOUNT] + $shipping->getPriceDiscount();
-        $priceDiscount = $this->manFormat->toNumber($priceDiscount);
         /* populate Odoo Data Object */
         $result->setIdMage($orderIdMage);
         $result->setWarehouseIdOdoo($warehouseIdOdoo);
@@ -333,11 +387,8 @@ class Collector
         $result->setCustomer($customer);
         $result->setAddrBilling($addrBilling);
         $result->setAddrShipping($addrShipping);
-        $result->setPriceCurrency($priceCurrency);
-        $result->setPriceTotal($priceTotal);
-        $result->setPriceTax($priceTax);
-        $result->setPriceDiscount($priceDiscount);
         $result->setPvTotal($pvTotal);
+        $result->setPrice($price);
         $result->setLines($lines);
         $result->setShipping($shipping);
         $result->setPayments($payments);
@@ -346,72 +397,6 @@ class Collector
         return $result;
     }
 
-    /**
-     * Re-calculate amounts according Odoo formula.
-     *
-     * https://confluence.prxgt.com/x/BYBoB
-     *
-     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
-     */
-    protected function calcAmounts(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
-    {
-        /* calculate really paid amount */
-        $payments = $order->getPayments();
-        $paid = 0;
-        foreach ($payments as $payment) {
-            $paid += $payment->getAmount();
-        }
-        /* reduce paid amount on shipping price (get total for lines only) */
-        $shipping = $order->getShipping();
-        $shippingPriceTotal = $shipping->getPriceAmountTotal();
-        $paid -= $shippingPriceTotal;
-        /* calculate lines summary */
-        $lines = $order->getLines();
-        $totalLines = 0;
-        $taxPercentLine = 0; // assume that all taxes
-        foreach ($lines as $line) {
-            $taxPercentLine = $line->getPriceTaxPercent();
-            $total = $line->getPriceTotalLine();
-            $totalLines += $total;
-        }
-        /* recalculate shipping values using tax value for lines (TODO: use shipping tax directly or remove todo) */
-//        $shippingTax = $shipping->getPriceTaxAmount();
-        $shippingPriceBefore = $shippingPriceTotal / (1 + $taxPercentLine);
-        /* get $k coefficient */
-        $k = $paid / $totalLines;
-        /* fix all lines and totals */
-//        $orderTax = $shippingTax;
-        $orderTax = $shipping->getPriceTaxAmount();
-        $orderDiscount = $shipping->getPriceDiscount();
-        $orderTotal = $shippingPriceTotal;
-        foreach ($lines as $line) {
-            /* base data for calculation */
-            $qty = $line->getQtyLine();
-            $unitPrice = $line->getPriceSaleUnit();
-            $taxPercent = $line->getPriceTaxPercent();
-            $totalLine = $line->getPriceTotalLine();
-            /* calc fixed values */
-            $fixedTotal = $totalLine * $k;
-            $fixedTotal = $this->manFormat->toNumber($fixedTotal);
-            $woDiscountTotal = $qty * $unitPrice * (1 + $taxPercent);
-            $fixedDiscountWithTax = $woDiscountTotal - $fixedTotal;
-            $fixedDiscount = $fixedDiscountWithTax / (1 + $taxPercent);
-            $fixedDiscount = $this->manFormat->toNumber($fixedDiscount);
-            $fixedTaxAmount = ($qty * $unitPrice - $fixedDiscount) * $taxPercent;
-            $fixedTaxAmount = $this->manFormat->toNumber($fixedTaxAmount);
-            /* put fixed values back to $line */
-            $line->setPriceDiscountLine($fixedDiscount);
-            $line->setPriceTaxLine($fixedTaxAmount);
-            $line->setPriceTotalLine($fixedTotal);
-            /* collect order totals */
-            $orderTotal += $fixedTotal;
-            $orderDiscount += $fixedDiscount;
-            $orderTax += $fixedTaxAmount;
-        }
-        $order->setPriceTotal($orderTotal);
-        $order->setPriceDiscount($orderDiscount);
-        $order->setPriceTax($orderTax);
-    }
     /**
      * Extract Odoo compatible customer data from Magento order.
      *
@@ -480,6 +465,57 @@ class Collector
         $odooPayment->setCode($code);
         $odooPayment->setAmount($amount);
         $result[] = $odooPayment;
+        return $result;
+    }
+
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price
+     */
+    protected function getSaleOrderPrice(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price();
+        /* collect data */
+        $currency = $mageOrder->getBaseCurrencyCode();;
+        $gross = 100;
+        $net = 100;
+        $tax = $this->getSaleOrderPriceTax($mageOrder);
+        /* populate Odoo Data Object */
+        $result->setCurrency($currency);
+        $result->setGross($gross);
+        $result->setNet($net);
+        $result->setTax($tax);
+        return $result;
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax
+     */
+    protected function getSaleOrderPriceTax(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax();
+        /* collect data */
+        $total = 100;
+        $rates = $this->getSaleOrderPriceTaxRates($mageOrder);
+        /* populate Odoo Data Object */
+        $result->setTotal($total);
+        $result->setRates($rates);
+        return $result;
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     */
+    protected function getSaleOrderPriceTaxRates(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
+    {
+        $result = [];
+        foreach ([1, 2, 3] as $item) {
+            $rate = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $result[] = $rate;
+        }
         return $result;
     }
 
