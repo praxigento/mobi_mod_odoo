@@ -30,6 +30,8 @@ class Collector
     protected $manStock;
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
     protected $qbLots;
+    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder */
+    protected $qbTaxItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $repoCustomer;
     /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
@@ -60,7 +62,8 @@ class Collector
         \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
         \Praxigento\Odoo\Repo\Entity\IProduct $repoOdooProd,
-        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots
+        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
+        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )
     {
         $this->manObj = $manObj;
@@ -76,73 +79,40 @@ class Collector
         $this->repoWarehouse = $repoWarehouse;
         $this->repoOdooProd = $repoOdooProd;
         $this->qbLots = $qbLots;
+        $this->qbTaxItems = $qbTaxItems;
     }
 
     /**
-     * Re-calculate amounts according Odoo formula.
+     * Get total PV for Sale Order Item.
      *
-     * https://confluence.prxgt.com/x/BYBoB
-     *
-     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
+     * @param int $itemId Sale Order Item ID
+     * @return float Total PV for the Sale Order Item
      */
-    protected function calcAmounts(\Praxigento\Odoo\Data\Odoo\SaleOrder $order)
+    protected function dbGetItemPvTotal($itemId)
     {
-        /* calculate really paid amount */
-        $payments = $order->getPayments();
-        $paid = 0;
-        foreach ($payments as $payment) {
-            $paid += $payment->getAmount();
+        /** @var \Praxigento\Pv\Data\Entity\Sale\Item $data */
+        $data = $this->repoPvSaleItem->getById($itemId);
+        $result = $data->getTotal();
+        return $result;
+    }
+
+    /**
+     * Get all taxes for the Sale Item by item ID (Magento ID).
+     *
+     * @param int $itemId
+     * @return \Flancer32\Lib\Data[]
+     */
+    protected function dbGetItemTaxes($itemId)
+    {
+        $result = [];
+        $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX_ITEM;
+        $where = Cfg::E_SALE_ORDER_TAX_ITEM_A_ITEM_ID . '=' . (int)$itemId;
+        $rows = $this->repoGeneric->getEntities($entity, '*', $where);
+        foreach ($rows as $row) {
+            $data = new \Flancer32\Lib\Data($row);
+            $result[] = $data;
         }
-        /* reduce paid amount on shipping price (get total for lines only) */
-        $shipping = $order->getShipping();
-        $shippingPriceTotal = $shipping->getPriceAmountTotal();
-        $paid -= $shippingPriceTotal;
-        /* calculate lines summary */
-        $lines = $order->getLines();
-        $totalLines = 0;
-        $taxPercentLine = 0; // assume that all taxes
-        foreach ($lines as $line) {
-            $taxPercentLine = $line->getPriceTaxPercent();
-            $total = $line->getPriceTotalLine();
-            $totalLines += $total;
-        }
-        /* recalculate shipping values using tax value for lines (TODO: use shipping tax directly or remove todo) */
-//        $shippingTax = $shipping->getPriceTaxAmount();
-        $shippingPriceBefore = $shippingPriceTotal / (1 + $taxPercentLine);
-        /* get $k coefficient */
-        $k = $paid / $totalLines;
-        /* fix all lines and totals */
-//        $orderTax = $shippingTax;
-        $orderTax = $shipping->getPriceTaxAmount();
-        $orderDiscount = $shipping->getPriceDiscount();
-        $orderTotal = $shippingPriceTotal;
-        foreach ($lines as $line) {
-            /* base data for calculation */
-            $qty = $line->getQtyLine();
-            $unitPrice = $line->getPriceSaleUnit();
-            $taxPercent = $line->getPriceTaxPercent();
-            $totalLine = $line->getPriceTotalLine();
-            /* calc fixed values */
-            $fixedTotal = $totalLine * $k;
-            $fixedTotal = $this->manFormat->toNumber($fixedTotal);
-            $woDiscountTotal = $qty * $unitPrice * (1 + $taxPercent);
-            $fixedDiscountWithTax = $woDiscountTotal - $fixedTotal;
-            $fixedDiscount = $fixedDiscountWithTax / (1 + $taxPercent);
-            $fixedDiscount = $this->manFormat->toNumber($fixedDiscount);
-            $fixedTaxAmount = ($qty * $unitPrice - $fixedDiscount) * $taxPercent;
-            $fixedTaxAmount = $this->manFormat->toNumber($fixedTaxAmount);
-            /* put fixed values back to $line */
-            $line->setPriceDiscountLine($fixedDiscount);
-            $line->setPriceTaxLine($fixedTaxAmount);
-            $line->setPriceTotalLine($fixedTotal);
-            /* collect order totals */
-            $orderTotal += $fixedTotal;
-            $orderDiscount += $fixedDiscount;
-            $orderTax += $fixedTaxAmount;
-        }
-        $order->setPriceTotal($orderTotal);
-        $order->setPriceDiscount($orderDiscount);
-        $order->setPriceTax($orderTax);
+        return $result;
     }
 
     /**
@@ -168,20 +138,71 @@ class Collector
     }
 
     /**
-     * Get all taxes for the Sale Item by item ID (Magento ID).
+     * Get all taxes rates for sale order by order ID.
      *
-     * @param int $itemId
+     * @param $saleId
      * @return \Flancer32\Lib\Data[]
      */
-    protected function dbGetSaleItemTaxes($itemId)
+    protected function dbGetOrderTaxes($saleId)
     {
         $result = [];
-        $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX_ITEM;
-        $where = Cfg::E_SALE_ORDER_TAX_ITEM_A_ITEM_ID . '=' . (int)$itemId;
+        $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX;
+        $where = Cfg::E_SALE_ORDER_TAX_A_ORDER_ID . '=' . (int)$saleId;
         $rows = $this->repoGeneric->getEntities($entity, null, $where);
         foreach ($rows as $row) {
             $data = new \Flancer32\Lib\Data($row);
             $result[] = $data;
+        }
+        return $result;
+    }
+
+    /**
+     * Get tax rates for shipping by sale order ID.
+     *
+     * @param int $saleId
+     * @return \Flancer32\Lib\Data[]
+     */
+    protected function dbGetShippingTaxes($saleId)
+    {
+        $result = [];
+        /* get base query */
+        $query = $this->qbTaxItems->build();
+        /* add conditions */
+        $bindType = 'taxType';
+        $cond = $this->qbTaxItems::AS_ITEM_TAX . '.' . Cfg::E_SALE_ORDER_TAX_ITEM_A_TAXABLE_ITEM_TYPE
+            . '=:' . $bindType;
+        $query->where($cond);
+        /* map query parameters */
+        $bind = [
+            $this->qbTaxItems::BIND_ORDER_ID => $saleId,
+            $bindType => \Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector::ITEM_TYPE_SHIPPING
+        ];
+        /* execute query */
+        $conn = $query->getConnection();
+        $rows = $conn->fetchAll($query, $bind);
+        foreach ($rows as $row) {
+            $data = new \Flancer32\Lib\Data($row);
+            $result[] = $data;
+        }
+        return $result;
+    }
+
+    /**
+     * Get tax rate code by tax rate ID.
+     *
+     * @param int $taxId
+     * @return string|null
+     */
+    protected function dbGetTaxCodeByTaxId($taxId)
+    {
+        $result = null;
+        $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX;
+        $where = Cfg::E_SALE_ORDER_TAX_A_TAX_ID . '=' . (int)$taxId;
+        $rows = $this->repoGeneric->getEntities($entity, '*', $where);
+        if (is_array($rows)) {
+            /* one only row should present in result set */
+            $row = reset($rows);
+            $result = $row[Cfg::E_SALE_ORDER_TAX_A_CODE];
         }
         return $result;
     }
@@ -255,6 +276,52 @@ class Collector
     }
 
     /**
+     * @param \Magento\Sales\Api\Data\OrderItemInterface $item
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax
+     */
+    protected function getItemTax(\Magento\Sales\Api\Data\OrderItemInterface $item)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax();
+        $itemMageId = $item->getItemId();
+        /* collect data */
+        $rates = $this->getItemTaxRates($itemMageId);
+        $rate = reset($rates);
+        $base = $rate->getAmount() / $rate->getPercent();
+        $base = $this->manFormat->toNumber($base);
+        /* populate Odoo Data Object */
+        $result->setBase($base);
+        $result->setRates($rates);
+        return $result;
+    }
+
+    /**
+     * @param int $itemIdMage
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     */
+    protected function getItemTaxRates($itemIdMage)
+    {
+        $result = [];
+        $rates = $this->dbGetItemTaxes($itemIdMage);
+        foreach ($rates as $rate) {
+            /* collect data */
+            $taxId = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_TAX_ID);
+            $code = $this->dbGetTaxCodeByTaxId($taxId);
+            $percent = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_TAX_PERCENT);
+            $percent /= 100;
+            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $amount = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_REAL_BASE_AMOUNT);
+            $amount = $this->manFormat->toNumber($amount);
+            /* init Odoo data object */
+            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $data->setCode($code);
+            $data->setAmount($amount);
+            $data->setPercent($percent);
+            $result[] = $data;
+        }
+        return $result;
+    }
+
+    /**
      * Calculates totals for all lines (amount, discount, tax).
      *
      * @param \Praxigento\Odoo\Data\Odoo\SaleOrder\Line[] $lines
@@ -290,52 +357,38 @@ class Collector
         $itemIdMage = $item->getId();
         $productIdMage = $item->getProductId();
         $productIdOdoo = $this->repoOdooProd->getOdooIdByMageId($productIdMage);
-        $qtyLine = $item->getQtyOrdered();
-        $qtyLine = $this->manFormat->toNumber($qtyLine);
-        $price = $this->getOrderLinePrice($item);
-        /* price related attributes */
-        $priceSaleUnit = $item->get($this->qbOrderItems::A_BASE_PRICE);
-        $priceSaleUnit = $this->manFormat->toNumber($priceSaleUnit);
-        $priceDiscountLine = 0; // to be calculated later
-        $taxPercent = $item->get($this->qbOrderItems::A_TAX_PERCENT);
-        $taxPercent = $taxPercent / 100;
-        $priceTaxPercent = $this->manFormat->toNumber($taxPercent, Cfg::ODOO_API_PERCENT_ROUND);
-        $priceTotalLine = $item->get($this->qbOrderItems::A_BASE_ROW_TOTAL_INCL_TAX);
-        $priceTotalLine = $this->manFormat->toNumber($priceTotalLine);
-        $priceTaxLine = 0;  // to be calculated later
+        $qty = $item->getQtyOrdered();
+        $qty = $this->manFormat->toNumber($qty);
+        $lots = $this->getOrderLineLots($itemIdMage);
+        $tax = $this->getItemTax($item);
         /* PV attributes */
-        $pvSubtotal = $item->get($this->qbOrderItems::A_PV_SUBTOTAL);
-        $pvSaleUnit = ($pvSubtotal / $qtyLine);
-        $pvSaleUnit = $this->manFormat->toNumber($pvSaleUnit);
-        $pvDiscountLine = abs($item->get($this->qbOrderItems::A_PV_DISCOUNT));
-        $pvDiscountLine = $this->manFormat->toNumber($pvDiscountLine);
+        $pv = $this->dbGetItemPvTotal($itemIdMage);
+        $pv = $this->manFormat->toNumber($pv);
         /* init Odoo data object */
         $result->setProductIdOdoo($productIdOdoo);
-        $result->setQtyLine($qtyLine);
-        $result->setLots([]); // will be used later
-        $result->setPriceSaleUnit($priceSaleUnit);
-        $result->setPriceDiscountLine($priceDiscountLine);
-        $result->setPriceTaxPercent($priceTaxPercent);
-        $result->setPriceTotalLine($priceTotalLine);
-        $result->setPriceTaxLine($priceTaxLine);
-        $result->setPvSaleUnit($pvSaleUnit);
-        $result->setPvDiscountLine($pvDiscountLine);
+        $result->setQty($qty);
+        $result->setLots($lots);
+        $result->setTax($tax);
+        $result->setPv($pv);
         return $result;
     }
 
     /**
-     * Convert DB data into Odoo API data.
+     * Get lots data from DB and convert into Odoo API data.
      *
-     * @param \Flancer32\Lib\Data[] $lotsData
+     * @param int $itemId
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot[]
      */
-    protected function getOrderLineLots($lotsData)
+    protected function getOrderLineLots($itemId)
     {
         $result = [];
-        foreach ($lotsData as $one) {
+        /* request lots data for the sale item */
+        $dbDataLots = $this->dbGetLots($itemId);
+        foreach ($dbDataLots as $one) {
             $lot = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
             /* Lot's ID in Odoo */
             $idOdoo = (int)$one->get($this->qbLots::A_ODOO_ID);
+            /* skip lot for products w/o lots */
             if ($idOdoo != Cfg::NULL_LOT_ID) $lot->setIdOdoo($idOdoo);
             /* qty in this lot */
             $qty = $one->get($this->qbLots::A_TOTAL);
@@ -347,35 +400,45 @@ class Collector
     }
 
     /**
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $item
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax
      */
-    protected function getOrderLinePrice(\Magento\Sales\Api\Data\OrderItemInterface $item)
+    protected function getOrderPriceTax(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax();
-        $itemMageId = $item->getItemId();
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax();
         /* collect data */
-        $net = 'computed';
-        $rates = $this->getOrderLinePriceTaxRates($itemMageId);
+        $total = $mageOrder->getBaseTaxAmount();
+        $total = $this->manFormat->toNumber($total);
+        $base = $mageOrder->getBaseGrandTotal() - $total;
+        $base = $this->manFormat->toNumber($base);
         /* populate Odoo Data Object */
-        $result->setBase($net);
-        $result->setRates($rates);
+        $result->setBase($base);
+        $result->setTotal($total);
         return $result;
     }
 
     /**
-     * @param int $itemIdMage
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate
+     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
      */
-    protected function getOrderLinePriceTaxRates($itemIdMage)
+    protected function getOrderPriceTaxRates(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $result = [];
-        $rates = $this->dbGetSaleItemTaxes($itemIdMage);
-        foreach ($rates as $rate) {
-            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
-            $data->setAmount($rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_REAL_BASE_AMOUNT));
-            $data->setPercent($rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_TAX_PERCENT));
-            $result[] = $data;
+        $saleId = $mageOrder->getId();
+        $rows = $this->dbGetOrderTaxes($saleId);
+        foreach ($rows as $row) {
+            /* collect data */
+            $code = $row->get(Cfg::E_SALE_ORDER_TAX_A_CODE);
+            $percent = $row->get(Cfg::E_SALE_ORDER_TAX_A_PERCENT);
+            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $amount = $row->get(Cfg::E_SALE_ORDER_TAX_A_AMOUNT);
+            $amount = $this->manFormat->toNumber($amount);
+            /* populate Odoo Data Object */
+            $rate = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $rate->setCode($code);
+            $rate->setPercent($percent);
+            $rate->setAmount($amount);
+            $result[] = $rate;
         }
         return $result;
     }
@@ -413,7 +476,7 @@ class Collector
         // lines
         $lines = $this->getSaleOrderLines($mageOrder);
         // shipping
-        $shipping = $this->getSaleOrderShipping($mageOrder);
+        $shipping = $this->getShipping($mageOrder);
         // payments
         $payments = $this->getSaleOrderPayments($mageOrder);
         /* populate Odoo Data Object */
@@ -429,8 +492,7 @@ class Collector
         $result->setLines($lines);
         $result->setShipping($shipping);
         $result->setPayments($payments);
-        /* calculate prices & taxes according to Odoo formula */
-        $this->calcAmounts($result);
+
         return $result;
     }
 
@@ -465,22 +527,14 @@ class Collector
      */
     protected function getSaleOrderLines(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
-        $lines = [];
+        $result = [];
         /* collect data */
         $items = $mageOrder->getAllItems();
-//        $orderId = $mageOrder->getId();
-//        $dbDataItems = $this->dbGetOrderItems($orderId);
         foreach ($items as $item) {
-            /* process order line */
+            /* process order item */
             $line = $this->getOrderLine($item);
-            /* request lots data for the sale item */
-            $dbDataLots = $this->dbGetLots($itemMageId);
-            $lots = $this->getOrderLineLots($dbDataLots);
-            $line->setLots($lots);
-            $lines[$productIdOdoo] = $line;
+            $result[] = $line;
         }
-        /* remove keys from array */
-        $result = array_values($lines);
         return $result;
     }
 
@@ -504,7 +558,6 @@ class Collector
         return $result;
     }
 
-
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price
@@ -514,44 +567,15 @@ class Collector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price();
         /* collect data */
         $currency = $mageOrder->getBaseCurrencyCode();;
-        $gross = 100;
-        $net = 100;
-        $tax = $this->getSaleOrderPriceTax($mageOrder);
+        $paid = $mageOrder->getBaseTotalPaid();
+        $due = $mageOrder->getBaseTotalDue();
+        $paid += $due;
+        $paid = $this->manFormat->toNumber($paid);
+        $tax = $this->getOrderPriceTax($mageOrder);
         /* populate Odoo Data Object */
         $result->setCurrency($currency);
-        $result->setPaid($gross);
-        $result->setNet($net);
+        $result->setPaid($paid);
         $result->setTax($tax);
-        return $result;
-    }
-
-    /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax
-     */
-    protected function getSaleOrderPriceTax(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
-    {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax();
-        /* collect data */
-        $total = 100;
-        $rates = $this->getSaleOrderPriceTaxRates($mageOrder);
-        /* populate Odoo Data Object */
-        $result->setTotal($total);
-        $result->setRates($rates);
-        return $result;
-    }
-
-    /**
-     * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
-     */
-    protected function getSaleOrderPriceTaxRates(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
-    {
-        $result = [];
-        foreach ([1, 2, 3] as $item) {
-            $rate = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
-            $result[] = $rate;
-        }
         return $result;
     }
 
@@ -559,34 +583,72 @@ class Collector
      * @param \Magento\Sales\Api\Data\OrderInterface $mageOrder
      * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping
      */
-    protected function getSaleOrderShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
+    protected function getShipping(\Magento\Sales\Api\Data\OrderInterface $mageOrder)
     {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
         /* collect data */
         $code = $this->manBusinessCodes->getBusCodeForShippingMethod($mageOrder);
-        $priceAmount = $mageOrder->getBaseShippingAmount();
-        $priceAmount = $this->manFormat->toNumber($priceAmount);
-        $priceDiscount = $mageOrder->getBaseShippingDiscountAmount();
-        $priceDiscount = $this->manFormat->toNumber($priceDiscount);
-        $priceTaxAmount = $mageOrder->getBaseShippingTaxAmount();
-        $priceTaxAmount = $this->manFormat->toNumber($priceTaxAmount);
-        if (($priceAmount + $priceDiscount + $priceTaxAmount) < Cfg::DEF_ZERO) {
-            /* free shipping */
-            $priceTaxPercent = 0;
-        } else {
-            $priceTaxPercent = $priceTaxAmount / ($priceAmount - $priceDiscount);
-        }
-        $priceTaxPercent = $this->manFormat->toNumber($priceTaxPercent, Cfg::ODOO_API_PERCENT_ROUND);
-        $priceAmountTotal = ($priceAmount - $priceDiscount) * (1 + $priceTaxPercent);
-        $priceAmountTotal = $this->manFormat->toNumber($priceAmountTotal);
+        $tax = $this->getShippingTax($mageOrder);
         /* populate Odoo Data Object */
         $result->setCode($code);
-        $result->setPriceAmount($priceAmount);
-        $result->setPriceDiscount($priceDiscount);
-        $result->setPriceTaxPercent($priceTaxPercent);
-        $result->setPriceTaxAmount($priceTaxAmount);
-        $result->setPriceAmountTotal($priceAmountTotal);
+        $result->setTax($tax);
         return $result;
     }
 
+    /**
+     * @param \Magento\Sales\Api\Data\OrderInterface $sale
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping\Tax
+     */
+    protected function getShippingTax(\Magento\Sales\Api\Data\OrderInterface $sale)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping\Tax();
+        /* collect data */
+        // TODO: don't calculate base for Generic (tax excl.)
+//        $base = $sale->getBaseShippingAmount();
+//        $base = $this->manFormat->toNumber($base);
+        $base = 0;
+        $saleId = $sale->getEntityId();
+        $rates = $this->getShippingTaxRates($saleId);
+        /* calc base for tax incl. scheme */
+        $rate = reset($rates);
+        if ($rate) {
+            $percent = $rate->getPercent();
+            $amount = $rate->getAmount();
+            if ($percent > Cfg::DEF_ZERO) {
+                $base = $amount / $percent;
+                $base = $this->manFormat->toNumber($base);
+            }
+        }
+        /* populate Odoo Data Object */
+        $result->setBase($base);
+        $result->setRates($rates);
+        return $result;
+    }
+
+    /**
+     * @param int $saleId
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     */
+    protected function getShippingTaxRates($saleId)
+    {
+        $result = [];
+        $rows = $this->dbGetShippingTaxes($saleId);
+        foreach ($rows as $row) {
+            /* collect data */
+            $code = $row->get($this->qbTaxItems::A_TAX_CODE);
+            $percent = $row->get($this->qbTaxItems::A_TAX_PERCENT);
+            $percent /= 100;
+            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $amount = $row->get($this->qbTaxItems::A_AMOUNT);
+            $amount = $this->manFormat->toNumber($amount);
+
+            /* populate Odoo Data Object */
+            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $data->setCode($code);
+            $data->setPercent($percent);
+            $data->setAmount($amount);
+            $result[] = $data;
+        }
+        return $result;
+    }
 }
