@@ -14,7 +14,6 @@ abstract class BaseOdooEntity
     extends \Praxigento\Core\Repo\Def\Entity
     implements \Praxigento\Odoo\Repo\Entity\IOdooEntity
 {
-    /** @inheritdoc */
     public function getByOdooId($id)
     {
         $result = null;
@@ -30,13 +29,23 @@ abstract class BaseOdooEntity
         return $result;
     }
 
-    /** @inheritdoc */
     public function getMageIdByOdooId($id)
     {
         $result = null;
         $item = $this->getByOdooId($id);
         if ($item) {
             $result = $item->getMageRef();
+        }
+        return $result;
+    }
+
+    public function getOdooIdByMageId($id)
+    {
+        $result = null;
+        /** @var \Praxigento\Odoo\Data\Entity\IOdooEntity $item */
+        $item = $this->getById($id);
+        if ($item) {
+            $result = $item->getOdooRef();
         }
         return $result;
     }

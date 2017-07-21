@@ -30,12 +30,14 @@ class Collector
     protected $manStock;
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
     protected $qbLots;
-    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Get\Builder */
-    protected $qbOrderItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $repoCustomer;
     /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
     protected $repoDwnlCustomer;
+    /** @var \Praxigento\Core\Repo\IGeneric */
+    protected $repoGeneric;
+    /** @var \Praxigento\Odoo\Repo\Entity\IProduct */
+    protected $repoOdooProd;
     /** @var \Praxigento\Pv\Repo\Entity\ISale */
     protected $repoPvSale;
     /** @var \Praxigento\Pv\Repo\Entity\Sale\IItem */
@@ -50,13 +52,14 @@ class Collector
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat,
+        \Praxigento\Core\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
         \Praxigento\Warehouse\Repo\Entity\Quantity\ISale $repoWrhsQtySale,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
-        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Get\Builder $qbOrderItems,
+        \Praxigento\Odoo\Repo\Entity\IProduct $repoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots
     )
     {
@@ -64,13 +67,14 @@ class Collector
         $this->manStock = $manStock;
         $this->manBusinessCodes = $manBusinessCodes;
         $this->manFormat = $manFormat;
+        $this->repoGeneric = $repoGeneric;
         $this->repoCustomer = $repoCustomer;
         $this->repoDwnlCustomer = $repoDwnlCustomer;
         $this->repoPvSale = $repoPvSale;
         $this->repoPvSaleItem = $repoPvSaleItem;
         $this->repoWrhsQtySale = $repoWrhsQtySale;
         $this->repoWarehouse = $repoWarehouse;
-        $this->qbOrderItems = $qbOrderItems;
+        $this->repoOdooProd = $repoOdooProd;
         $this->qbLots = $qbLots;
     }
 
@@ -164,24 +168,20 @@ class Collector
     }
 
     /**
-     * Get magento data for order items to be converted into Odoo format.
+     * Get all taxes for the Sale Item by item ID (Magento ID).
      *
-     * @param $orderId
+     * @param int $itemId
      * @return \Flancer32\Lib\Data[]
      */
-    protected function dbGetOrderItems($orderId)
+    protected function dbGetSaleItemTaxes($itemId)
     {
         $result = [];
-        $query = $this->qbOrderItems->build();
-        $conn = $query->getConnection();
-        $bind = [
-            $this->qbOrderItems::BIND_ORDER_ID => $orderId
-        ];
-        $rows = $conn->fetchAll($query, $bind);
+        $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX_ITEM;
+        $where = Cfg::E_SALE_ORDER_TAX_ITEM_A_ITEM_ID . '=' . (int)$itemId;
+        $rows = $this->repoGeneric->getEntities($entity, null, $where);
         foreach ($rows as $row) {
             $data = new \Flancer32\Lib\Data($row);
-            $itemId = $row[$this->qbOrderItems::A_ITEM_ID];
-            $result[$itemId] = $data;
+            $result[] = $data;
         }
         return $result;
     }
@@ -212,72 +212,6 @@ class Collector
         if ($city) $result->setCity($city);
         if ($street) $result->setStreet($street);
         if ($zip) $result->setZip($zip);
-        return $result;
-    }
-
-    /**
-     * Get data from DB query and compose initial Odoo data object,
-     *
-     * @param \Flancer32\Lib\Data $item
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
-     */
-    protected function extractLine(\Flancer32\Lib\Data $item)
-    {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
-        /* collect data */
-        $productIdOdoo = (int)$item->get($this->qbOrderItems::A_ODOO_REF);
-        $qtyLine = $item->get($this->qbOrderItems::A_QTY_ORDERED);
-        $qtyLine = $this->manFormat->toNumber($qtyLine);
-        /* price related attributes */
-        $priceSaleUnit = $item->get($this->qbOrderItems::A_BASE_PRICE);
-        $priceSaleUnit = $this->manFormat->toNumber($priceSaleUnit);
-        $priceDiscountLine = 0; // to be calculated later
-        $taxPercent = $item->get($this->qbOrderItems::A_TAX_PERCENT);
-        $taxPercent = $taxPercent / 100;
-        $priceTaxPercent = $this->manFormat->toNumber($taxPercent, Cfg::ODOO_API_PERCENT_ROUND);
-        $priceTotalLine = $item->get($this->qbOrderItems::A_BASE_ROW_TOTAL_INCL_TAX);
-        $priceTotalLine = $this->manFormat->toNumber($priceTotalLine);
-        $priceTaxLine = 0;  // to be calculated later
-        /* PV attributes */
-        $pvSubtotal = $item->get($this->qbOrderItems::A_PV_SUBTOTAL);
-        $pvSaleUnit = ($pvSubtotal / $qtyLine);
-        $pvSaleUnit = $this->manFormat->toNumber($pvSaleUnit);
-        $pvDiscountLine = abs($item->get($this->qbOrderItems::A_PV_DISCOUNT));
-        $pvDiscountLine = $this->manFormat->toNumber($pvDiscountLine);
-        /* init Odoo data object */
-        $result->setProductIdOdoo($productIdOdoo);
-        $result->setQtyLine($qtyLine);
-        $result->setLots([]); // will be used later
-        $result->setPriceSaleUnit($priceSaleUnit);
-        $result->setPriceDiscountLine($priceDiscountLine);
-        $result->setPriceTaxPercent($priceTaxPercent);
-        $result->setPriceTotalLine($priceTotalLine);
-        $result->setPriceTaxLine($priceTaxLine);
-        $result->setPvSaleUnit($pvSaleUnit);
-        $result->setPvDiscountLine($pvDiscountLine);
-        return $result;
-    }
-
-    /**
-     * Convert DB data into Odoo API data.
-     *
-     * @param \Flancer32\Lib\Data[] $lotsData
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot[]
-     */
-    protected function extractLineLots($lotsData)
-    {
-        $result = [];
-        foreach ($lotsData as $one) {
-            $lot = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
-            /* Lot's ID in Odoo */
-            $idOdoo = (int)$one->get($this->qbLots::A_ODOO_ID);
-            if ($idOdoo != Cfg::NULL_LOT_ID) $lot->setIdOdoo($idOdoo);
-            /* qty in this lot */
-            $qty = $one->get($this->qbLots::A_TOTAL);
-            $qty = $this->manFormat->toNumber($qty);
-            $lot->setQty($qty);
-            $result[] = $lot;
-        }
         return $result;
     }
 
@@ -340,6 +274,109 @@ class Collector
         $result[self::AMOUNT] = $amount;
         $result[self::DISCOUNT] = $discount;
         $result[self::TAX] = $tax;
+        return $result;
+    }
+
+    /**
+     * Extract data from magento model and compose initial Odoo data object,
+     *
+     * @param \Magento\Sales\Api\Data\OrderItemInterface $item
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
+     */
+    protected function getOrderLine(\Magento\Sales\Api\Data\OrderItemInterface $item)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
+        /* collect data */
+        $itemIdMage = $item->getId();
+        $productIdMage = $item->getProductId();
+        $productIdOdoo = $this->repoOdooProd->getOdooIdByMageId($productIdMage);
+        $qtyLine = $item->getQtyOrdered();
+        $qtyLine = $this->manFormat->toNumber($qtyLine);
+        $price = $this->getOrderLinePrice($item);
+        /* price related attributes */
+        $priceSaleUnit = $item->get($this->qbOrderItems::A_BASE_PRICE);
+        $priceSaleUnit = $this->manFormat->toNumber($priceSaleUnit);
+        $priceDiscountLine = 0; // to be calculated later
+        $taxPercent = $item->get($this->qbOrderItems::A_TAX_PERCENT);
+        $taxPercent = $taxPercent / 100;
+        $priceTaxPercent = $this->manFormat->toNumber($taxPercent, Cfg::ODOO_API_PERCENT_ROUND);
+        $priceTotalLine = $item->get($this->qbOrderItems::A_BASE_ROW_TOTAL_INCL_TAX);
+        $priceTotalLine = $this->manFormat->toNumber($priceTotalLine);
+        $priceTaxLine = 0;  // to be calculated later
+        /* PV attributes */
+        $pvSubtotal = $item->get($this->qbOrderItems::A_PV_SUBTOTAL);
+        $pvSaleUnit = ($pvSubtotal / $qtyLine);
+        $pvSaleUnit = $this->manFormat->toNumber($pvSaleUnit);
+        $pvDiscountLine = abs($item->get($this->qbOrderItems::A_PV_DISCOUNT));
+        $pvDiscountLine = $this->manFormat->toNumber($pvDiscountLine);
+        /* init Odoo data object */
+        $result->setProductIdOdoo($productIdOdoo);
+        $result->setQtyLine($qtyLine);
+        $result->setLots([]); // will be used later
+        $result->setPriceSaleUnit($priceSaleUnit);
+        $result->setPriceDiscountLine($priceDiscountLine);
+        $result->setPriceTaxPercent($priceTaxPercent);
+        $result->setPriceTotalLine($priceTotalLine);
+        $result->setPriceTaxLine($priceTaxLine);
+        $result->setPvSaleUnit($pvSaleUnit);
+        $result->setPvDiscountLine($pvDiscountLine);
+        return $result;
+    }
+
+    /**
+     * Convert DB data into Odoo API data.
+     *
+     * @param \Flancer32\Lib\Data[] $lotsData
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot[]
+     */
+    protected function getOrderLineLots($lotsData)
+    {
+        $result = [];
+        foreach ($lotsData as $one) {
+            $lot = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
+            /* Lot's ID in Odoo */
+            $idOdoo = (int)$one->get($this->qbLots::A_ODOO_ID);
+            if ($idOdoo != Cfg::NULL_LOT_ID) $lot->setIdOdoo($idOdoo);
+            /* qty in this lot */
+            $qty = $one->get($this->qbLots::A_TOTAL);
+            $qty = $this->manFormat->toNumber($qty);
+            $lot->setQty($qty);
+            $result[] = $lot;
+        }
+        return $result;
+    }
+
+    /**
+     * @param \Magento\Sales\Api\Data\OrderItemInterface $item
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price
+     */
+    protected function getOrderLinePrice(\Magento\Sales\Api\Data\OrderItemInterface $item)
+    {
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price();
+        $itemMageId = $item->getItemId();
+        /* collect data */
+        $net = 'computed';
+        $rates = $this->getOrderLinePriceTaxRates($itemMageId);
+        /* populate Odoo Data Object */
+        $result->setNet($net);
+        $result->setTaxRates($rates);
+        return $result;
+    }
+
+    /**
+     * @param int $itemIdMage
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate
+     */
+    protected function getOrderLinePriceTaxRates($itemIdMage)
+    {
+        $result = [];
+        $rates = $this->dbGetSaleItemTaxes($itemIdMage);
+        foreach ($rates as $rate) {
+            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $data->setAmount($rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_REAL_BASE_AMOUNT));
+            $data->setPercent($rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_TAX_PERCENT));
+            $result[] = $data;
+        }
         return $result;
     }
 
@@ -430,16 +467,15 @@ class Collector
     {
         $lines = [];
         /* collect data */
-        $orderId = $mageOrder->getId();
-        $dbDataItems = $this->dbGetOrderItems($orderId);
-        foreach ($dbDataItems as $item) {
-            $productIdOdoo = $item->get($this->qbOrderItems::A_ODOO_REF);
-            $itemId = $item->get($this->qbOrderItems::A_ITEM_ID);
+        $items = $mageOrder->getAllItems();
+//        $orderId = $mageOrder->getId();
+//        $dbDataItems = $this->dbGetOrderItems($orderId);
+        foreach ($items as $item) {
             /* process order line */
-            $line = $this->extractLine($item);
+            $line = $this->getOrderLine($item);
             /* request lots data for the sale item */
-            $dbDataLots = $this->dbGetLots($itemId);
-            $lots = $this->extractLineLots($dbDataLots);
+            $dbDataLots = $this->dbGetLots($itemMageId);
+            $lots = $this->getOrderLineLots($dbDataLots);
             $line->setLots($lots);
             $lines[$productIdOdoo] = $line;
         }

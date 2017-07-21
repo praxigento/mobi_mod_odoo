@@ -56,7 +56,6 @@
 
     <!-- Repo / Agg -->
     <preference for="Praxigento\Odoo\Repo\Agg\Store\ILot" type="Praxigento\Odoo\Repo\Agg\Store\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\Store\ISaleOrderItem" type="Praxigento\Odoo\Repo\Agg\Store\SaleOrderItem"/>
     <preference for="Praxigento\Odoo\Repo\Agg\Store\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Store\Warehouse"/>
 
 

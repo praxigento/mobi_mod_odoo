@@ -30,6 +30,7 @@ use Praxigento\Pv\Data\Entity\Sale\Item as EPv;
  * ON pv.sale_item_id = items.item_id
  * WHERE (items.order_id = :orderId)
  *
+ * @deprecated remove it
  */
 class Builder
     extends \Praxigento\Core\Repo\Query\Builder

@@ -5,8 +5,8 @@
 
 namespace Praxigento\Odoo\Repo\Agg\Store;
 
-use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
+use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 class Lot
@@ -124,6 +124,12 @@ class Lot
             $this->_checkNullLot();
         }
         $result = $this->repoEntityLot->getMageIdByOdooId($id);
+        return $result;
+    }
+
+    public function getOdooIdByMageId($id)
+    {
+        $result = $this->repoEntityLot->getOdooIdByMageId($id);
         return $result;
     }
 
