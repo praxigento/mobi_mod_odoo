@@ -18,7 +18,7 @@ class DataHandler
     protected $repoGroupPrice;
     /** @var  \Praxigento\Odoo\Repo\IPv */
     protected $repoPvMod;
-    /** @var \Praxigento\Pv\Repo\Entity\Stock\Def\Item */
+    /** @var \Praxigento\Pv\Repo\Entity\Stock\Item */
     protected $repoPvStockItem;
     /** @var   \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
     protected $repoStockItem;
@@ -33,7 +33,7 @@ class DataHandler
         \Magento\Customer\Api\GroupRepositoryInterface $repoCustGroup,
         \Praxigento\Odoo\Repo\IPv $repoPvMod,
         \Praxigento\Warehouse\Repo\Entity\Stock\IItem $repoWrhsStockItem,
-        \Praxigento\Pv\Repo\Entity\Stock\Def\Item $repoPvStockItem,
+        \Praxigento\Pv\Repo\Entity\Stock\Item $repoPvStockItem,
         \Praxigento\Warehouse\Repo\Entity\Group\IPrice $repoGroupPrice,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusCodes,
         \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot $subLot

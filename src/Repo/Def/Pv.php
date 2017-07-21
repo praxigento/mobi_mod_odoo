@@ -11,14 +11,14 @@ use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
 
 class Pv implements IPv
 {
-    /** @var  \\Praxigento\Pv\Repo\Entity\Def\Product */
+    /** @var  \\Praxigento\Pv\Repo\Entity\Product */
     protected $_repoPvProduct;
-    /** @var \Praxigento\Pv\Repo\Entity\Stock\Def\Item */
+    /** @var \Praxigento\Pv\Repo\Entity\Stock\Item */
     protected $_repoPvStockItem;
 
     public function __construct(
-        \Praxigento\Pv\Repo\Entity\Def\Product $repoPvProduct,
-        \Praxigento\Pv\Repo\Entity\Stock\Def\Item $repoPvStockItem
+        \Praxigento\Pv\Repo\Entity\Product $repoPvProduct,
+        \Praxigento\Pv\Repo\Entity\Stock\Item $repoPvStockItem
     ) {
         $this->_repoPvProduct = $repoPvProduct;
         $this->_repoPvStockItem = $repoPvStockItem;
