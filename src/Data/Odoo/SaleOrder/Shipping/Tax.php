@@ -5,8 +5,8 @@
 
 namespace Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping;
 
-class Price
-    extends \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price
+class Tax
+    extends \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax
 {
 
 }

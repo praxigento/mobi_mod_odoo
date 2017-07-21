@@ -11,8 +11,8 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setQtyLine(float $data)
  * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot[] getLots()
  * @method void setLots(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot [] $data)
- * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price getPrice()
- * @method void setPrice(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price $data)
+ * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax getPrice()
+ * @method void setPrice(\Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax $data)
  * @method float getPvSaleUnit()
  * @method void setPvSaleUnit(float $data)
  */

@@ -8,11 +8,9 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
 /**
  * @method string getCurrency()
  * @method void setCurrency(string $data)
- * @method float getGross()
- * @method void setGross(float $data)
- * @method float getNet()
- * @method void setNet(float $data)
- * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax getTax()
+ * @method float getPaid()
+ * @method void setPaid(float $data)
+  * @method \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax getTax()
  * @method void setTax(\Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax $data)
  */
 class Price

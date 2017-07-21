@@ -348,18 +348,18 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $item
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price
+     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax
      */
     protected function getOrderLinePrice(\Magento\Sales\Api\Data\OrderItemInterface $item)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Price();
+        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax();
         $itemMageId = $item->getItemId();
         /* collect data */
         $net = 'computed';
         $rates = $this->getOrderLinePriceTaxRates($itemMageId);
         /* populate Odoo Data Object */
-        $result->setNet($net);
-        $result->setTaxRates($rates);
+        $result->setBase($net);
+        $result->setRates($rates);
         return $result;
     }
 
@@ -519,7 +519,7 @@ class Collector
         $tax = $this->getSaleOrderPriceTax($mageOrder);
         /* populate Odoo Data Object */
         $result->setCurrency($currency);
-        $result->setGross($gross);
+        $result->setPaid($gross);
         $result->setNet($net);
         $result->setTax($tax);
         return $result;
