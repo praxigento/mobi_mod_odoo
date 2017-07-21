@@ -30,9 +30,9 @@ class Collector
     protected $repoGeneric;
     /** @var \Praxigento\Odoo\Repo\Entity\IProduct */
     protected $repoOdooProd;
-    /** @var \Praxigento\Pv\Repo\Entity\ISale */
+    /** @var \Praxigento\Pv\Repo\Entity\Sale */
     protected $repoPvSale;
-    /** @var \Praxigento\Pv\Repo\Entity\Sale\IItem */
+    /** @var \Praxigento\Pv\Repo\Entity\Sale\Item */
     protected $repoPvSaleItem;
     /** @var \Praxigento\Odoo\Repo\Entity\IWarehouse */
     protected $repoWarehouse;
@@ -44,8 +44,8 @@ class Collector
         \Praxigento\Core\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
-        \Praxigento\Pv\Repo\Entity\ISale $repoPvSale,
-        \Praxigento\Pv\Repo\Entity\Sale\IItem $repoPvSaleItem,
+        \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
+        \Praxigento\Pv\Repo\Entity\Sale\Item $repoPvSaleItem,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
         \Praxigento\Odoo\Repo\Entity\IProduct $repoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,

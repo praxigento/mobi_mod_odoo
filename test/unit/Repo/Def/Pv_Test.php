@@ -21,8 +21,8 @@ class Pv_UnitTest extends \Praxigento\Core\Test\BaseCase\Mockery
     {
         parent::setUp();
         /** create mocks */
-        $this->mRepoPvProduct = $this->_mock(\Praxigento\Pv\Repo\Entity\IProduct::class);
-        $this->mRepoPvStockItem = $this->_mock(\Praxigento\Pv\Repo\Entity\Stock\IItem::class);
+        $this->mRepoPvProduct = $this->_mock(\Praxigento\Pv\Repo\Entity\Product::class);
+        $this->mRepoPvStockItem = $this->_mock(\Praxigento\Pv\Repo\Entity\Stock\Item::class);
         /** setup mocks for constructor */
         /** create object to test */
         $this->obj = new Pv(
