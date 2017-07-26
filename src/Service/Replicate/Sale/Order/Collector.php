@@ -327,7 +327,7 @@ class Collector
         /* collect data */
         $itemIdMage = $item->getId();
         $productIdMage = $item->getProductId();
-        $productIdOdoo = $this->repoOdooProd->getOdooIdByMageId($productIdMage);
+        $productIdOdoo = (int)$this->repoOdooProd->getOdooIdByMageId($productIdMage);
         $qty = $item->getQtyOrdered();
         $qty = $this->manFormat->toNumber($qty);
         $lots = $this->getOrderLineLots($itemIdMage);
