@@ -8,7 +8,6 @@ use Praxigento\Odoo\Data\Entity\Category as Entity;
 
 class Category
     extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\ICategory
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,

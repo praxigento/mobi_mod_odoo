@@ -12,18 +12,17 @@ class Order
     extends \Praxigento\Core\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
 {
-    /** @var \Praxigento\Odoo\Repo\Entity\ISaleOrder */
+    /** @var \Praxigento\Odoo\Repo\Entity\Def\SaleOrder */
     protected $repoEntitySaleOrder;
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector */
-    protected $subCollector;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
     protected $repoOdooSaleOrder;
-
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector */
+    protected $subCollector;
 
     public function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
+        \Praxigento\Odoo\Repo\Entity\Def\SaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
     )

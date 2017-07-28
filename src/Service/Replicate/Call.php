@@ -15,7 +15,7 @@ class Call implements IReplicate
     protected $_logger;
     /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $_manTrans;
-    /** @var \Praxigento\Odoo\Repo\Entity\ISaleOrder */
+    /** @var \Praxigento\Odoo\Repo\Entity\Def\SaleOrder */
     protected $_repoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
     protected $_repoOdooInventory;
@@ -27,7 +27,7 @@ class Call implements IReplicate
     public function __construct(
         \Praxigento\Core\Fw\Logger\App $logger,
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
-        \Praxigento\Odoo\Repo\Entity\ISaleOrder $repoEntitySaleOrder,
+        \Praxigento\Odoo\Repo\Entity\Def\SaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         Sub\Replicator $subReplicator

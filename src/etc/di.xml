@@ -60,12 +60,6 @@
 
 
     <!-- Repo / Entity -->
-    <preference for="\Praxigento\Odoo\Repo\Entity\Registry\IRequest" type="\Praxigento\Odoo\Repo\Entity\Registry\Def\Request"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\ICategory" type="Praxigento\Odoo\Repo\Entity\Def\Category"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\ILot" type="Praxigento\Odoo\Repo\Entity\Def\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\IProduct" type="Praxigento\Odoo\Repo\Entity\Def\Product"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\ISaleOrder" type="Praxigento\Odoo\Repo\Entity\Def\SaleOrder"/>
-    <preference for="Praxigento\Odoo\Repo\Entity\IWarehouse" type="Praxigento\Odoo\Repo\Entity\Def\Warehouse"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\IInventory" type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin" type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>

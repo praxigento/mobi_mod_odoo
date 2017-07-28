@@ -6,7 +6,6 @@ namespace Praxigento\Odoo\Repo\Entity\Registry\Def;
 
 class Request
     extends \Praxigento\Core\Repo\Def\Entity
-    implements \Praxigento\Odoo\Repo\Entity\Registry\IRequest
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,

@@ -8,7 +8,6 @@ use Praxigento\Odoo\Data\Entity\Product as Entity;
 
 class Product
     extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\IProduct
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,

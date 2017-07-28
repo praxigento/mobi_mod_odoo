@@ -10,7 +10,6 @@ use Praxigento\Odoo\Data\Entity\SaleOrder as Entity;
 
 class SaleOrder
     extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\ISaleOrder
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
@@ -19,6 +18,11 @@ class SaleOrder
         parent::__construct($resource, $repoGeneric, Entity::class);
     }
 
+    /**
+     * Get Magento IDs to save new orders into Odoo.
+     *
+     * @return int[] Magento IDs of the orders to be replicated.
+     */
     public function getIdsToSaveToOdoo()
     {
         /* aliases and tables */

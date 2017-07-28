@@ -27,7 +27,7 @@ class Collector_UnitTest
         parent::setUp();
         /** create mocks */
         $this->mRepoMageSaleOrder = $this->_mock(\Magento\Sales\Api\OrderRepositoryInterface::class);
-        $this->mRepoSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Entity\ISaleOrder::class);
+        $this->mRepoSaleOrder = $this->_mock(\Praxigento\Odoo\Repo\Entity\Def\SaleOrder::class);
         /** setup mocks for constructor */
         /** create object to test */
         $this->obj = new Collector(
