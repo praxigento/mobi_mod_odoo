@@ -2,7 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Def;
+
+namespace Praxigento\Odoo\Repo\Entity;
 
 use Magento\Framework\App\ObjectManager;
 
@@ -13,13 +14,13 @@ class SaleOrder_ManualTest
 {
     /** @var  \Praxigento\Odoo\Api\Def\SaleOrderReplicator\Collector */
     private $_api;
-    /** @var  \Praxigento\Odoo\Repo\Entity\Def\SaleOrder */
+    /** @var  \Praxigento\Odoo\Repo\Entity\SaleOrder */
     private $_obj;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_obj = ObjectManager::getInstance()->create(\Praxigento\Odoo\Repo\Entity\Def\SaleOrder::class);
+        $this->_obj = ObjectManager::getInstance()->create(\Praxigento\Odoo\Repo\Entity\SaleOrder::class);
         $this->_api = ObjectManager::getInstance()->create(\Praxigento\Odoo\Api\Def\SaleOrderReplicator\Collector::class);
     }
 

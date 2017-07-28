@@ -28,13 +28,13 @@ class Collector
     protected $repoDwnlCustomer;
     /** @var \Praxigento\Core\Repo\IGeneric */
     protected $repoGeneric;
-    /** @var \Praxigento\Odoo\Repo\Entity\Def\Product */
+    /** @var \Praxigento\Odoo\Repo\Entity\Product */
     protected $repoOdooProd;
     /** @var \Praxigento\Pv\Repo\Entity\Sale */
     protected $repoPvSale;
     /** @var \Praxigento\Pv\Repo\Entity\Sale\Item */
     protected $repoPvSaleItem;
-    /** @var \Praxigento\Odoo\Repo\Entity\Def\Warehouse */
+    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
     protected $repoWarehouse;
 
     public function __construct(
@@ -46,8 +46,8 @@ class Collector
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\Item $repoPvSaleItem,
-        \Praxigento\Odoo\Repo\Entity\Def\Warehouse $repoWarehouse,
-        \Praxigento\Odoo\Repo\Entity\Def\Product $repoOdooProd,
+        \Praxigento\Odoo\Repo\Entity\Warehouse $repoWarehouse,
+        \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )

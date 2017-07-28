@@ -14,13 +14,13 @@ class Add
     protected $logger;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoCustomer;
-    /** @var \Praxigento\Odoo\Repo\Entity\Registry\Def\Request */
+    /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     protected $repoRegRequest;
 
     public function __construct(
         \Praxigento\Odoo\Fw\Logger\Odoo $logger,
         \Praxigento\Downline\Repo\Entity\Customer $repoCustomer,
-        \Praxigento\Odoo\Repo\Entity\Registry\Def\Request $repoRegRequest,
+        \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Pv\Service\ITransfer $callPvTransfer
     ) {
         $this->logger = $logger;

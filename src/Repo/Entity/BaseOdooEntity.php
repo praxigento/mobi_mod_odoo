@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity\Def;
+namespace Praxigento\Odoo\Repo\Entity;
 
 use Praxigento\Odoo\Data\Entity\IOdooEntity;
 

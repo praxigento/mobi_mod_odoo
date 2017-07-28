@@ -2,7 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Registry\Def;
+
+namespace Praxigento\Odoo\Repo\Entity\Registry;
 
 class Request
     extends \Praxigento\Core\Repo\Def\Entity
