@@ -24,7 +24,7 @@ class Collector
     protected $qbTaxItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $repoCustomer;
-    /** @var \Praxigento\Downline\Repo\Entity\Def\Customer */
+    /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoDwnlCustomer;
     /** @var \Praxigento\Core\Repo\IGeneric */
     protected $repoGeneric;
@@ -43,7 +43,7 @@ class Collector
         \Praxigento\Core\Tool\IFormat $manFormat,
         \Praxigento\Core\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
-        \Praxigento\Downline\Repo\Entity\Def\Customer $repoDwnlCustomer,
+        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\Item $repoPvSaleItem,
         \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
