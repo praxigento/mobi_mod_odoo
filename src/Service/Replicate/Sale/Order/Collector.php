@@ -549,9 +549,6 @@ class Collector
     {
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping\Tax();
         /* collect data */
-        // TODO: don't calculate base for Generic (tax excl.)
-//        $base = $sale->getBaseShippingAmount();
-//        $base = $this->manFormat->toNumber($base);
         $base = 0;
         $saleId = $sale->getEntityId();
         $rates = $this->getShippingTaxRates($saleId);
