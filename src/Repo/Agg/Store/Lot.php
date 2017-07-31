@@ -23,13 +23,13 @@ class Lot
     protected $manTrans;
     /** @var \Praxigento\Odoo\Repo\Entity\Lot */
     protected $repoEntityLot;
-    /** @var  \Praxigento\Warehouse\Repo\Entity\ILot */
+    /** @var  \Praxigento\Warehouse\Repo\Entity\Def\Lot */
     protected $repoWrhsEntityLot;
 
     public function __construct(
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
-        \Praxigento\Warehouse\Repo\Entity\ILot $repoWrhsEntityLot,
+        \Praxigento\Warehouse\Repo\Entity\Def\Lot $repoWrhsEntityLot,
         \Praxigento\Odoo\Repo\Entity\Lot $repoEntityLot,
         Lot\SelectFactory $factorySelect
     ) {

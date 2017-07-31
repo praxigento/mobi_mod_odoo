@@ -12,12 +12,12 @@ class Lot
 
     /** @var \Praxigento\Odoo\Repo\Agg\Store\ILot */
     protected $_repoAggLot;
-    /** @var  \Praxigento\Warehouse\Repo\Entity\IQuantity */
+    /** @var  \Praxigento\Warehouse\Repo\Entity\Def\Quantity */
     protected $_repoWarehouseEntityQuantity;
 
     public function __construct(
         \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
-        \Praxigento\Warehouse\Repo\Entity\IQuantity $repoWarehouseEntityQuantity
+        \Praxigento\Warehouse\Repo\Entity\Def\Quantity $repoWarehouseEntityQuantity
     ) {
         $this->_repoAggLot = $repoAggLot;
         $this->_repoWarehouseEntityQuantity = $repoWarehouseEntityQuantity;
