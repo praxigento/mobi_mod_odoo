@@ -24,17 +24,17 @@ class Collector
     protected $qbTaxItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $repoCustomer;
-    /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
+    /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoDwnlCustomer;
     /** @var \Praxigento\Core\Repo\IGeneric */
     protected $repoGeneric;
-    /** @var \Praxigento\Odoo\Repo\Entity\IProduct */
+    /** @var \Praxigento\Odoo\Repo\Entity\Product */
     protected $repoOdooProd;
     /** @var \Praxigento\Pv\Repo\Entity\Sale */
     protected $repoPvSale;
     /** @var \Praxigento\Pv\Repo\Entity\Sale\Item */
     protected $repoPvSaleItem;
-    /** @var \Praxigento\Odoo\Repo\Entity\IWarehouse */
+    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
     protected $repoWarehouse;
 
     public function __construct(
@@ -43,11 +43,11 @@ class Collector
         \Praxigento\Core\Tool\IFormat $manFormat,
         \Praxigento\Core\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
-        \Praxigento\Downline\Repo\Entity\ICustomer $repoDwnlCustomer,
+        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
         \Praxigento\Pv\Repo\Entity\Sale\Item $repoPvSaleItem,
-        \Praxigento\Odoo\Repo\Entity\IWarehouse $repoWarehouse,
-        \Praxigento\Odoo\Repo\Entity\IProduct $repoOdooProd,
+        \Praxigento\Odoo\Repo\Entity\Warehouse $repoWarehouse,
+        \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )

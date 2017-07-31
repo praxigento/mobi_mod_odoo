@@ -12,15 +12,15 @@ class Add
     protected $callPvTransfer;
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
-    /** @var \Praxigento\Downline\Repo\Entity\ICustomer */
+    /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoCustomer;
-    /** @var \Praxigento\Odoo\Repo\Entity\Registry\IRequest */
+    /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     protected $repoRegRequest;
 
     public function __construct(
         \Praxigento\Odoo\Fw\Logger\Odoo $logger,
-        \Praxigento\Downline\Repo\Entity\ICustomer $repoCustomer,
-        \Praxigento\Odoo\Repo\Entity\Registry\IRequest $repoRegRequest,
+        \Praxigento\Downline\Repo\Entity\Customer $repoCustomer,
+        \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Pv\Service\ITransfer $callPvTransfer
     ) {
         $this->logger = $logger;

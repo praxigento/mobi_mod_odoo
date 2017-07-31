@@ -2,7 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Def;
+
+namespace Praxigento\Odoo\Repo\Entity;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
 

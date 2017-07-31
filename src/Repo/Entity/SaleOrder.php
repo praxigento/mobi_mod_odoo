@@ -2,15 +2,15 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Def;
+
+namespace Praxigento\Odoo\Repo\Entity;
 
 use Praxigento\Core\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Data\Entity\SaleOrder as Entity;
 
 class SaleOrder
-    extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\ISaleOrder
+    extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
@@ -19,6 +19,11 @@ class SaleOrder
         parent::__construct($resource, $repoGeneric, Entity::class);
     }
 
+    /**
+     * Get Magento IDs to save new orders into Odoo.
+     *
+     * @return int[] Magento IDs of the orders to be replicated.
+     */
     public function getIdsToSaveToOdoo()
     {
         /* aliases and tables */

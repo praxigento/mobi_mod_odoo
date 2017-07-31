@@ -21,7 +21,7 @@ class Lot
     protected $isNullLotExist;
     /** @var  \Praxigento\Core\Transaction\Database\IManager */
     protected $manTrans;
-    /** @var \Praxigento\Odoo\Repo\Entity\ILot */
+    /** @var \Praxigento\Odoo\Repo\Entity\Lot */
     protected $repoEntityLot;
     /** @var  \Praxigento\Warehouse\Repo\Entity\ILot */
     protected $repoWrhsEntityLot;
@@ -30,7 +30,7 @@ class Lot
         \Praxigento\Core\Transaction\Database\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Warehouse\Repo\Entity\ILot $repoWrhsEntityLot,
-        \Praxigento\Odoo\Repo\Entity\ILot $repoEntityLot,
+        \Praxigento\Odoo\Repo\Entity\Lot $repoEntityLot,
         Lot\SelectFactory $factorySelect
     ) {
         $this->manTrans = $manTrans;

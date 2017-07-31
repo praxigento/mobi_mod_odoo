@@ -2,13 +2,13 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Def;
+
+namespace Praxigento\Odoo\Repo\Entity;
 
 use Praxigento\Odoo\Data\Entity\Product as Entity;
 
 class Product
-    extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\IProduct
+    extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,

@@ -5,7 +5,6 @@
 namespace Praxigento\Odoo\Repo\Agg\Def;
 
 use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
-use Praxigento\Odoo\Repo\Entity\ILot as IRepoEntityLot;
 use Praxigento\Warehouse\Repo\Entity\ILot as IRepoWrhsEntityLot;
 
 include_once(__DIR__ . '/../../../phpunit_bootstrap.php');
@@ -35,7 +34,7 @@ class Lot_UnitTest
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
         $this->mRepoWrhsEntityLot = $this->_mock(IRepoWrhsEntityLot::class);
-        $this->mRepoEntityLot = $this->_mock(IRepoEntityLot::class);
+        $this->mRepoEntityLot = $this->_mock(\Praxigento\Odoo\Repo\Entity\Lot::class);
         $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
         /** reset args. to create mock of the tested object */
         $this->objArgs = [

@@ -2,13 +2,13 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Entity\Def;
+
+namespace Praxigento\Odoo\Repo\Entity;
 
 use Praxigento\Odoo\Data\Entity\Lot as Entity;
 
 class Lot
-    extends \Praxigento\Odoo\Repo\Entity\Def\BaseOdooEntity
-    implements \Praxigento\Odoo\Repo\Entity\ILot
+    extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
