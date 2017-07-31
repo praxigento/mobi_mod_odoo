@@ -10,7 +10,6 @@ namespace Praxigento\Odoo\Repo\Agg\Store;
 use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 
 interface ILot
-    extends \Praxigento\Odoo\Repo\Entity\ILot
 {
     /**#@+
      *  Aliases for tables in DB.
