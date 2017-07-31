@@ -32,7 +32,7 @@ class Lot_UnitTest
         /** create mocks */
         $this->mManObj = $this->_mockObjectManager();
         $this->mManTrans = $this->_mockTransactionManager();
-        $this->mRepoWrhsEntityLot = $this->_mock(\Praxigento\Warehouse\Repo\Entity\Def\Lot::class);
+        $this->mRepoWrhsEntityLot = $this->_mock(\Praxigento\Warehouse\Repo\Entity\Lot::class);
         $this->mRepoEntityLot = $this->_mock(\Praxigento\Odoo\Repo\Entity\Lot::class);
         $this->mFactorySelect = $this->_mock(Lot\SelectFactory::class);
         /** reset args. to create mock of the tested object */
