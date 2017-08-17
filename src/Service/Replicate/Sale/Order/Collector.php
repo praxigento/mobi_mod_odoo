@@ -255,11 +255,13 @@ class Collector
         /* collect data */
         $rates = $this->getItemTaxRates($itemMageId);
         $rate = reset($rates);
-        $base = $rate->getAmount() / $rate->getPercent();
-        $base = $this->manFormat->toNumber($base);
-        /* populate Odoo Data Object */
-        $result->setBase($base);
-        $result->setRates($rates);
+        if ($rate) {
+            $base = $rate->getAmount() / $rate->getPercent();
+            $base = $this->manFormat->toNumber($base);
+            /* populate Odoo Data Object */
+            $result->setBase($base);
+            $result->setRates($rates);
+        }
         return $result;
     }
 
