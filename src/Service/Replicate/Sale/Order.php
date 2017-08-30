@@ -40,7 +40,7 @@ class Order
         $mageOrder = $req->getSaleOrder();
         $orderIdMage = $mageOrder->getEntityId();
         $customerIdMage = $mageOrder->getCustomerId();
-        /** @var \Praxigento\Odoo\Data\Entity\SaleOrder $registeredOrder */
+        /** @var \Praxigento\Odoo\Repo\Entity\Data\SaleOrder $registeredOrder */
         $registeredOrder = $this->repoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
         /* skip processing for registered orders or guest checkouted */
@@ -53,7 +53,7 @@ class Order
                 $mageId = $mageOrder->getEntityId();
                 $odooId = $resp->getIdOdoo();
                 /* mark order as replicated */
-                $registry = new \Praxigento\Odoo\Data\Entity\SaleOrder();
+                $registry = new \Praxigento\Odoo\Repo\Entity\Data\SaleOrder();
                 $registry->setMageRef($mageId);
                 $registry->setOdooRef($odooId);
                 $this->repoEntitySaleOrder->create($registry);

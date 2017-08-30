@@ -7,11 +7,11 @@
 
 namespace Praxigento\Odoo\Repo\Def;
 
-use Praxigento\Odoo\Data\Entity\Category as EntityCategory;
-use Praxigento\Odoo\Data\Entity\IOdooEntity;
-use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
-use Praxigento\Odoo\Data\Entity\Product as EntityProduct;
-use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
+use Praxigento\Odoo\Repo\Entity\Data\Category as EntityCategory;
+use Praxigento\Odoo\Repo\Entity\Data\IOdooEntity;
+use Praxigento\Odoo\Repo\Entity\Data\Lot as EntityLot;
+use Praxigento\Odoo\Repo\Entity\Data\Product as EntityProduct;
+use Praxigento\Odoo\Repo\Entity\Data\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\IRegistry;
 
 class Registry implements IRegistry

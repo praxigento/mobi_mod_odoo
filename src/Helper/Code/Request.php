@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Helper\Code;
 
 /**
- * Odoo requests types codifier (see \Praxigento\Odoo\Data\Entity\Registry\Request::ATTR_TYPE_CODE).
+ * Odoo requests types codifier (see \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::ATTR_TYPE_CODE).
  */
 class Request
 {
