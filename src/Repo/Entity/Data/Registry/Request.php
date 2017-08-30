@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Entity\Registry;
+namespace Praxigento\Odoo\Repo\Entity\Data\Registry;
 
 /**
  * Odoo requests registry to prevent double processing.
@@ -24,12 +24,9 @@ class Request
         return $result;
     }
 
-    /**
-     * @param string $data
-     */
-    public function setOdooRef($data)
+    public static function getPrimaryKeyAttrs()
     {
-        parent::set(self::ATTR_ODOO_REF, $data);
+        return [self::ATTR_TYPE_CODE, self::ATTR_ODOO_REF];
     }
 
     /**
@@ -42,15 +39,18 @@ class Request
     }
 
     /**
+     * @param string $data
+     */
+    public function setOdooRef($data)
+    {
+        parent::set(self::ATTR_ODOO_REF, $data);
+    }
+
+    /**
      * @param integer $data
      */
     public function setTypeCode($data)
     {
         parent::set(self::ATTR_TYPE_CODE, $data);
-    }
-
-    public static function getPrimaryKeyAttrs()
-    {
-        return [self::ATTR_TYPE_CODE, self::ATTR_ODOO_REF];
     }
 }

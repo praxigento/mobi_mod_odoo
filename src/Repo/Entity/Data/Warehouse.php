@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Entity;
+namespace Praxigento\Odoo\Repo\Entity\Data;
 
 class Warehouse extends Def\OdooEntity
 {

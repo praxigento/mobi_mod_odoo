@@ -12,6 +12,6 @@ class Request
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Core\Repo\IGeneric $repoGeneric
     ) {
-        parent::__construct($resource, $repoGeneric, \Praxigento\Odoo\Data\Entity\Registry\Request::class);
+        parent::__construct($resource, $repoGeneric, \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::class);
     }
 }

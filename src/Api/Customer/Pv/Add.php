@@ -40,8 +40,8 @@ class Add
         /* process request data */
         /* prevent duplication */
         $key = [
-            \Praxigento\Odoo\Data\Entity\Registry\Request::ATTR_TYPE_CODE => self::ODOO_REF_TYPE_CODE,
-            \Praxigento\Odoo\Data\Entity\Registry\Request::ATTR_ODOO_REF => $odooRef
+            \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::ATTR_TYPE_CODE => self::ODOO_REF_TYPE_CODE,
+            \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::ATTR_ODOO_REF => $odooRef
         ];
         $found = $this->repoRegRequest->getById($key);
         if ($found) {

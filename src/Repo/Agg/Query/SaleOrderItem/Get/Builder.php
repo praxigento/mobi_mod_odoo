@@ -7,9 +7,9 @@ namespace Praxigento\Odoo\Repo\Agg\Query\SaleOrderItem\Get;
 
 use Magento\Sales\Api\Data\OrderItemInterface as EOrderItem;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Entity\Lot as EOdooLot;
-use Praxigento\Odoo\Data\Entity\Product as EOdooProduct;
 use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
+use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
+use Praxigento\Odoo\Repo\Entity\Data\Product as EOdooProduct;
 use Praxigento\Pv\Data\Entity\Sale\Item as EPvSaleItem;
 use Praxigento\Pv\Data\Entity\Stock\Item as EPvStockItem;
 use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EWrhsQtySale;

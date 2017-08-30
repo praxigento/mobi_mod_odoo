@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-use Praxigento\Odoo\Data\Entity\Product as Entity;
+use Praxigento\Odoo\Repo\Entity\Data\Product as Entity;
 
 class Product
     extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity

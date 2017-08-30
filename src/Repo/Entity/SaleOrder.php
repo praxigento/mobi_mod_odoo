@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Repo\Entity;
 
 use Praxigento\Core\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Entity\SaleOrder as Entity;
+use Praxigento\Odoo\Repo\Entity\Data\SaleOrder as Entity;
 
 class SaleOrder
     extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity

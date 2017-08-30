@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-use Praxigento\Odoo\Data\Entity\IOdooEntity;
+use Praxigento\Odoo\Repo\Entity\Data\IOdooEntity;
 
 /**
  * Base class for repo to operate with entities in Odoo registries.
@@ -42,7 +42,7 @@ abstract class BaseOdooEntity
     public function getOdooIdByMageId($id)
     {
         $result = null;
-        /** @var \Praxigento\Odoo\Data\Entity\IOdooEntity $item */
+        /** @var \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity $item */
         $item = $this->getById($id);
         if ($item) {
             $result = $item->getOdooRef();

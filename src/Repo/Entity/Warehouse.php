@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-use Praxigento\Odoo\Data\Entity\Warehouse as Entity;
+use Praxigento\Odoo\Repo\Entity\Data\Warehouse as Entity;
 
 class Warehouse
     extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
@@ -21,7 +21,7 @@ class Warehouse
      * Get the data instance by ID (ID can be an array for complex primary keys).
      *
      * @param int $id
-     * @return \Praxigento\Odoo\Data\Entity\Warehouse|bool Found instance data or 'false'
+     * @return \Praxigento\Odoo\Repo\Entity\Data\Warehouse|bool Found instance data or 'false'
      */
     public function getById($id)
     {

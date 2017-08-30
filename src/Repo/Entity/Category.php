@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-use Praxigento\Odoo\Data\Entity\Category as Entity;
+use Praxigento\Odoo\Repo\Entity\Data\Category as Entity;
 
 class Category
     extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity

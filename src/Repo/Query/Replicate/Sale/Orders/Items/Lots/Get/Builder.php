@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get;
 
-use Praxigento\Odoo\Data\Entity\Lot as EOdooLot;
+use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
 use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EQty;
 
 /**

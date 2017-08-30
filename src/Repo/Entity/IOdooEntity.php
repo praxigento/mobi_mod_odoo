@@ -15,7 +15,7 @@ interface IOdooEntity
      * Get entity by Odoo ID.
      *
      * @param int $id Odoo ID of the entity registered in Magento.
-     * @return \Praxigento\Odoo\Data\Entity\IOdooEntity|null
+     * @return \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity|null
      */
     public function getByOdooId($id);
 

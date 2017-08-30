@@ -3,11 +3,11 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Data\Entity\Def;
+namespace Praxigento\Odoo\Repo\Entity\Data\Def;
 
 abstract class OdooEntity
     extends \Praxigento\Core\Data\Entity\Base
-    implements \Praxigento\Odoo\Data\Entity\IOdooEntity
+    implements \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity
 {
 
     /** @inheritdoc */

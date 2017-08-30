@@ -5,13 +5,13 @@
  */
 namespace Praxigento\Odoo\Setup;
 
-use Praxigento\Odoo\Data\Entity\Category;
-use Praxigento\Odoo\Data\Entity\Customer;
-use Praxigento\Odoo\Data\Entity\Lot;
-use Praxigento\Odoo\Data\Entity\Product;
-use Praxigento\Odoo\Data\Entity\Registry\Request;
-use Praxigento\Odoo\Data\Entity\SaleOrder;
-use Praxigento\Odoo\Data\Entity\Warehouse;
+use Praxigento\Odoo\Repo\Entity\Data\Category;
+use Praxigento\Odoo\Repo\Entity\Data\Customer;
+use Praxigento\Odoo\Repo\Entity\Data\Lot;
+use Praxigento\Odoo\Repo\Entity\Data\Product;
+use Praxigento\Odoo\Repo\Entity\Data\Registry\Request;
+use Praxigento\Odoo\Repo\Entity\Data\SaleOrder;
+use Praxigento\Odoo\Repo\Entity\Data\Warehouse;
 
 class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
 {

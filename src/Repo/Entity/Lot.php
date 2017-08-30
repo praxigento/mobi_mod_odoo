@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Repo\Entity;
 
-use Praxigento\Odoo\Data\Entity\Lot as Entity;
+use Praxigento\Odoo\Repo\Entity\Data\Lot as Entity;
 
 class Lot
     extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity

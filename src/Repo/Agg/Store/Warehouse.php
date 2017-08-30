@@ -8,8 +8,8 @@ namespace Praxigento\Odoo\Repo\Agg\Store;
 use Magento\Framework\App\ResourceConnection;
 use Praxigento\Core\Transaction\Database\IManager;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
+use Praxigento\Odoo\Repo\Entity\Data\Warehouse as EntityWarehouse;
 use Praxigento\Odoo\Repo\Entity\Warehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 

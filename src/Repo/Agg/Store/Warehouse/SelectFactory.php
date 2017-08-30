@@ -5,8 +5,8 @@
 namespace Praxigento\Odoo\Repo\Agg\Store\Warehouse;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Data\Entity\Warehouse as EntityWarehouse;
+use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Repo\Agg\Store\IWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
@@ -28,20 +28,6 @@ class SelectFactory
         $this->_repoAggWarehouse = $repoWrhsAggWarehouse;
     }
 
-    public function getQueryToSelectCount()
-    {
-        $result = $this->_repoAggWarehouse->getQueryToSelectCount();
-        /* aliases and tables */
-        $asStock = WrhsRepoAggWarehouse::AS_STOCK;
-        $asOdoo = IWarehouse::AS_ODOO;
-        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
-        /* LEFT JOIN prxgt_odoo_wrhs */
-        $cols = [];
-        $cond = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
-        $result->joinLeft($tblOdoo, $cond, $cols);
-        return $result;
-    }
-
     public function getQueryToSelect()
     {
         $result = $this->_repoAggWarehouse->getQueryToSelect();
@@ -53,6 +39,20 @@ class SelectFactory
         $cols = [
             AggWarehouse::AS_ODOO_ID => EntityWarehouse::ATTR_ODOO_REF
         ];
+        $cond = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
+        $result->joinLeft($tblOdoo, $cond, $cols);
+        return $result;
+    }
+
+    public function getQueryToSelectCount()
+    {
+        $result = $this->_repoAggWarehouse->getQueryToSelectCount();
+        /* aliases and tables */
+        $asStock = WrhsRepoAggWarehouse::AS_STOCK;
+        $asOdoo = IWarehouse::AS_ODOO;
+        $tblOdoo = [$asOdoo => $this->_resource->getTableName(EntityWarehouse::ENTITY_NAME)];
+        /* LEFT JOIN prxgt_odoo_wrhs */
+        $cols = [];
         $cond = $asOdoo . '.' . EntityWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
         $result->joinLeft($tblOdoo, $cond, $cols);
         return $result;

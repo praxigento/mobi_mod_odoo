@@ -5,8 +5,8 @@
 
 namespace Praxigento\Odoo\Repo\Agg\Store;
 
-use Praxigento\Odoo\Data\Entity\Lot as EntityLot;
 use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
+use Praxigento\Odoo\Repo\Entity\Data\Lot as EntityLot;
 use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
 
 class Lot

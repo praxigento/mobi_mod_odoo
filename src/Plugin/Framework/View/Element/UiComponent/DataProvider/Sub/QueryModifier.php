@@ -17,8 +17,8 @@ class QueryModifier
 
 
     /* Tables aliases */
-    const AS_SALE_ORDER = 'saleOrder';
     const AS_ODOO_SALE = 'prxgtOdooSales';
+    const AS_SALE_ORDER = 'saleOrder';
 
     /* Columns aliases */
     const A_IS_IN_ODOO = 'prxgt_is_in_odoo';

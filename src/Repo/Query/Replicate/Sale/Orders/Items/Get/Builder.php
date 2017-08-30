@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Get;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Data\Entity\Product as EProd;
+use Praxigento\Odoo\Repo\Entity\Data\Product as EProd;
 use Praxigento\Pv\Data\Entity\Sale\Item as EPv;
 
 /**
