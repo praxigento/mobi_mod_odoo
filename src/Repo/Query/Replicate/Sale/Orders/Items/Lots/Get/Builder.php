@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get;
 
 use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
-use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EQty;
+use Praxigento\Warehouse\Repo\Entity\Data\Quantity\Sale as EQty;
 
 /**
  * Build query to get lots data for given sale order item to be replicated into Odoo.

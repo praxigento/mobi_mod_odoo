@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product;
 
-use Praxigento\Warehouse\Data\Entity\Quantity as EntityWarehouseQuantity;
+use Praxigento\Warehouse\Repo\Entity\Data\Quantity as EntityWarehouseQuantity;
 
 class Lot
 {
@@ -35,7 +35,7 @@ class Lot
         $lotsExist = $this->_repoWarehouseEntityQuantity->get($where);
         // create map of the Magento IDs for existing lots
         $mapMageExist = [];
-        /** @var \Praxigento\Warehouse\Data\Entity\Quantity $item */
+        /** @var \Praxigento\Warehouse\Repo\Entity\Data\Quantity $item */
         foreach ($lotsExist as $item) {
             $lotIdMage = $item->getLotRef();
             $mapMageExist[] = $lotIdMage;

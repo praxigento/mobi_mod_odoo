@@ -70,8 +70,8 @@ class DataHandler
         $stockItemId = $result->getItemId();
         /* register warehouse price */
         $bind = [
-            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
-            \Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PRICE => $price
+            \Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_STOCK_ITEM_REF => $stockItemId,
+            \Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_PRICE => $price
         ];
         $this->repoWrhsStockItem->create($bind);
         /* register warehouse PV */
@@ -132,10 +132,10 @@ class DataHandler
         $groupsIdsAll = $this->getCustomerGroupsIds();
         $groupsIdsProcessed = [];
         /* cleanup prices */
-        $where = \Praxigento\Warehouse\Data\Entity\Group\Price::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemId;
+        $where = \Praxigento\Warehouse\Repo\Entity\Data\Group\Price::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemId;
         $this->repoGroupPrice->delete($where);
         /* save new prices */
-        $data = new \Praxigento\Warehouse\Data\Entity\Group\Price();
+        $data = new \Praxigento\Warehouse\Repo\Entity\Data\Group\Price();
         $data->setStockItemRef($stockItemId);
         foreach ($prices as $item) {
             $price = $item->getPrice();
@@ -169,11 +169,11 @@ class DataHandler
     public function updateWarehouseData($stockItemRef, $price, $pv)
     {
         /* update or create warehouse entry */
-        $bind = [\Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_PRICE => $price];
+        $bind = [\Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_PRICE => $price];
         $exist = $this->repoWrhsStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
-            $bind[\Praxigento\Warehouse\Data\Entity\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
+            $bind[\Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
             $this->repoWrhsStockItem->create($bind);
         } else {
             $this->repoWrhsStockItem->updateById($stockItemRef, $bind);

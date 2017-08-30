@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Repo\Agg\Store;
 
 use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Repo\Entity\Data\Lot as EntityLot;
-use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
+use Praxigento\Warehouse\Repo\Entity\Data\Lot as EntityWrhsLot;
 
 class Lot
     extends \Praxigento\Core\Repo\Def\Crud

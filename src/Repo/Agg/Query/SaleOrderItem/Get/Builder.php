@@ -12,7 +12,7 @@ use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
 use Praxigento\Odoo\Repo\Entity\Data\Product as EOdooProduct;
 use Praxigento\Pv\Repo\Entity\Data\Sale\Item as EPvSaleItem;
 use Praxigento\Pv\Repo\Entity\Data\Stock\Item as EPvStockItem;
-use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EWrhsQtySale;
+use Praxigento\Warehouse\Repo\Entity\Data\Quantity\Sale as EWrhsQtySale;
 
 /**
  * Build query to get Odoo aggregate for SaleOrderItem.

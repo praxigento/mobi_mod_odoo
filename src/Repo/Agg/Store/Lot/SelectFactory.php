@@ -8,7 +8,7 @@ namespace Praxigento\Odoo\Repo\Agg\Store\Lot;
 use Praxigento\Odoo\Repo\Agg\Data\Lot as AggLot;
 use Praxigento\Odoo\Repo\Agg\Store\ILot;
 use Praxigento\Odoo\Repo\Entity\Data\Lot as EntityLot;
-use Praxigento\Warehouse\Data\Entity\Lot as EntityWrhsLot;
+use Praxigento\Warehouse\Repo\Entity\Data\Lot as EntityWrhsLot;
 
 /**
  * Compose SELECT query to get Lot aggregate.
