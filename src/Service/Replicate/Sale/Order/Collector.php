@@ -74,7 +74,7 @@ class Collector
      */
     protected function dbGetItemPvTotal($itemId)
     {
-        /** @var \Praxigento\Pv\Data\Entity\Sale\Item $data */
+        /** @var \Praxigento\Pv\Repo\Entity\Data\Sale\Item $data */
         $data = $this->repoPvSaleItem->getById($itemId);
         $result = $data->getTotal();
         return $result;

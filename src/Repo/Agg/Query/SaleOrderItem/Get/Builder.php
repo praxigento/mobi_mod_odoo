@@ -10,8 +10,8 @@ use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Agg\Data\SaleOrderItem as Agg;
 use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
 use Praxigento\Odoo\Repo\Entity\Data\Product as EOdooProduct;
-use Praxigento\Pv\Data\Entity\Sale\Item as EPvSaleItem;
-use Praxigento\Pv\Data\Entity\Stock\Item as EPvStockItem;
+use Praxigento\Pv\Repo\Entity\Data\Sale\Item as EPvSaleItem;
+use Praxigento\Pv\Repo\Entity\Data\Stock\Item as EPvStockItem;
 use Praxigento\Warehouse\Data\Entity\Quantity\Sale as EWrhsQtySale;
 
 /**

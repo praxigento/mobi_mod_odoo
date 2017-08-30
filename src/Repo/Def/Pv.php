@@ -6,8 +6,8 @@
 namespace Praxigento\Odoo\Repo\Def;
 
 use Praxigento\Odoo\Repo\IPv;
-use Praxigento\Pv\Data\Entity\Product as EntityPvProduct;
-use Praxigento\Pv\Data\Entity\Stock\Item as EntityPvStockItem;
+use Praxigento\Pv\Repo\Entity\Data\Product as EntityPvProduct;
+use Praxigento\Pv\Repo\Entity\Data\Stock\Item as EntityPvStockItem;
 
 class Pv implements IPv
 {
