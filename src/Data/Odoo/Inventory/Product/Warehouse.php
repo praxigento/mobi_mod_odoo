@@ -10,8 +10,8 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory\Product;
  * This class is used in REST/SOAP API and all methods should be declared explicitly.
  *
  */
-class Warehouse 
-    extends \Flancer32\Lib\Data
+class Warehouse
+    extends \Praxigento\Core\Data
 {
     /**
      * Get Odoo ID of the warehouse.

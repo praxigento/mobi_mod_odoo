@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory;
  * @deprecated MOBI-765
  */
 class Option
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Get currency for wholesale prices ('EUR').

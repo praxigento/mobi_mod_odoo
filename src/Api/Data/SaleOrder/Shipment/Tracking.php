@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Api\Data\SaleOrder\Shipment;
  * Shipment tracking information for sale orders received from Odoo.
  */
 class Tracking
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Magento ID for sale order.

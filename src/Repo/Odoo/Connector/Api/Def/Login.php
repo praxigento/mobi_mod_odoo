@@ -92,7 +92,7 @@ class Login
                 throw new \Exception($msg);
             }
             $response = $this->adapter->decodeJson($contents);
-            $respData = new \Flancer32\Lib\Data($response);
+            $respData = new \Praxigento\Core\Data($response);
             $this->cachedOdooUserId = $respData->get(self::ODOO_PATH_USER_ID);
             if ($this->cachedOdooUserId) {
                 $this->cachedOdooSessionId = $respData->get(self::ODOO_PATH_SESSION_ID);

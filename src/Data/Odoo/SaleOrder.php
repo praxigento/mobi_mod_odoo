@@ -32,7 +32,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method void setPayments(\Praxigento\Odoo\Data\Odoo\Payment [] $data)
  */
 class SaleOrder
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

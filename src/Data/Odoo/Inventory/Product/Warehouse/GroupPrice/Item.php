@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice;
  * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
 class Item
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Business code for customer group.

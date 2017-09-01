@@ -15,7 +15,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setGroupCode(string $data)
  */
 class Customer
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

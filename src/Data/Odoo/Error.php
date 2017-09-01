@@ -13,7 +13,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method void setData(\Praxigento\Odoo\Data\Odoo\Error\Data $data)
  */
 class Error
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

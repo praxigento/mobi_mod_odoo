@@ -14,7 +14,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setTax(\Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax $data)
  */
 class Price
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

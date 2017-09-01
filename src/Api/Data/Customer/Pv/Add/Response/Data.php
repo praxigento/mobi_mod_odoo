@@ -14,7 +14,7 @@ namespace Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response;
  * @method void setTransactionId(int $data)
  */
 class Data
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Odoo reference of the original request.

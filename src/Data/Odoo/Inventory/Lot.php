@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory;
  *
  */
 class Lot
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Get expiration date for all products from this lot.

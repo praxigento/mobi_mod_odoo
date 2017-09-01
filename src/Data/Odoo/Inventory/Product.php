@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory;
  *
  */
 class Product
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Get array of the categories ids where this product is placed.

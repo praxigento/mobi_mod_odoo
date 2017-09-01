@@ -15,7 +15,7 @@ namespace Praxigento\Odoo\Data\Odoo\Error;
  * @method void setName(string $data)
  */
 class Data
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

@@ -10,7 +10,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  * This class is used in REST/SOAP API and all methods should be declared explicitly.
  */
 class Inventory
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Get array of the lots related to products in the bundle.

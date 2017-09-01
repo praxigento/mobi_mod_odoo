@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Agg\Data;
  * Aggregate for lot with Odoo related attributes.
  */
 class Lot
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**#@+
      * Aliases for data attributes.

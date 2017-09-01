@@ -84,7 +84,7 @@ class Collector
      * Get all taxes for the Sale Item by item ID (Magento ID).
      *
      * @param int $itemId
-     * @return \Flancer32\Lib\Data[]
+     * @return \Praxigento\Core\Data[]
      */
     protected function dbGetItemTaxes($itemId)
     {
@@ -93,7 +93,7 @@ class Collector
         $where = Cfg::E_SALE_ORDER_TAX_ITEM_A_ITEM_ID . '=' . (int)$itemId;
         $rows = $this->repoGeneric->getEntities($entity, '*', $where);
         foreach ($rows as $row) {
-            $data = new \Flancer32\Lib\Data($row);
+            $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
         }
         return $result;
@@ -103,7 +103,7 @@ class Collector
      * Get magento data for lots related to order item to be converted into Odoo format.
      *
      * @param $itemId
-     * @return \Flancer32\Lib\Data[]
+     * @return \Praxigento\Core\Data[]
      */
     protected function dbGetLots($itemId)
     {
@@ -115,7 +115,7 @@ class Collector
         ];
         $rows = $conn->fetchAll($query, $bind);
         foreach ($rows as $row) {
-            $data = new \Flancer32\Lib\Data($row);
+            $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
         }
         return $result;
@@ -125,7 +125,7 @@ class Collector
      * Get all taxes rates for sale order by order ID.
      *
      * @param $saleId
-     * @return \Flancer32\Lib\Data[]
+     * @return \Praxigento\Core\Data[]
      */
     protected function dbGetOrderTaxes($saleId)
     {
@@ -134,7 +134,7 @@ class Collector
         $where = Cfg::E_SALE_ORDER_TAX_A_ORDER_ID . '=' . (int)$saleId;
         $rows = $this->repoGeneric->getEntities($entity, null, $where);
         foreach ($rows as $row) {
-            $data = new \Flancer32\Lib\Data($row);
+            $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
         }
         return $result;
@@ -144,7 +144,7 @@ class Collector
      * Get tax rates for shipping by sale order ID.
      *
      * @param int $saleId
-     * @return \Flancer32\Lib\Data[]
+     * @return \Praxigento\Core\Data[]
      */
     protected function dbGetShippingTaxes($saleId)
     {
@@ -165,7 +165,7 @@ class Collector
         $conn = $query->getConnection();
         $rows = $conn->fetchAll($query, $bind);
         foreach ($rows as $row) {
-            $data = new \Flancer32\Lib\Data($row);
+            $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
         }
         return $result;

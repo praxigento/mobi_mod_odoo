@@ -11,10 +11,10 @@ class SaleOrder
     const ROUTE = '/api/sale_order';
     /** @var  \Magento\Framework\Webapi\ServiceInputProcessor */
     protected $mageSrvInProc;
-    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Rest */
-    protected $rest;
     /** @var \Magento\Framework\Webapi\ServiceOutputProcessor */
     protected $mageSrvOutProc;
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Rest */
+    protected $rest;
 
     public function __construct(
         \Magento\Framework\Webapi\ServiceOutputProcessor $mageSrvOutProc,
@@ -24,6 +24,33 @@ class SaleOrder
         $this->mageSrvOutProc = $mageSrvOutProc;
         $this->mageSrvInProc = $mageSrvInProc;
         $this->rest = $rest;
+    }
+
+    protected function _convertToUnderScored($data)
+    {
+        $result = [];
+        $array = is_array($data) ? $data : get_object_vars($data); // stdObj is not an array
+        foreach ($array as $key => $item) {
+            $underKey = $this->_fromCamelCase($key);
+            if (is_array($item)) {
+                foreach ($item as $subKey => $subItem) {
+                    if (!is_int($subKey)) {
+                        $subKey = $this->_fromCamelCase($subKey);
+                    }
+                    if ($subItem instanceof \Praxigento\Core\Data) {
+                        $subData = $this->_convertToUnderScored($subItem->get());
+                    } else {
+                        $subData = $this->_convertToUnderScored($subItem);
+                    }
+                    $result[$underKey][$subKey] = $subData;
+                }
+            } elseif ($item instanceof \Praxigento\Core\Data) {
+                $result[$underKey] = $this->_convertToUnderScored($item->get());
+            } else {
+                $result[$underKey] = $item;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -42,33 +69,6 @@ class SaleOrder
             $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
         }
         return implode('_', $ret);
-    }
-
-    protected function _convertToUnderScored($data)
-    {
-        $result = [];
-        $array = is_array($data) ? $data : get_object_vars($data); // stdObj is not an array
-        foreach ($array as $key => $item) {
-            $underKey = $this->_fromCamelCase($key);
-            if (is_array($item)) {
-                foreach ($item as $subKey => $subItem) {
-                    if (!is_int($subKey)) {
-                        $subKey = $this->_fromCamelCase($subKey);
-                    }
-                    if ($subItem instanceof \Flancer32\Lib\Data) {
-                        $subData = $this->_convertToUnderScored($subItem->get());
-                    } else {
-                        $subData = $this->_convertToUnderScored($subItem);
-                    }
-                    $result[$underKey][$subKey] = $subData;
-                }
-            } elseif ($item instanceof \Flancer32\Lib\Data) {
-                $result[$underKey] = $this->_convertToUnderScored($item->get());
-            } else {
-                $result[$underKey] = $item;
-            }
-        }
-        return $result;
     }
 
     public function save($order)

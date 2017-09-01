@@ -110,7 +110,7 @@ class Warehouse
 
     /**
      * @param array|int|string $id
-     * @param array|\Flancer32\Lib\Data $data
+     * @param array|\Praxigento\Core\Data $data
      * @return null
      */
     public function updateById($id, $data)

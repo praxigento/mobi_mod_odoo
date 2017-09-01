@@ -19,7 +19,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setShipments(\Praxigento\Odoo\Data\Odoo\Shipment[] $data)
  */
 class Response
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

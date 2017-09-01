@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Data\Odoo;
  * @method void setAmount(float $data)
  */
 class Payment
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

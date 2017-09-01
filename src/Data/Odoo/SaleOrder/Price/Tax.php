@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder\Price;
  * @method void setTotal(float $data) Sum of all taxes to be applied to the order.
  */
 class Tax
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

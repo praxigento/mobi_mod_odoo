@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sale\Orders\Response;
  *
  */
 class Entry
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Debug stacktrace from Odoo.

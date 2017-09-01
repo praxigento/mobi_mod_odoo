@@ -18,7 +18,7 @@ namespace Praxigento\Odoo\Data\Odoo\SaleOrder;
  * @method void setPv(float $data)
  */
 class Line
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
 
 }

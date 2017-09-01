@@ -8,7 +8,7 @@ namespace Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse;
  * Lot data for the product on the warehouse.
  */
 class Lot
-    extends \Flancer32\Lib\Data
+    extends \Praxigento\Core\Data
 {
     /**
      * Get Odoo ID of the lot.
