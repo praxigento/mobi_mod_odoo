@@ -22,9 +22,16 @@
     <!-- Data Source definition -->
     <!-- **************************************************** -->
     <dataSource name="catalog_lots_grid_data_source">
-        <argument name="dataProvider" xsi:type="configurableObject">
+        <!--<argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Praxigento\Odoo\Ui\DataProvider\Lot</argument>
             <argument name="name" xsi:type="string">catalog_lots_grid_data_source</argument>
+        </argument>-->
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">\Praxigento\Core\Ui\DataProvider\Grid\Base</argument>
+            <argument name="name" xsi:type="string">catalog_lots_grid_data_source</argument>
+            <argument name="gridQueryBuilder" xsi:type="object">\Praxigento\Odoo\Ui\DataProvider\Grid\Lot\QueryBuilder
+            </argument>
+            <!--<argument name="gridQueryBuilder" xsi:type="object">\Praxigento\Warehouse\Ui\DataProvider\Grid\Warehouse\QueryBuilder</argument>-->
         </argument>
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
@@ -38,7 +45,7 @@
     <!-- **************************************************** -->
     <columns name="catalog_lots_columns">
 
-        <column name="odoo_id">
+        <column name="odooId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
