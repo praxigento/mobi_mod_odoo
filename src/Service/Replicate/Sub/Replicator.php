@@ -167,7 +167,10 @@ class Replicator
                 $aggData->setOdooId($odooId);
                 $aggData->setCurrency($item->getCurrency());
                 $aggData->setWebsiteId(Cfg::DEF_WEBSITE_ID_ADMIN);
-                $aggData->setCode($item->getCode());
+                $code = $item->getCode();
+                $code = trim(strtoupper($code));
+                $code = str_replace(' ', '_', $code);
+                $aggData->setCode($code);
                 $aggData->setNote('replicated from Odoo');
                 $created = $this->repoAggWrhs->create($aggData);
                 if (!$created->getId()) {
