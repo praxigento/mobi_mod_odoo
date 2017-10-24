@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Cli\Cmd\Replicate;
 
 class Orders
-    extends \Praxigento\Core\Cli\Cmd\BaseWithArea
+    extends \Praxigento\Core\Cli\Cmd\Base
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
     protected $callReplicateOrders;
@@ -27,6 +27,7 @@ class Orders
         \Symfony\Component\Console\Output\OutputInterface $output
     ) {
         $output->writeln('<info>Sale orders push replication (Mage2Odoo) is started.<info>');
+        $this->checkAreaCode();
         $req = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Request();
         $resp = $this->callReplicateOrders->exec($req);
         $entries = $resp->getEntries();
