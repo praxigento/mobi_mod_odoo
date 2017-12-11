@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Fw\Logger;
  *  - YAML config logger name:     'odoo'
  */
 class Odoo
-    extends \Praxigento\Core\Fw\Logger\App
+    extends \Praxigento\Core\App\Logger\App
 {
     /** Defalt name of the logger from configuration */
     const LOGGER_NAME = 'odoo';

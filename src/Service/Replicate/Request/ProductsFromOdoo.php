@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Service\Replicate\Request;
 
-class ProductsFromOdoo extends \Praxigento\Core\Service\Base\Request
+class ProductsFromOdoo extends \Praxigento\Core\App\Service\Base\Request
 {
     /**
      * Get Odoo IDs of the products to replicate.

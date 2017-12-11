@@ -14,7 +14,7 @@ use Praxigento\Warehouse\Repo\Entity\Data\Lot as EntityWrhsLot;
  * Compose SELECT query to get Lot aggregate.
  */
 class SelectFactory
-    extends \Praxigento\Core\Repo\Agg\BaseSelectFactory
+    extends \Praxigento\Core\App\Repo\Agg\BaseSelectFactory
 {
 
     public function getQueryToSelect()

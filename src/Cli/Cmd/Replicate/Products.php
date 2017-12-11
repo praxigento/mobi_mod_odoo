@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Cli\Cmd\Replicate;
 
 class Products
-    extends \Praxigento\Core\Cli\Cmd\Base
+    extends \Praxigento\Core\App\Cli\Cmd\Base
 {
     /**
      * #@+

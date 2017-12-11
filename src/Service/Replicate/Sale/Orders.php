@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sale;
 
 
 class Orders
-    extends \Praxigento\Core\Service\Base\Call
+    extends \Praxigento\Core\App\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrders
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
@@ -16,7 +16,7 @@ class Orders
     protected $subCollector;
 
     public function __construct(
-        \Praxigento\Core\Fw\Logger\App $logger,
+        \Praxigento\Core\App\Logger\App $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector $subCollector

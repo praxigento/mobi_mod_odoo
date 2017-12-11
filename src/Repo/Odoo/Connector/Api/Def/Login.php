@@ -12,7 +12,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 
 class Login
-    implements \Praxigento\Core\ICached, \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
+    implements \Praxigento\Core\App\ICached, \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
 {
     /* TIMEOUTS: INTR-653 */
     const HTTP_TIMEOUT_SEC_LOGIN = 15;

@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\Sub;
 
-use Praxigento\Core\Repo\Query\Expression;
+use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Entity\Data\SaleOrder;
 

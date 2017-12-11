@@ -22,7 +22,7 @@ use Praxigento\Warehouse\Repo\Entity\Data\Quantity\Sale as EQty;
  *
  */
 class Builder
-    extends \Praxigento\Core\Repo\Query\Builder
+    extends \Praxigento\Core\App\Repo\Query\Builder
 {
     /** Tables aliases */
     const AS_ODOO = 'odoo';

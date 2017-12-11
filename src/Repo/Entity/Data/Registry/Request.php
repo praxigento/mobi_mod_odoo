@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Entity\Data\Registry;
  * Odoo requests registry to prevent double processing.
  */
 class Request
-    extends \Praxigento\Core\Data\Entity\Base
+    extends \Praxigento\Core\App\Repo\Data\Entity\Base
 {
     const ATTR_ODOO_REF = 'odoo_ref';
     const ATTR_TYPE_CODE = 'type_code';

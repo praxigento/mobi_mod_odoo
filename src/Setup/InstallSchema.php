@@ -13,7 +13,7 @@ use Praxigento\Odoo\Repo\Entity\Data\Registry\Request;
 use Praxigento\Odoo\Repo\Entity\Data\SaleOrder;
 use Praxigento\Odoo\Repo\Entity\Data\Warehouse;
 
-class InstallSchema extends \Praxigento\Core\Setup\Schema\Base
+class InstallSchema extends \Praxigento\Core\App\Setup\Schema\Base
 {
     protected function _setup()
     {

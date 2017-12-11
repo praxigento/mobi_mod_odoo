@@ -18,7 +18,7 @@ use Praxigento\Warehouse\Repo\Entity\Data\Quantity\Sale as EWrhsQtySale;
  * Build query to get Odoo aggregate for SaleOrderItem.
  */
 class Builder
-    extends \Praxigento\Core\Repo\Query\Builder
+    extends \Praxigento\Core\App\Repo\Query\Builder
 {
 
     /** Tables aliases for external usage ('camelCase' naming) */

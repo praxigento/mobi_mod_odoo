@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Entity;
  * Common interface for entities related to Odoo replication.
  */
 interface IOdooEntity
-    extends \Praxigento\Core\Repo\IEntity
+    extends \Praxigento\Core\App\Repo\IEntity
 {
     /**
      * Get entity by Odoo ID.

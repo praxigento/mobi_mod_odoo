@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Service\Replicate\Response;
 
 
-class ProductsFromOdoo extends \Praxigento\Core\Service\Base\Response
+class ProductsFromOdoo extends \Praxigento\Core\App\Service\Base\Response
 {
 
 }

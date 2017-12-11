@@ -13,7 +13,7 @@ class Call implements IReplicate
 {
     /** @var \Psr\Log\LoggerInterface */
     protected $_logger;
-    /** @var  \Praxigento\Core\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
     protected $_manTrans;
     /** @var \Praxigento\Odoo\Repo\Entity\SaleOrder */
     protected $_repoEntitySaleOrder;
@@ -25,8 +25,8 @@ class Call implements IReplicate
     protected $_subReplicator;
 
     public function __construct(
-        \Praxigento\Core\Fw\Logger\App $logger,
-        \Praxigento\Core\Transaction\Database\IManager $manTrans,
+        \Praxigento\Core\App\Logger\App $logger,
+        \Praxigento\Core\App\Transaction\Database\IManager $manTrans,
         \Praxigento\Odoo\Repo\Entity\SaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdooInventory,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,

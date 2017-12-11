@@ -11,7 +11,7 @@ use Praxigento\Odoo\Config as Cfg;
  * Build query to get sale items tax rates by sale order ID.
  */
 class Builder
-    extends \Praxigento\Core\Repo\Query\Builder
+    extends \Praxigento\Core\App\Repo\Query\Builder
 {
     /** Tables aliases for external usage ('camelCase' naming) */
     const AS_ITEM_TAX = 'soti';

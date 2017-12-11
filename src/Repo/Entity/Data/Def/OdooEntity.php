@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Entity\Data\Def;
 
 abstract class OdooEntity
-    extends \Praxigento\Core\Data\Entity\Base
+    extends \Praxigento\Core\App\Repo\Data\Entity\Base
     implements \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity
 {
 

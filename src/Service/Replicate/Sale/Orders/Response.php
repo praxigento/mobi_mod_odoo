@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Service\Replicate\Sale\Orders;
 
 class Response
-    extends \Praxigento\Core\Service\Base\Response
+    extends \Praxigento\Core\App\Service\Base\Response
 {
     /**
      * Report entries with results for each order.

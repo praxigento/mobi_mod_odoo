@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Cli\Cmd\Replicate;
 
 class Orders
-    extends \Praxigento\Core\Cli\Cmd\Base
+    extends \Praxigento\Core\App\Cli\Cmd\Base
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
     protected $callReplicateOrders;

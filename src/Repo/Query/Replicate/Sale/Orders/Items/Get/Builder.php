@@ -33,7 +33,7 @@ use Praxigento\Pv\Repo\Entity\Data\Sale\Item as EPv;
  * @deprecated remove it
  */
 class Builder
-    extends \Praxigento\Core\Repo\Query\Builder
+    extends \Praxigento\Core\App\Repo\Query\Builder
 {
     /** Tables aliases */
     const AS_ODOO = 'odoo';

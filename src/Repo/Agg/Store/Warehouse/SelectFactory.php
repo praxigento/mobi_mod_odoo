@@ -15,7 +15,7 @@ use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
 class SelectFactory
-    extends \Praxigento\Core\Repo\Agg\BaseSelectFactory
+    extends \Praxigento\Core\App\Repo\Agg\BaseSelectFactory
 {
     /** @var  WrhsRepoAggWarehouse */
     protected $_repoAggWarehouse;

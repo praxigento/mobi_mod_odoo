@@ -4,7 +4,7 @@
  */
 namespace Praxigento\Odoo\Service\Replicate\Request;
 
-class OrderSave extends \Praxigento\Core\Service\Base\Request
+class OrderSave extends \Praxigento\Core\App\Service\Base\Request
 {
     /**
      * @return \Magento\Sales\Api\Data\OrderInterface

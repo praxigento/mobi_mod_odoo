@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Agg\Store;
 
 use Magento\Framework\App\ResourceConnection;
-use Praxigento\Core\Transaction\Database\IManager;
+use Praxigento\Core\App\Transaction\Database\IManager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Repo\Entity\Data\Warehouse as EntityWarehouse;
@@ -14,14 +14,14 @@ use Praxigento\Odoo\Repo\Entity\Warehouse as RepoEntityWarehouse;
 use Praxigento\Warehouse\Repo\Agg\Def\Warehouse as WrhsRepoAggWarehouse;
 
 class Warehouse
-    extends \Praxigento\Core\Repo\Def\Crud
+    extends \Praxigento\Core\App\Repo\Def\Crud
     implements \Praxigento\Odoo\Repo\Agg\Store\IWarehouse
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
     protected $conn;
     /** @var  Warehouse\SelectFactory */
     protected $factorySelect;
-    /** @var  \Praxigento\Core\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
     protected $manTrans;
     /** @var  \Praxigento\Odoo\Repo\Entity\Warehouse */
     protected $repoEntityWarehouse;

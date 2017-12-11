@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Request;
 
-class ProductSave extends \Praxigento\Core\Service\Base\Request
+class ProductSave extends \Praxigento\Core\App\Service\Base\Request
 {
     /**
      * Get bundle of the products (one product is also allowed) to replicate data between Magento and Odoo.

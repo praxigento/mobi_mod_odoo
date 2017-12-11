@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Service\Replicate\Response;
 
 
-class OrderSave extends \Praxigento\Core\Service\Base\Response
+class OrderSave extends \Praxigento\Core\App\Service\Base\Response
 {
     /**
      * @return string

@@ -10,7 +10,7 @@ use Praxigento\Odoo\Repo\Entity\Data\Lot as EntityLot;
 use Praxigento\Warehouse\Repo\Entity\Data\Lot as EntityWrhsLot;
 
 class Lot
-    extends \Praxigento\Core\Repo\Def\Crud
+    extends \Praxigento\Core\App\Repo\Def\Crud
     implements \Praxigento\Odoo\Repo\Agg\Store\ILot
 {
     /** @var  \Magento\Framework\DB\Adapter\AdapterInterface */
@@ -19,7 +19,7 @@ class Lot
     protected $factorySelect;
     /** @var  bool 'true' if we know that NULL LOT is creatd */
     protected $isNullLotExist;
-    /** @var  \Praxigento\Core\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
     protected $manTrans;
     /** @var \Praxigento\Odoo\Repo\Entity\Lot */
     protected $repoEntityLot;
@@ -27,7 +27,7 @@ class Lot
     protected $repoWrhsEntityLot;
 
     public function __construct(
-        \Praxigento\Core\Transaction\Database\IManager $manTrans,
+        \Praxigento\Core\App\Transaction\Database\IManager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Warehouse\Repo\Entity\Lot $repoWrhsEntityLot,
         \Praxigento\Odoo\Repo\Entity\Lot $repoEntityLot,

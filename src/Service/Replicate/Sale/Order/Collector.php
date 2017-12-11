@@ -26,7 +26,7 @@ class Collector
     protected $repoCustomer;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoDwnlCustomer;
-    /** @var \Praxigento\Core\Repo\IGeneric */
+    /** @var \Praxigento\Core\App\Repo\IGeneric */
     protected $repoGeneric;
     /** @var \Praxigento\Odoo\Repo\Entity\Product */
     protected $repoOdooProd;
@@ -41,7 +41,7 @@ class Collector
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat,
-        \Praxigento\Core\Repo\IGeneric $repoGeneric,
+        \Praxigento\Core\App\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCustomer,
         \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
