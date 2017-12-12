@@ -7,17 +7,21 @@ namespace Praxigento\Odoo\Plugin\Sales\Model\Order;
 
 class CustomerManagement
 {
-    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
-    protected $callReplicate;
+    /** @var \Psr\Log\LoggerInterface */
+    private $logger;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    protected $repoOrder;
+    private $repoOrder;
+    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
+    private $servReplicate;
 
     public function __construct(
+        \Praxigento\Core\App\Logger\App $logger,
         \Magento\Sales\Api\OrderRepositoryInterface $repoOrder,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
+        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {
+        $this->logger = $logger;
         $this->repoOrder = $repoOrder;
-        $this->callReplicate = $callReplicate;
+        $this->servReplicate = $servReplicate;
     }
 
     public function aroundCreate(
@@ -26,10 +30,14 @@ class CustomerManagement
         $orderId
     ) {
         $result = $proceed($orderId);
-        $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
-        $order = $this->repoOrder->get($orderId);
-        $req->setSaleOrder($order);
-        $this->callReplicate->exec($req);
+        try {
+            $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
+            $order = $this->repoOrder->get($orderId);
+            $req->setSaleOrder($order);
+            $this->servReplicate->exec($req);
+        } catch (\Throwable $th) {
+
+        }
         return $result;
     }
 }
