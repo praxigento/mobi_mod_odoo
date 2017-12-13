@@ -11,7 +11,7 @@
         </resources>
     </route>
 
-    <route url="/V1/prxgt/odoo/product/replicate/save/" method="POST">
+    <route url="/V1/prxgt/odoo/product/replicate/save" method="POST">
         <!-- Replicate Inventory data (products, lots, warehouses) -->
         <service class="Praxigento\Odoo\Api\Product\Replicate\SaveInterface" method="execute"/>
         <resources>
@@ -20,7 +20,7 @@
         </resources>
     </route>
 
-    <route url="/V1/prxgt/odoo/sales/order/pushRepeat/" method="POST">
+    <route url="/V1/prxgt/odoo/sales/order/push/repeat" method="POST">
         <!-- MOBI-412: Request orders push to Odoo -->
         <service class="Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface" method="execute"/>
         <resources>
@@ -29,7 +29,7 @@
         </resources>
     </route>
 
-    <route url="/V1/prxgt/odoo/sales/shipment/tracking/save/" method="POST">
+    <route url="/V1/prxgt/odoo/sales/shipment/tracking/save" method="POST">
         <!-- Update tracking number for existing sale order -->
         <service class="Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface" method="execute"/>
         <resources>
