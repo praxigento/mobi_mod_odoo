@@ -18,7 +18,7 @@ class PushRepeat
     protected $logger;
 
     public function __construct(
-        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrders $callReplicateOrders
     ) {
         $this->logger = $logger;

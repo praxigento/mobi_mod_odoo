@@ -39,13 +39,13 @@ class Login
     protected $cachedOdooSessionId = null;
     /** @var int cache for User ID of the authenticated Odoo XML RPC API user. */
     protected $cachedOdooUserId = null;
-    /** @var  \Praxigento\Odoo\Fw\Logger\Odoo separate channel to log Odoo activity */
+    /** @var  \Psr\Log\LoggerInterface separate channel to log Odoo activity */
     protected $logger;
     /** @var ObjectManagerInterface */
     protected $manObj;
 
     function __construct(
-        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
+        \Psr\Log\LoggerInterface $logger,
         ObjectManagerInterface $manObj,
         Adapter $adapter,
         \Praxigento\Odoo\Helper\Config $hlpConfig

@@ -21,7 +21,7 @@ class Save
     protected $shipmentLoader;
 
     public function __construct(
-        \Praxigento\Odoo\Fw\Logger\Odoo $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Praxigento\Core\App\Transaction\Database\IManager $manTrans,
