@@ -20,7 +20,7 @@ class SalesOrderInvoicePay
     protected $callReplicate;
 
     public function __construct(
-        \Praxigento\Core\App\Logger\App $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Praxigento\Warehouse\Tool\IStockManager $manStock,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
     ) {

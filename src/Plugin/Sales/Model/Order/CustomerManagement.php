@@ -15,7 +15,7 @@ class CustomerManagement
     private $servReplicate;
 
     public function __construct(
-        \Praxigento\Core\App\Logger\App $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Sales\Api\OrderRepositoryInterface $repoOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {
