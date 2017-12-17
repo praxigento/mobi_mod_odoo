@@ -14,14 +14,14 @@ class CheckoutSubmitAllAfter
     const DATA_ORDER = 'order';
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
-    /** @var  \Praxigento\Warehouse\Tool\IStockManager */
+    /** @var  \Praxigento\Warehouse\Api\Helper\Stock */
     protected $manStock;
     /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
     protected $callReplicate;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
-        \Praxigento\Warehouse\Tool\IStockManager $manStock,
+        \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
     ) {
         $this->logger = $logger;

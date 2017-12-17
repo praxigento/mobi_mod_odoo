@@ -16,7 +16,7 @@ class Collector
     protected $manBusinessCodes;
     /** @var  \Praxigento\Core\Tool\IFormat */
     protected $manFormat;
-    /** @var \Praxigento\Warehouse\Tool\IStockManager */
+    /** @var \Praxigento\Warehouse\Api\Helper\Stock */
     protected $manStock;
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
     protected $qbLots;
@@ -38,7 +38,7 @@ class Collector
     protected $repoWarehouse;
 
     public function __construct(
-        \Praxigento\Warehouse\Tool\IStockManager $manStock,
+        \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Tool\IFormat $manFormat,
         \Praxigento\Core\App\Repo\IGeneric $repoGeneric,

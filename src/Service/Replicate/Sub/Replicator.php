@@ -21,7 +21,7 @@ class Replicator
      * @var int
      */
     protected $cachedWrhsOdooId = null;
-    /** @var \Praxigento\Warehouse\Tool\IStockManager */
+    /** @var \Praxigento\Warehouse\Api\Helper\Stock */
     protected $manStock;
     /** @var  IRepoAggLot */
     protected $repoAggLot;
@@ -39,7 +39,7 @@ class Replicator
     protected $subProduct;
 
     public function __construct(
-        \Praxigento\Warehouse\Tool\IStockManager $manStock,
+        \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Repo\IRegistry $repoRegistry,
         \Praxigento\Odoo\Repo\Agg\Store\ILot $repoAggLot,
         \Praxigento\Odoo\Repo\IPv $repoPv,
