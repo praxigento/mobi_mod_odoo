@@ -97,7 +97,7 @@ class Builder
             self::A_PV_SUBTOTAL => EPv::ATTR_SUBTOTAL,
             self::A_PV_DISCOUNT => EPv::ATTR_DISCOUNT
         ];
-        $cond = $as . '.' . EPv::ATTR_SALE_ITEM_ID . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
+        $cond = $as . '.' . EPv::ATTR_ITEM_REF . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* query tuning */

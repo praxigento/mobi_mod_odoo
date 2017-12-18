@@ -46,7 +46,7 @@ class Pv implements IPv
     public function registerWarehousePv($stockItemMageId, $pv)
     {
         $bind = [
-            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageId,
+            EntityPvStockItem::ATTR_ITEM_REF => $stockItemMageId,
             EntityPvStockItem::ATTR_PV => $pv
         ];
         $this->_repoPvStockItem->create($bind);
@@ -65,10 +65,10 @@ class Pv implements IPv
     public function updateWarehousePv($stockItemMageId, $pv)
     {
         $bind = [
-            EntityPvStockItem::ATTR_STOCK_ITEM_REF => $stockItemMageId,
+            EntityPvStockItem::ATTR_ITEM_REF => $stockItemMageId,
             EntityPvStockItem::ATTR_PV => $pv
         ];
-        $where = EntityPvStockItem::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemMageId;
+        $where = EntityPvStockItem::ATTR_ITEM_REF . '=' . (int)$stockItemMageId;
         $this->_repoPvStockItem->update($bind, $where);
     }
 }

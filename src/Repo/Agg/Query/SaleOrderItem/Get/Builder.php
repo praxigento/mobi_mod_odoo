@@ -137,7 +137,7 @@ class Builder
             self::A_PV_DISCOUNT => EPvSaleItem::ATTR_DISCOUNT,
             self::A_PV_TOTAL => EPvSaleItem::ATTR_TOTAL
         ];
-        $cond = $as . '.' . EPvSaleItem::ATTR_SALE_ITEM_ID . '=' . $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
+        $cond = $as . '.' . EPvSaleItem::ATTR_ITEM_REF . '=' . $asSaleItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* LEFT JOIN prxgt_pv_stock_item */
@@ -146,7 +146,7 @@ class Builder
         $cols = [
             self::A_PV_UNIT => EPvStockItem::ATTR_PV
         ];
-        $cond = $as . '.' . EPvStockItem::ATTR_STOCK_ITEM_REF . '=' . $asStockItem . '.' . Cfg::E_CATINV_STOCK_ITEM_A_ITEM_ID;
+        $cond = $as . '.' . EPvStockItem::ATTR_ITEM_REF . '=' . $asStockItem . '.' . Cfg::E_CATINV_STOCK_ITEM_A_ITEM_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* LEFT JOIN prxgt_wrhs_qty_sale */
