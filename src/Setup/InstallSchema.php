@@ -3,6 +3,7 @@
  * Create DB schema.
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Setup;
 
 use Praxigento\Odoo\Repo\Entity\Data\Category;
@@ -15,48 +16,40 @@ use Praxigento\Odoo\Repo\Entity\Data\Warehouse;
 
 class InstallSchema extends \Praxigento\Core\App\Setup\Schema\Base
 {
-    protected function _setup()
+    protected function setup()
     {
         /** Read and parse JSON schema. */
         $pathToFile = __DIR__ . '/../etc/dem.json';
         $pathToNode = '/dBEAR/package/Praxigento/package/Odoo';
-        $demPackage = $this->_toolDem->readDemPackage($pathToFile, $pathToNode);
+        $demPackage = $this->toolDem->readDemPackage($pathToFile, $pathToNode);
 
         /* Registry / Request */
-        $entityAlias = Request::ENTITY_NAME;
         $demEntity = $demPackage->get('package/Registry/entity/Request');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Request::ENTITY_NAME, $demEntity);
 
         /* Category */
-        $entityAlias = Category::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/Category');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Category::ENTITY_NAME, $demEntity);
 
         /* Customer */
-        $entityAlias = Customer::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/Customer');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Customer::ENTITY_NAME, $demEntity);
 
         /* Lot */
-        $entityAlias = Lot::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/Lot');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Lot::ENTITY_NAME, $demEntity);
 
         /* Product */
-        $entityAlias = Product::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/Product');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Product::ENTITY_NAME, $demEntity);
 
         /* SaleOrder */
-        $entityAlias = SaleOrder::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/SaleOrder');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(SaleOrder::ENTITY_NAME, $demEntity);
 
         /* Warehouse */
-        $entityAlias = Warehouse::ENTITY_NAME;
         $demEntity = $demPackage->get('entity/Warehouse');
-        $this->_toolDem->createEntity($entityAlias, $demEntity);
+        $this->toolDem->createEntity(Warehouse::ENTITY_NAME, $demEntity);
     }
-
 
 }
