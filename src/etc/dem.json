@@ -110,7 +110,7 @@
                     "own": {"aliases": ["mage_ref"]},
                     "reference": {
                       "entity": {"completeAlias": "prxgt_dwnl_customer"},
-                      "aliases": ["customer_id"]
+                      "aliases": ["customer_ref"]
                     },
                     "action": {"delete": "restrict", "update": "restrict"}
                   }
@@ -227,7 +227,7 @@
                     "own": {"aliases": ["mage_ref"]},
                     "reference": {
                       "entity": {"completeAlias": "prxgt_pv_sale"},
-                      "aliases": ["sale_id"]
+                      "aliases": ["sale_ref"]
                     },
                     "action": {"delete": "restrict", "update": "restrict"}
                   }
