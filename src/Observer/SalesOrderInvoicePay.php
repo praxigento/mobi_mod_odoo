@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Observer;
 
 /**
@@ -13,20 +14,20 @@ class SalesOrderInvoicePay
     /* Names for the items in the event's data */
     const DATA_INVOICE = 'invoice';
     /** @var \Psr\Log\LoggerInterface */
-    protected $logger;
+    private $logger;
     /** @var  \Praxigento\Warehouse\Api\Helper\Stock */
-    protected $manStock;
+    private $manStock;
     /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
-    protected $callReplicate;
+    private $servReplicate;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callReplicate
+        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {
         $this->logger = $logger;
         $this->manStock = $manStock;
-        $this->callReplicate = $callReplicate;
+        $this->servReplicate = $servReplicate;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -40,7 +41,7 @@ class SalesOrderInvoicePay
                 $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
                 $order = $invoice->getOrder();
                 $req->setSaleOrder($order);
-                $this->callReplicate->exec($req);
+                $this->servReplicate->exec($req);
             } catch (\Exception $e) {
                 /* catch all exceptions and steal them */
                 $msg = 'Some error is occurred on sale order saving to Odoo. Error: ' . $e->getMessage();
