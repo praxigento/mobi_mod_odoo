@@ -18,8 +18,8 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="prxgt_odoo_cmd_replicate_products" xsi:type="object">Praxigento\Odoo\Cli\Cmd\Replicate\Products</item>
-                <item name="prxgt_odoo_cmd_replicate_orders" xsi:type="object">Praxigento\Odoo\Cli\Cmd\Replicate\Orders</item>
+                <item name="prxgt_odoo_cmd_replicate_products" xsi:type="object">Praxigento\Odoo\Cli\Replicate\Products</item>
+                <item name="prxgt_odoo_cmd_replicate_orders" xsi:type="object">Praxigento\Odoo\Cli\Replicate\Orders</item>
             </argument>
         </arguments>
     </type>

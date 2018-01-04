@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Cli\Cmd\Replicate;
+namespace Praxigento\Odoo\Cli\Replicate;
 
 class Products
     extends \Praxigento\Core\App\Cli\Cmd\Base
