@@ -14,7 +14,7 @@ class Collector
 {
     /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
     protected $manBusinessCodes;
-    /** @var  \Praxigento\Core\Tool\IFormat */
+    /** @var  \Praxigento\Core\Api\Helper\Format */
     protected $manFormat;
     /** @var \Praxigento\Warehouse\Api\Helper\Stock */
     protected $manStock;
@@ -40,7 +40,7 @@ class Collector
     public function __construct(
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
-        \Praxigento\Core\Tool\IFormat $manFormat,
+        \Praxigento\Core\Api\Helper\Format $manFormat,
         \Praxigento\Core\App\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCustomer,
