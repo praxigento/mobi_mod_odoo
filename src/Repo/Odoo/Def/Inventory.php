@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 class Inventory
@@ -9,20 +10,20 @@ class Inventory
 {
     const ODOO_IDS = 'ids';
     const ROUTE = '/api/inventory';
+
     /** @var  \Magento\Framework\Webapi\ServiceInputProcessor */
-    protected $_mageSrvInProc;
+    private $inputProcessor;
     /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Rest */
-    protected $_rest;
+    private $rest;
 
     public function __construct(
-        \Magento\Framework\Webapi\ServiceInputProcessor $mageSrvInProc,
+        \Magento\Framework\Webapi\ServiceInputProcessor $inputProcessor,
         \Praxigento\Odoo\Repo\Odoo\Connector\Rest $rest
     ) {
-        $this->_mageSrvInProc = $mageSrvInProc;
-        $this->_rest = $rest;
+        $this->inputProcessor = $inputProcessor;
+        $this->rest = $rest;
     }
 
-    /** @inheritdoc */
     public function get($ids = null)
     {
         /* prepare request parameters */
@@ -34,9 +35,9 @@ class Inventory
             $params = [self::ODOO_IDS => []];
         }
         /* perform request and extract result data */
-        $cover = $this->_rest->request($params, self::ROUTE);
+        $cover = $this->rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
-        $result = $this->_mageSrvInProc->convertValue($data, \Praxigento\Odoo\Data\Odoo\Inventory::class);
+        $result = $this->inputProcessor->convertValue($data, \Praxigento\Odoo\Data\Odoo\Inventory::class);
         return $result;
     }
 }

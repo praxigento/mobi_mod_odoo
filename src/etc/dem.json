@@ -245,9 +245,9 @@
                   },
                   "OdooRef": {
                     "alias": "odoo_ref",
-                    "comment": "Reference to the warehouse in Odoo DB.",
+                    "comment": "Reference to the warehouse in Odoo DB (business code).",
                     "nullable": false,
-                    "type": {"integer": {"unsigned": true}}
+                    "type": {"text": {"length": 255}}
                   },
                   "DateReplicated": {
                     "alias": "date_replicated",
