@@ -15,20 +15,25 @@ class Save
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Lots */
     private $ownLots;
+    /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product */
+    private $ownProd;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Warehouses */
     private $ownWrhs;
 
     public function __construct(
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Lots $ownLots,
+        \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product $ownProd,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Warehouses $ownWrhs
     ) {
         $this->ownLots = $ownLots;
+        $this->ownProd = $ownProd;
         $this->ownWrhs = $ownWrhs;
     }
 
     /**
      * @param ARequest $request
-     * @return  AResponse
+     * @return AResponse
+     * @throws \Exception
      */
     public function exec($request)
     {
@@ -44,7 +49,7 @@ class Save
         $this->ownWrhs->execute($warehouses);
         $this->ownLots->execute($lots);
         foreach ($products as $prod) {
-            $this->_subReplicator->processProductItem($prod);
+            $this->ownProd->execute($prod);
         }
 
         /** compose result */
