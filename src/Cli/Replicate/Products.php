@@ -14,18 +14,13 @@ class Products
      */
     const ARG_IDS = 'ids';
     /**#@- */
-    /**
-     * @var \Praxigento\Odoo\Service\IReplicate
-     * @deprecated
-     */
-    private $callReplicate;
+
     private $repoOdoo;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save */
     private $servSave;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Service\IReplicate $callReplicate,
         \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdoo,
         \Praxigento\Odoo\Service\Replicate\Product\Save $servSave
     ) {
@@ -34,7 +29,6 @@ class Products
             'prxgt:odoo:replicate:products',
             'Pull products list from Odoo and replicate data into Magento.'
         );
-        $this->callReplicate = $callReplicate;
         $this->repoOdoo = $repoOdoo;
         $this->servSave = $servSave;
     }
@@ -65,8 +59,6 @@ class Products
         }
         $inventory = $this->repoOdoo->get($ids);
         /* call service operation */
-        $req = new \Praxigento\Odoo\Service\Replicate\Request\ProductsFromOdoo();
-        $req->setOdooIds($ids);
         $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
         $req->setInventory($inventory);
         $this->servSave->exec($req);

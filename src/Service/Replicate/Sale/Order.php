@@ -5,9 +5,6 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Sale;
 
-/**
- * @see \Praxigento\Odoo\Service\Replicate\Call::orderSave
- */
 class Order
     extends \Praxigento\Core\App\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
@@ -25,8 +22,7 @@ class Order
         \Praxigento\Odoo\Repo\Entity\SaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
-    )
-    {
+    ) {
         parent::__construct($logger, $manObj);
         $this->repoEntitySaleOrder = $repoEntitySaleOrder;
         $this->repoOdooSaleOrder = $repoOdooSaleOrder;
