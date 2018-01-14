@@ -67,12 +67,9 @@ class Products
         /* call service operation */
         $req = new \Praxigento\Odoo\Service\Replicate\Request\ProductsFromOdoo();
         $req->setOdooIds($ids);
-        /** @var \Praxigento\Odoo\Service\Replicate\Response\ProductsFromOdoo $resp */
-        $resp = $this->callReplicate->productsFromOdoo($req);
-        $succeed = $resp->isSucceed();
-//        $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
-//        $req->setInventory($inventory);
-//        $this->servSave->exec($req);
+        $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
+        $req->setInventory($inventory);
+        $this->servSave->exec($req);
         $output->writeln('<info>Command is completed.<info>');
     }
 }

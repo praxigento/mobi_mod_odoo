@@ -149,7 +149,7 @@ class DataHandler
                 $this->repoGroupPrice->create($data);
             }
         }
-        /* MOBI-734: set warehouse price ad default for missed groups */
+        /* MOBI-734: set warehouse price as default for missed groups */
         foreach ($groupsIdsAll as $groupId) {
             if (!in_array($groupId, $groupsIdsProcessed)) {
                 $data->setCustomerGroupRef($groupId);

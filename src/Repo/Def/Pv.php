@@ -9,9 +9,12 @@ use Praxigento\Odoo\Repo\IPv;
 use Praxigento\Pv\Repo\Entity\Data\Product as EntityPvProduct;
 use Praxigento\Pv\Repo\Entity\Data\Stock\Item as EntityPvStockItem;
 
+/**
+ * @deprecated
+ */
 class Pv implements IPv
 {
-    /** @var  \\Praxigento\Pv\Repo\Entity\Product */
+    /** @var  \Praxigento\Pv\Repo\Entity\Product */
     protected $_repoPvProduct;
     /** @var \Praxigento\Pv\Repo\Entity\Stock\Item */
     protected $_repoPvStockItem;

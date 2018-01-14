@@ -23,6 +23,10 @@ class Product
     private $hlpStock;
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
+    /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Category */
+    private $ownCat;
+    /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse */
+    private $ownWrhs;
     /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
     private $repoAttrSet;
     /** @var \Praxigento\Odoo\Repo\Entity\Product */
@@ -30,7 +34,9 @@ class Product
     /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
     private $repoOdooWrhs;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
-    protected $repoProd;
+    private $repoProd;
+    /** @var \Praxigento\Pv\Repo\Entity\Product */
+    private $repoPvProd;
 
     public function __construct(
         \Psr\Log\LoggerInterface $logger,
@@ -38,18 +44,24 @@ class Product
         \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
         \Praxigento\Odoo\Repo\Entity\Warehouse $repoOdooWrhs,
         \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
+        \Praxigento\Pv\Repo\Entity\Product $repoPvProd,
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
-        \Magento\Catalog\Model\ProductFactory $factProd
+        \Magento\Catalog\Model\ProductFactory $factProd,
+        \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Category $ownCat,
+        \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse $ownWrhs
     ) {
         $this->logger = $logger;
         $this->repoAttrSet = $repoAttrSet;
         $this->repoProd = $repoProd;
         $this->repoOdooProd = $repoOdooProd;
         $this->repoOdooWrhs = $repoOdooWrhs;
+        $this->repoPvProd = $repoPvProd;
         $this->hlpStock = $hlpStock;
         $this->factSearchCrit = $factSearchCrit;
         $this->factProd = $factProd;
+        $this->ownCat = $ownCat;
+        $this->ownWrhs = $ownWrhs;
     }
 
     /**
@@ -109,37 +121,34 @@ class Product
         $sku = trim($product->getSku());
         $name = trim($product->getName());
         $isActive = $product->getIsActive();
-        $skipReplication = false; // skip replication for inactive products are missed in Mage
+        $isMissedAndInactive = false; // skip replication for inactive products are missed in Mage
         $weight = $product->getWeight();
         $pvWholesale = $product->getPvWholesale();
         $priceRetail = $this->getRetailPrice($product);
         /* check does product item is already registered in Magento */
-        $found = $this->repoOdooProd->getByOdooId($idOdoo);
-        if (!$found) {
+        $idMage = $this->repoOdooProd->getMageIdByOdooId($idOdoo);
+        if (!$idMage) {
             if ($isActive) {
                 /* create new product in Magento */
                 $idMage = $this->create($sku, $name, $isActive, $priceRetail, $weight);
-                $this->repoRegistry->registerProduct($idMage, $idOdoo);
-                $this->repoPv->registerProductWholesalePv($idMage, $pvWholesale);
+                $this->registerOdooProd($idMage, $idOdoo);
+                $this->registerPvWholesale($idMage, $pvWholesale);
             } else {
                 /* skip product replication for not active and not existing products */
-                $skipReplication = true;
+                $isMissedAndInactive = true;
             }
         } else {
             /* update attributes for magento product */
-            $idMage = $this->repoRegistry->getProductMageIdByOdooId($idOdoo);
-            $this->subProduct->update($idMage, $sku, $name, $isActive, $priceRetail, $weight);
-            $this->repoPv->updateProductWholesalePv($idMage, $pvWholesale);
+            $this->update($idMage, $sku, $name, $isActive, $priceRetail, $weight);
+            $this->updatePvWholesale($idMage, $pvWholesale);
         }
-        if (!$skipReplication) {
-            /* check that categories are registered in Magento */
+        if (!$isMissedAndInactive) {
+            /* replicate Odoo categories into Magento */
             $categories = $product->getCategories();
-            $this->subProdCategory->checkCategoriesExistence($categories);
-            /* check product to categories links (add/remove) */
-            $this->subProdCategory->replicateCategories($idMage, $categories);
-            /* update warehouse/lot/qty data  */
+            $this->ownCat->exec($idMage, $categories);
+            /* replicate warehouse/lot/qty data  */
             $warehouses = $product->getWarehouses();
-            $this->subProdWarehouse->processWarehouses($idMage, $warehouses);
+            $this->ownWrhs->exec($idMage, $warehouses);
         }
     }
 
@@ -184,5 +193,71 @@ class Product
     {
         $result = ($isActive) ? Status::STATUS_ENABLED : Status::STATUS_DISABLED;
         return $result;
+    }
+
+    /**
+     * Create link between Magento & Odoo representation of the product.
+     *
+     * @param int $mageId
+     * @param int $odooId
+     */
+    private function registerOdooProd($mageId, $odooId)
+    {
+        $entity = new \Praxigento\Odoo\Repo\Entity\Data\Product();
+        $entity->setMageRef($mageId);
+        $entity->setOdooRef($odooId);
+        $this->repoOdooProd->create($entity);
+    }
+
+    /**
+     * Save Wholesale PV value for the product.
+     *
+     * @param int $prodId
+     * @param float $pv
+     */
+    private function registerPvWholesale($prodId, $pv)
+    {
+        $entity = new \Praxigento\Pv\Repo\Entity\Data\Product();
+        $entity->setProductRef($prodId, $pv);
+        $this->repoPvProd->create($entity);
+    }
+
+    /**
+     * @param int $mageId
+     * @param string $sku
+     * @param string $name
+     * @param bool $isActive
+     * @param float $priceRetail
+     * @param float $weight
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\StateException
+     */
+    private function update($mageId, $sku, $name, $isActive, $priceRetail, $weight)
+    {
+        $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; weight: $weight.)");
+        /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
+        $product = $this->repoProd->getById($mageId);
+        /* MOBI-717: SKU also can be changed */
+        $product->setSku($sku);
+        $product->setUrlKey($sku);
+        $product->setName($name);
+        $status = $this->getStatus($isActive);
+        $product->setStatus($status);
+        $product->setPrice($priceRetail);
+        $product->setWeight($weight);
+        $this->repoProd->save($product);
+    }
+
+    private function updatePvWholesale($prodMageId, $pv)
+    {
+
+        $bind = [
+            \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PROD_REF => $prodMageId,
+            \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PV => $pv
+        ];
+        $where = \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PROD_REF . '=' . (int)$prodMageId;
+        $this->repoPvProd->update($bind, $where);
     }
 }
