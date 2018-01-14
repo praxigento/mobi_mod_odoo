@@ -8,8 +8,9 @@ namespace Praxigento\Odoo\Repo\Odoo\Def;
 class Inventory
     implements \Praxigento\Odoo\Repo\Odoo\IInventory
 {
-    const ODOO_IDS = 'ids';
+    const PROD_IDS = 'prod_ids';
     const ROUTE = '/api/inventory';
+    const WRHS_IDS = 'wrhs_ids';
 
     /** @var  \Magento\Framework\Webapi\ServiceInputProcessor */
     private $inputProcessor;
@@ -24,16 +25,27 @@ class Inventory
         $this->rest = $rest;
     }
 
-    public function get($ids = null)
+    public function get($prodIds = null, $wrhsIds = null)
     {
         /* prepare request parameters */
-        if (is_array($ids)) {
-            $params = [self::ODOO_IDS => $ids];
-        } elseif (is_int($ids)) {
-            $params = [self::ODOO_IDS => [$ids]];
+        if (is_array($prodIds)) {
+            $argProdIds = $prodIds;
+        } elseif (is_int($prodIds)) {
+            $argProdIds = [$prodIds];
         } else {
-            $params = [self::ODOO_IDS => []];
+            $argProdIds = [];
         }
+        if (is_array($wrhsIds)) {
+            $argWrhsIds = $wrhsIds;
+        } elseif (is_int($wrhsIds)) {
+            $argWrhsIds = [$wrhsIds];
+        } else {
+            $argWrhsIds = [];
+        }
+        $params = [
+            self::PROD_IDS => $argProdIds,
+            self::WRHS_IDS => $argWrhsIds
+        ];
         /* perform request and extract result data */
         $cover = $this->rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
