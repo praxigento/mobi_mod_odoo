@@ -39,7 +39,9 @@ class Registry implements IRegistry
     protected function _getMageIdByOdooId($entityName, $odooId)
     {
         $result = null;
-        $where = IOdooEntity::ATTR_ODOO_REF . '=' . (int)$odooId;
+        $conn = $this->_repoBasic->getConnection();
+        $quoted = $conn->quote($odooId);
+        $where = IOdooEntity::ATTR_ODOO_REF . '=' . $quoted;
         $items = $this->_repoBasic->getEntities($entityName, null, $where);
         if (
             is_array($items) &&
