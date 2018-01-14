@@ -7,14 +7,14 @@ namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product;
 
 class Warehouse
 {
+    /** @var \Magento\CatalogInventory\Model\ResourceModel\Stock\Item\StockItemCriteriaFactory */
     private $factStockItem;
     /** @var  \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler */
     private $ownHandler;
+    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
     private $repoOdooWrhs;
     /** @var  \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
     private $repoStockItem;
-    /** @var  \Praxigento\Odoo\Service\Replicate\Sub\Replicator\Product\Lot */
-    private $subLot;
 
     public function __construct(
         \Magento\CatalogInventory\Model\ResourceModel\Stock\Item\StockItemCriteriaFactory $factStockItem,

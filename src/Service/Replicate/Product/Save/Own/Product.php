@@ -14,7 +14,9 @@ use Praxigento\Odoo\Data\Odoo\Inventory\Product as DProduct;
  */
 class Product
 {
-    private $cacheDefWrhs;
+    /** @var int */
+    private static $cacheDefWrhs;
+
     /** @var \Magento\Catalog\Model\ProductFactory */
     private $factProd;
     /** @var \Magento\Framework\Api\Search\SearchCriteriaFactory */
@@ -155,14 +157,14 @@ class Product
     /**
      * Get default stock (warehouse), load warehouse data, cache and return Odoo ID for default warehouse.
      */
-    protected function getDefWrhs()
+    private function getOdooIdForDefWarehouse()
     {
-        if (is_null($this->cacheDefWrhs)) {
+        if (is_null(self::$cacheDefWrhs)) {
             $stockId = $this->hlpStock->getDefaultStockId();
             $wrhs = $this->repoOdooWrhs->getById($stockId);
-            $this->cacheDefWrhs = $wrhs->getOdooRef();
+            self::$cacheDefWrhs = $wrhs->getOdooRef();
         }
-        return $this->cacheDefWrhs;
+        return self::$cacheDefWrhs;
     }
 
     /**
@@ -173,7 +175,7 @@ class Product
     private function getRetailPrice(\Praxigento\Odoo\Data\Odoo\Inventory\Product $product)
     {
         $result = 1000;
-        $wrhsTargetId = $this->getDefWrhs();
+        $wrhsTargetId = $this->getOdooIdForDefWarehouse();
         $warehouses = $product->getWarehouses();
         foreach ($warehouses as $warehouse) {
             $wrhsCurrentId = $warehouse->getIdOdoo();

@@ -11,8 +11,6 @@ namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse;
 class Handler
 {
 
-    /** @var \Magento\Framework\Api\Search\SearchCriteriaFactory */
-    private $factSearchCrit;
     /** @var \Magento\CatalogInventory\Model\Stock\ItemFactory */
     private $factStockItem;
     /** @var  \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Lot */
@@ -27,7 +25,6 @@ class Handler
     private $repoWrhsStockItem;
 
     public function __construct(
-        \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
         \Magento\CatalogInventory\Model\Stock\ItemFactory $factStockItem,
         \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
         \Praxigento\Warehouse\Repo\Entity\Stock\Item $repoWrhsStockItem,
@@ -35,7 +32,6 @@ class Handler
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Lot $ownLot,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Price $ownPrice
     ) {
-        $this->factSearchCrit = $factSearchCrit;
         $this->factStockItem = $factStockItem;
         $this->repoStockItem = $repoStockItem;
         $this->repoWrhsStockItem = $repoWrhsStockItem;
@@ -76,7 +72,7 @@ class Handler
         return $result;
     }
 
-    public function getWarehousePv($stockItemMageId)
+    private function getWarehousePv($stockItemMageId)
     {
         $result = null;
         $data = $this->repoPvStockItem->getById($stockItemMageId);
