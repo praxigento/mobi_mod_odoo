@@ -32,7 +32,7 @@ interface IOdooEntity
     /**
      * Get Odoo ID for the entity.
      *
-     * @return int
+     * @return int|string
      */
     public function getOdooRef();
 
@@ -53,7 +53,7 @@ interface IOdooEntity
     /**
      * Set Odoo ID for the entity.
      *
-     * @param int $data
+     * @param int|string $data
      */
     public function setOdooRef($data);
 }

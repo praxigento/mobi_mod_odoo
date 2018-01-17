@@ -488,7 +488,7 @@ class Collector
         // id_mage
         $orderIdMage = (int)$sale->getId();
         // warehouse_id_odoo
-        $warehouseIdOdoo = (int)$this->getWarehouseIdOdoo($sale);
+        $warehouseIdOdoo = $this->getWarehouseIdOdoo($sale);
         // number
         $number = $sale->getIncrementId();
         // date (will be below)
@@ -601,7 +601,7 @@ class Collector
      * Convert Magento's $storeId to Odoo's $warehouseId.
      *
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return int
+     * @return string
      */
     protected function getWarehouseIdOdoo(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
