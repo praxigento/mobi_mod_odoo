@@ -4,8 +4,8 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Praxigento_Core::mobi" title="MOBI">
-                    <resource id="Praxigento_Core::api" title="API">
+                <resource id="Praxigento_Core::mobi">
+                    <resource id="Praxigento_Core::api">
                         <resource id="Praxigento_Odoo::odoo" title="Odoo">
                             <resource id="Praxigento_Odoo::replicate" title="Replicate data"/>
                         </resource>
