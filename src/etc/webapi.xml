@@ -38,5 +38,12 @@
         </resources>
     </route>
 
+    <route url="/V1/prxgt/odoo/account/daily" method="POST">
+        <!-- Get account turnover summary by day & transaction type (Odoo replication). -->
+        <service class="Praxigento\Odoo\Api\Web\Account\DailyInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+        </resources>
+    </route>
 
 </routes>
