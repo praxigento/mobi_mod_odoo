@@ -10,6 +10,7 @@ use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary as QBGetSummary;
 use Praxigento\Odoo\Service\Replicate\Account\Daily\Request as ARequest;
 use Praxigento\Odoo\Service\Replicate\Account\Daily\Response as AResponse;
+use Praxigento\Odoo\Service\Replicate\Account\Daily\Response\Item as DItem;
 
 /**
  * Module level service to get account turnover summary by day & transaction type (Odoo replication).
@@ -19,6 +20,8 @@ class Daily
     /** @var int Wallet Account ID for representative customer */
     private static $cacheAccIdWallet = null;
 
+    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    private $hlpCodeMgr;
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary */
@@ -32,11 +35,13 @@ class Daily
         \Praxigento\Accounting\Repo\Entity\Account $repoAcc,
         \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpCodeMgr,
         \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary $qbGetSummary
     ) {
         $this->repoAcc = $repoAcc;
         $this->repoTypeAsset = $repoTypeAsset;
         $this->hlpPeriod = $hlpPeriod;
+        $this->hlpCodeMgr = $hlpCodeMgr;
         $this->qbGetSummary = $qbGetSummary;
     }
 
@@ -57,9 +62,19 @@ class Daily
         $summary = [];
         $this->merge($summary, $sumIn);
         $this->merge($summary, $sumOut);
+        /* classification transactions by type according to project specific requirements */
+        $items = [];
+        foreach ($summary as $operTypeId => $value) {
+            $operTypeCode = $this->hlpCodeMgr->getBusCodeForOperTypeId($operTypeId);
+            $item = new DItem();
+            $item->setCode($operTypeCode);
+            $item->setValue($value);
+            $items[] = $item;
+        }
 
         /** compose result */
         $result = new AResponse();
+        $result->setItems($items);
         return $result;
     }
 

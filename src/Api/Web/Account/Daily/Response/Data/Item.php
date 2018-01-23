@@ -3,17 +3,22 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Service\Replicate\Account\Daily;
+namespace Praxigento\Odoo\Api\Web\Account\Daily\Response\Data;
 
-/**
- * Response to get account turnover summary by day & transaction type (Odoo replication).
- *
- * (Define getters explicitly to use with Swagger tool)
- */
-class Response
+class Item
     extends \Praxigento\Core\Data
 {
+    const DATE = 'date';
     const ITEMS = 'items';
+
+    /**
+     * @return string 'YYYYMMDD'
+     */
+    public function getDate()
+    {
+        $result = parent::get(self::DATE);
+        return $result;
+    }
 
     /**
      * @return \Praxigento\Odoo\Service\Replicate\Account\Daily\Response\Item[]
@@ -25,11 +30,18 @@ class Response
     }
 
     /**
+     * @param string $data 'YYYYMMDD'
+     */
+    public function setDate($data)
+    {
+        parent::set(self::DATE, $data);
+    }
+
+    /**
      * @param \Praxigento\Odoo\Service\Replicate\Account\Daily\Response\Item[] $data
      */
     public function setItems($data)
     {
         parent::set(self::ITEMS, $data);
     }
-
 }

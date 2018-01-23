@@ -35,6 +35,16 @@ interface IBusinessCodesManager
     public function getBusCodeForCustomerGroupById($groupId);
 
     /**
+     * Get transaction type business code for operation type ID.
+     *
+     * @see https://confluence.prxgt.com/x/AwA2CQ
+     *
+     * @param int $typeId
+     * @return string
+     */
+    public function getBusCodeForOperTypeId($typeId);
+
+    /**
      * Get '1' value by 'distributor' value.
      *
      * @param string $groupCode
