@@ -15,6 +15,8 @@
                 type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
     <preference for="\Praxigento\Odoo\Api\Web\Account\DailyInterface"
                 type="\Praxigento\Odoo\Web\Account\Daily"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Account\Pv\AddInterface"
+                type="\Praxigento\Odoo\Web\Account\Pv\Add"/>
 
     <!-- *** -->
     <!-- CLI -->
