@@ -8,22 +8,22 @@ namespace Praxigento\Odoo\Api\Web\Account\Pv\Add\Response;
 class Data
     extends \Praxigento\Core\Data
 {
-    const DATES = 'dates';
+    const OPERATION_ID = 'operationId';
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDates()
+    public function getOperationId()
     {
-        $result = parent::get(self::DATES);
+        $result = parent::get(self::OPERATION_ID);
         return $result;
     }
 
     /**
-     * @param string $data
+     * @param int $data
      */
-    public function setDates($data)
+    public function setOperationId($data)
     {
-        parent::set(self::DATES, $data);
+        parent::set(self::OPERATION_ID, $data);
     }
 }

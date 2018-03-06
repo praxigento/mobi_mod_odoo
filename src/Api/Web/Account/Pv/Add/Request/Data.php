@@ -12,22 +12,58 @@ namespace Praxigento\Odoo\Api\Web\Account\Pv\Add\Request;
 class Data
     extends \Praxigento\Core\Data
 {
-    const PERIOD = 'period';
+    const AMOUNT = 'amount';
+    const MLM_ID = 'mlmId';
+    const NOTES = 'notes';
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        $result = parent::get(self::AMOUNT);
+        return $result;
+    }
 
     /**
      * @return string
      */
-    public function getPeriod()
+    public function getMlmId()
     {
-        $result = parent::get(self::PERIOD);
+        $result = parent::get(self::MLM_ID);
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotes()
+    {
+        $result = parent::get(self::NOTES);
+        return $result;
+    }
+
+    /**
+     * @param float
+     */
+    public function setAmount($data)
+    {
+        parent::set(self::AMOUNT, $data);
     }
 
     /**
      * @param string
      */
-    public function setPeriod($data)
+    public function setMlmId($data)
     {
-        parent::set(self::PERIOD, $data);
+        parent::set(self::MLM_ID, $data);
+    }
+
+    /**
+     * @param string
+     */
+    public function setNotes($data)
+    {
+        parent::set(self::NOTES, $data);
     }
 }

@@ -6,6 +6,7 @@
  */
 namespace Praxigento\Odoo;
 
+use Praxigento\Pv\Config as PvCfg;
 use Praxigento\Wallet\Config as WalletCfg;
 use Praxigento\Warehouse\Config as WrhsCfg;
 
@@ -14,7 +15,9 @@ class Config extends \Praxigento\Core\Config
     const ACL_CATALOG_LOTS = WrhsCfg::ACL_CATALOG_LOTS;
     const ACL_CATALOG_WAREHOUSES = WrhsCfg::ACL_CATALOG_WAREHOUSES;
 
+    const CODE_TYPE_ASSET_PV = PvCfg::CODE_TYPE_ASSET_PV;
     const CODE_TYPE_ASSET_WALLET_ACTIVE = WalletCfg::CODE_TYPE_ASSET_WALLET;
+
     const MENU_CATALOG_LOTS = self::ACL_CATALOG_LOTS;
     const MENU_CATALOG_WAREHOUSES = self::ACL_CATALOG_WAREHOUSES;
 
