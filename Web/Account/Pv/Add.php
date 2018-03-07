@@ -19,10 +19,10 @@ class Add
     private $auth;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     private $repoDwnlCust;
-    /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
-    private $servAssetTransfer;
     /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
     private $repoTypeAsset;
+    /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
+    private $servAssetTransfer;
 
     public function __construct(
         \Praxigento\Core\App\Api\Web\Authenticator\Back $auth,
