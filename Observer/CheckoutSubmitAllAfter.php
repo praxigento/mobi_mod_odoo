@@ -13,7 +13,7 @@ class CheckoutSubmitAllAfter
 {
     /* Names for the items in the event's data */
     const DATA_ORDER = 'order';
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var \Praxigento\Core\App\Api\Logger\Main */
     private $logger;
     /** @var  \Praxigento\Warehouse\Api\Helper\Stock */
     private $manStock;
@@ -21,7 +21,7 @@ class CheckoutSubmitAllAfter
     private $servReplicate;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\App\Api\Logger\Main $logger,
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {

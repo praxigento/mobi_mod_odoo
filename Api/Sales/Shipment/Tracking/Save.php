@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Api\Sales\Shipment\Tracking;
 class Save
     implements \Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface
 {
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var \Praxigento\Core\App\Api\Logger\Main */
     protected $logger;
     /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
     protected $manBusCodes;
@@ -21,7 +21,7 @@ class Save
     protected $shipmentLoader;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\App\Api\Logger\Main $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Praxigento\Core\App\Api\Repo\Transaction\Manager $manTrans,

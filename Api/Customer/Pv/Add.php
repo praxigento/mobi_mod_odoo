@@ -10,7 +10,7 @@ class Add
     const ODOO_REF_TYPE_CODE = \Praxigento\Odoo\Helper\Code\Request::CUSTOMER_PV_ADD;
     /** @var \Praxigento\Pv\Service\ITransfer */
     protected $callPvTransfer;
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var \Praxigento\Core\App\Api\Logger\Main */
     protected $logger;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     protected $repoCustomer;
@@ -18,7 +18,7 @@ class Add
     protected $repoRegRequest;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\App\Api\Logger\Main $logger,
         \Praxigento\Downline\Repo\Entity\Customer $repoCustomer,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Pv\Service\ITransfer $callPvTransfer

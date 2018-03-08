@@ -14,11 +14,11 @@ class PushRepeat
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
     protected $callReplicateOrders;
 
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var \Praxigento\Core\App\Api\Logger\Main */
     protected $logger;
 
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\App\Api\Logger\Main $logger,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrders $callReplicateOrders
     ) {
         $this->logger = $logger;

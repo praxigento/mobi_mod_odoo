@@ -45,7 +45,7 @@ class Login
     protected $manObj;
 
     function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        \Praxigento\Core\App\Api\Logger\Main $logger,
         ObjectManagerInterface $manObj,
         Adapter $adapter,
         \Praxigento\Odoo\Helper\Config $hlpConfig
