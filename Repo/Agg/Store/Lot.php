@@ -19,7 +19,7 @@ class Lot
     protected $factorySelect;
     /** @var  bool 'true' if we know that NULL LOT is creatd */
     protected $isNullLotExist;
-    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Api\Repo\Transaction\Manager */
     protected $manTrans;
     /** @var \Praxigento\Odoo\Repo\Entity\Lot */
     protected $repoEntityLot;
@@ -27,7 +27,7 @@ class Lot
     protected $repoWrhsEntityLot;
 
     public function __construct(
-        \Praxigento\Core\App\Transaction\Database\IManager $manTrans,
+        \Praxigento\Core\App\Api\Repo\Transaction\Manager $manTrans,
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Warehouse\Repo\Entity\Lot $repoWrhsEntityLot,
         \Praxigento\Odoo\Repo\Entity\Lot $repoEntityLot,

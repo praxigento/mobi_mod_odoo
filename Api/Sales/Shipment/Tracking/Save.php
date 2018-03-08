@@ -15,7 +15,7 @@ class Save
     protected $manInvoice;
     /** @var \Magento\Framework\ObjectManagerInterface */
     protected $manObj;
-    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Api\Repo\Transaction\Manager */
     protected $manTrans;
     /** @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader */
     protected $shipmentLoader;
@@ -24,7 +24,7 @@ class Save
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
-        \Praxigento\Core\App\Transaction\Database\IManager $manTrans,
+        \Praxigento\Core\App\Api\Repo\Transaction\Manager $manTrans,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusCodes,
         \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader
     ) {

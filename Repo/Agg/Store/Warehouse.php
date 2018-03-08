@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Repo\Agg\Store;
 
 use Magento\Framework\App\ResourceConnection;
-use Praxigento\Core\App\Transaction\Database\IManager;
+use Praxigento\Core\App\Api\Repo\Transaction\Manager;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Agg\Data\Warehouse as AggWarehouse;
 use Praxigento\Odoo\Repo\Entity\Data\Warehouse as EntityWarehouse;
@@ -21,7 +21,7 @@ class Warehouse
     protected $conn;
     /** @var  Warehouse\SelectFactory */
     protected $factorySelect;
-    /** @var  \Praxigento\Core\App\Transaction\Database\IManager */
+    /** @var  \Praxigento\Core\App\Api\Repo\Transaction\Manager */
     protected $manTrans;
     /** @var  \Praxigento\Odoo\Repo\Entity\Warehouse */
     protected $repoEntityWarehouse;
@@ -31,7 +31,7 @@ class Warehouse
     protected $resource;
 
     public function __construct(
-        IManager $manTrans,
+        Manager $manTrans,
         ResourceConnection $resource,
         WrhsRepoAggWarehouse $repoWrhsAggWarehouse,
         RepoEntityWarehouse $repoEntityWarehouse,
