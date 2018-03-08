@@ -20,7 +20,7 @@ class Rest
     protected $login;
 
     public function __construct(
-        \Praxigento\Core\App\Api\Logger\Main $logger,
+        \Praxigento\Core\Api\App\Logger\Main $logger,
         \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter $adapter,
         \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin $login,
         \Praxigento\Odoo\Helper\Config $hlpConfig

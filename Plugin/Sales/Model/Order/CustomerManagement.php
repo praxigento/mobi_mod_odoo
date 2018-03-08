@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Plugin\Sales\Model\Order;
 
 class CustomerManagement
 {
-    /** @var \Praxigento\Core\App\Api\Logger\Main */
+    /** @var \Praxigento\Core\Api\App\Logger\Main */
     private $logger;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
     private $repoOrder;
@@ -15,7 +15,7 @@ class CustomerManagement
     private $servReplicate;
 
     public function __construct(
-        \Praxigento\Core\App\Api\Logger\Main $logger,
+        \Praxigento\Core\Api\App\Logger\Main $logger,
         \Magento\Sales\Api\OrderRepositoryInterface $repoOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {

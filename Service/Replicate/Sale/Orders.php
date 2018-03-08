@@ -16,7 +16,7 @@ class Orders
     protected $subCollector;
 
     public function __construct(
-        \Praxigento\Core\App\Api\Logger\Main $logger,
+        \Praxigento\Core\Api\App\Logger\Main $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector $subCollector

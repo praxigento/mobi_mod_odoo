@@ -15,7 +15,7 @@ use Praxigento\Odoo\Config as Cfg;
 class Add
     implements \Praxigento\Odoo\Api\Web\Account\Pv\AddInterface
 {
-    /** @var \Praxigento\Core\App\Api\Web\Authenticator\Back */
+    /** @var \Praxigento\Core\Api\App\Web\Authenticator\Back */
     private $auth;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     private $repoDwnlCust;
@@ -25,7 +25,7 @@ class Add
     private $servAssetTransfer;
 
     public function __construct(
-        \Praxigento\Core\App\Api\Web\Authenticator\Back $auth,
+        \Praxigento\Core\Api\App\Web\Authenticator\Back $auth,
         \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
         \Praxigento\Accounting\Service\Account\Asset\Transfer $servAssetTransfer

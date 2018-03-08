@@ -13,7 +13,7 @@ namespace Praxigento\Odoo\Api\Web\Account\Pv\Add;
  *
  */
 class Request
-    extends \Praxigento\Core\App\Api\Web\Request
+    extends \Praxigento\Core\Api\App\Web\Request
 {
     /**
      * @return \Praxigento\Odoo\Api\Web\Account\Pv\Add\Request\Data

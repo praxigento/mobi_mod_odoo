@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Api\Data\Customer\Pv\Add;
 
 class Response
-    extends \Praxigento\Core\App\Api\Web\Response
+    extends \Praxigento\Core\Api\App\Web\Response
 {
     const CODE_CUSTOMER_IS_NOT_FOUND = 'CUSTOMER_IS_NOT_FOUND';
     const CODE_DUPLICATED = 'DUPLICATED';

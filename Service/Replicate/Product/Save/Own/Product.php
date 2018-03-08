@@ -23,7 +23,7 @@ class Product
     private $factSearchCrit;
     /** @var \Praxigento\Warehouse\Api\Helper\Stock */
     private $hlpStock;
-    /** @var \Praxigento\Core\App\Api\Logger\Main */
+    /** @var \Praxigento\Core\Api\App\Logger\Main */
     private $logger;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Category */
     private $ownCat;
@@ -41,7 +41,7 @@ class Product
     private $repoPvProd;
 
     public function __construct(
-        \Praxigento\Core\App\Api\Logger\Main $logger,
+        \Praxigento\Core\Api\App\Logger\Main $logger,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
         \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
         \Praxigento\Odoo\Repo\Entity\Warehouse $repoOdooWrhs,
