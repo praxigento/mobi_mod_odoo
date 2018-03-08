@@ -13,7 +13,7 @@ class SalesOrderInvoicePay
 {
     /* Names for the items in the event's data */
     const DATA_INVOICE = 'invoice';
-    /** @var \Praxigento\Core\Api\App\Logger\Main */
+    /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
     /** @var  \Praxigento\Warehouse\Api\Helper\Stock */
     private $manStock;
@@ -21,7 +21,7 @@ class SalesOrderInvoicePay
     private $servReplicate;
 
     public function __construct(
-        \Praxigento\Core\Api\App\Logger\Main $logger,
+        \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {

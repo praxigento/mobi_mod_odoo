@@ -6,7 +6,10 @@
     <!-- *** -->
     <!-- API -->
     <!-- *** -->
-    <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface" type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
+    <preference for="Praxigento\Odoo\Api\App\Logger\Odoo"
+                type="Praxigento\Odoo\App\Logger\Odoo"/>
+    <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface"
+                type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
     <preference for="\Praxigento\Odoo\Api\Product\Replicate\SaveInterface"
                 type="\Praxigento\Odoo\Api\Product\Replicate\Save"/>
     <preference for="\Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface"
