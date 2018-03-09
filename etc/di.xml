@@ -37,14 +37,10 @@
     <!-- **** -->
     <!-- Repo -->
     <!-- **** -->
-    <!-- Repo / Agg -->
-    <preference for="Praxigento\Odoo\Repo\Agg\Store\ILot" type="Praxigento\Odoo\Repo\Agg\Store\Lot"/>
-    <preference for="Praxigento\Odoo\Repo\Agg\Store\IWarehouse" type="Praxigento\Odoo\Repo\Agg\Store\Warehouse"/>
-
-
-    <!-- Repo / Entity -->
-    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory" type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder" type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory"
+                type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
+    <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder"
+                type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
     <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin"
                 type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
 
