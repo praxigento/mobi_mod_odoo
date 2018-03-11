@@ -5,17 +5,16 @@
 namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response;
 
 /**
- * Response for add PV to customer balance.
+ * Response to add PV to customer balance.
  *
  * (Define getters explicitly to use with Swagger tool)
- *
- * @method void setOdooRef(string $data)
- * @method void setOperationId(int $data)
- * @method void setTransactionId(int $data)
+ * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
  */
 class Data
     extends \Praxigento\Core\Data
 {
+    const ODOO_REF = 'odooRef';
+    const OPERATION_ID = 'operationId';
     /**
      * Odoo reference of the original request.
      *
@@ -23,7 +22,7 @@ class Data
      */
     public function getOdooRef()
     {
-        $result = parent::getOdooRef();
+        $result = parent::get(self::ODOO_REF);
         return $result;
     }
 
@@ -34,18 +33,20 @@ class Data
      */
     public function getOperationId()
     {
-        $result = parent::getOperationId();
+        $result = parent::get(self::OPERATION_ID);
         return $result;
     }
 
-    /**
-     * Magento ID of the created transaction.
-     *
-     * @return int
-     */
-    public function getTransactionId()
+    /** @param string */
+    public function setOdooRef($data)
     {
-        $result = parent::getTransactionId();
-        return $result;
+        parent::set(self::ODOO_REF, $data);
     }
+
+    /** @param int */
+    public function setOperationId($data)
+    {
+        parent::set(self::OPERATION_ID, $data);
+    }
+
 }

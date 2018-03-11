@@ -3,94 +3,179 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Web\Customer\Pv;
+namespace Praxigento\Odoo\Web\Customer\Pv;
+
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request as ARequest;
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response as AResponse;
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data as AData;
+use Praxigento\Odoo\Config as Cfg;
+use Praxigento\Odoo\Helper\Code\Request as HCodeReq;
+use Praxigento\Odoo\Repo\Entity\Data\Registry\Request as ERegRequest;
+
+/**
+ * API adapter for internal service to add PV to the Magento customer (Odoo replication).
+ */
 class Add
     implements \Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface
 {
-    const ODOO_REF_TYPE_CODE = \Praxigento\Odoo\Helper\Code\Request::CUSTOMER_PV_ADD;
+    /** @var \Praxigento\Core\Api\App\Web\Authenticator\Rest */
+    private $auth;
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
+    /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
+    private $manTrans;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
-    private $repoCustomer;
+    private $repoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     private $repoRegRequest;
-    /** @var \Praxigento\Pv\Service\ITransfer */
-    private $servPvTransfer;
+    /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
+    private $repoTypeAsset;
+    /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
+    private $servAssetTransfer;
 
     public function __construct(
+        \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Downline\Repo\Entity\Customer $repoCustomer,
+        \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
+        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
-        \Praxigento\Pv\Service\ITransfer $servPvTransfer
+        \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
+        \Praxigento\Accounting\Service\Account\Asset\Transfer $servAssetTransfer
     ) {
+        $this->auth = $auth;
         $this->logger = $logger;
-        $this->repoCustomer = $repoCustomer;
+        $this->repoTypeAsset = $repoTypeAsset;
+        $this->repoDwnlCust = $repoDwnlCust;
         $this->repoRegRequest = $repoRegRequest;
-        $this->servPvTransfer = $servPvTransfer;
+        $this->manTrans = $manTrans;
+        $this->servAssetTransfer = $servAssetTransfer;
     }
 
-    public function exec($data)
+    public function exec($request)
     {
-        assert($data instanceof \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request);
-        $result = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response();
-        /* parse request data */
-        $customerMlmId = $data->getCustomerMlmId();
-        $pv = $data->getPv();
-        $dateApplied = $data->getDateApplied();
+        assert($request instanceof \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request);
+        /** define local working data */
+        $data = $request->getData();
+        $mlmId = $data->getCustomerMlmId();
+        $notes = $data->getNotes();
         $odooRef = $data->getOdooRef();
-        /* process request data */
+        $pv = $data->getPv();
+
+        /** perform processing */
+        $amount = abs($pv);
+        $assetId = $this->getAssetId();
+        $custId = $this->getCustomerId($mlmId);
+        $userId = $this->getUserId($request);
+
+        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $dataResp = new AData();
+
         /* prevent duplication */
-        $key = [
-            \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::ATTR_TYPE_CODE => self::ODOO_REF_TYPE_CODE,
-            \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::ATTR_ODOO_REF => $odooRef
-        ];
-        $found = $this->repoRegRequest->getById($key);
-        if ($found) {
-            $msg = "Odoo request referenced as '$odooRef' is already processed.";
-            $this->logger->error($msg);
-            $result->getResult()->setCode($result::CODE_DUPLICATED);
-            $result->getResult()->setText($msg);
-        } else {
-            /* find customer by MLM ID */
-            $customer = $this->repoCustomer->getByMlmId($customerMlmId);
-            if (!$customer) {
-                $msg = "Customer #$customerMlmId is not found.";
+        $def = $this->manTrans->begin();
+        try {
+            $found = $this->findDuplicates($odooRef);
+            if ($found) {
+                $msg = "Odoo request referenced as '$odooRef' is already processed.";
                 $this->logger->error($msg);
-                $result->getResult()->setCode($result::CODE_CUSTOMER_IS_NOT_FOUND);
-                $result->getResult()->setText($msg);
+                $baseResult->setCode(AResponse::CODE_DUPLICATED);
+                $baseResult->setText($msg);
             } else {
-                try {
-                    /* add PV to account */
-                    $req = new \Praxigento\Pv\Service\Transfer\Request\CreditToCustomer();
-                    $req->setToCustomerId($customer->getCustomerId());
-                    $req->setValue($pv);
-                    $req->setDateApplied($dateApplied);
-                    $note = "PV is added from Odoo (ref. #$odooRef).";
-                    $req->setNoteOperation($note);
-                    $req->setNoteTransaction($note);
-                    $resp = $this->servPvTransfer->creditToCustomer($req);
-                    if ($resp->isSucceed()) {
-                        $this->repoRegRequest->create($key);
-                        /* compose response */
-                        $respData = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data();
-                        $respData->setOdooRef($odooRef);
-                        $respData->setOperationId($resp->getOperationId());
-                        $transIds = $resp->getTransactionsIds();
-                        $oneId = reset($transIds);
-                        $respData->setTransactionId($oneId);
-                        $result->setData($respData);
-                        $result->getResult()->setCode($result::CODE_SUCCESS);
-                        $msg = "$pv PV are credit to customer #$customerMlmId (odoo ref. #$odooRef).";
-                        $this->logger->info($msg);
-                    }
-                } catch (\Throwable $e) {
-                    $msg = $e->getMessage();
-                    $msg .= "\n" . $e->getTraceAsString();
-                    $result->getResult()->setText($msg);
+                /* add PV to customer account */
+                $req = new \Praxigento\Accounting\Service\Account\Asset\Transfer\Request();
+                $req->setAmount($amount);
+                $req->setAssetId($assetId);
+                $req->setCustomerId($custId);
+                $req->setUserId($userId);
+                $req->setIsDirect(true);
+                $req->setNote($notes);
+
+                $resp = $this->servAssetTransfer->exec($req);
+                $operId = $resp->getOperId();
+
+                if ($operId) {
+                    $this->registerOdooRequest($odooRef);
+                    /* compose response */
+                    $dataResp->setOdooRef($odooRef);
+                    $dataResp->setOperationId($operId);
+                    $baseResult->setCode(AResponse::CODE_SUCCESS);
+                    $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
+                    $this->logger->info($msg);
                 }
             }
+            $this->manTrans->commit($def);
+        } finally {
+            /* rollback uncommitted transactions on exception */
+            $this->manTrans->end($def);
         }
+        /** compose result */
+        $result = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response();
+        $result->setResult($baseResult);
+        $result->setData($dataResp);
         return $result;
     }
 
+    /**
+     * Look up for performed "Add PV to Customer" requests with the same Odoo Reference.
+     *
+     * @param string $odooRef
+     * @return bool|\Praxigento\Odoo\Repo\Entity\Data\Registry\Request
+     * @throws \Exception
+     */
+    private function findDuplicates($odooRef)
+    {
+        $entity = new ERegRequest();
+        $entity->setTypeCode(HCodeReq::CUSTOMER_PV_ADD);
+        $entity->setOdooRef($odooRef);
+        $key = (array)$entity->get();
+        $result = $this->repoRegRequest->getById($key);
+        return $result;
+    }
+
+    /** @return int */
+    private function getAssetId()
+    {
+        $result = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_PV);
+        return $result;
+    }
+
+    /**
+     * @param string $mlmId
+     * @return int
+     * @throws \Exception
+     */
+    private function getCustomerId($mlmId)
+    {
+        $customer = $this->repoDwnlCust->getByMlmId($mlmId);
+        if (!$customer) {
+            throw new \Exception("Cannot find customer with MLM ID: $mlmId.");
+        }
+        $result = $customer->getCustomerId();
+        return $result;
+    }
+
+    /**
+     * Get admin user to log in operations log.
+     *
+     * @param ARequest $request
+     * @return mixed
+     */
+    private function getUserId($request)
+    {
+        $result = $this->auth->getCurrentUserId($request);
+        return $result;
+    }
+
+    /**
+     * Register PV add request on Magento side to prevent double processing.
+     *
+     * @param string $odooRef
+     * @throws \Exception
+     */
+    private function registerOdooRequest($odooRef)
+    {
+        $entity = new ERegRequest();
+        $entity->setTypeCode(HCodeReq::CUSTOMER_PV_ADD);
+        $entity->setOdooRef($odooRef);
+        $this->repoRegRequest->create($entity);
+    }
 }

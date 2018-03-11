@@ -48,7 +48,7 @@
 
     <route url="/V1/prxgt/odoo/sales/shipment/tracking/save" method="POST">
         <!-- Update tracking number for existing sale order -->
-        <service class="Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface" method="execs"/>
+        <service class="Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface" method="exec"/>
         <resources>
             <resource ref="Praxigento_Odoo::replicate"/>
             <!--<resource ref="anonymous"/>-->

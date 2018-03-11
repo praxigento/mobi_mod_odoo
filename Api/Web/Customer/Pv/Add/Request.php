@@ -8,57 +8,26 @@ namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add;
  * Request to add PV to customer balance.
  *
  * (Define getters explicitly to use with Swagger tool)
- *
- * @method void setCustomerMlmId(string $data)
- * @method void setPv(float $data)
- * @method void setOdooReference(string $data)
- * @method void setDateApplied(string $data)
- *
+ * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
  */
 class Request
-    extends \Praxigento\Core\Data
+    extends \Praxigento\Core\Api\App\Web\Request
 {
+
     /**
-     * MLM ID for customer.
-     *
-     * @return string
+     * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request\Data
      */
-    public function getCustomerMlmId()
+    public function getData()
     {
-        $result = parent::getCustomerMlmId();
+        $result = parent::get(self::DATA);
         return $result;
     }
 
     /**
-     * Application date for transaction (ISO-8601 compatible, UTC or with timezone, now if missed).
-     *
-     * @return string|null
+     * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request\Data $data
      */
-    public function getDateApplied()
+    public function setData($data)
     {
-        $result = parent::getDateApplied();
-        return $result;
-    }
-
-    /**
-     * Reference to the corresponded operation in Odoo (to prevent doubling).
-     *
-     * @return string
-     */
-    public function getOdooRef()
-    {
-        $result = parent::getOdooRef();
-        return $result;
-    }
-
-    /**
-     * Amount of the PV to add to customer balance.
-     *
-     * @return float
-     */
-    public function getPv()
-    {
-        $result = parent::getPv();
-        return $result;
+        parent::set(self::DATA, $data);
     }
 }
