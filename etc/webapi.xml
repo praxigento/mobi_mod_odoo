@@ -10,19 +10,10 @@
         </resources>
     </route>
 
-    <route url="/V1/prxgt/odoo/account/pv/add" method="POST">
-        <!-- Add PV to the Magento customer (Odoo replication). -->
-        <service class="Praxigento\Odoo\Api\Web\Account\Pv\AddInterface" method="exec"/>
-        <resources>
-            <resource ref="Praxigento_Odoo::replicate"/>
-            <!--<resource ref="anonymous"/>-->
-        </resources>
-    </route>
     <route url="/V1/prxgt/odoo/customer/pv/add/" method="POST">
-        <!-- Add PV to customer balance -->
+        <!-- Add PV to customer account -->
         <service class="Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface" method="exec"/>
         <resources>
-            <!-- MOBI-271, MOBI-307 -->
             <resource ref="Praxigento_Odoo::replicate"/>
             <!--<resource ref="anonymous"/>-->
         </resources>
