@@ -2,10 +2,11 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Sales\Shipment\Tracking;
+
+namespace Praxigento\Odoo\Web\Sales\Shipment\Tracking;
 
 class Save
-    implements \Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface
+    implements \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface
 {
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     protected $logger;
@@ -36,7 +37,7 @@ class Save
         $this->shipmentLoader = $shipmentLoader;
     }
 
-    public function execute(\Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data)
+    public function exec($data)
     {
         $result = false;
         /* replicate all data in one transaction */

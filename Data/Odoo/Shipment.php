@@ -26,7 +26,7 @@ class Shipment
      *
      * @return string
      *
-     * @deprecated is not used in \Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save::execute
+     * @deprecated is not used in \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save::execute
      */
     public function getStatus()
     {
@@ -60,7 +60,7 @@ class Shipment
      *
      * @param string $data
      *
-     * @deprecated is not used in \Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save::execute
+     * @deprecated is not used in \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save::execute
      */
     public function setStatus($data)
     {

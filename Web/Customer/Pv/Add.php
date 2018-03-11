@@ -2,36 +2,37 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Customer\Pv;
 
+namespace Praxigento\Odoo\Api\Web\Customer\Pv;
 class Add
-    implements \Praxigento\Odoo\Api\Customer\Pv\AddInterface
+    implements \Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface
 {
     const ODOO_REF_TYPE_CODE = \Praxigento\Odoo\Helper\Code\Request::CUSTOMER_PV_ADD;
-    /** @var \Praxigento\Pv\Service\ITransfer */
-    protected $callPvTransfer;
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
-    protected $logger;
+    private $logger;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
-    protected $repoCustomer;
+    private $repoCustomer;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
-    protected $repoRegRequest;
+    private $repoRegRequest;
+    /** @var \Praxigento\Pv\Service\ITransfer */
+    private $servPvTransfer;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Downline\Repo\Entity\Customer $repoCustomer,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
-        \Praxigento\Pv\Service\ITransfer $callPvTransfer
+        \Praxigento\Pv\Service\ITransfer $servPvTransfer
     ) {
         $this->logger = $logger;
         $this->repoCustomer = $repoCustomer;
         $this->repoRegRequest = $repoRegRequest;
-        $this->callPvTransfer = $callPvTransfer;
+        $this->servPvTransfer = $servPvTransfer;
     }
 
-    public function execute(\Praxigento\Odoo\Api\Data\Customer\Pv\Add\Request $data)
+    public function exec($data)
     {
-        $result = new \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response();
+        assert($data instanceof \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request);
+        $result = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response();
         /* parse request data */
         $customerMlmId = $data->getCustomerMlmId();
         $pv = $data->getPv();
@@ -67,11 +68,11 @@ class Add
                     $note = "PV is added from Odoo (ref. #$odooRef).";
                     $req->setNoteOperation($note);
                     $req->setNoteTransaction($note);
-                    $resp = $this->callPvTransfer->creditToCustomer($req);
+                    $resp = $this->servPvTransfer->creditToCustomer($req);
                     if ($resp->isSucceed()) {
                         $this->repoRegRequest->create($key);
                         /* compose response */
-                        $respData = new \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response\Data();
+                        $respData = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data();
                         $respData->setOdooRef($odooRef);
                         $respData->setOperationId($resp->getOperationId());
                         $transIds = $resp->getTransactionsIds();

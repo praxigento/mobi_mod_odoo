@@ -10,7 +10,7 @@ namespace Praxigento\Odoo\Helper\Code;
 class Request
 {
     /**
-     * See \Praxigento\Odoo\Api\Customer\Pv\Add command.
+     * See \Praxigento\Odoo\Api\Web\Customer\Pv\Add command.
      */
     const CUSTOMER_PV_ADD = 100;
 }

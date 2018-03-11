@@ -3,10 +3,10 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Api\Product\Replicate;
+namespace Praxigento\Odoo\Web\Product\Replicate;
 
 class Save
-    implements \Praxigento\Odoo\Api\Product\Replicate\SaveInterface
+    implements \Praxigento\Odoo\Api\Web\Product\Replicate\SaveInterface
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save */
     private $servSave;
@@ -17,7 +17,7 @@ class Save
         $this->servSave = $servSave;
     }
 
-    public function execute(\Praxigento\Odoo\Data\Odoo\Inventory $data)
+    public function exec($data)
     {
         $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
         $req->setInventory($data);

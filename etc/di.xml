@@ -8,18 +8,19 @@
     <!-- *** -->
     <preference for="Praxigento\Odoo\Api\App\Logger\Main"
                 type="Praxigento\Odoo\App\Logger\Main"/>
-    <preference for="\Praxigento\Odoo\Api\Customer\Pv\AddInterface"
-                type="\Praxigento\Odoo\Api\Customer\Pv\Add"/>
-    <preference for="\Praxigento\Odoo\Api\Product\Replicate\SaveInterface"
-                type="\Praxigento\Odoo\Api\Product\Replicate\Save"/>
-    <preference for="\Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface"
-                type="\Praxigento\Odoo\Api\Sales\Order\PushRepeat"/>
-    <preference for="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface"
-                type="\Praxigento\Odoo\Api\Sales\Shipment\Tracking\Save"/>
     <preference for="\Praxigento\Odoo\Api\Web\Account\DailyInterface"
                 type="\Praxigento\Odoo\Web\Account\Daily"/>
     <preference for="\Praxigento\Odoo\Api\Web\Account\Pv\AddInterface"
                 type="\Praxigento\Odoo\Web\Account\Pv\Add"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface"
+                type="\Praxigento\Odoo\Web\Customer\Pv\Add"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Product\Replicate\SaveInterface"
+                type="\Praxigento\Odoo\Web\Product\Replicate\Save"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Sales\Order\PushRepeatInterface"
+                type="\Praxigento\Odoo\Web\Sales\Order\PushRepeat"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface"
+                type="\Praxigento\Odoo\Web\Sales\Shipment\Tracking\Save"/>
+
 
     <!-- *** -->
     <!-- CLI -->

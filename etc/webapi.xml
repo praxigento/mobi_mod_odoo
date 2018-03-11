@@ -1,42 +1,6 @@
 <?xml version="1.0"?>
-<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-
-    <route url="/V1/prxgt/odoo/customer/pv/add/" method="POST">
-        <!-- Add PV to customer balance -->
-        <service class="Praxigento\Odoo\Api\Customer\Pv\AddInterface" method="execute"/>
-        <resources>
-            <!-- MOBI-271, MOBI-307 -->
-            <resource ref="Praxigento_Odoo::replicate"/>
-            <!--<resource ref="anonymous"/>-->
-        </resources>
-    </route>
-
-    <route url="/V1/prxgt/odoo/product/replicate/save" method="POST">
-        <!-- Replicate Inventory data (products, lots, warehouses) -->
-        <service class="Praxigento\Odoo\Api\Product\Replicate\SaveInterface" method="execute"/>
-        <resources>
-            <resource ref="Praxigento_Odoo::replicate"/>
-            <!--<resource ref="anonymous"/>-->
-        </resources>
-    </route>
-
-    <route url="/V1/prxgt/odoo/sales/order/push/repeat" method="POST">
-        <!-- MOBI-412: Request orders push to Odoo -->
-        <service class="Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface" method="execute"/>
-        <resources>
-            <resource ref="Praxigento_Odoo::replicate"/>
-            <!--<resource ref="anonymous"/>-->
-        </resources>
-    </route>
-
-    <route url="/V1/prxgt/odoo/sales/shipment/tracking/save" method="POST">
-        <!-- Update tracking number for existing sale order -->
-        <service class="Praxigento\Odoo\Api\Sales\Shipment\Tracking\SaveInterface" method="execute"/>
-        <resources>
-            <resource ref="Praxigento_Odoo::replicate"/>
-            <!--<resource ref="anonymous"/>-->
-        </resources>
-    </route>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <route url="/V1/prxgt/odoo/account/daily" method="POST">
         <!-- Get account turnover summary by day & transaction type (Odoo replication). -->
@@ -49,6 +13,42 @@
     <route url="/V1/prxgt/odoo/account/pv/add" method="POST">
         <!-- Add PV to the Magento customer (Odoo replication). -->
         <service class="Praxigento\Odoo\Api\Web\Account\Pv\AddInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+    <route url="/V1/prxgt/odoo/customer/pv/add/" method="POST">
+        <!-- Add PV to customer balance -->
+        <service class="Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface" method="exec"/>
+        <resources>
+            <!-- MOBI-271, MOBI-307 -->
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/product/replicate/save" method="POST">
+        <!-- Replicate Inventory data (products, lots, warehouses) -->
+        <service class="Praxigento\Odoo\Api\Web\Product\Replicate\SaveInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sales/order/push/repeat" method="POST">
+        <!-- MOBI-412: Request orders push to Odoo -->
+        <service class="Praxigento\Odoo\Api\Web\Sales\Order\PushRepeatInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/sales/shipment/tracking/save" method="POST">
+        <!-- Update tracking number for existing sale order -->
+        <service class="Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface" method="execs"/>
         <resources>
             <resource ref="Praxigento_Odoo::replicate"/>
             <!--<resource ref="anonymous"/>-->

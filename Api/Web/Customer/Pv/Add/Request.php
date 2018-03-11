@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Data\Customer\Pv\Add;
+namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add;
 
 /**
  * Request to add PV to customer balance.

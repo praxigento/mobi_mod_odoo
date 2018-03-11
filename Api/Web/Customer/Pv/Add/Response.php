@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Data\Customer\Pv\Add;
+namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add;
 
 class Response
     extends \Praxigento\Core\Api\App\Web\Response
@@ -11,7 +11,7 @@ class Response
     const CODE_DUPLICATED = 'DUPLICATED';
 
     /**
-     * @return \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response\Data|null
+     * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data|null
      */
     public function getData()
     {
@@ -20,7 +20,7 @@ class Response
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Data\Customer\Pv\Add\Response\Data $data
+     * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data $data
      */
     public function setData($data)
     {

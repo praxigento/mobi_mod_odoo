@@ -2,14 +2,14 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Sales\Order;
+namespace Praxigento\Odoo\Api\Web\Sales\Order;
 
 /**
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class PushRepeat
-    implements \Praxigento\Odoo\Api\Sales\Order\PushRepeatInterface
+    implements \Praxigento\Odoo\Api\Web\Sales\Order\PushRepeatInterface
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
     protected $callReplicateOrders;
@@ -26,7 +26,7 @@ class PushRepeat
 
     }
 
-    public function execute()
+    public function exec()
     {
         $result = new \Praxigento\Odoo\Api\Data\SaleOrder\PushRepeat\Report();
         $this->logger->info("Sales orders push action is requested.");

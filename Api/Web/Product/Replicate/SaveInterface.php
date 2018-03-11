@@ -2,7 +2,8 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Product\Replicate;
+
+namespace Praxigento\Odoo\Api\Web\Product\Replicate;
 
 /**
  * Save product inventory data to Magento (push replication).
@@ -19,5 +20,5 @@ interface SaveInterface
      *
      * Magento 2 WebAPI requires full names in documentation (aliases are not allowed).
      */
-    public function execute(\Praxigento\Odoo\Data\Odoo\Inventory $data);
+    public function exec($data);
 }
