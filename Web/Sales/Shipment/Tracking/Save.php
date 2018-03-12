@@ -12,17 +12,17 @@ class Save
     implements \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface
 {
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
-    protected $logger;
+    private $logger;
     /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
-    protected $manBusCodes;
+    private $manBusCodes;
     /** @var  \Magento\Sales\Model\Service\InvoiceService */
-    protected $manInvoice;
+    private $manInvoice;
     /** @var \Magento\Framework\ObjectManagerInterface */
-    protected $manObj;
+    private $manObj;
     /** @var  \Praxigento\Core\Api\App\Repo\Transaction\Manager */
-    protected $manTrans;
+    private $manTrans;
     /** @var \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader */
-    protected $shipmentLoader;
+    private $shipmentLoader;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
