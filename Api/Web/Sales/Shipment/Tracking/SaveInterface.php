@@ -7,18 +7,16 @@ namespace Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking;
 
 /**
  * Save shipment data from Odoo to Magento (push replication).
- *
- * @api
  */
 interface SaveInterface
 {
     /**
      * Save shipment data from Odoo to Magento (push replication).
      *
-     * @param \Praxigento\Odoo\Api\Data\SaleOrder\Shipment\Tracking $data
-     * @return boolean
+     * @param \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save\Request $request
+     * @return \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save\Response
      *
      * Magento 2 WebAPI requires full names in documentation (aliases are not allowed).
      */
-    public function exec($data);
+    public function exec($request);
 }

@@ -60,16 +60,15 @@ class Add
         $notes = $data->getNotes();
         $odooRef = $data->getOdooRef();
         $pv = $data->getPv();
+        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $baseResult->setCode(AResponse::CODE_FAILED);
+        $dataResp = new AData();
 
         /** perform processing */
         $amount = abs($pv);
         $assetId = $this->getAssetId();
         $custId = $this->getCustomerId($mlmId);
         $userId = $this->getUserId($request);
-
-        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
-        $dataResp = new AData();
-
         /* prevent duplication */
         $def = $this->manTrans->begin();
         try {

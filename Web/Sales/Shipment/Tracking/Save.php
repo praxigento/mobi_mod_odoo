@@ -5,6 +5,9 @@
 
 namespace Praxigento\Odoo\Web\Sales\Shipment\Tracking;
 
+use Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save\Request as ARequest;
+use Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save\Response as AResponse;
+
 class Save
     implements \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\SaveInterface
 {
@@ -37,9 +40,14 @@ class Save
         $this->shipmentLoader = $shipmentLoader;
     }
 
-    public function exec($data)
+    public function exec($request)
     {
-        $result = false;
+        assert($request instanceof ARequest);
+        /** define local working data */
+        $data = $request->getData();
+        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $baseResult->setCode(AResponse::CODE_FAILED);
+
         /* replicate all data in one transaction */
         $def = $this->manTrans->begin();
         try {
@@ -65,7 +73,7 @@ class Save
                 $invoice->save();
                 $order->save();
                 $this->manTrans->commit($def);
-                $result = true;
+                $baseResult->setCode(AResponse::CODE_SUCCESS);
                 $this->logger->info("Shipment data (code: $shippingMethodCode; tracking: $trackNumber) is saved for order #$orderIdMage.");
             } else {
                 $this->logger->warning("Cannot load shipment for order #$orderIdMage. Nothing to process.");
@@ -74,6 +82,10 @@ class Save
             // transaction will be rolled back if commit is not done (otherwise - do nothing)
             $this->manTrans->end($def);
         }
+
+        /** compose result */
+        $result = new AResponse();
+        $result->setResult($baseResult);
         return $result;
     }
 }

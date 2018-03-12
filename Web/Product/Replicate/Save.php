@@ -29,6 +29,8 @@ class Save
         assert($request instanceof ARequest);
         /** define local working data */
         $data = $request->getData();
+        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $baseResult->setCode(AResponse::CODE_FAILED);
 
         /** perform processing */
         $def = $this->manTrans->begin();
@@ -37,6 +39,7 @@ class Save
             $req->setInventory($data);
             $this->servSave->exec($req);
             $this->manTrans->commit($def);
+            $baseResult->setCode(AResponse::CODE_SUCCESS);
         } finally {
             /* rollback uncommitted transactions on exception */
             $this->manTrans->end($def);
@@ -44,8 +47,6 @@ class Save
 
         /** compose result */
         $result = new AResponse();
-        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
-        $baseResult->setCode(AResponse::CODE_SUCCESS);
         $result->setResult($baseResult);
         return $result;
     }
