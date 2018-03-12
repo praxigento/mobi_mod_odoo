@@ -34,20 +34,22 @@ class Lots
      */
     public function execute($lots)
     {
-        foreach ($lots as $item) {
-            $odooId = $item->getIdOdoo();
-            $code = $item->getNumber();
-            $dateExp = $item->getExpirationDate();
-            $found = $this->repoOdooLot->getByOdooId($odooId);
-            if (!$found) {
-                $wrhsData = new EWrhsLot();
-                $wrhsData->setCode($code);
-                $wrhsData->setExpDate($dateExp);
-                $lotId = $this->repoWrhsLot->create($wrhsData);
-                $odooData = new EOdooLot();
-                $odooData->setOdooRef($odooId);
-                $odooData->setMageRef($lotId);
-                $this->repoOdooLot->create($odooData);
+        if (is_array($lots)) {
+            foreach ($lots as $item) {
+                $odooId = $item->getIdOdoo();
+                $code = $item->getNumber();
+                $dateExp = $item->getExpirationDate();
+                $found = $this->repoOdooLot->getByOdooId($odooId);
+                if (!$found) {
+                    $wrhsData = new EWrhsLot();
+                    $wrhsData->setCode($code);
+                    $wrhsData->setExpDate($dateExp);
+                    $lotId = $this->repoWrhsLot->create($wrhsData);
+                    $odooData = new EOdooLot();
+                    $odooData->setOdooRef($odooId);
+                    $odooData->setMageRef($lotId);
+                    $this->repoOdooLot->create($odooData);
+                }
             }
         }
     }

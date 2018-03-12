@@ -28,11 +28,13 @@ class Warehouses
      */
     public function execute($warehouses)
     {
-        foreach ($warehouses as $item) {
-            $odooId = $item->getIdOdoo();
-            $found = $this->repoWrhs->getByOdooId($odooId);
-            if (!$found) {
-                throw new \Exception("Cannot find warehouse '$odooId'. Please create and setup this warehouse manually.");
+        if (is_array($warehouses)) {
+            foreach ($warehouses as $item) {
+                $odooId = $item->getIdOdoo();
+                $found = $this->repoWrhs->getByOdooId($odooId);
+                if (!$found) {
+                    throw new \Exception("Cannot find warehouse '$odooId'. Please create and setup this warehouse manually.");
+                }
             }
         }
     }

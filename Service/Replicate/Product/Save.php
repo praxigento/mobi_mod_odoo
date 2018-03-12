@@ -48,8 +48,10 @@ class Save
         /** perform processing */
         $this->ownWrhs->execute($warehouses);
         $this->ownLots->execute($lots);
-        foreach ($products as $prod) {
-            $this->ownProd->execute($prod);
+        if (is_array($products)) {
+            foreach ($products as $prod) {
+                $this->ownProd->execute($prod);
+            }
         }
 
         /** compose result */
