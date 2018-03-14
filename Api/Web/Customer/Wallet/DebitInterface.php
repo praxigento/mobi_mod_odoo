@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Api\Web\Customer\Wallet;
 interface DebitInterface
 {
     /**
-     * Get balance for customer wallet.
+     * Transfer funds from customer wallet to system wallet.
      *
      * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Request $request
      * @return \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response

@@ -14,41 +14,20 @@ namespace Praxigento\Odoo\Api\Web\Customer\Wallet\Balance\Response;
 class Data
     extends \Praxigento\Core\Data
 {
-    const ODOO_REF = 'odooRef';
-    const OPERATION_ID = 'operationId';
+    const BALANCE = 'balance';
 
-    /**
-     * Odoo reference of the original request.
-     *
-     * @return string
-     */
-    public function getOdooRef()
+    /** @return float|null */
+    public function getBalance()
     {
-        $result = parent::get(self::ODOO_REF);
+        $result = parent::get(self::BALANCE);
         return $result;
     }
 
-    /**
-     * Magento ID of the created operation.
-     *
-     * @return int
-     */
-    public function getOperationId()
-    {
-        $result = parent::get(self::OPERATION_ID);
-        return $result;
-    }
 
-    /** @param string */
-    public function setOdooRef($data)
+    /** @param float */
+    public function setBalance($data)
     {
-        parent::set(self::ODOO_REF, $data);
-    }
-
-    /** @param int */
-    public function setOperationId($data)
-    {
-        parent::set(self::OPERATION_ID, $data);
+        parent::set(self::BALANCE, $data);
     }
 
 }

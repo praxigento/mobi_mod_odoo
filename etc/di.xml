@@ -12,6 +12,10 @@
                 type="\Praxigento\Odoo\Web\Account\Daily"/>
     <preference for="\Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface"
                 type="\Praxigento\Odoo\Web\Customer\Pv\Add"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface"
+                type="\Praxigento\Odoo\Web\Customer\Wallet\Balance"/>
+    <preference for="\Praxigento\Odoo\Api\Web\Customer\Wallet\DebitInterface"
+                type="\Praxigento\Odoo\Web\Customer\Wallet\Debit"/>
     <preference for="\Praxigento\Odoo\Api\Web\Product\Replicate\SaveInterface"
                 type="\Praxigento\Odoo\Web\Product\Replicate\Save"/>
     <preference for="\Praxigento\Odoo\Api\Web\Sales\Order\PushRepeatInterface"

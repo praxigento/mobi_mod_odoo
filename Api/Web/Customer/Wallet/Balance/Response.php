@@ -11,7 +11,6 @@ class Response
     extends \Praxigento\Core\Api\App\Web\Response
 {
     const CODE_CUSTOMER_IS_NOT_FOUND = 'CUSTOMER_IS_NOT_FOUND';
-    const CODE_DUPLICATED = 'DUPLICATED';
 
     /**
      * @return \Praxigento\Odoo\Api\Web\Customer\Wallet\Balance\Response\Data|null

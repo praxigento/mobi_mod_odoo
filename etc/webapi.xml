@@ -19,6 +19,24 @@
         </resources>
     </route>
 
+    <route url="/V1/prxgt/odoo/customer/wallet/balance/" method="POST">
+        <!-- Get balance for customer wallet -->
+        <service class="Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
+    <route url="/V1/prxgt/odoo/customer/wallet/debit/" method="POST">
+        <!-- Transfer funds from customer wallet to system wallet -->
+        <service class="Praxigento\Odoo\Api\Web\Customer\Wallet\DebitInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+            <!--<resource ref="anonymous"/>-->
+        </resources>
+    </route>
+
     <route url="/V1/prxgt/odoo/product/replicate/save" method="POST">
         <!-- Replicate Inventory data (products, lots, warehouses) -->
         <service class="Praxigento\Odoo\Api\Web\Product\Replicate\SaveInterface" method="exec"/>

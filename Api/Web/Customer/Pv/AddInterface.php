@@ -11,7 +11,7 @@ namespace Praxigento\Odoo\Api\Web\Customer\Pv;
 interface AddInterface
 {
     /**
-     * Command to add PV to customer account.
+     * Add PV to customer account.
      *
      * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request $request
      * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response
