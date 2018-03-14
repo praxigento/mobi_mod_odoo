@@ -2,10 +2,11 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add;
+
+namespace Praxigento\Odoo\Api\Web\Customer\Wallet\Debit;
 
 /**
- * Add PV to customer balance.
+ * Transfer funds from customer wallet to system wallet.
  *
  * (Define getters explicitly to use with Swagger tool)
  * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
@@ -15,7 +16,7 @@ class Request
 {
 
     /**
-     * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request\Data
+     * @return \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Request\Data
      */
     public function getData()
     {
@@ -24,7 +25,7 @@ class Request
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request\Data $data
+     * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Request\Data $data
      */
     public function setData($data)
     {

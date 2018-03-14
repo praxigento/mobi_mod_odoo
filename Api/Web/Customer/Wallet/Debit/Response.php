@@ -2,13 +2,10 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Api\Web\Customer\Pv\Add;
+namespace Praxigento\Odoo\Api\Web\Customer\Wallet\Debit;
 
 /**
- * Add PV to customer balance.
- *
- * (Define getters explicitly to use with Swagger tool)
- * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
+ * Transfer funds from customer wallet to system wallet.
  */
 class Response
     extends \Praxigento\Core\Api\App\Web\Response
@@ -17,7 +14,7 @@ class Response
     const CODE_DUPLICATED = 'DUPLICATED';
 
     /**
-     * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data|null
+     * @return \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data|null
      */
     public function getData()
     {
@@ -26,7 +23,7 @@ class Response
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data $data
+     * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data $data
      */
     public function setData($data)
     {

@@ -7,8 +7,6 @@ namespace Praxigento\Odoo\Api\Web\Customer\Pv;
 
 /**
  * Add PV to customer account.
- *
- * @api
  */
 interface AddInterface
 {
