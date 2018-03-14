@@ -5,10 +5,12 @@
 
 namespace Praxigento\Odoo\Web\Account;
 
-use Praxigento\Odoo\Api\Web\Account\Daily\Request as ARequest;
-use Praxigento\Odoo\Api\Web\Account\Daily\Response as AResponse;
-use Praxigento\Odoo\Api\Web\Account\Daily\Response\Data as ARespData;
+use Praxigento\Core\Api\App\Web\Response\Result as WResult;
+use Praxigento\Odoo\Api\Web\Account\Daily\Request as WRequest;
+use Praxigento\Odoo\Api\Web\Account\Daily\Response as WResponse;
+use Praxigento\Odoo\Api\Web\Account\Daily\Response\Data as WData;
 use Praxigento\Odoo\Config as Cfg;
+
 
 /**
  * API adapter for internal service to get account turnover summary by day & transaction type (Odoo replication).
@@ -39,12 +41,13 @@ class Daily
     }
 
     /**
-     * @param ARequest $request
-     * @return AResponse
+     * @param \Praxigento\Odoo\Api\Web\Account\Daily\Request $request
+     * @return \Praxigento\Odoo\Api\Web\Account\Daily\Response
+     * @throws \Exception
      */
     public function exec($request)
     {
-        assert($request instanceof ARequest);
+        assert($request instanceof WRequest);
         /** define local working data */
         $data = $request->getData();
         $period = $data->getPeriod();
@@ -52,6 +55,9 @@ class Daily
         $to = $period->getTo();
         $max = $this->getMaxBalanceDate();
         $max = min($to, $max);
+
+        $respResult = new WResult();
+        $respData = new WData();
 
         /** perform processing */
         $req = new \Praxigento\Odoo\Service\Replicate\Account\Daily\Request();
@@ -69,11 +75,12 @@ class Daily
             }
             $date = $this->hlpPeriod->getPeriodNext($date);
         }
+        $respData->setDates($items);
+        $respResult->setCode(WResponse::CODE_SUCCESS);
 
         /** compose result */
-        $result = new AResponse();
-        $respData = new ARespData();
-        $respData->setDates($items);
+        $result = new WResponse();
+        $result->setResult($respResult);
         $result->setData($respData);
         return $result;
     }

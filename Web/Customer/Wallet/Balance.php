@@ -34,8 +34,9 @@ class Balance
     {
         assert($request instanceof WRequest);
         /** define local working data */
-        $reqData = $request->getData();
-        $mlmId = $reqData->getCustomerMlmId();
+        $data = $request->getData();
+        $mlmId = $data->getCustomerMlmId();
+
         $respResult = new WResult();
         $respData = new WData();
 

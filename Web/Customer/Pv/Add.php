@@ -5,9 +5,10 @@
 
 namespace Praxigento\Odoo\Web\Customer\Pv;
 
-use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request as ARequest;
-use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response as AResponse;
-use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data as AData;
+use Praxigento\Core\Api\App\Web\Response\Result as WResult;
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request as WRequest;
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response as WResponse;
+use Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data as WData;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Helper\Code\Request as HCodeReq;
 use Praxigento\Odoo\Repo\Entity\Data\Registry\Request as ERegRequest;
@@ -60,11 +61,12 @@ class Add
         $notes = $data->getNotes();
         $odooRef = $data->getOdooRef();
         $pv = $data->getPv();
-        $baseResult = new \Praxigento\Core\Api\App\Web\Response\Result();
-        $baseResult->setCode(AResponse::CODE_FAILED);
-        $dataResp = new AData();
+
+        $respResult = new WResult();
+        $respData = new WData();
 
         /** perform processing */
+        $respData->setOdooRef($odooRef);
         $amount = abs($pv);
         $assetId = $this->getAssetId();
         $custId = $this->getCustomerId($mlmId);
@@ -76,8 +78,8 @@ class Add
             if ($found) {
                 $msg = "Odoo request referenced as '$odooRef' is already processed.";
                 $this->logger->error($msg);
-                $baseResult->setCode(AResponse::CODE_DUPLICATED);
-                $baseResult->setText($msg);
+                $respResult->setCode(WResponse::CODE_DUPLICATED);
+                $respResult->setText($msg);
             } else {
                 /* add PV to customer account */
                 $req = new \Praxigento\Accounting\Service\Account\Asset\Transfer\Request();
@@ -94,9 +96,8 @@ class Add
                 if ($operId) {
                     $this->registerOdooRequest($odooRef);
                     /* compose response */
-                    $dataResp->setOdooRef($odooRef);
-                    $dataResp->setOperationId($operId);
-                    $baseResult->setCode(AResponse::CODE_SUCCESS);
+                    $respData->setOperationId($operId);
+                    $respResult->setCode(WResponse::CODE_SUCCESS);
                     $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
                     $this->logger->info($msg);
                 }
@@ -107,9 +108,9 @@ class Add
             $this->manTrans->end($def);
         }
         /** compose result */
-        $result = new \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response();
-        $result->setResult($baseResult);
-        $result->setData($dataResp);
+        $result = new WResponse();
+        $result->setResult($respResult);
+        $result->setData($respData);
         return $result;
     }
 
@@ -155,7 +156,7 @@ class Add
     /**
      * Get admin user to log in operations log.
      *
-     * @param ARequest $request
+     * @param WRequest $request
      * @return mixed
      */
     private function getUserId($request)
