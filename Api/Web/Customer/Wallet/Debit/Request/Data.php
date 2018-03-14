@@ -14,10 +14,21 @@ namespace Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Request;
 class Data
     extends \Praxigento\Core\Data
 {
+    const AMOUNT = 'amount';
     const CUSTOMER_MLM_ID = 'customerMlmId';
     const NOTES = 'notes';
     const ODOO_REF = 'odooRef';
-    const PV = 'pv';
+
+    /**
+     * Debit amount.
+     *
+     * @return float
+     */
+    public function getAmount()
+    {
+        $result = parent::get(self::AMOUNT);
+        return $result;
+    }
 
     /** @return string */
     public function getCustomerMlmId()
@@ -44,15 +55,10 @@ class Data
         return $result;
     }
 
-    /**
-     * Amount of the PV to add to customer balance.
-     *
-     * @return float
-     */
-    public function getPv()
+    /** @param string */
+    public function setAmount($data)
     {
-        $result = parent::get(self::PV);
-        return $result;
+        parent::set(self::AMOUNT, $data);
     }
 
     /** @param string */
@@ -75,11 +81,5 @@ class Data
     public function setOdooRef($data)
     {
         parent::set(self::ODOO_REF, $data);
-    }
-
-    /** @param string */
-    public function setPv($data)
-    {
-        parent::set(self::PV, $data);
     }
 }

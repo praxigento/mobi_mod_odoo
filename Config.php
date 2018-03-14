@@ -17,6 +17,7 @@ class Config extends \Praxigento\Core\Config
 
     const CODE_TYPE_ASSET_PV = PvCfg::CODE_TYPE_ASSET_PV;
     const CODE_TYPE_ASSET_WALLET_ACTIVE = WalletCfg::CODE_TYPE_ASSET_WALLET;
+    const CODE_TYPE_OPER_WALLET_DEBIT = 'ODOO_DEBIT';
 
     const MENU_CATALOG_LOTS = self::ACL_CATALOG_LOTS;
     const MENU_CATALOG_WAREHOUSES = self::ACL_CATALOG_WAREHOUSES;
@@ -31,6 +32,5 @@ class Config extends \Praxigento\Core\Config
     const ODOO_API_PERCENT_ROUND = 4;
 
     const ROUTE_NAME_ADMIN_CATALOG = WrhsCfg::ROUTE_NAME_ADMIN_CATALOG;
-
 
 }

@@ -13,4 +13,5 @@ class Request
      * See \Praxigento\Odoo\Api\Web\Customer\Pv\Add command.
      */
     const CUSTOMER_PV_ADD = 100;
+    const CUSTOMER_WALLET_DEBIT = 200;
 }

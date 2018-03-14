@@ -31,7 +31,7 @@ class Data
     /**
      * Magento ID of the created operation.
      *
-     * @return int
+     * @return int|null
      */
     public function getOperationId()
     {
