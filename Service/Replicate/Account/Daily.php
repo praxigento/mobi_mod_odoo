@@ -17,7 +17,7 @@ use Praxigento\Odoo\Service\Replicate\Account\Daily\Response\Item as DItem;
  */
 class Daily
 {
-    /** @var int Wallet Account ID for representative customer */
+    /** @var int Wallet Account ID for system customer */
     private static $cacheAccIdWallet = null;
 
     /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
@@ -52,7 +52,7 @@ class Daily
         $date = $request->getDate();
         $from = $this->hlpPeriod->getTimestampFrom($date);
         $to = $this->hlpPeriod->getTimestampNextFrom($date);
-        $accIdRepr = $this->getReprAccId();
+        $accIdRepr = $this->getSysAccId();
 
         /** perform processing */
         /* get summary for incoming & outgoing transactions */
@@ -79,23 +79,23 @@ class Daily
     }
 
     /**
-     * Get representative account ID from DB or cached.
+     * Get system account ID from DB or cached.
      *
      * @return int
      */
-    private function getReprAccId()
+    private function getSysAccId()
     {
         if (is_null(self::$cacheAccIdWallet)) {
             $walletAssetId = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
-            self::$cacheAccIdWallet = $this->repoAcc->getRepresentativeAccountId($walletAssetId);
+            self::$cacheAccIdWallet = $this->repoAcc->getSystemAccountId($walletAssetId);
         }
         return self::$cacheAccIdWallet;
     }
 
     /**
-     * Get summary for incoming transaction from representative account for period $from-$to.
+     * Get summary for incoming transaction from system account for period $from-$to.
      *
-     * @param int $accId representative account ID for credit
+     * @param int $accId system account ID for credit
      * @param string $from date from (inclusive)
      * @param string $to date to (exclusive)
      * @return array
@@ -104,7 +104,7 @@ class Daily
     {
         $query = $this->qbGetSummary->build();
         $conn = $query->getConnection();
-        /* additional filter by credit account (outgoing transactions for representative customer) */
+        /* additional filter by credit account (outgoing transactions for system customer) */
         $bndByAcc = 'byAccId';
         $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::ATTR_CREDIT_ACC_ID . "=:$bndByAcc";
         $query->where($byAcc);
@@ -127,9 +127,9 @@ class Daily
     }
 
     /**
-     * Get summary for outgoing transaction from representative account for period $from-$to.
+     * Get summary for outgoing transaction from system account for period $from-$to.
      *
-     * @param int $accId representative account ID for credit
+     * @param int $accId system account ID for credit
      * @param string $from date from (inclusive)
      * @param string $to date to (exclusive)
      * @return array
@@ -138,7 +138,7 @@ class Daily
     {
         $query = $this->qbGetSummary->build();
         $conn = $query->getConnection();
-        /* additional filter by credit account (outgoing transactions for representative customer) */
+        /* additional filter by credit account (outgoing transactions for system customer) */
         $bndByAcc = 'byAccId';
         $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::ATTR_DEBIT_ACC_ID . "=:$bndByAcc";
         $query->where($byAcc);

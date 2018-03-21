@@ -153,7 +153,7 @@ class Debit
         $assetTypeId = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
         $debitAcc = $this->repoAcc->getByCustomerId($custId, $assetTypeId);
         $debitAccId = $debitAcc->getId();
-        $creditAccId = $this->repoAcc->getRepresentativeAccountId($assetTypeId);
+        $creditAccId = $this->repoAcc->getSystemAccountId($assetTypeId);
         /* prepare transaction */
         $tran = new \Praxigento\Accounting\Repo\Entity\Data\Transaction();
         $tran->setDebitAccId($debitAccId);
