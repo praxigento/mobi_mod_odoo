@@ -304,7 +304,7 @@ class Collector
         /* collect data */
         $custMageId = (int)$sale->getCustomerId();
         $dwnlCust = $this->repoDwnlCustomer->getById($custMageId);
-        $ref = $dwnlCust->getHumanRef();
+        $ref = $dwnlCust->getMlmId();
         $name = $sale->getCustomerName();
         $mageCust = $this->repoCustomer->getById($custMageId);
         $groupId = $mageCust->getGroupId();
