@@ -37,7 +37,7 @@ class PushRepeat
     {
         assert($request instanceof ARequest);
         /** define local working data */
-        $respResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $respRes = new \Praxigento\Core\Api\App\Web\Response\Result();
         $respData = new \Praxigento\Odoo\Api\Web\Sales\Order\PushRepeat\Response\Data();
 
         /** perform processing */
@@ -50,14 +50,14 @@ class PushRepeat
             $respData->setEntries($entries);
             $this->logger->info("Sales orders push action is completed.");
             $this->manTrans->commit($def);
-            $respResult->setCode(AResponse::CODE_SUCCESS);
+            $respRes->setCode(AResponse::CODE_SUCCESS);
         } finally {
             /* rollback uncommitted transactions on exception */
             $this->manTrans->end($def);
         }
         /** compose result */
         $result = new AResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         $result->setData($respData);
         return $result;
     }

@@ -56,7 +56,7 @@ class Daily
         $max = $this->getMaxBalanceDate();
         $max = min($to, $max);
 
-        $respResult = new WResult();
+        $respRes = new WResult();
         $respData = new WData();
 
         /** perform processing */
@@ -76,11 +76,11 @@ class Daily
             $date = $this->hlpPeriod->getPeriodNext($date);
         }
         $respData->setDates($items);
-        $respResult->setCode(WResponse::CODE_SUCCESS);
+        $respRes->setCode(WResponse::CODE_SUCCESS);
 
         /** compose result */
         $result = new WResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         $result->setData($respData);
         return $result;
     }

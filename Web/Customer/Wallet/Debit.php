@@ -65,7 +65,7 @@ class Debit
         $notes = $reqData->getNotes();
         $odooRef = $reqData->getOdooRef();
 
-        $respResult = new WResult();
+        $respRes = new WResult();
         $respData = new WData();
 
         /** perform processing */
@@ -79,20 +79,20 @@ class Debit
             if ($found) {
                 $msg = "Odoo request referenced as '$odooRef' is already processed.";
                 $this->logger->error($msg);
-                $respResult->setCode(WResponse::CODE_DUPLICATED);
-                $respResult->setText($msg);
+                $respRes->setCode(WResponse::CODE_DUPLICATED);
+                $respRes->setText($msg);
             } else {
                 $custId = $this->getCustomerId($mlmId);
                 if ($custId) {
                     $operId = $this->performDebit($custId, $amount, $notes);
                     $this->registerOdooRequest($odooRef);
                     $respData->setOperationId($operId);
-                    $respResult->setCode(WResponse::CODE_SUCCESS);
+                    $respRes->setCode(WResponse::CODE_SUCCESS);
                 } else {
-                    $respResult->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
+                    $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
                     $msg = "Customer #$mlmId is not found.";
                     $this->logger->error($msg);
-                    $respResult->setText($msg);
+                    $respRes->setText($msg);
                 }
             }
             $this->manTrans->commit($def);
@@ -102,7 +102,7 @@ class Debit
         }
         /** compose result */
         $result = new WResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         $result->setData($respData);
         return $result;
     }

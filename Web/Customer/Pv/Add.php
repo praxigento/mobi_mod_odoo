@@ -62,7 +62,7 @@ class Add
         $odooRef = $data->getOdooRef();
         $pv = $data->getPv();
 
-        $respResult = new WResult();
+        $respRes = new WResult();
         $respData = new WData();
 
         /** perform processing */
@@ -78,8 +78,8 @@ class Add
             if ($found) {
                 $msg = "Odoo request referenced as '$odooRef' is already processed.";
                 $this->logger->error($msg);
-                $respResult->setCode(WResponse::CODE_DUPLICATED);
-                $respResult->setText($msg);
+                $respRes->setCode(WResponse::CODE_DUPLICATED);
+                $respRes->setText($msg);
             } else {
                 /* add PV to customer account */
                 $req = new \Praxigento\Accounting\Service\Account\Asset\Transfer\Request();
@@ -97,7 +97,7 @@ class Add
                     $this->registerOdooRequest($odooRef);
                     /* compose response */
                     $respData->setOperationId($operId);
-                    $respResult->setCode(WResponse::CODE_SUCCESS);
+                    $respRes->setCode(WResponse::CODE_SUCCESS);
                     $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
                     $this->logger->info($msg);
                 }
@@ -109,7 +109,7 @@ class Add
         }
         /** compose result */
         $result = new WResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         $result->setData($respData);
         return $result;
     }
