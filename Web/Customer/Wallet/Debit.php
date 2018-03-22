@@ -24,13 +24,13 @@ class Debit
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
-    /** @var \Praxigento\Accounting\Repo\Entity\Account */
+    /** @var \Praxigento\Accounting\Repo\Dao\Account */
     private $repoAcc;
     /** @var \Praxigento\Downline\Repo\Entity\Customer */
     private $repoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     private $repoRegRequest;
-    /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
+    /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $repoTypeAsset;
     /** @var \Praxigento\Accounting\Api\Service\Operation */
     private $servOper;
@@ -38,8 +38,8 @@ class Debit
     public function __construct(
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Accounting\Repo\Entity\Account $repoAcc,
-        \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
@@ -155,7 +155,7 @@ class Debit
         $debitAccId = $debitAcc->getId();
         $creditAccId = $this->repoAcc->getSystemAccountId($assetTypeId);
         /* prepare transaction */
-        $tran = new \Praxigento\Accounting\Repo\Entity\Data\Transaction();
+        $tran = new \Praxigento\Accounting\Repo\Data\Transaction();
         $tran->setDebitAccId($debitAccId);
         $tran->setCreditAccId($creditAccId);
         $tran->setValue($amount);

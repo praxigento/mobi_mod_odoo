@@ -29,7 +29,7 @@ class Add
     private $repoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     private $repoRegRequest;
-    /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
+    /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $repoTypeAsset;
     /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
     private $servAssetTransfer;
@@ -37,7 +37,7 @@ class Add
     public function __construct(
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
         \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,

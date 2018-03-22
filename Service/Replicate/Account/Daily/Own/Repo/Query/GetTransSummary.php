@@ -5,8 +5,8 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query;
 
-use Praxigento\Accounting\Repo\Entity\Data\Operation as EOper;
-use Praxigento\Accounting\Repo\Entity\Data\Transaction as ETrans;
+use Praxigento\Accounting\Repo\Data\Operation as EOper;
+use Praxigento\Accounting\Repo\Data\Transaction as ETrans;
 
 /**
  * Get summary for transactions by operation type

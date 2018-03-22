@@ -7,7 +7,7 @@
 
 namespace Praxigento\Odoo\Setup;
 
-use Praxigento\Accounting\Repo\Entity\Data\Type\Operation as TypeOperation;
+use Praxigento\Accounting\Repo\Data\Type\Operation as TypeOperation;
 use Praxigento\Odoo\Config as Cfg;
 
 /**

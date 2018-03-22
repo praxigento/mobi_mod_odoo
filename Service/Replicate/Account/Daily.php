@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Account;
 
-use Praxigento\Accounting\Repo\Entity\Data\Transaction as ETrans;
+use Praxigento\Accounting\Repo\Data\Transaction as ETrans;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary as QBGetSummary;
 use Praxigento\Odoo\Service\Replicate\Account\Daily\Request as ARequest;
@@ -26,14 +26,14 @@ class Daily
     private $hlpPeriod;
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary */
     private $qbGetSummary;
-    /** @var \Praxigento\Accounting\Repo\Entity\Account */
+    /** @var \Praxigento\Accounting\Repo\Dao\Account */
     private $repoAcc;
-    /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
+    /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $repoTypeAsset;
 
     public function __construct(
-        \Praxigento\Accounting\Repo\Entity\Account $repoAcc,
-        \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpCodeMgr,
         \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary $qbGetSummary

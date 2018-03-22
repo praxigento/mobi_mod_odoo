@@ -21,16 +21,16 @@ class Daily
 
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
-    /** @var \Praxigento\Accounting\Repo\Entity\Balance */
+    /** @var \Praxigento\Accounting\Repo\Dao\Balance */
     private $repoBalance;
-    /** @var \Praxigento\Accounting\Repo\Entity\Type\Asset */
+    /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $repoTypeAsset;
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily */
     private $servReportDaily;
 
     public function __construct(
-        \Praxigento\Accounting\Repo\Entity\Balance $repoBalance,
-        \Praxigento\Accounting\Repo\Entity\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Balance $repoBalance,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
         \Praxigento\Odoo\Service\Replicate\Account\Daily $servReportDaily
     ) {
