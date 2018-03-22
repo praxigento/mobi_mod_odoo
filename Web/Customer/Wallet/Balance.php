@@ -17,13 +17,13 @@ use Praxigento\Odoo\Config as Cfg;
 class Balance
     implements \Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface
 {
-    /** @var \Praxigento\Downline\Repo\Entity\Customer */
+    /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $repoDwnlCust;
     /** @var \Praxigento\Accounting\Api\Service\Account\Get */
     private $servAccGet;
 
     public function __construct(
-        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
+        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
         \Praxigento\Accounting\Api\Service\Account\Get $servAccGet
     ) {
         $this->repoDwnlCust = $repoDwnlCust;

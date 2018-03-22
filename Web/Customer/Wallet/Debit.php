@@ -26,7 +26,7 @@ class Debit
     private $manTrans;
     /** @var \Praxigento\Accounting\Repo\Dao\Account */
     private $repoAcc;
-    /** @var \Praxigento\Downline\Repo\Entity\Customer */
+    /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $repoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     private $repoRegRequest;
@@ -40,7 +40,7 @@ class Debit
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
-        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
+        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Api\Service\Operation $servOper

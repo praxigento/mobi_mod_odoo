@@ -25,7 +25,7 @@ class Add
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
-    /** @var \Praxigento\Downline\Repo\Entity\Customer */
+    /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $repoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
     private $repoRegRequest;
@@ -38,7 +38,7 @@ class Add
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
-        \Praxigento\Downline\Repo\Entity\Customer $repoDwnlCust,
+        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
         \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Service\Account\Asset\Transfer $servAssetTransfer
