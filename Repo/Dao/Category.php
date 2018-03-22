@@ -3,12 +3,12 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity;
+namespace Praxigento\Odoo\Repo\Dao;
 
-use Praxigento\Odoo\Repo\Entity\Data\Lot as Entity;
+use Praxigento\Odoo\Repo\Data\Category as Entity;
 
-class Lot
-    extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
+class Category
+    extends \Praxigento\Odoo\Repo\Dao\BaseOdooEntity
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,

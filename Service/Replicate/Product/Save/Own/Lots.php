@@ -6,22 +6,22 @@
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own;
 
 use Praxigento\Odoo\Data\Odoo\Inventory\Lot as DLot;
-use Praxigento\Odoo\Repo\Entity\Data\Lot as EOdooLot;
-use Praxigento\Warehouse\Repo\Entity\Data\Lot as EWrhsLot;
+use Praxigento\Odoo\Repo\Data\Lot as EOdooLot;
+use Praxigento\Warehouse\Repo\Data\Lot as EWrhsLot;
 
 /**
  * Check Odoo lots existence in Magento (sub-service for the parent service).
  */
 class Lots
 {
-    /** @var \Praxigento\Odoo\Repo\Entity\Lot */
+    /** @var \Praxigento\Odoo\Repo\Dao\Lot */
     private $repoOdooLot;
-    /** @var \Praxigento\Warehouse\Repo\Entity\Lot */
+    /** @var \Praxigento\Warehouse\Repo\Dao\Lot */
     private $repoWrhsLot;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Entity\Lot $repoOdooLot,
-        \Praxigento\Warehouse\Repo\Entity\Lot $repoWrhsLot
+        \Praxigento\Odoo\Repo\Dao\Lot $repoOdooLot,
+        \Praxigento\Warehouse\Repo\Dao\Lot $repoWrhsLot
     ) {
         $this->repoOdooLot = $repoOdooLot;
         $this->repoWrhsLot = $repoWrhsLot;

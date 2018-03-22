@@ -17,18 +17,18 @@ class Handler
     private $ownLot;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Price */
     private $ownPrice;
-    /** @var \Praxigento\Pv\Repo\Entity\Stock\Item */
+    /** @var \Praxigento\Pv\Repo\Dao\Stock\Item */
     private $repoPvStockItem;
     /** @var   \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
     private $repoStockItem;
-    /** @var  \Praxigento\Warehouse\Repo\Entity\Stock\Item */
+    /** @var  \Praxigento\Warehouse\Repo\Dao\Stock\Item */
     private $repoWrhsStockItem;
 
     public function __construct(
         \Magento\CatalogInventory\Model\Stock\ItemFactory $factStockItem,
         \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
-        \Praxigento\Warehouse\Repo\Entity\Stock\Item $repoWrhsStockItem,
-        \Praxigento\Pv\Repo\Entity\Stock\Item $repoPvStockItem,
+        \Praxigento\Warehouse\Repo\Dao\Stock\Item $repoWrhsStockItem,
+        \Praxigento\Pv\Repo\Dao\Stock\Item $repoPvStockItem,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Lot $ownLot,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Price $ownPrice
     ) {
@@ -60,12 +60,12 @@ class Handler
         $result = $this->repoStockItem->save($result);
         $stockItemId = $result->getItemId();
         /* register warehouse price */
-        $entityPrice = new \Praxigento\Warehouse\Repo\Entity\Data\Stock\Item();
+        $entityPrice = new \Praxigento\Warehouse\Repo\Data\Stock\Item();
         $entityPrice->setStockItemRef($stockItemId);
         $entityPrice->setPrice($price);
         $this->repoWrhsStockItem->create($entityPrice);
         /* register warehouse PV */
-        $entityPv = new \Praxigento\Pv\Repo\Entity\Data\Stock\Item();
+        $entityPv = new \Praxigento\Pv\Repo\Data\Stock\Item();
         $entityPv->setItemRef($stockItemId);
         $entityPv->setPv($pv);
         $this->repoPvStockItem->create($entityPv);
@@ -118,7 +118,7 @@ class Handler
 
     private function registerWarehousePv($stockItemMageId, $pv)
     {
-        $entity = new \Praxigento\Pv\Repo\Entity\Data\Stock\Item();
+        $entity = new \Praxigento\Pv\Repo\Data\Stock\Item();
         $entity->setItemRef($stockItemMageId);
         $entity->setPv($pv);
         $this->repoPvStockItem->create($entity);
@@ -134,11 +134,11 @@ class Handler
     public function updateWarehouseData($stockItemRef, $price, $pv)
     {
         /* update or create warehouse entry */
-        $bind = [\Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_PRICE => $price];
+        $bind = [\Praxigento\Warehouse\Repo\Data\Stock\Item::ATTR_PRICE => $price];
         $exist = $this->repoWrhsStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
-            $bind[\Praxigento\Warehouse\Repo\Entity\Data\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
+            $bind[\Praxigento\Warehouse\Repo\Data\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
             $this->repoWrhsStockItem->create($bind);
         } else {
             $this->repoWrhsStockItem->updateById($stockItemRef, $bind);
@@ -157,9 +157,9 @@ class Handler
     private function updateWarehousePv($stockItemMageId, $pv)
     {
         $bind = [
-            \Praxigento\Pv\Repo\Entity\Data\Stock\Item::ATTR_PV => $pv
+            \Praxigento\Pv\Repo\Data\Stock\Item::ATTR_PV => $pv
         ];
-        $where = \Praxigento\Pv\Repo\Entity\Data\Stock\Item::ATTR_ITEM_REF . '=' . (int)$stockItemMageId;
+        $where = \Praxigento\Pv\Repo\Data\Stock\Item::ATTR_ITEM_REF . '=' . (int)$stockItemMageId;
         $this->repoPvStockItem->update($bind, $where);
     }
 }

@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler;
 
-use Praxigento\Warehouse\Repo\Entity\Data\Group\Price as EWrhsGroupPrice;
+use Praxigento\Warehouse\Repo\Data\Group\Price as EWrhsGroupPrice;
 
 class Price
 {
@@ -18,13 +18,13 @@ class Price
     private $hlpBusCodes;
     /** @var \Magento\Customer\Api\GroupRepositoryInterface */
     private $repoCustGroup;
-    /** @var \Praxigento\Warehouse\Repo\Entity\Group\Price */
+    /** @var \Praxigento\Warehouse\Repo\Dao\Group\Price */
     private $repoGroupPrice;
 
     public function __construct(
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
         \Magento\Customer\Api\GroupRepositoryInterface $repoCustGroup,
-        \Praxigento\Warehouse\Repo\Entity\Group\Price $repoGroupPrice,
+        \Praxigento\Warehouse\Repo\Dao\Group\Price $repoGroupPrice,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusCodes
     ) {
         $this->factSearchCrit = $factSearchCrit;

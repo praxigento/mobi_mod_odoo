@@ -5,21 +5,21 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler;
 
-use Praxigento\Warehouse\Repo\Entity\Data\Quantity as EWrhsQty;
+use Praxigento\Warehouse\Repo\Data\Quantity as EWrhsQty;
 
 /**
  * Lots quantities handler.
  */
 class Lot
 {
-    /** @var \Praxigento\Odoo\Repo\Entity\Lot */
+    /** @var \Praxigento\Odoo\Repo\Dao\Lot */
     private $repoOdooLot;
-    /** @var \Praxigento\Warehouse\Repo\Entity\Quantity */
+    /** @var \Praxigento\Warehouse\Repo\Dao\Quantity */
     private $repoWrhsQty;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Entity\Lot $repoOdooLot,
-        \Praxigento\Warehouse\Repo\Entity\Quantity $repoWrhsQty
+        \Praxigento\Odoo\Repo\Dao\Lot $repoOdooLot,
+        \Praxigento\Warehouse\Repo\Dao\Quantity $repoWrhsQty
     ) {
         $this->repoOdooLot = $repoOdooLot;
         $this->repoWrhsQty = $repoWrhsQty;
@@ -52,13 +52,13 @@ class Lot
     /**
      * Convert Magento entities array into lots IDs array.
      *
-     * @param \Praxigento\Warehouse\Repo\Entity\Data\Quantity[] $lots
+     * @param \Praxigento\Warehouse\Repo\Data\Quantity[] $lots
      * @return int[]
      */
     private function mapLotsMage($lots)
     {
         $result = [];
-        /** @var \Praxigento\Warehouse\Repo\Entity\Data\Quantity $item */
+        /** @var \Praxigento\Warehouse\Repo\Data\Quantity $item */
         foreach ($lots as $item) {
             $lotIdMage = $item->getLotRef();
             $result[] = $lotIdMage;

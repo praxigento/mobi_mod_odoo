@@ -12,11 +12,11 @@ use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as DWarehouse;
  */
 class Warehouses
 {
-    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
+    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     private $repoWrhs;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Entity\Warehouse $repoWrhs
+        \Praxigento\Odoo\Repo\Dao\Warehouse $repoWrhs
     ) {
         $this->repoWrhs = $repoWrhs;
     }

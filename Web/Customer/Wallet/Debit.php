@@ -11,7 +11,7 @@ use Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response as WResponse;
 use Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data as WData;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Helper\Code\Request as HCodeReq;
-use Praxigento\Odoo\Repo\Entity\Data\Registry\Request as ERegRequest;
+use Praxigento\Odoo\Repo\Data\Registry\Request as ERegRequest;
 
 /**
  * API adapter to internal services to transfer funds from customer wallet to system wallet.
@@ -28,7 +28,7 @@ class Debit
     private $repoAcc;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $repoDwnlCust;
-    /** @var \Praxigento\Odoo\Repo\Entity\Registry\Request */
+    /** @var \Praxigento\Odoo\Repo\Dao\Registry\Request */
     private $repoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $repoTypeAsset;
@@ -41,7 +41,7 @@ class Debit
         \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
         \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
-        \Praxigento\Odoo\Repo\Entity\Registry\Request $repoRegRequest,
+        \Praxigento\Odoo\Repo\Dao\Registry\Request $repoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Api\Service\Operation $servOper
     )
@@ -111,7 +111,7 @@ class Debit
      * Look up for performed "Debit Customer Wallet" requests with the same Odoo Reference.
      *
      * @param string $odooRef
-     * @return bool|\Praxigento\Odoo\Repo\Entity\Data\Registry\Request
+     * @return bool|\Praxigento\Odoo\Repo\Data\Registry\Request
      * @throws \Exception
      */
     private function findDuplicates($odooRef)

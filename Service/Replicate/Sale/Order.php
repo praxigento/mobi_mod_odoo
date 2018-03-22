@@ -9,7 +9,7 @@ class Order
     extends \Praxigento\Core\App\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
 {
-    /** @var \Praxigento\Odoo\Repo\Entity\SaleOrder */
+    /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
     protected $repoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
     protected $repoOdooSaleOrder;
@@ -19,7 +19,7 @@ class Order
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Repo\Entity\SaleOrder $repoEntitySaleOrder,
+        \Praxigento\Odoo\Repo\Dao\SaleOrder $repoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
     ) {
@@ -36,7 +36,7 @@ class Order
         $mageOrder = $req->getSaleOrder();
         $orderIdMage = $mageOrder->getEntityId();
         $customerIdMage = $mageOrder->getCustomerId();
-        /** @var \Praxigento\Odoo\Repo\Entity\Data\SaleOrder $registeredOrder */
+        /** @var \Praxigento\Odoo\Repo\Data\SaleOrder $registeredOrder */
         $registeredOrder = $this->repoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
         /* skip processing for registered orders or guest checkouted */
@@ -49,7 +49,7 @@ class Order
                 $mageId = $mageOrder->getEntityId();
                 $odooId = $resp->getIdOdoo();
                 /* mark order as replicated */
-                $registry = new \Praxigento\Odoo\Repo\Entity\Data\SaleOrder();
+                $registry = new \Praxigento\Odoo\Repo\Data\SaleOrder();
                 $registry->setMageRef($mageId);
                 $registry->setOdooRef($odooId);
                 $this->repoEntitySaleOrder->create($registry);

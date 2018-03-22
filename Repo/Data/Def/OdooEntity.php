@@ -3,11 +3,11 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity\Data\Def;
+namespace Praxigento\Odoo\Repo\Data\Def;
 
 abstract class OdooEntity
     extends \Praxigento\Core\App\Repo\Data\Entity\Base
-    implements \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity
+    implements \Praxigento\Odoo\Repo\Data\IOdooEntity
 {
 
     public function getDateReplicated()

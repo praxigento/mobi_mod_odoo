@@ -3,16 +3,16 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity;
+namespace Praxigento\Odoo\Repo\Dao;
 
-use Praxigento\Odoo\Repo\Entity\Data\IOdooEntity;
+use Praxigento\Odoo\Repo\Data\IOdooEntity;
 
 /**
  * Base class for repo to operate with entities in Odoo registries.
  */
 abstract class BaseOdooEntity
     extends \Praxigento\Core\App\Repo\Def\Entity
-    implements \Praxigento\Odoo\Repo\Entity\IOdooEntity
+    implements \Praxigento\Odoo\Repo\Dao\IOdooEntity
 {
     public function getByOdooId($id)
     {
@@ -42,7 +42,7 @@ abstract class BaseOdooEntity
     public function getOdooIdByMageId($id)
     {
         $result = null;
-        /** @var \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity $item */
+        /** @var \Praxigento\Odoo\Repo\Data\IOdooEntity $item */
         $item = $this->getById($id);
         if ($item) {
             $result = $item->getOdooRef();

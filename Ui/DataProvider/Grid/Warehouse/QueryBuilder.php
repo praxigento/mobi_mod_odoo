@@ -3,7 +3,7 @@
 namespace Praxigento\Odoo\Ui\DataProvider\Grid\Warehouse;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Entity\Data\Warehouse as EWarehouse;
+use Praxigento\Odoo\Repo\Data\Warehouse as EWarehouse;
 
 class QueryBuilder
     extends \Praxigento\Warehouse\Ui\DataProvider\Grid\Warehouse\QueryBuilder

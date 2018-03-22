@@ -2,8 +2,8 @@
 
 namespace Praxigento\Odoo\Ui\DataProvider\Grid\Lot;
 
-use Praxigento\Odoo\Repo\Entity\Data\Lot as ELot;
-use Praxigento\Warehouse\Repo\Entity\Data\Lot as EWrhsLot;
+use Praxigento\Odoo\Repo\Data\Lot as ELot;
+use Praxigento\Warehouse\Repo\Data\Lot as EWrhsLot;
 
 class QueryBuilder
     extends \Praxigento\Warehouse\Ui\DataProvider\Grid\Lot\QueryBuilder

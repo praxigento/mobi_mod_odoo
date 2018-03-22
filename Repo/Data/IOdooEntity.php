@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity\Data;
+namespace Praxigento\Odoo\Repo\Data;
 
 /**
  * Interface for data object that has referenced Odoo entity.

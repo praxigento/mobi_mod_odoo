@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get;
 
 use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Entity\Data\SaleOrder as Entity;
+use Praxigento\Odoo\Repo\Data\SaleOrder as Entity;
 
 /**
  * Build query to get sale orders to be pushed into Odoo.

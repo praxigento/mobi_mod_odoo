@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity\Registry;
+namespace Praxigento\Odoo\Repo\Dao\Registry;
 
 class Request
     extends \Praxigento\Core\App\Repo\Def\Entity
@@ -12,6 +12,6 @@ class Request
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Core\App\Repo\IGeneric $repoGeneric
     ) {
-        parent::__construct($resource, $repoGeneric, \Praxigento\Odoo\Repo\Entity\Data\Registry\Request::class);
+        parent::__construct($resource, $repoGeneric, \Praxigento\Odoo\Repo\Data\Registry\Request::class);
     }
 }

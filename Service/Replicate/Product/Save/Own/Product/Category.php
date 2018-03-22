@@ -18,7 +18,7 @@ class Category
     private $repoCat;
     /** @var \Magento\Catalog\Api\CategoryLinkRepositoryInterface */
     private $repoCatLink;
-    /** @var \Praxigento\Odoo\Repo\Entity\Category */
+    /** @var \Praxigento\Odoo\Repo\Dao\Category */
     private $repoOdooCat;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $repoProd;
@@ -29,7 +29,7 @@ class Category
         \Magento\Catalog\Api\CategoryRepositoryInterface $repoCat,
         \Magento\Catalog\Api\CategoryLinkRepositoryInterface $repoCatLink,
         \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
-        \Praxigento\Odoo\Repo\Entity\Category $repoOdooCat
+        \Praxigento\Odoo\Repo\Dao\Category $repoOdooCat
     ) {
         $this->factCat = $factCat;
         $this->factCatProdLink = $factCatProdLink;
@@ -53,7 +53,7 @@ class Category
                 $mageId = $this->repoOdooCat->getMageIdByOdooId($odooId);
                 if (!$mageId) {
                     $mageId = $this->createMageCategory('Cat #' . $odooId);
-                    $entity = new \Praxigento\Odoo\Repo\Entity\Data\Category();
+                    $entity = new \Praxigento\Odoo\Repo\Data\Category();
                     $entity->setMageRef($mageId);
                     $entity->setOdooRef($odooId);
                     $this->repoOdooCat->create($entity);

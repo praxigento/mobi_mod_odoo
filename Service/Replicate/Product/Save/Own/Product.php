@@ -31,22 +31,22 @@ class Product
     private $ownWrhs;
     /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
     private $repoAttrSet;
-    /** @var \Praxigento\Odoo\Repo\Entity\Product */
+    /** @var \Praxigento\Odoo\Repo\Dao\Product */
     private $repoOdooProd;
-    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
+    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     private $repoOdooWrhs;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $repoProd;
-    /** @var \Praxigento\Pv\Repo\Entity\Product */
+    /** @var \Praxigento\Pv\Repo\Dao\Product */
     private $repoPvProd;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
-        \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
-        \Praxigento\Odoo\Repo\Entity\Warehouse $repoOdooWrhs,
+        \Praxigento\Odoo\Repo\Dao\Product $repoOdooProd,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $repoOdooWrhs,
         \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
-        \Praxigento\Pv\Repo\Entity\Product $repoPvProd,
+        \Praxigento\Pv\Repo\Dao\Product $repoPvProd,
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
         \Magento\Catalog\Model\ProductFactory $factProd,
@@ -205,7 +205,7 @@ class Product
      */
     private function registerOdooProd($mageId, $odooId)
     {
-        $entity = new \Praxigento\Odoo\Repo\Entity\Data\Product();
+        $entity = new \Praxigento\Odoo\Repo\Data\Product();
         $entity->setMageRef($mageId);
         $entity->setOdooRef($odooId);
         $this->repoOdooProd->create($entity);
@@ -219,7 +219,7 @@ class Product
      */
     private function registerPvWholesale($prodId, $pv)
     {
-        $entity = new \Praxigento\Pv\Repo\Entity\Data\Product();
+        $entity = new \Praxigento\Pv\Repo\Data\Product();
         $entity->setProductRef($prodId, $pv);
         $this->repoPvProd->create($entity);
     }
@@ -256,10 +256,10 @@ class Product
     {
 
         $bind = [
-            \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PROD_REF => $prodMageId,
-            \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PV => $pv
+            \Praxigento\Pv\Repo\Data\Product::ATTR_PROD_REF => $prodMageId,
+            \Praxigento\Pv\Repo\Data\Product::ATTR_PV => $pv
         ];
-        $where = \Praxigento\Pv\Repo\Entity\Data\Product::ATTR_PROD_REF . '=' . (int)$prodMageId;
+        $where = \Praxigento\Pv\Repo\Data\Product::ATTR_PROD_REF . '=' . (int)$prodMageId;
         $this->repoPvProd->update($bind, $where);
     }
 }

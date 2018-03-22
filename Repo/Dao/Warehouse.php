@@ -3,12 +3,12 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity;
+namespace Praxigento\Odoo\Repo\Dao;
 
-use Praxigento\Odoo\Repo\Entity\Data\Warehouse as Entity;
+use Praxigento\Odoo\Repo\Data\Warehouse as Entity;
 
 class Warehouse
-    extends \Praxigento\Odoo\Repo\Entity\BaseOdooEntity
+    extends \Praxigento\Odoo\Repo\Dao\BaseOdooEntity
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
@@ -21,7 +21,7 @@ class Warehouse
      * Get the data instance by ID (ID can be an array for complex primary keys).
      *
      * @param int $id
-     * @return \Praxigento\Odoo\Repo\Entity\Data\Warehouse|bool Found instance data or 'false'
+     * @return \Praxigento\Odoo\Repo\Data\Warehouse|bool Found instance data or 'false'
      */
     public function getById($id)
     {

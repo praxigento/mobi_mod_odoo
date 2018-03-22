@@ -28,13 +28,13 @@ class Collector
     protected $repoDwnlCustomer;
     /** @var \Praxigento\Core\App\Repo\IGeneric */
     protected $repoGeneric;
-    /** @var \Praxigento\Odoo\Repo\Entity\Product */
+    /** @var \Praxigento\Odoo\Repo\Dao\Product */
     protected $repoOdooProd;
-    /** @var \Praxigento\Pv\Repo\Entity\Sale */
+    /** @var \Praxigento\Pv\Repo\Dao\Sale */
     protected $repoPvSale;
-    /** @var \Praxigento\Pv\Repo\Entity\Sale\Item */
+    /** @var \Praxigento\Pv\Repo\Dao\Sale\Item */
     protected $repoPvSaleItem;
-    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
+    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     protected $repoWarehouse;
 
     public function __construct(
@@ -44,10 +44,10 @@ class Collector
         \Praxigento\Core\App\Repo\IGeneric $repoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
         \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCustomer,
-        \Praxigento\Pv\Repo\Entity\Sale $repoPvSale,
-        \Praxigento\Pv\Repo\Entity\Sale\Item $repoPvSaleItem,
-        \Praxigento\Odoo\Repo\Entity\Warehouse $repoWarehouse,
-        \Praxigento\Odoo\Repo\Entity\Product $repoOdooProd,
+        \Praxigento\Pv\Repo\Dao\Sale $repoPvSale,
+        \Praxigento\Pv\Repo\Dao\Sale\Item $repoPvSaleItem,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $repoWarehouse,
+        \Praxigento\Odoo\Repo\Dao\Product $repoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )
@@ -74,7 +74,7 @@ class Collector
      */
     protected function dbGetItemPvTotal($itemId)
     {
-        /** @var \Praxigento\Pv\Repo\Entity\Data\Sale\Item $data */
+        /** @var \Praxigento\Pv\Repo\Data\Sale\Item $data */
         $data = $this->repoPvSaleItem->getById($itemId);
         $result = $data->getTotal();
         return $result;

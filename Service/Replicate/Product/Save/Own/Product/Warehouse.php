@@ -11,7 +11,7 @@ class Warehouse
     private $factStockItem;
     /** @var  \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler */
     private $ownHandler;
-    /** @var \Praxigento\Odoo\Repo\Entity\Warehouse */
+    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     private $repoOdooWrhs;
     /** @var  \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
     private $repoStockItem;
@@ -19,7 +19,7 @@ class Warehouse
     public function __construct(
         \Magento\CatalogInventory\Model\ResourceModel\Stock\Item\StockItemCriteriaFactory $factStockItem,
         \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
-        \Praxigento\Odoo\Repo\Entity\Warehouse $repoOdooWrhs,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $repoOdooWrhs,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler $ownHandler
     ) {
         $this->factStockItem = $factStockItem;

@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity;
+namespace Praxigento\Odoo\Repo\Dao;
 
 /**
  * Common interface for entities related to Odoo replication.
@@ -15,7 +15,7 @@ interface IOdooEntity
      * Get entity by Odoo ID.
      *
      * @param int $id Odoo ID of the entity registered in Magento.
-     * @return \Praxigento\Odoo\Repo\Entity\Data\IOdooEntity|null
+     * @return \Praxigento\Odoo\Repo\Data\IOdooEntity|null
      */
     public function getByOdooId($id);
 

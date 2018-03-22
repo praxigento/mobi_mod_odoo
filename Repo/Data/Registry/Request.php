@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Entity\Data\Registry;
+namespace Praxigento\Odoo\Repo\Data\Registry;
 
 /**
  * Odoo requests registry to prevent double processing.

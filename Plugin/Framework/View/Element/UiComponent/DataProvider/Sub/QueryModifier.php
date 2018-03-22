@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider
 
 use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Repo\Entity\Data\SaleOrder;
+use Praxigento\Odoo\Repo\Data\SaleOrder;
 
 /**
  * TODO: this plugin is not plugged. Remove it or plug.
