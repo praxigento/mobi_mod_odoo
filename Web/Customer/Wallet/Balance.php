@@ -37,7 +37,7 @@ class Balance
         $data = $request->getData();
         $mlmId = $data->getCustomerMlmId();
 
-        $respResult = new WResult();
+        $respRes = new WResult();
         $respData = new WData();
 
         /** perform processing */
@@ -45,13 +45,13 @@ class Balance
         if ($custId) {
             $balance = $this->getBalance($custId);
             $respData->setBalance($balance);
-            $respResult->setCode(WResponse::CODE_SUCCESS);
+            $respRes->setCode(WResponse::CODE_SUCCESS);
         } else {
-            $respResult->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
+            $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
         }
         /** compose result */
         $result = new WResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         $result->setData($respData);
         return $result;
     }

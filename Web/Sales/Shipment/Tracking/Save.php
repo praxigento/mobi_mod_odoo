@@ -45,7 +45,7 @@ class Save
         assert($request instanceof ARequest);
         /** define local working data */
         $data = $request->getData();
-        $respResult = new \Praxigento\Core\Api\App\Web\Response\Result();
+        $respRes = new \Praxigento\Core\Api\App\Web\Response\Result();
 
         /* replicate all data in one transaction */
         $def = $this->manTrans->begin();
@@ -72,7 +72,7 @@ class Save
                 $invoice->save();
                 $order->save();
                 $this->manTrans->commit($def);
-                $respResult->setCode(AResponse::CODE_SUCCESS);
+                $respRes->setCode(AResponse::CODE_SUCCESS);
                 $this->logger->info("Shipment data (code: $shippingMethodCode; tracking: $trackNumber) is saved for order #$orderIdMage.");
             } else {
                 $this->logger->warning("Cannot load shipment for order #$orderIdMage. Nothing to process.");
@@ -84,7 +84,7 @@ class Save
 
         /** compose result */
         $result = new AResponse();
-        $result->setResult($respResult);
+        $result->setResult($respRes);
         return $result;
     }
 }
