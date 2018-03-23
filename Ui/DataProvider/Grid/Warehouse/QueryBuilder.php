@@ -27,7 +27,7 @@ class QueryBuilder
             $this->mapper = parent::getMapper();
             /* then add own aliases */
             $key = self::A_ODOO_ID;
-            $value = self::AS_ODOO . '.' . EWarehouse::ATTR_ODOO_REF;
+            $value = self::AS_ODOO . '.' . EWarehouse::A_ODOO_REF;
             $this->mapper->add($key, $value);
         }
         $result = $this->mapper;
@@ -46,9 +46,9 @@ class QueryBuilder
         $as = $asOdoo;
         /* LEFT JOIN prxgt_odoo_wrhs */
         $cols = [
-            self::A_ODOO_ID => EWarehouse::ATTR_ODOO_REF
+            self::A_ODOO_ID => EWarehouse::A_ODOO_REF
         ];
-        $cond = $asOdoo . '.' . EWarehouse::ATTR_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
+        $cond = $asOdoo . '.' . EWarehouse::A_MAGE_REF . '=' . $asStock . '.' . Cfg::E_CATINV_STOCK_A_STOCK_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         return $result;

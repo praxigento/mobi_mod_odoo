@@ -11,9 +11,9 @@ namespace Praxigento\Odoo\Repo\Data;
 interface IOdooEntity
     extends \Praxigento\Core\App\Repo\Data\IEntity
 {
-    const ATTR_DATE_REPLICATED = 'date_replicated';
-    const ATTR_MAGE_REF = 'mage_ref';
-    const ATTR_ODOO_REF = 'odoo_ref';
+    const A_DATE_REPLICATED = 'date_replicated';
+    const A_MAGE_REF = 'mage_ref';
+    const A_ODOO_REF = 'odoo_ref';
 
     /**
      * Get date when object have been replicated between Odoo & Mage.

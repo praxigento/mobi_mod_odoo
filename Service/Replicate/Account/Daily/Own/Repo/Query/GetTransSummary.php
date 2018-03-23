@@ -40,7 +40,7 @@ class GetTransSummary
         /* FROM prxgt_acc_transaction */
         $tbl = $this->resource->getTableName(self::E_TRANS);
         $as = $asTrans;
-        $exp = "SUM($asTrans." . ETrans::ATTR_VALUE . ")";
+        $exp = "SUM($asTrans." . ETrans::A_VALUE . ")";
         $exp = new \Praxigento\Core\App\Repo\Query\Expression($exp);
         $cols = [
             self::A_VALUE => $exp
@@ -51,18 +51,18 @@ class GetTransSummary
         $tbl = $this->resource->getTableName(self::E_OPER);
         $as = $asOper;
         $cols = [
-            self::A_OPER_TYPE => EOper::ATTR_TYPE_ID
+            self::A_OPER_TYPE => EOper::A_TYPE_ID
         ];
-        $cond = $as . '.' . EOper::ATTR_ID . '=' . $asTrans . '.' . ETrans::ATTR_OPERATION_ID;
+        $cond = $as . '.' . EOper::A_ID . '=' . $asTrans . '.' . ETrans::A_OPERATION_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* WHERE */
-        $byFrom = "$asTrans." . ETrans::ATTR_DATE_APPLIED . '>=:' . self::BND_DATE_FROM;
-        $byTo = "$asTrans." . ETrans::ATTR_DATE_APPLIED . '<:' . self::BND_DATE_TO;
+        $byFrom = "$asTrans." . ETrans::A_DATE_APPLIED . '>=:' . self::BND_DATE_FROM;
+        $byTo = "$asTrans." . ETrans::A_DATE_APPLIED . '<:' . self::BND_DATE_TO;
         $result->where("($byFrom) AND ($byTo)");
 
         /* GROUP */
-        $result->group($asOper . '.' . EOper::ATTR_TYPE_ID);
+        $result->group($asOper . '.' . EOper::A_TYPE_ID);
 
         return $result;
     }

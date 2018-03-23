@@ -38,7 +38,7 @@ class QueryModifier
     ) {
         // is_in_odoo
         $fieldAlias = self::A_IS_IN_ODOO;
-        $fieldFullName = self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF;
+        $fieldFullName = self::AS_ODOO_SALE . '.' . SaleOrder::A_MAGE_REF;
         $collection->addFilterToMap($fieldAlias, $fieldFullName);
         /* MOBI-718: applied_rule_ids */
         $fieldAlias = Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS;
@@ -53,8 +53,8 @@ class QueryModifier
         $select = $collection->getSelect();
         /* LEFT JOIN `prxgt_odoo_sale` */
         $tbl = [self::AS_ODOO_SALE => $this->_resource->getTableName(SaleOrder::ENTITY_NAME)];
-        $on = self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . '=main_table.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
-        $exp = new Expression('!ISNULL(' . self::AS_ODOO_SALE . '.' . SaleOrder::ATTR_MAGE_REF . ')');
+        $on = self::AS_ODOO_SALE . '.' . SaleOrder::A_MAGE_REF . '=main_table.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $exp = new Expression('!ISNULL(' . self::AS_ODOO_SALE . '.' . SaleOrder::A_MAGE_REF . ')');
         $cols = [
             self::A_IS_IN_ODOO => $exp
         ];

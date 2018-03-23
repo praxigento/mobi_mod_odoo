@@ -40,7 +40,7 @@ class Price
      */
     private function cleanup($stockItemId)
     {
-        $where = EWrhsGroupPrice::ATTR_STOCK_ITEM_REF . '=' . (int)$stockItemId;
+        $where = EWrhsGroupPrice::A_STOCK_ITEM_REF . '=' . (int)$stockItemId;
         $this->repoGroupPrice->delete($where);
     }
 

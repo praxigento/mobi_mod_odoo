@@ -44,7 +44,7 @@ class Builder
     const A_BASE_PRICE = Cfg::E_SALE_ORDER_ITEM_A_BASE_PRICE;
     const A_BASE_ROW_TOTAL_INCL_TAX = Cfg::E_SALE_ORDER_ITEM_A_BASE_ROW_TOTAL_INCL_TAX;
     const A_ITEM_ID = Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
-    const A_ODOO_REF = EProd::ATTR_ODOO_REF;
+    const A_ODOO_REF = EProd::A_ODOO_REF;
     const A_PRODUCT_ID = Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
     const A_PV_DISCOUNT = 'pvDiscount';
     const A_PV_SUBTOTAL = 'pvSubtotal';
@@ -85,19 +85,19 @@ class Builder
         $tbl = $this->resource->getTableName(EProd::ENTITY_NAME);
         $as = $asOdoo;
         $cols = [
-            self::A_ODOO_REF => EProd::ATTR_ODOO_REF
+            self::A_ODOO_REF => EProd::A_ODOO_REF
         ];
-        $cond = $as . '.' . EProd::ATTR_MAGE_REF . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
+        $cond = $as . '.' . EProd::A_MAGE_REF . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_PRODUCT_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* LEFT JOIN prxgt_pv_stock_item */
         $tbl = $this->resource->getTableName(EPv::ENTITY_NAME);
         $as = $asPv;
         $cols = [
-            self::A_PV_SUBTOTAL => EPv::ATTR_SUBTOTAL,
-            self::A_PV_DISCOUNT => EPv::ATTR_DISCOUNT
+            self::A_PV_SUBTOTAL => EPv::A_SUBTOTAL,
+            self::A_PV_DISCOUNT => EPv::A_DISCOUNT
         ];
-        $cond = $as . '.' . EPv::ATTR_ITEM_REF . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
+        $cond = $as . '.' . EPv::A_ITEM_REF . '=' . $asItem . '.' . Cfg::E_SALE_ORDER_ITEM_A_ITEM_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* query tuning */

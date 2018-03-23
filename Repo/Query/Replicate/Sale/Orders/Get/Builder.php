@@ -50,11 +50,11 @@ class Builder
         /* LEFT OUTER JOIN prxgt_odoo_sale */
         $tbl = $this->resource->getTableName(Entity::ENTITY_NAME);
         $as = $asOdooReg;
-        $cond = $as . '.' . Entity::ATTR_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $cond = $as . '.' . Entity::A_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $cols = [];
         $result->joinLeft([$as => $tbl], $cond, $cols);
         /* WHERE */
-        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::ATTR_MAGE_REF . ')');
+        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::A_MAGE_REF . ')');
         $result->where($where);
 
         return $result;

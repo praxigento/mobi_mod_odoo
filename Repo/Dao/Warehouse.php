@@ -34,7 +34,7 @@ class Warehouse
         $result = null;
         $conn = $this->getConnection();
         $quoted = $conn->quote($id);
-        $where = Entity::ATTR_ODOO_REF . '=' . $quoted;
+        $where = Entity::A_ODOO_REF . '=' . $quoted;
         $items = $this->repoGeneric->getEntities($this->entityName, null, $where);
         if (
             is_array($items) &&

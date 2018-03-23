@@ -256,10 +256,10 @@ class Product
     {
 
         $bind = [
-            \Praxigento\Pv\Repo\Data\Product::ATTR_PROD_REF => $prodMageId,
-            \Praxigento\Pv\Repo\Data\Product::ATTR_PV => $pv
+            \Praxigento\Pv\Repo\Data\Product::A_PROD_REF => $prodMageId,
+            \Praxigento\Pv\Repo\Data\Product::A_PV => $pv
         ];
-        $where = \Praxigento\Pv\Repo\Data\Product::ATTR_PROD_REF . '=' . (int)$prodMageId;
+        $where = \Praxigento\Pv\Repo\Data\Product::A_PROD_REF . '=' . (int)$prodMageId;
         $this->repoPvProd->update($bind, $where);
     }
 }

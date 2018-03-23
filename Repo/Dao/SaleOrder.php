@@ -36,11 +36,11 @@ class SaleOrder
         $cols = [Cfg::E_SALE_ORDER_A_ENTITY_ID];
         $query->from($tblSaleOrder, $cols);
         // LEFT OUTER JOIN prxgt_odoo_sale
-        $cond = $asOdooReg . '.' . Entity::ATTR_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $cond = $asOdooReg . '.' . Entity::A_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $cols = [];
         $query->joinLeft($tblOdooReg, $cond, $cols);
         /* WHERE */
-        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::ATTR_MAGE_REF . ')');
+        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::A_MAGE_REF . ')');
         $query->where($where);
         /* fetch data */
         $result = $this->conn->fetchAll($query);

@@ -42,8 +42,8 @@ class Lot
         $diff = array_diff($mapMageExist, $mapOdooExist);
         foreach ($diff as $lotIdMage) {
             $pk = [
-                EWrhsQty::ATTR_STOCK_ITEM_REF => $stockItemId,
-                EWrhsQty::ATTR_LOT_REF => $lotIdMage
+                EWrhsQty::A_STOCK_ITEM_REF => $stockItemId,
+                EWrhsQty::A_LOT_REF => $lotIdMage
             ];
             $this->repoWrhsQty->deleteById($pk);
         }
@@ -95,14 +95,14 @@ class Lot
         $qty = $lot->getQuantity();
         $lotIdMage = $this->repoOdooLot->getMageIdByOdooId($lotIdOdoo);
         $pk = [
-            EWrhsQty::ATTR_STOCK_ITEM_REF => $stockItemId,
-            EWrhsQty::ATTR_LOT_REF => $lotIdMage
+            EWrhsQty::A_STOCK_ITEM_REF => $stockItemId,
+            EWrhsQty::A_LOT_REF => $lotIdMage
         ];
         /* get quantity item (total product qty for lot on the stock) */
         $qtyItem = $this->repoWrhsQty->getById($pk);
         if ($qtyItem) {
             /* update qty data */
-            $bind = [EWrhsQty::ATTR_TOTAL => $qty];
+            $bind = [EWrhsQty::A_TOTAL => $qty];
             $this->repoWrhsQty->updateById($pk, $bind);
         } else {
             /* create qty entity based on primary key data */

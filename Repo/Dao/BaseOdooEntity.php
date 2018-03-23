@@ -17,7 +17,7 @@ abstract class BaseOdooEntity
     public function getByOdooId($id)
     {
         $result = null;
-        $where = IOdooEntity::ATTR_ODOO_REF . '=' . (int)$id;
+        $where = IOdooEntity::A_ODOO_REF . '=' . (int)$id;
         $items = $this->repoGeneric->getEntities($this->entityName, null, $where);
         if (
             is_array($items) &&

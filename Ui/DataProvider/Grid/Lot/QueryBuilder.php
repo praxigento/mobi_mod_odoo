@@ -27,7 +27,7 @@ class QueryBuilder
             $this->mapper = parent::getMapper();
             /* then add own aliases */
             $key = self::A_ODOO_ID;
-            $value = self::AS_ODOO . '.' . ELot::ATTR_ODOO_REF;
+            $value = self::AS_ODOO . '.' . ELot::A_ODOO_REF;
             $this->mapper->add($key, $value);
         }
         $result = $this->mapper;
@@ -45,9 +45,9 @@ class QueryBuilder
         $tbl = $this->resource->getTableName(ELot::ENTITY_NAME);
         $as = $asOdoo;
         $cols = [
-            self::A_ODOO_ID => ELot::ATTR_ODOO_REF
+            self::A_ODOO_ID => ELot::A_ODOO_REF
         ];
-        $cond = $asOdoo . '.' . ELot::ATTR_MAGE_REF . '=' . $asLot . '.' . EWrhsLot::ATTR_ID;
+        $cond = $asOdoo . '.' . ELot::A_MAGE_REF . '=' . $asLot . '.' . EWrhsLot::A_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         return $result;

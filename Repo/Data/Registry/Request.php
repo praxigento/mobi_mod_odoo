@@ -11,8 +11,8 @@ namespace Praxigento\Odoo\Repo\Data\Registry;
 class Request
     extends \Praxigento\Core\App\Repo\Data\Entity\Base
 {
-    const ATTR_ODOO_REF = 'odoo_ref';
-    const ATTR_TYPE_CODE = 'type_code';
+    const A_ODOO_REF = 'odoo_ref';
+    const A_TYPE_CODE = 'type_code';
     const ENTITY_NAME = 'prxgt_odoo_reg_request';
 
     /**
@@ -20,13 +20,13 @@ class Request
      */
     public function getOdooRef()
     {
-        $result = parent::get(self::ATTR_ODOO_REF);
+        $result = parent::get(self::A_ODOO_REF);
         return $result;
     }
 
     public static function getPrimaryKeyAttrs()
     {
-        return [self::ATTR_TYPE_CODE, self::ATTR_ODOO_REF];
+        return [self::A_TYPE_CODE, self::A_ODOO_REF];
     }
 
     /**
@@ -34,7 +34,7 @@ class Request
      */
     public function getTypeCode()
     {
-        $result = parent::get(self::ATTR_TYPE_CODE);
+        $result = parent::get(self::A_TYPE_CODE);
         return $result;
     }
 
@@ -43,7 +43,7 @@ class Request
      */
     public function setOdooRef($data)
     {
-        parent::set(self::ATTR_ODOO_REF, $data);
+        parent::set(self::A_ODOO_REF, $data);
     }
 
     /**
@@ -51,6 +51,6 @@ class Request
      */
     public function setTypeCode($data)
     {
-        parent::set(self::ATTR_TYPE_CODE, $data);
+        parent::set(self::A_TYPE_CODE, $data);
     }
 }

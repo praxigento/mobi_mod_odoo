@@ -134,11 +134,11 @@ class Handler
     public function updateWarehouseData($stockItemRef, $price, $pv)
     {
         /* update or create warehouse entry */
-        $bind = [\Praxigento\Warehouse\Repo\Data\Stock\Item::ATTR_PRICE => $price];
+        $bind = [\Praxigento\Warehouse\Repo\Data\Stock\Item::A_PRICE => $price];
         $exist = $this->repoWrhsStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
-            $bind[\Praxigento\Warehouse\Repo\Data\Stock\Item::ATTR_STOCK_ITEM_REF] = $stockItemRef;
+            $bind[\Praxigento\Warehouse\Repo\Data\Stock\Item::A_STOCK_ITEM_REF] = $stockItemRef;
             $this->repoWrhsStockItem->create($bind);
         } else {
             $this->repoWrhsStockItem->updateById($stockItemRef, $bind);
@@ -157,9 +157,9 @@ class Handler
     private function updateWarehousePv($stockItemMageId, $pv)
     {
         $bind = [
-            \Praxigento\Pv\Repo\Data\Stock\Item::ATTR_PV => $pv
+            \Praxigento\Pv\Repo\Data\Stock\Item::A_PV => $pv
         ];
-        $where = \Praxigento\Pv\Repo\Data\Stock\Item::ATTR_ITEM_REF . '=' . (int)$stockItemMageId;
+        $where = \Praxigento\Pv\Repo\Data\Stock\Item::A_ITEM_REF . '=' . (int)$stockItemMageId;
         $this->repoPvStockItem->update($bind, $where);
     }
 }

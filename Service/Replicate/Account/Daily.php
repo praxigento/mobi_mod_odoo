@@ -106,7 +106,7 @@ class Daily
         $conn = $query->getConnection();
         /* additional filter by credit account (outgoing transactions for system customer) */
         $bndByAcc = 'byAccId';
-        $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::ATTR_CREDIT_ACC_ID . "=:$bndByAcc";
+        $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::A_CREDIT_ACC_ID . "=:$bndByAcc";
         $query->where($byAcc);
         /* compose bind vars */
         $bind = [
@@ -140,7 +140,7 @@ class Daily
         $conn = $query->getConnection();
         /* additional filter by credit account (outgoing transactions for system customer) */
         $bndByAcc = 'byAccId';
-        $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::ATTR_DEBIT_ACC_ID . "=:$bndByAcc";
+        $byAcc = QBGetSummary::AS_TRANS . '.' . ETrans::A_DEBIT_ACC_ID . "=:$bndByAcc";
         $query->where($byAcc);
         /* compose bind vars */
         $bind = [

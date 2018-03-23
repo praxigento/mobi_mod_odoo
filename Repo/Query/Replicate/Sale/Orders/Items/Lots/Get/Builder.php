@@ -29,9 +29,9 @@ class Builder
     const AS_QTY_SALES = 'qty';
 
     /** Columns aliases */
-    const A_ITEM_ID = EQty::ATTR_SALE_ITEM_REF;
-    const A_ODOO_ID = EOdooLot::ATTR_ODOO_REF;
-    const A_TOTAL = EQty::ATTR_TOTAL;
+    const A_ITEM_ID = EQty::A_SALE_ITEM_REF;
+    const A_ODOO_ID = EOdooLot::A_ODOO_REF;
+    const A_TOTAL = EQty::A_TOTAL;
 
     /** Bound variables names ('camelCase' naming) */
     const BIND_SALE_ITEM_ID = 'itemId';
@@ -51,8 +51,8 @@ class Builder
         $tbl = $this->resource->getTableName(EQty::ENTITY_NAME);
         $as = $asQty;
         $cols = [
-            self::A_ITEM_ID => EQty::ATTR_SALE_ITEM_REF,
-            self::A_TOTAL => EQty::ATTR_TOTAL
+            self::A_ITEM_ID => EQty::A_SALE_ITEM_REF,
+            self::A_TOTAL => EQty::A_TOTAL
         ];
         $result->from([$as => $tbl], $cols);
 
@@ -60,13 +60,13 @@ class Builder
         $tbl = $this->resource->getTableName(EOdooLot::ENTITY_NAME);
         $as = $asOdoo;
         $cols = [
-            self::A_ODOO_ID => EOdooLot::ATTR_ODOO_REF
+            self::A_ODOO_ID => EOdooLot::A_ODOO_REF
         ];
-        $cond = $as . '.' . EOdooLot::ATTR_MAGE_REF . '=' . $asQty . '.' . EQty::ATTR_LOT_REF;
+        $cond = $as . '.' . EOdooLot::A_MAGE_REF . '=' . $asQty . '.' . EQty::A_LOT_REF;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* query tuning */
-        $result->where($asQty . '.' . EQty::ATTR_SALE_ITEM_REF . '=:' . self::BIND_SALE_ITEM_ID);
+        $result->where($asQty . '.' . EQty::A_SALE_ITEM_REF . '=:' . self::BIND_SALE_ITEM_ID);
 
         return $result;
     }

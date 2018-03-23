@@ -12,40 +12,40 @@ abstract class OdooEntity
 
     public function getDateReplicated()
     {
-        $result = parent::get(static::ATTR_DATE_REPLICATED);
+        $result = parent::get(static::A_DATE_REPLICATED);
         return $result;
     }
 
     public function getMageRef()
     {
-        $result = parent::get(static::ATTR_MAGE_REF);
+        $result = parent::get(static::A_MAGE_REF);
         return $result;
     }
 
     public function getOdooRef()
     {
-        $result = parent::get(static::ATTR_ODOO_REF);
+        $result = parent::get(static::A_ODOO_REF);
         return $result;
     }
 
     public static function getPrimaryKeyAttrs()
     {
-        $result = [static::ATTR_MAGE_REF];
+        $result = [static::A_MAGE_REF];
         return $result;
     }
 
     public function setDateReplicated($data)
     {
-        parent::set(static::ATTR_DATE_REPLICATED, $data);
+        parent::set(static::A_DATE_REPLICATED, $data);
     }
 
     public function setMageRef($data)
     {
-        parent::set(static::ATTR_MAGE_REF, $data);
+        parent::set(static::A_MAGE_REF, $data);
     }
 
     public function setOdooRef($data)
     {
-        parent::set(static::ATTR_ODOO_REF, $data);
+        parent::set(static::A_ODOO_REF, $data);
     }
 }
