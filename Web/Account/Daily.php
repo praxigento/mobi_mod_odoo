@@ -22,20 +22,20 @@ class Daily
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
     /** @var \Praxigento\Accounting\Repo\Dao\Balance */
-    private $repoBalance;
+    private $daoBalance;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
-    private $repoTypeAsset;
+    private $daoTypeAsset;
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily */
     private $servReportDaily;
 
     public function __construct(
-        \Praxigento\Accounting\Repo\Dao\Balance $repoBalance,
-        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Balance $daoBalance,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
         \Praxigento\Odoo\Service\Replicate\Account\Daily $servReportDaily
     ) {
-        $this->repoBalance = $repoBalance;
-        $this->repoTypeAsset = $repoTypeAsset;
+        $this->daoBalance = $daoBalance;
+        $this->daoTypeAsset = $daoTypeAsset;
         $this->hlpPeriod = $hlpPeriod;
         $this->servReportDaily = $servReportDaily;
     }
@@ -92,8 +92,8 @@ class Daily
      */
     private function getMaxBalanceDate()
     {
-        $assetTypeId = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
-        $result = $this->repoBalance->getMaxDate($assetTypeId);
+        $assetTypeId = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
+        $result = $this->daoBalance->getMaxDate($assetTypeId);
         return $result;
     }
 }

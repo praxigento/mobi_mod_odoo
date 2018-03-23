@@ -10,17 +10,17 @@ class CustomerManagement
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    private $repoOrder;
+    private $daoOrder;
     /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
     private $servReplicate;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Magento\Sales\Api\OrderRepositoryInterface $repoOrder,
+        \Magento\Sales\Api\OrderRepositoryInterface $daoOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
     ) {
         $this->logger = $logger;
-        $this->repoOrder = $repoOrder;
+        $this->daoOrder = $daoOrder;
         $this->servReplicate = $servReplicate;
     }
 
@@ -32,7 +32,7 @@ class CustomerManagement
         $result = $proceed($orderId);
         try {
             $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
-            $order = $this->repoOrder->get($orderId);
+            $order = $this->daoOrder->get($orderId);
             $req->setSaleOrder($order);
             $this->servReplicate->exec($req);
         } catch (\Throwable $th) {

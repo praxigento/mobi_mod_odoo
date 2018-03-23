@@ -27,19 +27,19 @@ class Daily
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary */
     private $qbGetSummary;
     /** @var \Praxigento\Accounting\Repo\Dao\Account */
-    private $repoAcc;
+    private $daoAcc;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
-    private $repoTypeAsset;
+    private $daoTypeAsset;
 
     public function __construct(
-        \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
-        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
+        \Praxigento\Accounting\Repo\Dao\Account $daoAcc,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpCodeMgr,
         \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary $qbGetSummary
     ) {
-        $this->repoAcc = $repoAcc;
-        $this->repoTypeAsset = $repoTypeAsset;
+        $this->daoAcc = $daoAcc;
+        $this->daoTypeAsset = $daoTypeAsset;
         $this->hlpPeriod = $hlpPeriod;
         $this->hlpCodeMgr = $hlpCodeMgr;
         $this->qbGetSummary = $qbGetSummary;
@@ -86,8 +86,8 @@ class Daily
     private function getSysAccId()
     {
         if (is_null(self::$cacheAccIdWallet)) {
-            $walletAssetId = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
-            self::$cacheAccIdWallet = $this->repoAcc->getSystemAccountId($walletAssetId);
+            $walletAssetId = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
+            self::$cacheAccIdWallet = $this->daoAcc->getSystemAccountId($walletAssetId);
         }
         return self::$cacheAccIdWallet;
     }

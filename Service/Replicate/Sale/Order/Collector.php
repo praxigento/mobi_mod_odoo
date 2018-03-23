@@ -23,31 +23,31 @@ class Collector
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder */
     protected $qbTaxItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
-    protected $repoCustomer;
+    protected $daoCustomer;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
-    protected $repoDwnlCustomer;
+    protected $daoDwnlCustomer;
     /** @var \Praxigento\Core\App\Repo\IGeneric */
-    protected $repoGeneric;
+    protected $daoGeneric;
     /** @var \Praxigento\Odoo\Repo\Dao\Product */
-    protected $repoOdooProd;
+    protected $daoOdooProd;
     /** @var \Praxigento\Pv\Repo\Dao\Sale */
-    protected $repoPvSale;
+    protected $daoPvSale;
     /** @var \Praxigento\Pv\Repo\Dao\Sale\Item */
-    protected $repoPvSaleItem;
+    protected $daoPvSaleItem;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
-    protected $repoWarehouse;
+    protected $daoWarehouse;
 
     public function __construct(
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
         \Praxigento\Core\Api\Helper\Format $manFormat,
-        \Praxigento\Core\App\Repo\IGeneric $repoGeneric,
-        \Magento\Customer\Api\CustomerRepositoryInterface $repoCustomer,
-        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCustomer,
-        \Praxigento\Pv\Repo\Dao\Sale $repoPvSale,
-        \Praxigento\Pv\Repo\Dao\Sale\Item $repoPvSaleItem,
-        \Praxigento\Odoo\Repo\Dao\Warehouse $repoWarehouse,
-        \Praxigento\Odoo\Repo\Dao\Product $repoOdooProd,
+        \Praxigento\Core\App\Repo\IGeneric $daoGeneric,
+        \Magento\Customer\Api\CustomerRepositoryInterface $daoCustomer,
+        \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCustomer,
+        \Praxigento\Pv\Repo\Dao\Sale $daoPvSale,
+        \Praxigento\Pv\Repo\Dao\Sale\Item $daoPvSaleItem,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $daoWarehouse,
+        \Praxigento\Odoo\Repo\Dao\Product $daoOdooProd,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )
@@ -55,13 +55,13 @@ class Collector
         $this->manStock = $manStock;
         $this->manBusinessCodes = $manBusinessCodes;
         $this->manFormat = $manFormat;
-        $this->repoGeneric = $repoGeneric;
-        $this->repoCustomer = $repoCustomer;
-        $this->repoDwnlCustomer = $repoDwnlCustomer;
-        $this->repoPvSale = $repoPvSale;
-        $this->repoPvSaleItem = $repoPvSaleItem;
-        $this->repoWarehouse = $repoWarehouse;
-        $this->repoOdooProd = $repoOdooProd;
+        $this->daoGeneric = $daoGeneric;
+        $this->daoCustomer = $daoCustomer;
+        $this->daoDwnlCustomer = $daoDwnlCustomer;
+        $this->daoPvSale = $daoPvSale;
+        $this->daoPvSaleItem = $daoPvSaleItem;
+        $this->daoWarehouse = $daoWarehouse;
+        $this->daoOdooProd = $daoOdooProd;
         $this->qbLots = $qbLots;
         $this->qbTaxItems = $qbTaxItems;
     }
@@ -75,7 +75,7 @@ class Collector
     protected function dbGetItemPvTotal($itemId)
     {
         /** @var \Praxigento\Pv\Repo\Data\Sale\Item $data */
-        $data = $this->repoPvSaleItem->getById($itemId);
+        $data = $this->daoPvSaleItem->getById($itemId);
         $result = $data->getTotal();
         return $result;
     }
@@ -91,7 +91,7 @@ class Collector
         $result = [];
         $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX_ITEM;
         $where = Cfg::E_SALE_ORDER_TAX_ITEM_A_ITEM_ID . '=' . (int)$itemId;
-        $rows = $this->repoGeneric->getEntities($entity, '*', $where);
+        $rows = $this->daoGeneric->getEntities($entity, '*', $where);
         foreach ($rows as $row) {
             $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
@@ -132,7 +132,7 @@ class Collector
         $result = [];
         $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX;
         $where = Cfg::E_SALE_ORDER_TAX_A_ORDER_ID . '=' . (int)$saleId;
-        $rows = $this->repoGeneric->getEntities($entity, null, $where);
+        $rows = $this->daoGeneric->getEntities($entity, null, $where);
         foreach ($rows as $row) {
             $data = new \Praxigento\Core\Data($row);
             $result[] = $data;
@@ -182,7 +182,7 @@ class Collector
         $result = null;
         $entity = Cfg::ENTITY_MAGE_SALES_ORDER_TAX;
         $where = Cfg::E_SALE_ORDER_TAX_A_TAX_ID . '=' . (int)$taxId;
-        $rows = $this->repoGeneric->getEntities($entity, '*', $where);
+        $rows = $this->daoGeneric->getEntities($entity, '*', $where);
         if (is_array($rows)) {
             /* one only row should present in result set */
             $row = reset($rows);
@@ -303,10 +303,10 @@ class Collector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer();
         /* collect data */
         $custMageId = (int)$sale->getCustomerId();
-        $dwnlCust = $this->repoDwnlCustomer->getById($custMageId);
+        $dwnlCust = $this->daoDwnlCustomer->getById($custMageId);
         $ref = $dwnlCust->getMlmId();
         $name = $sale->getCustomerName();
-        $mageCust = $this->repoCustomer->getById($custMageId);
+        $mageCust = $this->daoCustomer->getById($custMageId);
         $groupId = $mageCust->getGroupId();
         $groupCode = $this->manBusinessCodes->getBusCodeForCustomerGroupById($groupId);
         /* init Odoo data object */
@@ -329,7 +329,7 @@ class Collector
         /* collect data */
         $itemIdMage = $item->getId();
         $productIdMage = $item->getProductId();
-        $productIdOdoo = (int)$this->repoOdooProd->getOdooIdByMageId($productIdMage);
+        $productIdOdoo = (int)$this->daoOdooProd->getOdooIdByMageId($productIdMage);
         $qty = $item->getQtyOrdered();
         $qty = $this->manFormat->toNumber($qty);
         $lots = $this->getOrderLineLots($itemIdMage);
@@ -499,7 +499,7 @@ class Collector
         // addr_shipping
         $addrShipping = $this->getAddressShipping($sale);
         // pv_total (with date paid)
-        $pvOrder = $this->repoPvSale->getById($orderIdMage);
+        $pvOrder = $this->daoPvSale->getById($orderIdMage);
         $pvTotal = $this->manFormat->toNumber($pvOrder->getTotal());
         $datePaid = $pvOrder->getDatePaid();
         // price
@@ -607,7 +607,7 @@ class Collector
     {
         $storeId = $sale->getStoreId();
         $stockId = $this->manStock->getStockIdByStoreId($storeId);
-        $warehouse = $this->repoWarehouse->getById($stockId);
+        $warehouse = $this->daoWarehouse->getById($stockId);
         $result = $warehouse->getOdooRef();
         return $result;
     }

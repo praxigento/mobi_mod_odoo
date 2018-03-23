@@ -15,16 +15,16 @@ use Praxigento\Warehouse\Repo\Data\Lot as EWrhsLot;
 class Lots
 {
     /** @var \Praxigento\Odoo\Repo\Dao\Lot */
-    private $repoOdooLot;
+    private $daoOdooLot;
     /** @var \Praxigento\Warehouse\Repo\Dao\Lot */
-    private $repoWrhsLot;
+    private $daoWrhsLot;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Dao\Lot $repoOdooLot,
-        \Praxigento\Warehouse\Repo\Dao\Lot $repoWrhsLot
+        \Praxigento\Odoo\Repo\Dao\Lot $daoOdooLot,
+        \Praxigento\Warehouse\Repo\Dao\Lot $daoWrhsLot
     ) {
-        $this->repoOdooLot = $repoOdooLot;
-        $this->repoWrhsLot = $repoWrhsLot;
+        $this->daoOdooLot = $daoOdooLot;
+        $this->daoWrhsLot = $daoWrhsLot;
     }
 
 
@@ -39,16 +39,16 @@ class Lots
                 $odooId = $item->getIdOdoo();
                 $code = $item->getNumber();
                 $dateExp = $item->getExpirationDate();
-                $found = $this->repoOdooLot->getByOdooId($odooId);
+                $found = $this->daoOdooLot->getByOdooId($odooId);
                 if (!$found) {
                     $wrhsData = new EWrhsLot();
                     $wrhsData->setCode($code);
                     $wrhsData->setExpDate($dateExp);
-                    $lotId = $this->repoWrhsLot->create($wrhsData);
+                    $lotId = $this->daoWrhsLot->create($wrhsData);
                     $odooData = new EOdooLot();
                     $odooData->setOdooRef($odooId);
                     $odooData->setMageRef($lotId);
-                    $this->repoOdooLot->create($odooData);
+                    $this->daoOdooLot->create($odooData);
                 }
             }
         }

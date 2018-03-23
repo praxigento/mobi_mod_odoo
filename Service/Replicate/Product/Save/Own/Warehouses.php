@@ -13,12 +13,12 @@ use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as DWarehouse;
 class Warehouses
 {
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
-    private $repoWrhs;
+    private $daoWrhs;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Dao\Warehouse $repoWrhs
+        \Praxigento\Odoo\Repo\Dao\Warehouse $daoWrhs
     ) {
-        $this->repoWrhs = $repoWrhs;
+        $this->daoWrhs = $daoWrhs;
     }
 
 
@@ -31,7 +31,7 @@ class Warehouses
         if (is_array($warehouses)) {
             foreach ($warehouses as $item) {
                 $odooId = $item->getIdOdoo();
-                $found = $this->repoWrhs->getByOdooId($odooId);
+                $found = $this->daoWrhs->getByOdooId($odooId);
                 if (!$found) {
                     throw new \Exception("Cannot find warehouse '$odooId'. Please create and setup this warehouse manually.");
                 }

@@ -26,28 +26,28 @@ class Add
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
-    private $repoDwnlCust;
+    private $daoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Dao\Registry\Request */
-    private $repoRegRequest;
+    private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
-    private $repoTypeAsset;
+    private $daoTypeAsset;
     /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
     private $servAssetTransfer;
 
     public function __construct(
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
-        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
-        \Praxigento\Odoo\Repo\Dao\Registry\Request $repoRegRequest,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
+        \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
+        \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Service\Account\Asset\Transfer $servAssetTransfer
     ) {
         $this->auth = $auth;
         $this->logger = $logger;
-        $this->repoTypeAsset = $repoTypeAsset;
-        $this->repoDwnlCust = $repoDwnlCust;
-        $this->repoRegRequest = $repoRegRequest;
+        $this->daoTypeAsset = $daoTypeAsset;
+        $this->daoDwnlCust = $daoDwnlCust;
+        $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
         $this->servAssetTransfer = $servAssetTransfer;
     }
@@ -127,14 +127,14 @@ class Add
         $entity->setTypeCode(HCodeReq::CUSTOMER_PV_ADD);
         $entity->setOdooRef($odooRef);
         $key = (array)$entity->get();
-        $result = $this->repoRegRequest->getById($key);
+        $result = $this->daoRegRequest->getById($key);
         return $result;
     }
 
     /** @return int */
     private function getAssetId()
     {
-        $result = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_PV);
+        $result = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_PV);
         return $result;
     }
 
@@ -145,7 +145,7 @@ class Add
      */
     private function getCustomerId($mlmId)
     {
-        $customer = $this->repoDwnlCust->getByMlmId($mlmId);
+        $customer = $this->daoDwnlCust->getByMlmId($mlmId);
         if (!$customer) {
             throw new \Exception("Cannot find customer with MLM ID: $mlmId.");
         }
@@ -176,6 +176,6 @@ class Add
         $entity = new ERegRequest();
         $entity->setTypeCode(HCodeReq::CUSTOMER_PV_ADD);
         $entity->setOdooRef($odooRef);
-        $this->repoRegRequest->create($entity);
+        $this->daoRegRequest->create($entity);
     }
 }

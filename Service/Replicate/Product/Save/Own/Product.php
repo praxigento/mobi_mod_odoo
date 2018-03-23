@@ -30,23 +30,23 @@ class Product
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse */
     private $ownWrhs;
     /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
-    private $repoAttrSet;
+    private $daoAttrSet;
     /** @var \Praxigento\Odoo\Repo\Dao\Product */
-    private $repoOdooProd;
+    private $daoOdooProd;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
-    private $repoOdooWrhs;
+    private $daoOdooWrhs;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
-    private $repoProd;
+    private $daoProd;
     /** @var \Praxigento\Pv\Repo\Dao\Product */
-    private $repoPvProd;
+    private $daoPvProd;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Magento\Catalog\Api\AttributeSetRepositoryInterface $repoAttrSet,
-        \Praxigento\Odoo\Repo\Dao\Product $repoOdooProd,
-        \Praxigento\Odoo\Repo\Dao\Warehouse $repoOdooWrhs,
-        \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
-        \Praxigento\Pv\Repo\Dao\Product $repoPvProd,
+        \Magento\Catalog\Api\AttributeSetRepositoryInterface $daoAttrSet,
+        \Praxigento\Odoo\Repo\Dao\Product $daoOdooProd,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $daoOdooWrhs,
+        \Magento\Catalog\Api\ProductRepositoryInterface $daoProd,
+        \Praxigento\Pv\Repo\Dao\Product $daoPvProd,
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
         \Magento\Catalog\Model\ProductFactory $factProd,
@@ -54,11 +54,11 @@ class Product
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse $ownWrhs
     ) {
         $this->logger = $logger;
-        $this->repoAttrSet = $repoAttrSet;
-        $this->repoProd = $repoProd;
-        $this->repoOdooProd = $repoOdooProd;
-        $this->repoOdooWrhs = $repoOdooWrhs;
-        $this->repoPvProd = $repoPvProd;
+        $this->daoAttrSet = $daoAttrSet;
+        $this->daoProd = $daoProd;
+        $this->daoOdooProd = $daoOdooProd;
+        $this->daoOdooWrhs = $daoOdooWrhs;
+        $this->daoPvProd = $daoPvProd;
         $this->hlpStock = $hlpStock;
         $this->factSearchCrit = $factSearchCrit;
         $this->factProd = $factProd;
@@ -88,7 +88,7 @@ class Product
         /** @var \Magento\Framework\Api\SearchCriteriaInterface $crit */
         $crit = $this->factSearchCrit->create();
         /** @var \Magento\Eav\Model\Entity\Attribute\Set $attrSet */
-        $list = $this->repoAttrSet->getList($crit);
+        $list = $this->daoAttrSet->getList($crit);
         $items = $list->getItems();
         $attrSet = reset($items);
         $attrSetId = $attrSet->getId();
@@ -106,7 +106,7 @@ class Product
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
         $product->setUrlKey($sku); // MOBI-331 : use SKU as URL Key instead of Product Name
-        $saved = $this->repoProd->save($product);
+        $saved = $this->daoProd->save($product);
         /* return product ID */
         $result = $saved->getId();
         return $result;
@@ -128,7 +128,7 @@ class Product
         $pvWholesale = $product->getPvWholesale();
         $priceRetail = $this->getRetailPrice($product);
         /* check does product item is already registered in Magento */
-        $idMage = $this->repoOdooProd->getMageIdByOdooId($idOdoo);
+        $idMage = $this->daoOdooProd->getMageIdByOdooId($idOdoo);
         if (!$idMage) {
             if ($isActive) {
                 /* create new product in Magento */
@@ -161,7 +161,7 @@ class Product
     {
         if (is_null(self::$cacheDefWrhs)) {
             $stockId = $this->hlpStock->getDefaultStockId();
-            $wrhs = $this->repoOdooWrhs->getById($stockId);
+            $wrhs = $this->daoOdooWrhs->getById($stockId);
             self::$cacheDefWrhs = $wrhs->getOdooRef();
         }
         return self::$cacheDefWrhs;
@@ -208,7 +208,7 @@ class Product
         $entity = new \Praxigento\Odoo\Repo\Data\Product();
         $entity->setMageRef($mageId);
         $entity->setOdooRef($odooId);
-        $this->repoOdooProd->create($entity);
+        $this->daoOdooProd->create($entity);
     }
 
     /**
@@ -221,7 +221,7 @@ class Product
     {
         $entity = new \Praxigento\Pv\Repo\Data\Product();
         $entity->setProductRef($prodId, $pv);
-        $this->repoPvProd->create($entity);
+        $this->daoPvProd->create($entity);
     }
 
     /**
@@ -240,7 +240,7 @@ class Product
     {
         $this->logger->debug("Update product (id: $mageId; name: $name; active: $isActive; weight: $weight.)");
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
-        $product = $this->repoProd->getById($mageId);
+        $product = $this->daoProd->getById($mageId);
         /* MOBI-717: SKU also can be changed */
         $product->setSku($sku);
         $product->setUrlKey($sku);
@@ -249,7 +249,7 @@ class Product
         $product->setStatus($status);
         $product->setPrice($priceRetail);
         $product->setWeight($weight);
-        $this->repoProd->save($product);
+        $this->daoProd->save($product);
     }
 
     private function updatePvWholesale($prodMageId, $pv)
@@ -260,6 +260,6 @@ class Product
             \Praxigento\Pv\Repo\Data\Product::A_PV => $pv
         ];
         $where = \Praxigento\Pv\Repo\Data\Product::A_PROD_REF . '=' . (int)$prodMageId;
-        $this->repoPvProd->update($bind, $where);
+        $this->daoPvProd->update($bind, $where);
     }
 }

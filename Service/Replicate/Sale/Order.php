@@ -10,22 +10,22 @@ class Order
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
 {
     /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
-    protected $repoEntitySaleOrder;
+    protected $daoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
-    protected $repoOdooSaleOrder;
+    protected $daoOdooSaleOrder;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector */
     protected $subCollector;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Repo\Dao\SaleOrder $repoEntitySaleOrder,
-        \Praxigento\Odoo\Repo\Odoo\ISaleOrder $repoOdooSaleOrder,
+        \Praxigento\Odoo\Repo\Dao\SaleOrder $daoEntitySaleOrder,
+        \Praxigento\Odoo\Repo\Odoo\ISaleOrder $daoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
     ) {
         parent::__construct($logger, $manObj);
-        $this->repoEntitySaleOrder = $repoEntitySaleOrder;
-        $this->repoOdooSaleOrder = $repoOdooSaleOrder;
+        $this->daoEntitySaleOrder = $daoEntitySaleOrder;
+        $this->daoOdooSaleOrder = $daoOdooSaleOrder;
         $this->subCollector = $collector;
     }
 
@@ -37,13 +37,13 @@ class Order
         $orderIdMage = $mageOrder->getEntityId();
         $customerIdMage = $mageOrder->getCustomerId();
         /** @var \Praxigento\Odoo\Repo\Data\SaleOrder $registeredOrder */
-        $registeredOrder = $this->repoEntitySaleOrder->getById($orderIdMage);
+        $registeredOrder = $this->daoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
         /* skip processing for registered orders or guest checkouted */
         if ($orderIdMage && !$isRegistered && $customerIdMage) {
             $odooOrder = $this->subCollector->getSaleOrder($mageOrder);
             /* save order into Odoo repo */
-            $resp = $this->repoOdooSaleOrder->save($odooOrder);
+            $resp = $this->daoOdooSaleOrder->save($odooOrder);
             $result->setOdooResponse($resp);
             if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
                 $mageId = $mageOrder->getEntityId();
@@ -52,7 +52,7 @@ class Order
                 $registry = new \Praxigento\Odoo\Repo\Data\SaleOrder();
                 $registry->setMageRef($mageId);
                 $registry->setOdooRef($odooId);
-                $this->repoEntitySaleOrder->create($registry);
+                $this->daoEntitySaleOrder->create($registry);
                 /* finalize transaction */
                 $result->markSucceed();
             }

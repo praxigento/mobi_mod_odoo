@@ -13,16 +13,16 @@ use Praxigento\Warehouse\Repo\Data\Quantity as EWrhsQty;
 class Lot
 {
     /** @var \Praxigento\Odoo\Repo\Dao\Lot */
-    private $repoOdooLot;
+    private $daoOdooLot;
     /** @var \Praxigento\Warehouse\Repo\Dao\Quantity */
-    private $repoWrhsQty;
+    private $daoWrhsQty;
 
     public function __construct(
-        \Praxigento\Odoo\Repo\Dao\Lot $repoOdooLot,
-        \Praxigento\Warehouse\Repo\Dao\Quantity $repoWrhsQty
+        \Praxigento\Odoo\Repo\Dao\Lot $daoOdooLot,
+        \Praxigento\Warehouse\Repo\Dao\Quantity $daoWrhsQty
     ) {
-        $this->repoOdooLot = $repoOdooLot;
-        $this->repoWrhsQty = $repoWrhsQty;
+        $this->daoOdooLot = $daoOdooLot;
+        $this->daoWrhsQty = $daoWrhsQty;
     }
 
     /**
@@ -36,7 +36,7 @@ class Lot
         /* create map for Lots from request */
         $mapOdooExist = $this->mapLotsOdoo($lots);
         /* create map of the Magento IDs for existing lots */
-        $lotsExist = $this->repoWrhsQty->getByStockItemId($stockItemId);
+        $lotsExist = $this->daoWrhsQty->getByStockItemId($stockItemId);
         $mapMageExist = $this->mapLotsMage($lotsExist);
         /* remove Magento lots that have no Odoo correspondents */
         $diff = array_diff($mapMageExist, $mapOdooExist);
@@ -45,7 +45,7 @@ class Lot
                 EWrhsQty::A_STOCK_ITEM_REF => $stockItemId,
                 EWrhsQty::A_LOT_REF => $lotIdMage
             ];
-            $this->repoWrhsQty->deleteById($pk);
+            $this->daoWrhsQty->deleteById($pk);
         }
     }
 
@@ -76,7 +76,7 @@ class Lot
         /** @var \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot $lot */
         foreach ($lots as $lot) {
             $lotIdOdoo = $lot->getIdOdoo();
-            $lotIdMage = $this->repoOdooLot->getMageIdByOdooId($lotIdOdoo);
+            $lotIdMage = $this->daoOdooLot->getMageIdByOdooId($lotIdOdoo);
             $result[] = $lotIdMage;
         }
         return $result;
@@ -93,22 +93,22 @@ class Lot
     {
         $lotIdOdoo = $lot->getIdOdoo();
         $qty = $lot->getQuantity();
-        $lotIdMage = $this->repoOdooLot->getMageIdByOdooId($lotIdOdoo);
+        $lotIdMage = $this->daoOdooLot->getMageIdByOdooId($lotIdOdoo);
         $pk = [
             EWrhsQty::A_STOCK_ITEM_REF => $stockItemId,
             EWrhsQty::A_LOT_REF => $lotIdMage
         ];
         /* get quantity item (total product qty for lot on the stock) */
-        $qtyItem = $this->repoWrhsQty->getById($pk);
+        $qtyItem = $this->daoWrhsQty->getById($pk);
         if ($qtyItem) {
             /* update qty data */
             $bind = [EWrhsQty::A_TOTAL => $qty];
-            $this->repoWrhsQty->updateById($pk, $bind);
+            $this->daoWrhsQty->updateById($pk, $bind);
         } else {
             /* create qty entity based on primary key data */
             $entity = new EWrhsQty($pk);
             $entity->setTotal($qty);
-            $this->repoWrhsQty->create($entity);
+            $this->daoWrhsQty->create($entity);
         }
         return $qty;
     }

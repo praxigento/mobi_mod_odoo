@@ -12,13 +12,13 @@ class Products
     const OPT_WRHS_IDS = 'wrhs';
 
     /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
-    private $repoOdoo;
+    private $daoOdoo;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save */
     private $servSave;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Repo\Odoo\IInventory $repoOdoo,
+        \Praxigento\Odoo\Repo\Odoo\IInventory $daoOdoo,
         \Praxigento\Odoo\Service\Replicate\Product\Save $servSave
     ) {
         parent::__construct(
@@ -26,7 +26,7 @@ class Products
             'prxgt:odoo:replicate:products',
             'Pull products list from Odoo and replicate data into Magento.'
         );
-        $this->repoOdoo = $repoOdoo;
+        $this->daoOdoo = $daoOdoo;
         $this->servSave = $servSave;
     }
 
@@ -56,7 +56,7 @@ class Products
         $optProdIds = $this->parseOptProdIds($input, $output);
         $optWrhsIds = $this->parseOptWrhsIds($input, $output);
         /* get inventory data from Odoo */
-        $inventory = $this->repoOdoo->get($optProdIds, $optWrhsIds);
+        $inventory = $this->daoOdoo->get($optProdIds, $optWrhsIds);
         /* call service operation */
         $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
         $req->setInventory($inventory);

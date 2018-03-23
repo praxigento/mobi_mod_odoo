@@ -18,24 +18,24 @@ class Handler
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Price */
     private $ownPrice;
     /** @var \Praxigento\Pv\Repo\Dao\Stock\Item */
-    private $repoPvStockItem;
+    private $daoPvStockItem;
     /** @var   \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
-    private $repoStockItem;
+    private $daoStockItem;
     /** @var  \Praxigento\Warehouse\Repo\Dao\Stock\Item */
-    private $repoWrhsStockItem;
+    private $daoWrhsStockItem;
 
     public function __construct(
         \Magento\CatalogInventory\Model\Stock\ItemFactory $factStockItem,
-        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
-        \Praxigento\Warehouse\Repo\Dao\Stock\Item $repoWrhsStockItem,
-        \Praxigento\Pv\Repo\Dao\Stock\Item $repoPvStockItem,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $daoStockItem,
+        \Praxigento\Warehouse\Repo\Dao\Stock\Item $daoWrhsStockItem,
+        \Praxigento\Pv\Repo\Dao\Stock\Item $daoPvStockItem,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Lot $ownLot,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler\Price $ownPrice
     ) {
         $this->factStockItem = $factStockItem;
-        $this->repoStockItem = $repoStockItem;
-        $this->repoWrhsStockItem = $repoWrhsStockItem;
-        $this->repoPvStockItem = $repoPvStockItem;
+        $this->daoStockItem = $daoStockItem;
+        $this->daoWrhsStockItem = $daoWrhsStockItem;
+        $this->daoPvStockItem = $daoPvStockItem;
         $this->ownLot = $ownLot;
         $this->ownPrice = $ownPrice;
     }
@@ -57,25 +57,25 @@ class Handler
         $result->setStockId($stockId);
         $result->setIsInStock(true);
         $result->setManageStock(true);
-        $result = $this->repoStockItem->save($result);
+        $result = $this->daoStockItem->save($result);
         $stockItemId = $result->getItemId();
         /* register warehouse price */
         $entityPrice = new \Praxigento\Warehouse\Repo\Data\Stock\Item();
         $entityPrice->setStockItemRef($stockItemId);
         $entityPrice->setPrice($price);
-        $this->repoWrhsStockItem->create($entityPrice);
+        $this->daoWrhsStockItem->create($entityPrice);
         /* register warehouse PV */
         $entityPv = new \Praxigento\Pv\Repo\Data\Stock\Item();
         $entityPv->setItemRef($stockItemId);
         $entityPv->setPv($pv);
-        $this->repoPvStockItem->create($entityPv);
+        $this->daoPvStockItem->create($entityPv);
         return $result;
     }
 
     private function getWarehousePv($stockItemMageId)
     {
         $result = null;
-        $data = $this->repoPvStockItem->getById($stockItemMageId);
+        $data = $this->daoPvStockItem->getById($stockItemMageId);
         if ($data) {
             $result = $data->getPv();
         }
@@ -99,7 +99,7 @@ class Handler
         $stockItem->setQty($qtyTotal);
         $isInStock = ($qtyTotal > 0);
         $stockItem->setIsInStock($isInStock);
-        $this->repoStockItem->save($stockItem);
+        $this->daoStockItem->save($stockItem);
         /* cleanup extra lots */
         $this->ownLot->cleanup($stockItemId, $lots);
     }
@@ -121,7 +121,7 @@ class Handler
         $entity = new \Praxigento\Pv\Repo\Data\Stock\Item();
         $entity->setItemRef($stockItemMageId);
         $entity->setPv($pv);
-        $this->repoPvStockItem->create($entity);
+        $this->daoPvStockItem->create($entity);
     }
 
     /**
@@ -135,13 +135,13 @@ class Handler
     {
         /* update or create warehouse entry */
         $bind = [\Praxigento\Warehouse\Repo\Data\Stock\Item::A_PRICE => $price];
-        $exist = $this->repoWrhsStockItem->getById($stockItemRef);
+        $exist = $this->daoWrhsStockItem->getById($stockItemRef);
         if (!$exist) {
             /* create new entry */
             $bind[\Praxigento\Warehouse\Repo\Data\Stock\Item::A_STOCK_ITEM_REF] = $stockItemRef;
-            $this->repoWrhsStockItem->create($bind);
+            $this->daoWrhsStockItem->create($bind);
         } else {
-            $this->repoWrhsStockItem->updateById($stockItemRef, $bind);
+            $this->daoWrhsStockItem->updateById($stockItemRef, $bind);
         }
         /* update or create warehouse PV */
         $registered = $this->getWarehousePv($stockItemRef);
@@ -160,6 +160,6 @@ class Handler
             \Praxigento\Pv\Repo\Data\Stock\Item::A_PV => $pv
         ];
         $where = \Praxigento\Pv\Repo\Data\Stock\Item::A_ITEM_REF . '=' . (int)$stockItemMageId;
-        $this->repoPvStockItem->update($bind, $where);
+        $this->daoPvStockItem->update($bind, $where);
     }
 }

@@ -17,19 +17,19 @@ class Price
     /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
     private $hlpBusCodes;
     /** @var \Magento\Customer\Api\GroupRepositoryInterface */
-    private $repoCustGroup;
+    private $daoCustGroup;
     /** @var \Praxigento\Warehouse\Repo\Dao\Group\Price */
-    private $repoGroupPrice;
+    private $daoGroupPrice;
 
     public function __construct(
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
-        \Magento\Customer\Api\GroupRepositoryInterface $repoCustGroup,
-        \Praxigento\Warehouse\Repo\Dao\Group\Price $repoGroupPrice,
+        \Magento\Customer\Api\GroupRepositoryInterface $daoCustGroup,
+        \Praxigento\Warehouse\Repo\Dao\Group\Price $daoGroupPrice,
         \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusCodes
     ) {
         $this->factSearchCrit = $factSearchCrit;
-        $this->repoCustGroup = $repoCustGroup;
-        $this->repoGroupPrice = $repoGroupPrice;
+        $this->daoCustGroup = $daoCustGroup;
+        $this->daoGroupPrice = $daoGroupPrice;
         $this->hlpBusCodes = $hlpBusCodes;
     }
 
@@ -41,7 +41,7 @@ class Price
     private function cleanup($stockItemId)
     {
         $where = EWrhsGroupPrice::A_STOCK_ITEM_REF . '=' . (int)$stockItemId;
-        $this->repoGroupPrice->delete($where);
+        $this->daoGroupPrice->delete($where);
     }
 
     /**
@@ -68,7 +68,7 @@ class Price
             self::$cacheCustomerGroupsIds = [];
             /** @var \Magento\Framework\Api\SearchCriteria $crit */
             $crit = $this->factSearchCrit->create();
-            $list = $this->repoCustGroup->getList($crit);
+            $list = $this->daoCustGroup->getList($crit);
             /** @var \Magento\Customer\Model\Data\Group $item */
             foreach ($list->getItems() as $item) {
                 $id = $item->getId();
@@ -95,7 +95,7 @@ class Price
             if (!in_array($groupId, $processedGroupIds)) {
                 $data->setCustomerGroupRef($groupId);
                 $data->setPrice($priceWarehouse);
-                $this->repoGroupPrice->create($data);
+                $this->daoGroupPrice->create($data);
             }
         }
     }
@@ -121,7 +121,7 @@ class Price
             if (!is_null($groupId)) {
                 $data->setCustomerGroupRef($groupId);
                 $data->setPrice($price);
-                $this->repoGroupPrice->create($data);
+                $this->daoGroupPrice->create($data);
             }
         }
         return $result;

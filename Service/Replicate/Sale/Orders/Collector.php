@@ -15,13 +15,13 @@ class Collector
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder */
     protected $qbld;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    protected $repoMageSalesOrder;
+    protected $daoMageSalesOrder;
 
     public function __construct(
-        \Magento\Sales\Api\OrderRepositoryInterface $repoMageSalesOrder,
+        \Magento\Sales\Api\OrderRepositoryInterface $daoMageSalesOrder,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder $qbld
     ) {
-        $this->repoMageSalesOrder = $repoMageSalesOrder;
+        $this->daoMageSalesOrder = $daoMageSalesOrder;
         $this->qbld = $qbld;
     }
 
@@ -36,7 +36,7 @@ class Collector
         $orders = $conn->fetchAll($query);
         foreach ($orders as $data) {
             $id = $data[QBGetOrders::A_ORDER_ID];
-            $order = $this->repoMageSalesOrder->get($id);
+            $order = $this->daoMageSalesOrder->get($id);
             $result[$id] = $order;
         }
         return $result;

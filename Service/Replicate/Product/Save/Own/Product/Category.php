@@ -15,28 +15,28 @@ class Category
     /** @var \Magento\Catalog\Model\CategoryProductLink */
     private $factCatProdLink;
     /** @var \Magento\Catalog\Api\CategoryRepositoryInterface */
-    private $repoCat;
+    private $daoCat;
     /** @var \Magento\Catalog\Api\CategoryLinkRepositoryInterface */
-    private $repoCatLink;
+    private $daoCatLink;
     /** @var \Praxigento\Odoo\Repo\Dao\Category */
-    private $repoOdooCat;
+    private $daoOdooCat;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
-    private $repoProd;
+    private $daoProd;
 
     public function __construct(
         \Magento\Catalog\Model\CategoryFactory $factCat,
         \Magento\Catalog\Model\CategoryProductLinkFactory $factCatProdLink,
-        \Magento\Catalog\Api\CategoryRepositoryInterface $repoCat,
-        \Magento\Catalog\Api\CategoryLinkRepositoryInterface $repoCatLink,
-        \Magento\Catalog\Api\ProductRepositoryInterface $repoProd,
-        \Praxigento\Odoo\Repo\Dao\Category $repoOdooCat
+        \Magento\Catalog\Api\CategoryRepositoryInterface $daoCat,
+        \Magento\Catalog\Api\CategoryLinkRepositoryInterface $daoCatLink,
+        \Magento\Catalog\Api\ProductRepositoryInterface $daoProd,
+        \Praxigento\Odoo\Repo\Dao\Category $daoOdooCat
     ) {
         $this->factCat = $factCat;
         $this->factCatProdLink = $factCatProdLink;
-        $this->repoCat = $repoCat;
-        $this->repoCatLink = $repoCatLink;
-        $this->repoProd = $repoProd;
-        $this->repoOdooCat = $repoOdooCat;
+        $this->daoCat = $daoCat;
+        $this->daoCatLink = $daoCatLink;
+        $this->daoProd = $daoProd;
+        $this->daoOdooCat = $daoOdooCat;
     }
 
     /**
@@ -50,13 +50,13 @@ class Category
         if (is_array($cats)) {
             foreach ($cats as $odooId) {
                 /* get mageId by odooId from registry */
-                $mageId = $this->repoOdooCat->getMageIdByOdooId($odooId);
+                $mageId = $this->daoOdooCat->getMageIdByOdooId($odooId);
                 if (!$mageId) {
                     $mageId = $this->createMageCategory('Cat #' . $odooId);
                     $entity = new \Praxigento\Odoo\Repo\Data\Category();
                     $entity->setMageRef($mageId);
                     $entity->setOdooRef($odooId);
-                    $this->repoOdooCat->create($entity);
+                    $this->daoOdooCat->create($entity);
                 }
             }
         }
@@ -76,7 +76,7 @@ class Category
         $category->setName($name);
         /* MOBI-624 */
         $category->setIsActive(true);
-        $saved = $this->repoCat->save($category);
+        $saved = $this->daoCat->save($category);
         $result = $saved->getId();
         return $result;
     }
@@ -108,13 +108,13 @@ class Category
     private function replicate($prodId, $categories)
     {
         /* get current categories links for the product */
-        $prod = $this->repoProd->getById($prodId);
+        $prod = $this->daoProd->getById($prodId);
         $sku = $prod->getSku();
         $catsExist = $prod->getCategoryIds();
         $catsFound = [];
         if (is_array($categories)) {
             foreach ($categories as $catOdooId) {
-                $catMageId = $this->repoOdooCat->getMageIdByOdooId($catOdooId);
+                $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
                 if (!in_array($catMageId, $catsExist)) {
                     /* create new product link if not exists */
                     /** @var \Magento\Catalog\Api\Data\CategoryProductLinkInterface $prodLink */
@@ -122,7 +122,7 @@ class Category
                     $prodLink->setCategoryId($catMageId);
                     $prodLink->setSku($sku);
                     $prodLink->setPosition(1);
-                    $this->repoCatLink->save($prodLink);
+                    $this->daoCatLink->save($prodLink);
                 }
                 /* register found link */
                 $catsFound[] = $catMageId;
@@ -131,7 +131,7 @@ class Category
         /* get difference between exist & found */
         $diff = array_diff($catsExist, $catsFound);
         foreach ($diff as $catMageId) {
-            $this->repoCatLink->deleteByIds($catMageId, $sku);
+            $this->daoCatLink->deleteByIds($catMageId, $sku);
         }
     }
 }

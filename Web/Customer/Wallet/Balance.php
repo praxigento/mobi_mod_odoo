@@ -18,15 +18,15 @@ class Balance
     implements \Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface
 {
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
-    private $repoDwnlCust;
+    private $daoDwnlCust;
     /** @var \Praxigento\Accounting\Api\Service\Account\Get */
     private $servAccGet;
 
     public function __construct(
-        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
+        \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Accounting\Api\Service\Account\Get $servAccGet
     ) {
-        $this->repoDwnlCust = $repoDwnlCust;
+        $this->daoDwnlCust = $daoDwnlCust;
         $this->servAccGet = $servAccGet;
     }
 
@@ -78,7 +78,7 @@ class Balance
     private function getCustomerId($mlmId)
     {
         $result = null;
-        $entity = $this->repoDwnlCust->getByMlmId($mlmId);
+        $entity = $this->daoDwnlCust->getByMlmId($mlmId);
         if ($entity) {
             $result = $entity->getCustomerId();
         }

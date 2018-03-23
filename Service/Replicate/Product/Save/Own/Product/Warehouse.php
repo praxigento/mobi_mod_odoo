@@ -12,19 +12,19 @@ class Warehouse
     /** @var  \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler */
     private $ownHandler;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
-    private $repoOdooWrhs;
+    private $daoOdooWrhs;
     /** @var  \Magento\CatalogInventory\Api\StockItemRepositoryInterface */
-    private $repoStockItem;
+    private $daoStockItem;
 
     public function __construct(
         \Magento\CatalogInventory\Model\ResourceModel\Stock\Item\StockItemCriteriaFactory $factStockItem,
-        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $repoStockItem,
-        \Praxigento\Odoo\Repo\Dao\Warehouse $repoOdooWrhs,
+        \Magento\CatalogInventory\Api\StockItemRepositoryInterface $daoStockItem,
+        \Praxigento\Odoo\Repo\Dao\Warehouse $daoOdooWrhs,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse\Handler $ownHandler
     ) {
         $this->factStockItem = $factStockItem;
-        $this->repoStockItem = $repoStockItem;
-        $this->repoOdooWrhs = $repoOdooWrhs;
+        $this->daoStockItem = $daoStockItem;
+        $this->daoOdooWrhs = $daoOdooWrhs;
         $this->ownHandler = $ownHandler;
     }
 
@@ -43,7 +43,7 @@ class Warehouse
             $pvWarehouse = $warehouse->getPvWarehouse();
             $priceWarehouse = $warehouse->getPriceWarehouse();
             /* get warehouse data by Odoo ID */
-            $stockIdMage = $this->repoOdooWrhs->getMageIdByOdooId($stockIdOdoo);
+            $stockIdMage = $this->daoOdooWrhs->getMageIdByOdooId($stockIdOdoo);
             /* create or update product data for warehouse (stock)*/
             if (isset($mapItemsByStock[$stockIdMage])) {
                 /* there is item for the stock, update item data */
@@ -79,7 +79,7 @@ class Warehouse
         $crit->setProductsFilter($prodId);
         /* get all stock items and create map by stock id (warehouse ID)*/
         /** @var \Magento\CatalogInventory\Api\Data\StockItemCollectionInterface $list */
-        $list = $this->repoStockItem->getList($crit);
+        $list = $this->daoStockItem->getList($crit);
         $result = $list->getItems();
         return $result;
     }

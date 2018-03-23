@@ -12,9 +12,9 @@ class Warehouse
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
-        \Praxigento\Core\App\Repo\IGeneric $repoGeneric
+        \Praxigento\Core\App\Repo\IGeneric $daoGeneric
     ) {
-        parent::__construct($resource, $repoGeneric, Entity::class);
+        parent::__construct($resource, $daoGeneric, Entity::class);
     }
 
     /**
@@ -35,7 +35,7 @@ class Warehouse
         $conn = $this->getConnection();
         $quoted = $conn->quote($id);
         $where = Entity::A_ODOO_REF . '=' . $quoted;
-        $items = $this->repoGeneric->getEntities($this->entityName, null, $where);
+        $items = $this->daoGeneric->getEntities($this->entityName, null, $where);
         if (
             is_array($items) &&
             (count($items) == 1)

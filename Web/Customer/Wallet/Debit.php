@@ -25,32 +25,32 @@ class Debit
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
     /** @var \Praxigento\Accounting\Repo\Dao\Account */
-    private $repoAcc;
+    private $daoAcc;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
-    private $repoDwnlCust;
+    private $daoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Dao\Registry\Request */
-    private $repoRegRequest;
+    private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
-    private $repoTypeAsset;
+    private $daoTypeAsset;
     /** @var \Praxigento\Accounting\Api\Service\Operation */
     private $servOper;
 
     public function __construct(
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Accounting\Repo\Dao\Account $repoAcc,
-        \Praxigento\Accounting\Repo\Dao\Type\Asset $repoTypeAsset,
-        \Praxigento\Downline\Repo\Dao\Customer $repoDwnlCust,
-        \Praxigento\Odoo\Repo\Dao\Registry\Request $repoRegRequest,
+        \Praxigento\Accounting\Repo\Dao\Account $daoAcc,
+        \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
+        \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
+        \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Api\Service\Operation $servOper
     )
     {
         $this->logger = $logger;
-        $this->repoAcc = $repoAcc;
-        $this->repoTypeAsset = $repoTypeAsset;
-        $this->repoDwnlCust = $repoDwnlCust;
-        $this->repoRegRequest = $repoRegRequest;
+        $this->daoAcc = $daoAcc;
+        $this->daoTypeAsset = $daoTypeAsset;
+        $this->daoDwnlCust = $daoDwnlCust;
+        $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
         $this->servOper = $servOper;
     }
@@ -120,7 +120,7 @@ class Debit
         $entity->setTypeCode(HCodeReq::CUSTOMER_WALLET_DEBIT);
         $entity->setOdooRef($odooRef);
         $key = (array)$entity->get();
-        $result = $this->repoRegRequest->getById($key);
+        $result = $this->daoRegRequest->getById($key);
         return $result;
     }
 
@@ -131,7 +131,7 @@ class Debit
     private function getCustomerId($mlmId)
     {
         $result = null;
-        $entity = $this->repoDwnlCust->getByMlmId($mlmId);
+        $entity = $this->daoDwnlCust->getByMlmId($mlmId);
         if ($entity) {
             $result = $entity->getCustomerId();
         }
@@ -150,10 +150,10 @@ class Debit
     private function performDebit($custId, $amount, $note)
     {
         /* get accounts */
-        $assetTypeId = $this->repoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
-        $debitAcc = $this->repoAcc->getByCustomerId($custId, $assetTypeId);
+        $assetTypeId = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
+        $debitAcc = $this->daoAcc->getByCustomerId($custId, $assetTypeId);
         $debitAccId = $debitAcc->getId();
-        $creditAccId = $this->repoAcc->getSystemAccountId($assetTypeId);
+        $creditAccId = $this->daoAcc->getSystemAccountId($assetTypeId);
         /* prepare transaction */
         $tran = new \Praxigento\Accounting\Repo\Data\Transaction();
         $tran->setDebitAccId($debitAccId);
@@ -182,6 +182,6 @@ class Debit
         $entity = new ERegRequest();
         $entity->setTypeCode(HCodeReq::CUSTOMER_WALLET_DEBIT);
         $entity->setOdooRef($odooRef);
-        $this->repoRegRequest->create($entity);
+        $this->daoRegRequest->create($entity);
     }
 }

@@ -18,7 +18,7 @@ abstract class BaseOdooEntity
     {
         $result = null;
         $where = IOdooEntity::A_ODOO_REF . '=' . (int)$id;
-        $items = $this->repoGeneric->getEntities($this->entityName, null, $where);
+        $items = $this->daoGeneric->getEntities($this->entityName, null, $where);
         if (
             is_array($items) &&
             (count($items) == 1)
