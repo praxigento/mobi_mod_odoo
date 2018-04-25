@@ -12,16 +12,6 @@ use Praxigento\Odoo\Config as Cfg;
  */
 class Collector
 {
-    /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
-    protected $manBusinessCodes;
-    /** @var  \Praxigento\Core\Api\Helper\Format */
-    protected $manFormat;
-    /** @var \Praxigento\Warehouse\Api\Helper\Stock */
-    protected $manStock;
-    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
-    protected $qbLots;
-    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder */
-    protected $qbTaxItems;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     protected $daoCustomer;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
@@ -36,11 +26,21 @@ class Collector
     protected $daoPvSaleItem;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     protected $daoWarehouse;
+    /** @var  \Praxigento\Core\Api\Helper\Format */
+    protected $hlpFormat;
+    /** @var \Praxigento\Warehouse\Api\Helper\Stock */
+    protected $hlpStock;
+    /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    protected $manBusinessCodes;
+    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
+    protected $qbLots;
+    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder */
+    protected $qbTaxItems;
 
     public function __construct(
-        \Praxigento\Warehouse\Api\Helper\Stock $manStock,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusinessCodes,
-        \Praxigento\Core\Api\Helper\Format $manFormat,
+        \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
+        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusinessCodes,
+        \Praxigento\Core\Api\Helper\Format $hlpFormat,
         \Praxigento\Core\App\Repo\IGeneric $daoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $daoCustomer,
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCustomer,
@@ -52,9 +52,9 @@ class Collector
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )
     {
-        $this->manStock = $manStock;
-        $this->manBusinessCodes = $manBusinessCodes;
-        $this->manFormat = $manFormat;
+        $this->hlpStock = $hlpStock;
+        $this->manBusinessCodes = $hlpBusinessCodes;
+        $this->hlpFormat = $hlpFormat;
         $this->daoGeneric = $daoGeneric;
         $this->daoCustomer = $daoCustomer;
         $this->daoDwnlCustomer = $daoDwnlCustomer;
@@ -257,7 +257,7 @@ class Collector
         $rate = reset($rates);
         if ($rate) {
             $base = $rate->getAmount() / $rate->getPercent();
-            $base = $this->manFormat->toNumber($base);
+            $base = $this->hlpFormat->toNumber($base);
             /* populate Odoo Data Object */
             $result->setBase($base);
             $result->setRates($rates);
@@ -279,9 +279,9 @@ class Collector
             $code = $this->dbGetTaxCodeByTaxId($taxId);
             $percent = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_TAX_PERCENT);
             $percent /= 100;
-            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $percent = $this->hlpFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
             $amount = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_REAL_BASE_AMOUNT);
-            $amount = $this->manFormat->toNumber($amount);
+            $amount = $this->hlpFormat->toNumber($amount);
             /* init Odoo data object */
             $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
             $data->setCode($code);
@@ -331,12 +331,12 @@ class Collector
         $productIdMage = $item->getProductId();
         $productIdOdoo = (int)$this->daoOdooProd->getOdooIdByMageId($productIdMage);
         $qty = $item->getQtyOrdered();
-        $qty = $this->manFormat->toNumber($qty);
+        $qty = $this->hlpFormat->toNumber($qty);
         $lots = $this->getOrderLineLots($itemIdMage);
         $tax = $this->getItemTax($item);
         /* PV attributes */
         $pv = $this->dbGetItemPvTotal($itemIdMage);
-        $pv = $this->manFormat->toNumber($pv);
+        $pv = $this->hlpFormat->toNumber($pv);
         /* init Odoo data object */
         $result->setProductIdOdoo($productIdOdoo);
         $result->setQty($qty);
@@ -365,7 +365,7 @@ class Collector
             if ($idOdoo != Cfg::NULL_LOT_ID) $lot->setIdOdoo($idOdoo);
             /* qty in this lot */
             $qty = $one->get($this->qbLots::A_TOTAL);
-            $qty = $this->manFormat->toNumber($qty);
+            $qty = $this->hlpFormat->toNumber($qty);
             $lot->setQty($qty);
             $result[] = $lot;
         }
@@ -401,7 +401,7 @@ class Collector
         $magePayment = $sale->getPayment();
         $code = $this->manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
         $ordered = $magePayment->getBaseAmountOrdered();
-        $amount = $this->manFormat->toNumber($ordered);
+        $amount = $this->hlpFormat->toNumber($ordered);
         /* populate Odoo Data Object */
         $odooPayment->setCode($code);
         $odooPayment->setAmount($amount);
@@ -421,7 +421,7 @@ class Collector
         $paid = $sale->getBaseTotalPaid();
         $due = $sale->getBaseTotalDue();
         $paid += $due;
-        $paid = $this->manFormat->toNumber($paid);
+        $paid = $this->hlpFormat->toNumber($paid);
         $tax = $this->getOrderPriceTax($sale);
         /* populate Odoo Data Object */
         $result->setCurrency($currency);
@@ -439,9 +439,9 @@ class Collector
         $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax();
         /* collect data */
         $total = $sale->getBaseTaxAmount();
-        $total = $this->manFormat->toNumber($total);
+        $total = $this->hlpFormat->toNumber($total);
         $base = $sale->getBaseGrandTotal() - $total;
-        $base = $this->manFormat->toNumber($base);
+        $base = $this->hlpFormat->toNumber($base);
         /* populate Odoo Data Object */
         $result->setBase($base);
         $result->setTotal($total);
@@ -461,9 +461,9 @@ class Collector
             /* collect data */
             $code = $row->get(Cfg::E_SALE_ORDER_TAX_A_CODE);
             $percent = $row->get(Cfg::E_SALE_ORDER_TAX_A_PERCENT);
-            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $percent = $this->hlpFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
             $amount = $row->get(Cfg::E_SALE_ORDER_TAX_A_AMOUNT);
-            $amount = $this->manFormat->toNumber($amount);
+            $amount = $this->hlpFormat->toNumber($amount);
             /* populate Odoo Data Object */
             $rate = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
             $rate->setCode($code);
@@ -500,8 +500,9 @@ class Collector
         $addrShipping = $this->getAddressShipping($sale);
         // pv_total (with date paid)
         $pvOrder = $this->daoPvSale->getById($orderIdMage);
-        $pvTotal = $this->manFormat->toNumber($pvOrder->getTotal());
+        $pvTotal = $this->hlpFormat->toNumber($pvOrder->getTotal());
         $datePaid = $pvOrder->getDatePaid();
+        $this->hlpFormat->dateAsRfc3339($datePaid);
         // price
         $price = $this->getOrderPrice($sale);
         // lines
@@ -561,7 +562,7 @@ class Collector
             $amount = $rate->getAmount();
             if ($percent > Cfg::DEF_ZERO) {
                 $base = $amount / $percent;
-                $base = $this->manFormat->toNumber($base);
+                $base = $this->hlpFormat->toNumber($base);
             }
         }
         /* populate Odoo Data Object */
@@ -583,9 +584,9 @@ class Collector
             $code = $row->get($this->qbTaxItems::A_TAX_CODE);
             $percent = $row->get($this->qbTaxItems::A_TAX_PERCENT);
             $percent /= 100;
-            $percent = $this->manFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
+            $percent = $this->hlpFormat->toNumber($percent, Cfg::ODOO_API_PERCENT_ROUND);
             $amount = $row->get($this->qbTaxItems::A_AMOUNT);
-            $amount = $this->manFormat->toNumber($amount);
+            $amount = $this->hlpFormat->toNumber($amount);
 
             /* populate Odoo Data Object */
             $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
@@ -606,7 +607,7 @@ class Collector
     protected function getWarehouseIdOdoo(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
         $storeId = $sale->getStoreId();
-        $stockId = $this->manStock->getStockIdByStoreId($storeId);
+        $stockId = $this->hlpStock->getStockIdByStoreId($storeId);
         $warehouse = $this->daoWarehouse->getById($stockId);
         $result = $warehouse->getOdooRef();
         return $result;
