@@ -502,7 +502,7 @@ class Collector
         $pvOrder = $this->daoPvSale->getById($orderIdMage);
         $pvTotal = $this->hlpFormat->toNumber($pvOrder->getTotal());
         $datePaid = $pvOrder->getDatePaid();
-        $this->hlpFormat->dateAsRfc3339($datePaid);
+        $datePaid = $this->hlpFormat->dateAsRfc3339($datePaid);
         // price
         $price = $this->getOrderPrice($sale);
         // lines
