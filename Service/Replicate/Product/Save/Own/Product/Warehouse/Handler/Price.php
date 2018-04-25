@@ -14,7 +14,7 @@ class Price
 
     /** @var \Magento\Framework\Api\Search\SearchCriteriaFactory */
     private $factSearchCrit;
-    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    /** @var \Praxigento\Odoo\Api\Helper\BusinessCodes */
     private $hlpBusCodes;
     /** @var \Magento\Customer\Api\GroupRepositoryInterface */
     private $daoCustGroup;
@@ -25,7 +25,7 @@ class Price
         \Magento\Framework\Api\Search\SearchCriteriaFactory $factSearchCrit,
         \Magento\Customer\Api\GroupRepositoryInterface $daoCustGroup,
         \Praxigento\Warehouse\Repo\Dao\Group\Price $daoGroupPrice,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusCodes
+        \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpBusCodes
     ) {
         $this->factSearchCrit = $factSearchCrit;
         $this->daoCustGroup = $daoCustGroup;

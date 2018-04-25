@@ -30,7 +30,7 @@ class Collector
     protected $hlpFormat;
     /** @var \Praxigento\Warehouse\Api\Helper\Stock */
     protected $hlpStock;
-    /** @var  \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    /** @var  \Praxigento\Odoo\Api\Helper\BusinessCodes */
     protected $manBusinessCodes;
     /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder */
     protected $qbLots;
@@ -39,7 +39,7 @@ class Collector
 
     public function __construct(
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpBusinessCodes,
+        \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpBusinessCodes,
         \Praxigento\Core\Api\Helper\Format $hlpFormat,
         \Praxigento\Core\App\Repo\IGeneric $daoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $daoCustomer,

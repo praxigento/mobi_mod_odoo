@@ -3,12 +3,12 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Tool;
+namespace Praxigento\Odoo\Api\Helper;
 
 /**
  * Define business codes (for shipping & payment methods) used in the concrete application.
  */
-interface IBusinessCodesManager
+interface BusinessCodes
 {
     /**
      * Get 'distributor' value by '1' value.

@@ -13,7 +13,7 @@ class Save
 {
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
-    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    /** @var \Praxigento\Odoo\Api\Helper\BusinessCodes */
     private $manBusCodes;
     /** @var  \Magento\Sales\Model\Service\InvoiceService */
     private $manInvoice;
@@ -29,7 +29,7 @@ class Save
         \Magento\Framework\ObjectManagerInterface $manObj,
         \Magento\Sales\Api\InvoiceManagementInterface $manInvoice,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $manBusCodes,
+        \Praxigento\Odoo\Api\Helper\BusinessCodes $manBusCodes,
         \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader
     ) {
         $this->logger = $logger;

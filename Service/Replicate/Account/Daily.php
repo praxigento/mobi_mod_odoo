@@ -20,7 +20,7 @@ class Daily
     /** @var int Wallet Account ID for system customer */
     private static $cacheAccIdWallet = null;
 
-    /** @var \Praxigento\Odoo\Tool\IBusinessCodesManager */
+    /** @var \Praxigento\Odoo\Api\Helper\BusinessCodes */
     private $hlpCodeMgr;
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
@@ -35,7 +35,7 @@ class Daily
         \Praxigento\Accounting\Repo\Dao\Account $daoAcc,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
-        \Praxigento\Odoo\Tool\IBusinessCodesManager $hlpCodeMgr,
+        \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpCodeMgr,
         \Praxigento\Odoo\Service\Replicate\Account\Daily\Own\Repo\Query\GetTransSummary $qbGetSummary
     ) {
         $this->daoAcc = $daoAcc;
