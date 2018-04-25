@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Data;
  * Interface for data object that has referenced Odoo entity.
  */
 interface IOdooEntity
-    extends \Praxigento\Core\App\Repo\Data\IEntity
+    extends \Praxigento\Core\Api\App\Repo\Data\Entity
 {
     const A_DATE_REPLICATED = 'date_replicated';
     const A_MAGE_REF = 'mage_ref';

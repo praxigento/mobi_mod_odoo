@@ -11,8 +11,8 @@ use Praxigento\Odoo\Repo\Data\IOdooEntity;
  * Base class for repo to operate with entities in Odoo registries.
  */
 abstract class BaseOdooEntity
-    extends \Praxigento\Core\App\Repo\Def\Entity
-    implements \Praxigento\Odoo\Repo\Dao\IOdooEntity
+    extends \Praxigento\Core\App\Repo\Dao
+    implements \Praxigento\Odoo\Repo\Dao\IOdooDao
 {
     public function getByOdooId($id)
     {

@@ -16,7 +16,7 @@ class Collector
     protected $daoCustomer;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
     protected $daoDwnlCustomer;
-    /** @var \Praxigento\Core\App\Repo\IGeneric */
+    /** @var \Praxigento\Core\Api\App\Repo\Generic */
     protected $daoGeneric;
     /** @var \Praxigento\Odoo\Repo\Dao\Product */
     protected $daoOdooProd;
@@ -41,7 +41,7 @@ class Collector
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
         \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpBusinessCodes,
         \Praxigento\Core\Api\Helper\Format $hlpFormat,
-        \Praxigento\Core\App\Repo\IGeneric $daoGeneric,
+        \Praxigento\Core\Api\App\Repo\Generic $daoGeneric,
         \Magento\Customer\Api\CustomerRepositoryInterface $daoCustomer,
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCustomer,
         \Praxigento\Pv\Repo\Dao\Sale $daoPvSale,

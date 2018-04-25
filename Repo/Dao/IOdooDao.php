@@ -8,8 +8,8 @@ namespace Praxigento\Odoo\Repo\Dao;
 /**
  * Common interface for entities related to Odoo replication.
  */
-interface IOdooEntity
-    extends \Praxigento\Core\App\Repo\IEntity
+interface IOdooDao
+    extends \Praxigento\Core\Api\App\Repo\Dao
 {
     /**
      * Get entity by Odoo ID.

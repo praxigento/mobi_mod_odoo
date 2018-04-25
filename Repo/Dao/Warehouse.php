@@ -12,7 +12,7 @@ class Warehouse
 {
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
-        \Praxigento\Core\App\Repo\IGeneric $daoGeneric
+        \Praxigento\Core\Api\App\Repo\Generic $daoGeneric
     ) {
         parent::__construct($resource, $daoGeneric, Entity::class);
     }
@@ -32,8 +32,7 @@ class Warehouse
     public function getByOdooId($id)
     {
         $result = null;
-        $conn = $this->getConnection();
-        $quoted = $conn->quote($id);
+        $quoted = $this->conn->quote($id);
         $where = Entity::A_ODOO_REF . '=' . $quoted;
         $items = $this->daoGeneric->getEntities($this->entityName, null, $where);
         if (
