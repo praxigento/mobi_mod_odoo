@@ -12,7 +12,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 
 class Login
-    implements \Praxigento\Core\App\ICached, \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
+    implements \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
 {
     /* TIMEOUTS: INTR-653 */
     const HTTP_TIMEOUT_SEC_LOGIN = 15;
@@ -57,12 +57,6 @@ class Login
         $this->authDb = $hlpConfig->getConnectDb();
         $this->authUser = $hlpConfig->getConnectUser();
         $this->authPasswd = $hlpConfig->getConnectPassword();
-    }
-
-    public function cacheReset()
-    {
-        $this->cachedOdooUserId = null;
-        $this->cachedOdooSessionId = null;
     }
 
     public function getSessionId()
