@@ -6,24 +6,24 @@
 namespace Praxigento\Odoo\Service\Replicate\Sale;
 
 class Order
-    extends \Praxigento\Core\App\Service\Base\Call
     implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
 {
     /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
-    protected $daoEntitySaleOrder;
+    private $daoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
-    protected $daoOdooSaleOrder;
+    private $daoOdooSaleOrder;
+    /** @var \Praxigento\Core\Api\App\Logger\Main */
+    private $logger;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector */
-    protected $subCollector;
+    private $subCollector;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Repo\Dao\SaleOrder $daoEntitySaleOrder,
         \Praxigento\Odoo\Repo\Odoo\ISaleOrder $daoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\Collector $collector
     ) {
-        parent::__construct($logger, $manObj);
+        $this->logger = $logger;
         $this->daoEntitySaleOrder = $daoEntitySaleOrder;
         $this->daoOdooSaleOrder = $daoOdooSaleOrder;
         $this->subCollector = $collector;
