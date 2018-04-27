@@ -10,7 +10,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sale\Order;
  * @method void setSaleOrder(\Magento\Sales\Api\Data\OrderInterface $data)
  */
 class Request
-    extends \Praxigento\Core\App\Service\Base\Request
+    extends \Praxigento\Core\App\Service\Request
 {
 
 }

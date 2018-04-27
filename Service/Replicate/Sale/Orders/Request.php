@@ -6,7 +6,7 @@
 namespace Praxigento\Odoo\Service\Replicate\Sale\Orders;
 
 class Request
-    extends \Praxigento\Core\App\Service\Base\Request
+    extends \Praxigento\Core\App\Service\Request
 {
 
 }

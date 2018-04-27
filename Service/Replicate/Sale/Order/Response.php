@@ -12,7 +12,7 @@ namespace Praxigento\Odoo\Service\Replicate\Sale\Order;
  * @method void setEntries(\Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry [] $data)
  */
 class Response
-    extends \Praxigento\Core\App\Service\Base\Response
+    extends \Praxigento\Core\App\Service\Response
 {
 
 }
