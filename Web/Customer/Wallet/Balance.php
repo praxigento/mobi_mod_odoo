@@ -19,14 +19,18 @@ class Balance
 {
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $daoDwnlCust;
+    /** @var \Praxigento\Core\Api\Helper\Customer\Currency */
+    private $hlpCustCur;
     /** @var \Praxigento\Accounting\Api\Service\Account\Get */
     private $servAccGet;
 
     public function __construct(
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
+        \Praxigento\Core\Api\Helper\Customer\Currency $hlpCustCur,
         \Praxigento\Accounting\Api\Service\Account\Get $servAccGet
     ) {
         $this->daoDwnlCust = $daoDwnlCust;
+        $this->hlpCustCur = $hlpCustCur;
         $this->servAccGet = $servAccGet;
     }
 
@@ -44,11 +48,15 @@ class Balance
         $custId = $this->getCustomerId($mlmId);
         if ($custId) {
             $balance = $this->getBalance($custId);
+            $balance = $this->hlpCustCur->convertFromBase($balance, $custId);
+            $cur = $this->hlpCustCur->getCurrency($custId);
             $respData->setBalance($balance);
+            $respData->setCurrency($cur);
             $respRes->setCode(WResponse::CODE_SUCCESS);
         } else {
             $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
         }
+
         /** compose result */
         $result = new WResponse();
         $result->setResult($respRes);

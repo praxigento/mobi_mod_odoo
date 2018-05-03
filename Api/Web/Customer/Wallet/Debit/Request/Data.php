@@ -15,6 +15,7 @@ class Data
     extends \Praxigento\Core\Data
 {
     const AMOUNT = 'amount';
+    const CURRENCY = 'currency';
     const CUSTOMER_MLM_ID = 'customerMlmId';
     const NOTES = 'notes';
     const ODOO_REF = 'odooRef';
@@ -27,6 +28,13 @@ class Data
     public function getAmount()
     {
         $result = parent::get(self::AMOUNT);
+        return $result;
+    }
+
+    /** @return string */
+    public function getCurrency()
+    {
+        $result = parent::get(self::CURRENCY);
         return $result;
     }
 
@@ -59,6 +67,12 @@ class Data
     public function setAmount($data)
     {
         parent::set(self::AMOUNT, $data);
+    }
+
+    /** @param string */
+    public function setCurrency($data)
+    {
+        parent::set(self::CURRENCY, $data);
     }
 
     /** @param string */

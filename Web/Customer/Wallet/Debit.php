@@ -19,11 +19,8 @@ use Praxigento\Odoo\Repo\Data\Registry\Request as ERegRequest;
 class Debit
     implements \Praxigento\Odoo\Api\Web\Customer\Wallet\DebitInterface
 {
+    private $allowedCurs = [Cfg::CODE_CUR_EUR, Cfg::CODE_CUR_USD];
 
-    /** @var \Praxigento\Odoo\Api\App\Logger\Main */
-    private $logger;
-    /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
-    private $manTrans;
     /** @var \Praxigento\Accounting\Repo\Dao\Account */
     private $daoAcc;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
@@ -32,6 +29,12 @@ class Debit
     private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $daoTypeAsset;
+    /** @var \Praxigento\Core\Api\Helper\Customer\Currency */
+    private $hlpCustCur;
+    /** @var \Praxigento\Odoo\Api\App\Logger\Main */
+    private $logger;
+    /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
+    private $manTrans;
     /** @var \Praxigento\Accounting\Api\Service\Operation */
     private $servOper;
 
@@ -43,6 +46,7 @@ class Debit
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
+        \Praxigento\Core\Api\Helper\Customer\Currency $hlpCustCur,
         \Praxigento\Accounting\Api\Service\Operation $servOper
     )
     {
@@ -52,7 +56,27 @@ class Debit
         $this->daoDwnlCust = $daoDwnlCust;
         $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
+        $this->hlpCustCur = $hlpCustCur;
         $this->servOper = $servOper;
+    }
+
+    /**
+     * Convert $amount if $currency equals to EUR.
+     *
+     * (yes, this is an ugly solution, I know)
+     *
+     * @param $amount
+     * @param $currency
+     * @return float
+     */
+    private function convertAmountToBaseCurrency($amount, $currency)
+    {
+        if ($currency == Cfg::CODE_CUR_EUR) {
+            $result = $this->hlpCustCur->convertToBase($amount);
+        } else {
+            $result = $amount;
+        }
+        return $result;
     }
 
     public function exec($request)
@@ -61,6 +85,7 @@ class Debit
         /** define local working data */
         $reqData = $request->getData();
         $amount = $reqData->getAmount();
+        $currency = $reqData->getCurrency();
         $mlmId = $reqData->getCustomerMlmId();
         $notes = $reqData->getNotes();
         $odooRef = $reqData->getOdooRef();
@@ -72,34 +97,44 @@ class Debit
         $amount = abs($amount);
         $respData->setOdooRef($odooRef);
 
-        /* prevent duplication */
-        $def = $this->manTrans->begin();
-        try {
-            $found = $this->findDuplicates($odooRef);
-            if ($found) {
-                $msg = "Odoo request referenced as '$odooRef' is already processed.";
-                $this->logger->error($msg);
-                $respRes->setCode(WResponse::CODE_DUPLICATED);
-                $respRes->setText($msg);
-            } else {
-                $custId = $this->getCustomerId($mlmId);
-                if ($custId) {
-                    $operId = $this->performDebit($custId, $amount, $notes);
-                    $this->registerOdooRequest($odooRef);
-                    $respData->setOperationId($operId);
-                    $respRes->setCode(WResponse::CODE_SUCCESS);
-                } else {
-                    $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
-                    $msg = "Customer #$mlmId is not found.";
+        /* validate currency */
+        if (!in_array($currency, $this->allowedCurs)) {
+            $msg = "Given currency '$currency' is not allowed (" . json_encode($this->allowedCurs) . ").";
+            $this->logger->error($msg);
+            $respRes->setCode(WResponse::CODE_CURRENCY_UNKNOWN);
+            $respRes->setText($msg);
+        } else {
+            /* prevent duplication */
+            $def = $this->manTrans->begin();
+            try {
+                $found = $this->findDuplicates($odooRef);
+                if ($found) {
+                    $msg = "Odoo request referenced as '$odooRef' is already processed.";
                     $this->logger->error($msg);
+                    $respRes->setCode(WResponse::CODE_DUPLICATED);
                     $respRes->setText($msg);
+                } else {
+                    $custId = $this->getCustomerId($mlmId);
+                    if ($custId) {
+                        $amount = $this->convertAmountToBaseCurrency($amount, $currency);
+                        $operId = $this->performDebit($custId, $amount, $notes);
+                        $this->registerOdooRequest($odooRef);
+                        $respData->setOperationId($operId);
+                        $respRes->setCode(WResponse::CODE_SUCCESS);
+                    } else {
+                        $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
+                        $msg = "Customer #$mlmId is not found.";
+                        $this->logger->error($msg);
+                        $respRes->setText($msg);
+                    }
                 }
+                $this->manTrans->commit($def);
+            } finally {
+                /* rollback uncommitted transactions on exception */
+                $this->manTrans->end($def);
             }
-            $this->manTrans->commit($def);
-        } finally {
-            /* rollback uncommitted transactions on exception */
-            $this->manTrans->end($def);
         }
+
         /** compose result */
         $result = new WResponse();
         $result->setResult($respRes);

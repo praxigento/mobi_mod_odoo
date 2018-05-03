@@ -15,6 +15,7 @@ class Data
     extends \Praxigento\Core\Data
 {
     const BALANCE = 'balance';
+    const CURRENCY = 'currency';
 
     /** @return float|null */
     public function getBalance()
@@ -23,11 +24,23 @@ class Data
         return $result;
     }
 
+    /** @return string */
+    public function getCurrency()
+    {
+        $result = parent::get(self::CURRENCY);
+        return $result;
+    }
 
     /** @param float */
     public function setBalance($data)
     {
         parent::set(self::BALANCE, $data);
+    }
+
+    /** @param string */
+    public function setCurrency($data)
+    {
+        parent::set(self::CURRENCY, $data);
     }
 
 }
