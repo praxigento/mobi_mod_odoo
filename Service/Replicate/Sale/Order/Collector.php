@@ -556,15 +556,14 @@ class Collector
         $saleId = $sale->getEntityId();
         $rates = $this->getShippingTaxRates($saleId);
         /* calc base for tax incl. scheme */
-        $rate = reset($rates);
-        if ($rate) {
-            $percent = $rate->getPercent();
+        $totalTax = 0;
+        foreach ($rates as $rate) {
             $amount = $rate->getAmount();
-            if ($percent > Cfg::DEF_ZERO) {
-                $base = $amount / $percent;
-                $base = $this->hlpFormat->toNumber($base);
-            }
+            $totalTax += $amount;
         }
+        $shippingWithTax = $sale->getBaseShippingInclTax();
+        $base = $shippingWithTax - $totalTax;
+
         /* populate Odoo Data Object */
         $result->setBase($base);
         $result->setRates($rates);
