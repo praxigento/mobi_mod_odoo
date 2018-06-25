@@ -12,17 +12,17 @@ use Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder as QBGetOrders;
  */
 class Collector
 {
-    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder */
-    protected $qbld;
     /** @var \Magento\Sales\Api\OrderRepositoryInterface */
-    protected $daoMageSalesOrder;
+    private $daoMageSalesOrder;
+    /** @var \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder */
+    private $qGetOrders;
 
     public function __construct(
         \Magento\Sales\Api\OrderRepositoryInterface $daoMageSalesOrder,
-        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder $qbld
+        \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get\Builder $qGetOrders
     ) {
         $this->daoMageSalesOrder = $daoMageSalesOrder;
-        $this->qbld = $qbld;
+        $this->qGetOrders = $qGetOrders;
     }
 
     /**
@@ -31,7 +31,7 @@ class Collector
     public function getOrdersToReplicate()
     {
         $result = [];
-        $query = $this->qbld->build();
+        $query = $this->qGetOrders->build();
         $conn = $query->getConnection();
         $orders = $conn->fetchAll($query);
         foreach ($orders as $data) {
