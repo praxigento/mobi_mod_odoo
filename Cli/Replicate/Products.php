@@ -51,17 +51,24 @@ class Products
         \Symfony\Component\Console\Input\InputInterface $input,
         \Symfony\Component\Console\Output\OutputInterface $output
     ) {
-        $this->checkAreaCode(); // to prevent "Area code not set" exception.
-        /* parse arguments */
-        $optProdIds = $this->parseOptProdIds($input, $output);
-        $optWrhsIds = $this->parseOptWrhsIds($input, $output);
-        /* get inventory data from Odoo */
-        $inventory = $this->daoOdoo->get($optProdIds, $optWrhsIds);
-        /* call service operation */
-        $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
-        $req->setInventory($inventory);
-        $this->servSave->exec($req);
-        $output->writeln('<info>Command is completed.<info>');
+        $output->writeln("<info>Command '" . $this->getName() . "' is started.<info>");
+        try {
+            $this->checkAreaCode(); // to prevent "Area code not set" exception.
+            /* parse arguments */
+            $optProdIds = $this->parseOptProdIds($input, $output);
+            $optWrhsIds = $this->parseOptWrhsIds($input, $output);
+            /* get inventory data from Odoo */
+            $inventory = $this->daoOdoo->get($optProdIds, $optWrhsIds);
+            /* call service operation */
+            $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
+            $req->setInventory($inventory);
+            $this->servSave->exec($req);
+        } catch (\Throwable $e) {
+            $output->writeln('<info>Command \'' . $this->getName() . '\' failed. Reason: '
+                . $e->getMessage() . '.<info>');
+            $output->writeln('<info>' . $e->getTraceAsString() . '.<info>');
+        }
+        $output->writeln('<info>Command \'' . $this->getName() . '\' is completed.<info>');
     }
 
     private function parseOptProdIds(
