@@ -198,17 +198,29 @@ class Product
     }
 
     /**
-     * Create link between Magento & Odoo representation of the product.
+     * Create or update link between Magento & Odoo representation of the product.
      *
      * @param int $mageId
      * @param int $odooId
      */
     private function registerOdooProd($mageId, $odooId)
     {
-        $entity = new \Praxigento\Odoo\Repo\Data\Product();
-        $entity->setMageRef($mageId);
-        $entity->setOdooRef($odooId);
-        $this->daoOdooProd->create($entity);
+        /** @var \Praxigento\Odoo\Repo\Data\Product $found */
+        $found = $this->daoOdooProd->getById($mageId);
+        if ($found) {
+            /* update link */
+            $odooIdSaved = $found->getOdooRef();
+            if ($odooIdSaved != $odooId) {
+                $found->setOdooRef($odooId);
+                $this->daoOdooProd->updateById($mageId, $found);
+            }
+        } else {
+            /* create new link */
+            $entity = new \Praxigento\Odoo\Repo\Data\Product();
+            $entity->setMageRef($mageId);
+            $entity->setOdooRef($odooId);
+            $this->daoOdooProd->create($entity);
+        }
     }
 
     /**
