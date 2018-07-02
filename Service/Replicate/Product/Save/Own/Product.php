@@ -147,6 +147,9 @@ class Product
         if (!$isMissedAndInactive) {
             /* replicate Odoo categories into Magento */
             $categories = $product->getCategories();
+            // TODO: remove it
+            $categories[] = 4;
+
             $this->ownCat->exec($idMage, $categories);
             /* replicate warehouse/lot/qty data  */
             $warehouses = $product->getWarehouses();
@@ -231,9 +234,20 @@ class Product
      */
     private function registerPvWholesale($prodId, $pv)
     {
-        $entity = new \Praxigento\Pv\Repo\Data\Product();
-        $entity->setProductRef($prodId, $pv);
-        $this->daoPvProd->create($entity);
+        $found = $this->daoPvProd->getById($prodId);
+        if ($found) {
+            /* update data */
+            $pvSaved = $found->getPv();
+            if ($pvSaved != $pv) {
+                $found->setPv($pv);
+                $this->daoPvProd->updateById($prodId, $found);
+            }
+        } else {
+            /* create new entry */
+            $entity = new \Praxigento\Pv\Repo\Data\Product();
+            $entity->setProductRef($prodId, $pv);
+            $this->daoPvProd->create($entity);
+        }
     }
 
     /**
