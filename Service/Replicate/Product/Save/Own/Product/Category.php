@@ -5,23 +5,27 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product;
 
+use Praxigento\Odoo\Config as Cfg;
+
 /**
  * Service level functions to replicate Odoo categories into Magento.
  */
 class Category
 {
-    /** @var \Magento\Catalog\Model\CategoryFactory */
-    private $factCat;
-    /** @var \Magento\Catalog\Model\CategoryProductLink */
-    private $factCatProdLink;
     /** @var \Magento\Catalog\Api\CategoryRepositoryInterface */
     private $daoCat;
     /** @var \Magento\Catalog\Api\CategoryLinkRepositoryInterface */
     private $daoCatLink;
+    /** @var \Praxigento\Core\Api\App\Repo\Generic */
+    private $daoGeneric;
     /** @var \Praxigento\Odoo\Repo\Dao\Category */
     private $daoOdooCat;
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $daoProd;
+    /** @var \Magento\Catalog\Model\CategoryFactory */
+    private $factCat;
+    /** @var \Magento\Catalog\Model\CategoryProductLink */
+    private $factCatProdLink;
 
     public function __construct(
         \Magento\Catalog\Model\CategoryFactory $factCat,
@@ -29,6 +33,7 @@ class Category
         \Magento\Catalog\Api\CategoryRepositoryInterface $daoCat,
         \Magento\Catalog\Api\CategoryLinkRepositoryInterface $daoCatLink,
         \Magento\Catalog\Api\ProductRepositoryInterface $daoProd,
+        \Praxigento\Core\Api\App\Repo\Generic $daoGeneric,
         \Praxigento\Odoo\Repo\Dao\Category $daoOdooCat
     ) {
         $this->factCat = $factCat;
@@ -36,6 +41,7 @@ class Category
         $this->daoCat = $daoCat;
         $this->daoCatLink = $daoCatLink;
         $this->daoProd = $daoProd;
+        $this->daoGeneric = $daoGeneric;
         $this->daoOdooCat = $daoOdooCat;
     }
 
@@ -60,6 +66,13 @@ class Category
                 }
             }
         }
+    }
+
+    private function clearUrlRewrites($urlKey)
+    {
+        $byType = Cfg::E_URL_REWRITE_A_ENTITY_TYPE . '="product"';
+        $where = "(`entity_type`) AND ()";
+        $this->daoGeneric->deleteEntity(Cfg::ENTITY_MAGE_URL_REWRITE, $where);
     }
 
     /**
@@ -109,6 +122,7 @@ class Category
     {
         /* get current categories links for the product */
         $prod = $this->daoProd->getById($prodId);
+        $urlKey = $prod->getUrlKey();
         $sku = $prod->getSku();
         $catsExist = $prod->getCategoryIds();
         $catsFound = [];
@@ -116,6 +130,8 @@ class Category
             foreach ($categories as $catOdooId) {
                 $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
                 if (!in_array($catMageId, $catsExist)) {
+                    /* remove URL redirects */
+                    $this->clearUrlRewrites($urlKey);
                     /* create new product link if not exists */
                     /** @var \Magento\Catalog\Api\Data\CategoryProductLinkInterface $prodLink */
                     $prodLink = $this->factCatProdLink->create();
