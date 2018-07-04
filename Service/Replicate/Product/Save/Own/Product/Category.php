@@ -133,6 +133,7 @@ class Category
         $sku = $prod->getSku();
         $catsExist = $prod->getCategoryIds();
         $catsFound = [];
+        $prodsToUnlink = [];
         if (is_array($categories)) {
             foreach ($categories as $catOdooId) {
                 $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
@@ -149,11 +150,20 @@ class Category
                 }
                 /* register found link */
                 $catsFound[] = $catMageId;
+                if (isset($prodsToUnlink[$catMageId])) {
+                    $prodsToUnlink[$catMageId][] = $prodId;
+                } else {
+                    $prodsToUnlink[$catMageId] = [$prodId];
+                }
             }
         }
         /* get difference between exist & found */
         $diff = array_diff($catsExist, $catsFound);
         foreach ($diff as $catMageId) {
+            $prods = $prodsToUnlink[$catMageId];
+            foreach ($prods as $prodIdToClean) {
+                $this->cleanUrlRewrites($prodIdToClean);
+            }
             $this->daoCatLink->deleteByIds($catMageId, $sku);
         }
     }
