@@ -5,6 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product;
 
+use Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite as ACtrlRewrite;
 use Praxigento\Odoo\Config as Cfg;
 
 /**
@@ -68,10 +69,16 @@ class Category
         }
     }
 
-    private function clearUrlRewrites($urlKey)
+    /**
+     * Clean URL Rewrites to prevent errors on category-product link saving.
+     *
+     * @param int $prodId
+     */
+    private function cleanUrlRewrites($prodId)
     {
-        $byType = Cfg::E_URL_REWRITE_A_ENTITY_TYPE . '="product"';
-        $where = "(`entity_type`) AND ()";
+        $byType = Cfg::E_URL_REWRITE_A_ENTITY_TYPE . '="' . ACtrlRewrite::ENTITY_TYPE_PRODUCT . '"';
+        $byId = Cfg::E_URL_REWRITE_A_ENTITY_ID . '=' . (int)$prodId;
+        $where = "($byType) AND ($byId)";
         $this->daoGeneric->deleteEntity(Cfg::ENTITY_MAGE_URL_REWRITE, $where);
     }
 
@@ -131,7 +138,7 @@ class Category
                 $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
                 if (!in_array($catMageId, $catsExist)) {
                     /* remove URL redirects */
-                    $this->clearUrlRewrites($urlKey);
+                    $this->cleanUrlRewrites($prodId);
                     /* create new product link if not exists */
                     /** @var \Magento\Catalog\Api\Data\CategoryProductLinkInterface $prodLink */
                     $prodLink = $this->factCatProdLink->create();
