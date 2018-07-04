@@ -73,12 +73,16 @@ class Category
      * Clean URL Rewrites to prevent errors on category-product link saving.
      *
      * @param int $prodId
+     * @param string $sku
      */
-    private function cleanUrlRewrites($prodId)
+    private function cleanUrlRewrites($prodId, $sku)
     {
         $byType = Cfg::E_URL_REWRITE_A_ENTITY_TYPE . '="' . ACtrlRewrite::ENTITY_TYPE_PRODUCT . '"';
         $byId = Cfg::E_URL_REWRITE_A_ENTITY_ID . '=' . (int)$prodId;
-        $where = "($byType) AND ($byId)";
+        $conn = $this->daoGeneric->getConnection();
+        $quoted = $conn->quote("%$sku.html");
+        $bySku = Cfg::E_URL_REWRITE_A_REQUEST_PATH . " LIKE $quoted";
+        $where = "(($byType) AND ($byId)) OR ($bySku)";
         $this->daoGeneric->deleteEntity(Cfg::ENTITY_MAGE_URL_REWRITE, $where);
     }
 
@@ -111,13 +115,15 @@ class Category
      * Replicate links between product & categories from Odoo to Magento.
      *
      * @param int $prodId Magento ID for the product
+     * @param string $sku Product SKU to use as URL Rewrite key to clean up
      * @param array $categories Odoo IDs of the categories.
      * @throws \Magento\Framework\Exception\CouldNotSaveException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\StateException
      */
-    public function exec($prodId, $categories)
+    public function exec($prodId, $sku, $categories)
     {
+        $this->cleanUrlRewrites($prodId, $sku);
         $this->checkExistence($categories);
         $this->replicate($prodId, $categories);
     }
@@ -142,8 +148,6 @@ class Category
             foreach ($categories as $catOdooId) {
                 $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
                 if (!in_array($catMageId, $catsExist)) {
-                    /* remove URL redirects */
-                    $this->cleanUrlRewrites($prodId);
                     /* create new product link if not exists */
                     /** @var \Magento\Catalog\Api\Data\CategoryProductLinkInterface $prodLink */
                     $prodLink = $this->factCatProdLink->create();

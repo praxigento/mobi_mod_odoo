@@ -147,7 +147,7 @@ class Product
         if (!$isMissedAndInactive) {
             /* replicate Odoo categories into Magento */
             $categories = $product->getCategories();
-            $this->ownCat->exec($idMage, $categories);
+            $this->ownCat->exec($idMage, $sku, $categories);
             /* replicate warehouse/lot/qty data  */
             $warehouses = $product->getWarehouses();
             $this->ownWrhs->exec($idMage, $warehouses);
