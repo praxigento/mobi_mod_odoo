@@ -82,6 +82,12 @@ class Category
         $this->daoGeneric->deleteEntity(Cfg::ENTITY_MAGE_URL_REWRITE, $where);
     }
 
+    private function cleanUrlRewritesForLinks($catId)
+    {
+        $where = Cfg::E_CAT_URL_REWRITE_PROD_CAT_A_CATEGORY_ID . '=' . (int)$catId;
+        $this->daoGeneric->deleteEntity(Cfg::ENTITY_MAGE_CATALOG_URL_REWRITE_PRODUCT_CATEGORY, $where);
+    }
+
     /**
      * Create new Magento category with given $name.
      *
@@ -129,11 +135,9 @@ class Category
     {
         /* get current categories links for the product */
         $prod = $this->daoProd->getById($prodId);
-        $urlKey = $prod->getUrlKey();
         $sku = $prod->getSku();
         $catsExist = $prod->getCategoryIds();
         $catsFound = [];
-        $prodsToUnlink = [];
         if (is_array($categories)) {
             foreach ($categories as $catOdooId) {
                 $catMageId = $this->daoOdooCat->getMageIdByOdooId($catOdooId);
@@ -150,20 +154,12 @@ class Category
                 }
                 /* register found link */
                 $catsFound[] = $catMageId;
-                if (isset($prodsToUnlink[$catMageId])) {
-                    $prodsToUnlink[$catMageId][] = $prodId;
-                } else {
-                    $prodsToUnlink[$catMageId] = [$prodId];
-                }
             }
         }
         /* get difference between exist & found */
         $diff = array_diff($catsExist, $catsFound);
         foreach ($diff as $catMageId) {
-            $prods = $prodsToUnlink[$catMageId];
-            foreach ($prods as $prodIdToClean) {
-                $this->cleanUrlRewrites($prodIdToClean);
-            }
+            $this->cleanUrlRewritesForLinks($catMageId);
             $this->daoCatLink->deleteByIds($catMageId, $sku);
         }
     }
