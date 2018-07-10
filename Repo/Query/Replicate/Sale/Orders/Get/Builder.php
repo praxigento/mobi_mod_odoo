@@ -5,6 +5,8 @@
 
 namespace Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Get;
 
+use Magento\Sales\Api\Data\OrderInterface as EMageOrder;
+use Magento\Sales\Model\Order as AModOrder;
 use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Data\SaleOrder as Entity;
@@ -44,18 +46,19 @@ class Builder
         /* SELECT FROM sales_order */
         $tbl = $this->resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER);
         $as = $asSaleOrder;
-        $cols = [self::A_ORDER_ID => Cfg::E_SALE_ORDER_A_ENTITY_ID];
+        $cols = [self::A_ORDER_ID => EMageOrder::ENTITY_ID];
         $result->from([$as => $tbl], $cols);
 
         /* LEFT OUTER JOIN prxgt_odoo_sale */
         $tbl = $this->resource->getTableName(Entity::ENTITY_NAME);
         $as = $asOdooReg;
-        $cond = $as . '.' . Entity::A_MAGE_REF . '=' . $asSaleOrder . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
+        $cond = $as . '.' . Entity::A_MAGE_REF . '=' . $asSaleOrder . '.' . EMageOrder::ENTITY_ID;
         $cols = [];
         $result->joinLeft([$as => $tbl], $cond, $cols);
         /* WHERE */
-        $where = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::A_MAGE_REF . ')');
-        $result->where($where);
+        $byLink = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::A_MAGE_REF . ')');
+        $byState = EMageOrder::STATE. '="'.AModOrder::STATE_PROCESSING.'"';
+        $result->where("($byLink) AND ($byState)");
 
         return $result;
     }
