@@ -34,29 +34,35 @@ class Orders
         $this->logger->info("There are $count orders to push to Odoo.");
         $entries = [];
         foreach ($orders as $order) {
-            $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
-            $req->setSaleOrder($order);
-            /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Response $resp */
-            $resp = $this->callOrder->exec($req);
-            $respOdoo = $resp->getOdooResponse();
-            $entry = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry();
             $id = $order->getEntityId();
             $number = $order->getIncrementId();
-            $entry->setIdMage($id);
-            $entry->setNumber($number);
-            if ($respOdoo instanceof \Praxigento\Odoo\Data\Odoo\Error) {
-                $entry->setIsSucceed(false);
-                $debug = $respOdoo->getDebug();
-                $name = $respOdoo->getName();
-                $entry->setDebug($debug);
-                $entry->setErrorName($name);
-                $msg = "Cannot push sale order #$number (id:$id) to Odoo. Reason: $name ($debug).";
-                $this->logger->error($msg);
-            } else {
-                $entry->setIsSucceed(true);
-                $this->logger->info("Sale order #$number (id:$id) is pushed to Odoo.");
+            $this->logger->info("Push sale order #$number (id:$id) into Odoo.");
+            try {
+                $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
+                $req->setSaleOrder($order);
+                /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Response $resp */
+                $resp = $this->callOrder->exec($req);
+                $respOdoo = $resp->getOdooResponse();
+                $entry = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry();
+                $entry->setIdMage($id);
+                $entry->setNumber($number);
+                if ($respOdoo instanceof \Praxigento\Odoo\Data\Odoo\Error) {
+                    $entry->setIsSucceed(false);
+                    $debug = $respOdoo->getDebug();
+                    $name = $respOdoo->getName();
+                    $entry->setDebug($debug);
+                    $entry->setErrorName($name);
+                    $msg = "Cannot push sale order #$number (id:$id) to Odoo. Reason: $name ($debug).";
+                    $this->logger->error($msg);
+                } else {
+                    $entry->setIsSucceed(true);
+                    $this->logger->info("Sale order #$number (id:$id) is pushed into Odoo.");
+                }
+                $entries[] = $entry;
+            } catch (\Throwable $e) {
+                $this->logger->error("Cannot push sale order #$number (id:$id) into Odoo. Error: "
+                    . $e->getMessage());
             }
-            $entries[] = $entry;
         }
         $result->setEntries($entries);
         return $result;
