@@ -57,8 +57,9 @@ class Builder
         $result->joinLeft([$as => $tbl], $cond, $cols);
         /* WHERE */
         $byLink = new Expression('ISNULL(' . $asOdooReg . '.' . Entity::A_MAGE_REF . ')');
-        $byState = EMageOrder::STATE. '="'.AModOrder::STATE_PROCESSING.'"';
-        $result->where("($byLink) AND ($byState)");
+        $byStateProc = EMageOrder::STATE. '="'.AModOrder::STATE_PROCESSING.'"';
+        $byStateComp = EMageOrder::STATE. '="'.AModOrder::STATE_COMPLETE.'"';
+        $result->where("($byLink) AND (($byStateProc) OR ($byStateComp))");
 
         return $result;
     }
