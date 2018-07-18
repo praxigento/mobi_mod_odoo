@@ -59,11 +59,13 @@ class Save
             if ($shipment) {
                 $carrierCode = $this->manBusCodes->getMagCodeForCarrier($shippingMethodCode);
                 $title = $this->manBusCodes->getTitleForCarrier($shippingMethodCode);
-                $track = $this->manObj->create(\Magento\Sales\Model\Order\Shipment\Track::class);
-                $track->setNumber($trackNumber);
-                $track->setCarrierCode($carrierCode);
-                $track->setTitle($title);
-                $shipment->addTrack($track);
+                if ($trackNumber) {
+                    $track = $this->manObj->create(\Magento\Sales\Model\Order\Shipment\Track::class);
+                    $track->setNumber($trackNumber);
+                    $track->setCarrierCode($carrierCode);
+                    $track->setTitle($title);
+                    $shipment->addTrack($track);
+                }
                 $shipment->register();
                 $shipment->save();
                 $order = $shipment->getOrder();
