@@ -30,7 +30,7 @@ class Warehouse
 
     /**
      * @param int $productIdMage
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\IWarehouse[] $warehouses
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\IWarehouse[] $warehouses
      */
     public function exec($productIdMage, $warehouses)
     {

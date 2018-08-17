@@ -25,7 +25,7 @@ class Tracking
     /**
      * Shipment data to process.
      *
-     * @return \Praxigento\Odoo\Data\Odoo\Shipment
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Shipment
      */
     public function getShipment()
     {
@@ -45,9 +45,9 @@ class Tracking
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Odoo\Shipment $data
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Shipment $data
      */
-    public function setShipment(\Praxigento\Odoo\Data\Odoo\Shipment $data)
+    public function setShipment(\Praxigento\Odoo\Repo\Odoo\Data\Shipment $data)
     {
         parent::setShipment($data);
     }

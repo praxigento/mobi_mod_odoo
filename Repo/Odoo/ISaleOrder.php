@@ -8,8 +8,8 @@ namespace Praxigento\Odoo\Repo\Odoo;
 interface ISaleOrder
 {
     /**
-     * @param \Praxigento\Odoo\Data\Odoo\SaleOrder $order
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Response|\Praxigento\Odoo\Data\Odoo\Error
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder $order
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Response|\Praxigento\Odoo\Repo\Odoo\Data\Error
      */
     public function save($order);
 }

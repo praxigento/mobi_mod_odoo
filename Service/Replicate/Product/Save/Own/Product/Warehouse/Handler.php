@@ -85,7 +85,7 @@ class Handler
     /**
      * Replicate lots quantities from Odoo to Magento.
      *
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\Lot[] $lots
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\Lot[] $lots
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
      */
     public function processLots($lots, $stockItem)
@@ -107,7 +107,7 @@ class Handler
     /**
      * Process customer group prices for warehouses.
      *
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
      * @param float $priceWarehouse (MOBI-734)
      */

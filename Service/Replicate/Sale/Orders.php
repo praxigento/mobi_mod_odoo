@@ -45,7 +45,7 @@ class Orders
                 $entry = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry();
                 $entry->setIdMage($id);
                 $entry->setNumber($number);
-                if ($respOdoo instanceof \Praxigento\Odoo\Data\Odoo\Error) {
+                if ($respOdoo instanceof \Praxigento\Odoo\Repo\Odoo\Data\Error) {
                     $entry->setIsSucceed(false);
                     $debug = $respOdoo->getDebug();
                     $name = $respOdoo->getName();

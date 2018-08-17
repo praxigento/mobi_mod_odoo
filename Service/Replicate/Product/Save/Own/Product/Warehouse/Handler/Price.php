@@ -47,7 +47,7 @@ class Price
     /**
      * Process customer group prices for warehouses.
      *
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
      * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
      * @param float $priceWarehouse (MOBI-734)
      */
@@ -101,7 +101,7 @@ class Price
     }
 
     /**
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\GroupPrice\Item[] $prices
      * @param int $stockItemId
      * @return int[] IDs for processed customer groups.
      */
@@ -111,7 +111,7 @@ class Price
         /* save new prices */
         $data = new EWrhsGroupPrice();
         $data->setStockItemRef($stockItemId);
-        /** @var \Praxigento\Odoo\Data\Odoo\Inventory\Product\Warehouse\GroupPrice\Item $item */
+        /** @var \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\GroupPrice\Item $item */
         foreach ($prices as $item) {
             $price = $item->getPrice();
             $groupCode = $item->getGroupCode();

@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own;
 
-use Praxigento\Odoo\Data\Odoo\Inventory\Warehouse as DWarehouse;
+use Praxigento\Odoo\Repo\Odoo\Data\Inventory\Warehouse as DWarehouse;
 
 /**
  * Check Odoo warehouse existence in Magento (sub-service for the parent service).

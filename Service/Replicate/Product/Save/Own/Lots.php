@@ -5,7 +5,7 @@
 
 namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own;
 
-use Praxigento\Odoo\Data\Odoo\Inventory\Lot as DLot;
+use Praxigento\Odoo\Repo\Odoo\Data\Inventory\Lot as DLot;
 use Praxigento\Odoo\Repo\Data\Lot as EOdooLot;
 use Praxigento\Warehouse\Repo\Data\Lot as EWrhsLot;
 

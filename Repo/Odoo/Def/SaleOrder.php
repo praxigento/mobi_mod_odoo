@@ -80,10 +80,10 @@ class SaleOrder
         $cover = $this->rest->request($underscored, self::ROUTE);
         $data = $cover->getResultData();
         if ($data) {
-            $result = $this->mageSrvInProc->convertValue($data, \Praxigento\Odoo\Data\Odoo\SaleOrder\Response::class);
+            $result = $this->mageSrvInProc->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Response::class);
         } else {
             $error = $cover->getError();
-            $result = $this->mageSrvInProc->convertValue($error, \Praxigento\Odoo\Data\Odoo\Error::class);
+            $result = $this->mageSrvInProc->convertValue($error, \Praxigento\Odoo\Repo\Odoo\Data\Error::class);
             /** TODO : delete tmp code (cannot use getData as getter for property) */
             $debug = $error['data']['debug'];
             $name = $error['data']['name'];

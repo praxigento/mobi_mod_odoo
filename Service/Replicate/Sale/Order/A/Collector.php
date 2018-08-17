@@ -201,7 +201,7 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\Contact
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Contact
      */
     private function getAddressBilling(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
@@ -213,7 +213,7 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\Contact
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Contact
      */
     private function getAddressShipping(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
@@ -225,11 +225,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderAddressInterface $addr
-     * @return \Praxigento\Odoo\Data\Odoo\Contact
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Contact
      */
     private function getContact(\Magento\Sales\Api\Data\OrderAddressInterface $addr)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\Contact();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\Contact();
         /* collect data */
         $name = $addr->getName();
         $phone = $addr->getTelephone();
@@ -254,11 +254,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $item
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line\Tax
      */
     private function getItemTax(\Magento\Sales\Api\Data\OrderItemInterface $item)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Tax();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line\Tax();
         $itemMageId = $item->getItemId();
         /* collect data */
         $rates = $this->getItemTaxRates($itemMageId);
@@ -275,7 +275,7 @@ class Collector
 
     /**
      * @param int $itemId
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate[]
      */
     private function getItemTaxRates($itemId)
     {
@@ -291,7 +291,7 @@ class Collector
             $amount = $rate->get(Cfg::E_SALE_ORDER_TAX_ITEM_A_REAL_BASE_AMOUNT);
             $amount = $this->hlpFormat->toNumber($amount);
             /* init Odoo data object */
-            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $data = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $data->setCode($code);
             $data->setAmount($amount);
             $data->setPercent($percent);
@@ -304,11 +304,11 @@ class Collector
      * Extract Odoo compatible customer data from Magento order.
      *
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer
      */
     private function getOrderCustomer(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Customer();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer();
         /* collect data */
         $custMageId = (int)$sale->getCustomerId();
         $dwnlCust = $this->daoDwnlCustomer->getById($custMageId);
@@ -331,11 +331,11 @@ class Collector
      * Extract data from magento model and compose initial Odoo data object,
      *
      * @param \Magento\Sales\Api\Data\OrderItemInterface $item
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line
      */
     private function getOrderLine(\Magento\Sales\Api\Data\OrderItemInterface $item)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line();
         /* collect data */
         $itemIdMage = $item->getId();
         $productIdMage = $item->getProductId();
@@ -360,7 +360,7 @@ class Collector
      * Get lots data from DB and convert into Odoo API data.
      *
      * @param int $itemId
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line\Lot[]
      */
     private function getOrderLineLots($itemId)
     {
@@ -368,7 +368,7 @@ class Collector
         /* request lots data for the sale item */
         $dbDataLots = $this->dbGetLots($itemId);
         foreach ($dbDataLots as $one) {
-            $lot = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Line\Lot();
+            $lot = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line\Lot();
             /* Lot's ID in Odoo */
             $idOdoo = (int)$one->get($this->qbLots::A_ODOO_ID);
             /* skip lot for products w/o lots */
@@ -384,7 +384,7 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Line[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line[]
      */
     private function getOrderLines(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
@@ -401,7 +401,7 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\Payment[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Payment[]
      */
     private function getOrderPayments(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
@@ -416,7 +416,7 @@ class Collector
         $mainAmount = $this->hlpFormat->toNumber($ordered);
 
         /* populate Odoo Data Object */
-        $odooPaymentMain = new \Praxigento\Odoo\Data\Odoo\Payment();
+        $odooPaymentMain = new \Praxigento\Odoo\Repo\Odoo\Data\Payment();
         $odooPaymentMain->setCode($mainCode);
         $odooPaymentMain->setAmount($mainAmount);
         // $odooPaymentMain->setCurrency($mainCur);
@@ -430,7 +430,7 @@ class Collector
             $comboPayment = $this->factPayment->create();
             $comboPayment->setMethod(\Praxigento\Wallet\Model\Payment\Method\ConfigProvider::CODE_WALLET);
             $comboCode = $this->manBusinessCodes->getBusCodeForPaymentMethod($comboPayment);
-            $odooPaymentCombo = new \Praxigento\Odoo\Data\Odoo\Payment();
+            $odooPaymentCombo = new \Praxigento\Odoo\Repo\Odoo\Data\Payment();
             $odooPaymentCombo->setCode($comboCode);
             $odooPaymentCombo->setAmount($comboAmount);
             // $odooPaymentCombo->setCurrency($comboCur);
@@ -441,11 +441,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price
      */
     private function getOrderPrice(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price();
         /* collect data */
         $currency = $sale->getBaseCurrencyCode();;
         $paid = $sale->getBaseTotalPaid();
@@ -462,11 +462,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price\Tax
      */
     private function getOrderPriceTax(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Price\Tax();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price\Tax();
         /* collect data */
         $total = $sale->getBaseTaxAmount();
         $total = $this->hlpFormat->toNumber($total);
@@ -480,7 +480,7 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate[]
      */
     private function getOrderPriceTaxRates(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
@@ -495,7 +495,7 @@ class Collector
             $amount = $row->get(Cfg::E_SALE_ORDER_TAX_A_AMOUNT);
             $amount = $this->hlpFormat->toNumber($amount);
             /* populate Odoo Data Object */
-            $rate = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $rate = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $rate->setCode($code);
             $rate->setPercent($percent);
             $rate->setAmount($amount);
@@ -508,11 +508,11 @@ class Collector
      * Convert Magento Order to Odoo API data.
      *
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder
      */
     public function getSaleOrder(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder();
 
         /* Collect order data */
         // id_mage
@@ -560,11 +560,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping
      */
     private function getShipping(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping();
         /* collect data */
         $code = $this->manBusinessCodes->getBusCodeForShippingMethod($sale);
         $tax = $this->getShippingTax($sale);
@@ -576,11 +576,11 @@ class Collector
 
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping\Tax
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping\Tax
      */
     private function getShippingTax(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
-        $result = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Shipping\Tax();
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping\Tax();
         /* collect data */
         $base = 0;
         $saleId = $sale->getEntityId();
@@ -602,7 +602,7 @@ class Collector
 
     /**
      * @param int $saleId
-     * @return \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate[]
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate[]
      */
     private function getShippingTaxRates($saleId)
     {
@@ -618,7 +618,7 @@ class Collector
             $amount = $this->hlpFormat->toNumber($amount);
 
             /* populate Odoo Data Object */
-            $data = new \Praxigento\Odoo\Data\Odoo\SaleOrder\Tax\Rate();
+            $data = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $data->setCode($code);
             $data->setPercent($percent);
             $data->setAmount($amount);

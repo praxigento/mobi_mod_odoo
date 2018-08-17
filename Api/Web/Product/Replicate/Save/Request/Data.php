@@ -13,6 +13,6 @@ namespace Praxigento\Odoo\Api\Web\Product\Replicate\Save\Request;
  * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
  */
 class Data
-    extends \Praxigento\Odoo\Data\Odoo\Inventory
+    extends \Praxigento\Odoo\Repo\Odoo\Data\Inventory
 {
 }

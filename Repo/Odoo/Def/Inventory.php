@@ -49,7 +49,7 @@ class Inventory
         /* perform request and extract result data */
         $cover = $this->rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
-        $result = $this->inputProcessor->convertValue($data, \Praxigento\Odoo\Data\Odoo\Inventory::class);
+        $result = $this->inputProcessor->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\Inventory::class);
         return $result;
     }
 }

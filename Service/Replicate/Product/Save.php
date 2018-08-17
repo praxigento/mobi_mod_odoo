@@ -39,7 +39,7 @@ class Save
     {
         assert($request instanceof ARequest);
         /** define local working data */
-        /** @var  $inventory \Praxigento\Odoo\Data\Odoo\Inventory */
+        /** @var  $inventory \Praxigento\Odoo\Repo\Odoo\Data\Inventory */
         $inventory = $request->getInventory();
         $warehouses = $inventory->getWarehouses();
         $lots = $inventory->getLots();

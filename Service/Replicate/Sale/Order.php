@@ -44,7 +44,7 @@ class Order
             /* save order into Odoo repo */
             $resp = $this->daoOdooSaleOrder->save($odooOrder);
             $result->setOdooResponse($resp);
-            if ($resp instanceof \Praxigento\Odoo\Data\Odoo\SaleOrder\Response) {
+            if ($resp instanceof \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Response) {
                 $mageId = $mageOrder->getEntityId();
                 $odooId = $resp->getIdOdoo();
                 /* mark order as replicated */

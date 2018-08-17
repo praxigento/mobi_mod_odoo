@@ -12,7 +12,7 @@ class Request
 
     /**
      * Get bundle of the products to replicate data between Magento and Odoo.
-     * @return  \Praxigento\Odoo\Data\Odoo\Inventory
+     * @return  \Praxigento\Odoo\Repo\Odoo\Data\Inventory
      */
     public function getInventory()
     {
@@ -23,9 +23,9 @@ class Request
     /**
      * Set bundle of the products to replicate data between Magento and Odoo.
      *
-     * @param \Praxigento\Odoo\Data\Odoo\Inventory $data
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory $data
      */
-    public function setInventory(\Praxigento\Odoo\Data\Odoo\Inventory $data)
+    public function setInventory(\Praxigento\Odoo\Repo\Odoo\Data\Inventory $data)
     {
         parent::set(self::INVENTORY, $data);
     }

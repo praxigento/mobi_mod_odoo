@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Service\Replicate\Product\Save\Own;
 
 use Magento\Catalog\Model\Product\Attribute\Source\Status as Status;
 use Magento\Catalog\Model\Product\Type as Type;
-use Praxigento\Odoo\Data\Odoo\Inventory\Product as DProduct;
+use Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product as DProduct;
 
 /**
  * Replicate products data into Magento (sub-service for the parent service).
@@ -118,7 +118,7 @@ class Product
      */
     public function execute($product)
     {
-        assert($product instanceof \Praxigento\Odoo\Data\Odoo\Inventory\Product);
+        assert($product instanceof \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product);
         $idOdoo = $product->getIdOdoo();
         $sku = trim($product->getSku());
         $name = trim($product->getName());
@@ -172,7 +172,7 @@ class Product
      *
      * @return float
      */
-    private function getRetailPrice(\Praxigento\Odoo\Data\Odoo\Inventory\Product $product)
+    private function getRetailPrice(\Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product $product)
     {
         $result = 1000;
         $wrhsTargetId = $this->getOdooIdForDefWarehouse();
