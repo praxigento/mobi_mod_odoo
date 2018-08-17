@@ -5,7 +5,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Sub;
+namespace Praxigento\Odoo\Repo\Odoo\Connector\Z;
 
 /**
  * @codeCoverageIgnore

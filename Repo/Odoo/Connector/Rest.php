@@ -10,7 +10,7 @@ class Rest
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_POST = 'POST';
 
-    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter adapter for PHP functions to be mocked in tests */
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Z\Adapter adapter for PHP functions to be mocked in tests */
     protected $adapter;
     /** @var  string */
     protected $baseUri;
@@ -21,7 +21,7 @@ class Rest
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter $adapter,
+        \Praxigento\Odoo\Repo\Odoo\Connector\Z\Adapter $adapter,
         \Praxigento\Odoo\Repo\Odoo\Connector\Api\Login $login,
         \Praxigento\Odoo\Helper\Config $hlpConfig
     ) {

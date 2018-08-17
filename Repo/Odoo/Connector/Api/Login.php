@@ -9,7 +9,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector\Api;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
-use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
+use Praxigento\Odoo\Repo\Odoo\Connector\Z\Adapter;
 
 class Login
 {
