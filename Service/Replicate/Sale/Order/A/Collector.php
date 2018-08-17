@@ -419,13 +419,14 @@ class Collector
         $odooPaymentMain = new \Praxigento\Odoo\Repo\Odoo\Data\Payment();
         $odooPaymentMain->setCode($mainCode);
         $odooPaymentMain->setAmount($mainAmount);
-        // $odooPaymentMain->setCurrency($mainCur);
+        $odooPaymentMain->setCurrency($mainCur);
         $result[] = $odooPaymentMain;
 
         /* validate combo payment (partially usage of wallet)*/
         $combo = $this->daoWalletSale->getById($saleId);
         if ($combo) {
             $comboAmount = $combo->getBasePartialAmount();
+            $comboCurr = $combo->getBaseCurrency();
             /** @var \Magento\Sales\Model\Order\Payment $comboPayment */
             $comboPayment = $this->factPayment->create();
             $comboPayment->setMethod(\Praxigento\Wallet\Model\Payment\Method\ConfigProvider::CODE_WALLET);
@@ -433,7 +434,7 @@ class Collector
             $odooPaymentCombo = new \Praxigento\Odoo\Repo\Odoo\Data\Payment();
             $odooPaymentCombo->setCode($comboCode);
             $odooPaymentCombo->setAmount($comboAmount);
-            // $odooPaymentCombo->setCurrency($comboCur);
+            $odooPaymentCombo->setCurrency($comboCurr);
             $result[] = $odooPaymentCombo;
         }
         return $result;
