@@ -7,22 +7,21 @@ namespace Praxigento\Odoo\Service\Replicate\Sale;
 
 
 class Orders
-    implements \Praxigento\Odoo\Service\Replicate\Sale\IOrders
 {
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
-    private $callOrder;
     /** @var \Praxigento\Core\Api\App\Logger\Main */
     private $logger;
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order */
+    private $servOrder;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector */
     private $subCollector;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $callOrder,
+        \Praxigento\Odoo\Service\Replicate\Sale\Order $servOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector $subCollector
     ) {
         $this->logger = $logger;
-        $this->callOrder = $callOrder;
+        $this->servOrder = $servOrder;
         $this->subCollector = $subCollector;
     }
 
@@ -41,7 +40,7 @@ class Orders
                 $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
                 $req->setSaleOrder($order);
                 /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\Response $resp */
-                $resp = $this->callOrder->exec($req);
+                $resp = $this->servOrder->exec($req);
                 $respOdoo = $resp->getOdooResponse();
                 $entry = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry();
                 $entry->setIdMage($id);

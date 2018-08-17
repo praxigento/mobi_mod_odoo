@@ -8,11 +8,11 @@ namespace Praxigento\Odoo\Cli\Replicate;
 class Orders
     extends \Praxigento\Core\App\Cli\Cmd\Base
 {
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders */
     protected $callReplicateOrders;
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrders $callReplicateOrders
+        \Praxigento\Odoo\Service\Replicate\Sale\Orders $callReplicateOrders
     ) {
         parent::__construct(
             $manObj,

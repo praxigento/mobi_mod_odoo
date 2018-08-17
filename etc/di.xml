@@ -65,19 +65,9 @@
     </type>
     <type name="\Magento\Sales\Model\Order\CustomerManagement">
         <!-- Replicate orders for new signed customers (anons & referrals) -->
-        <plugin name="praxigento_odoo_plugin" type="Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement"
+        <plugin name="praxigento_odoo_plugin"
+                type="Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement"
                 sortOrder="100" disabled="false"/>
     </type>
-
-
-    <!-- ******** -->
-    <!-- Services -->
-    <!-- ******** -->
-    <preference
-            for="Praxigento\Odoo\Service\Replicate\Sale\IOrder"
-            type="Praxigento\Odoo\Service\Replicate\Sale\Order"/>
-    <preference
-            for="Praxigento\Odoo\Service\Replicate\Sale\IOrders"
-            type="Praxigento\Odoo\Service\Replicate\Sale\Orders"/>
 
 </config>

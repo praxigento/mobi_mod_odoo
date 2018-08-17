@@ -19,13 +19,13 @@ class PushRepeat
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\IOrders */
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders */
     private $servReplicateOrders;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrders $servReplicateOrders
+        \Praxigento\Odoo\Service\Replicate\Sale\Orders $servReplicateOrders
     ) {
         $this->logger = $logger;
         $this->manTrans = $manTrans;

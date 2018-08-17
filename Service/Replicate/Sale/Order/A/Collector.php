@@ -12,6 +12,8 @@ use Praxigento\Odoo\Config as Cfg;
  */
 class Collector
 {
+    /** @var \Magento\Sales\Api\Data\OrderPaymentFactory */
+    private $factPayment;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     private $daoCustomer;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
@@ -24,6 +26,8 @@ class Collector
     private $daoPvSale;
     /** @var \Praxigento\Pv\Repo\Dao\Sale\Item */
     private $daoPvSaleItem;
+    /** @var \Praxigento\Wallet\Repo\Dao\Partial\Sale */
+    private $daoWalletSale;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     private $daoWarehouse;
     /** @var  \Praxigento\Core\Api\Helper\Format */
@@ -38,6 +42,7 @@ class Collector
     private $qbTaxItems;
 
     public function __construct(
+        \Magento\Sales\Model\Order\PaymentFactory $factPayment,
         \Praxigento\Warehouse\Api\Helper\Stock $hlpStock,
         \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpBusinessCodes,
         \Praxigento\Core\Api\Helper\Format $hlpFormat,
@@ -48,10 +53,12 @@ class Collector
         \Praxigento\Pv\Repo\Dao\Sale\Item $daoPvSaleItem,
         \Praxigento\Odoo\Repo\Dao\Warehouse $daoWarehouse,
         \Praxigento\Odoo\Repo\Dao\Product $daoOdooProd,
+        \Praxigento\Wallet\Repo\Dao\Partial\Sale $daoWalletSale,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
     )
     {
+        $this->factPayment = $factPayment;
         $this->hlpStock = $hlpStock;
         $this->manBusinessCodes = $hlpBusinessCodes;
         $this->hlpFormat = $hlpFormat;
@@ -62,6 +69,7 @@ class Collector
         $this->daoPvSaleItem = $daoPvSaleItem;
         $this->daoWarehouse = $daoWarehouse;
         $this->daoOdooProd = $daoOdooProd;
+        $this->daoWalletSale = $daoWalletSale;
         $this->qbLots = $qbLots;
         $this->qbTaxItems = $qbTaxItems;
     }
@@ -398,16 +406,36 @@ class Collector
     private function getOrderPayments(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
         $result = [];
-        $odooPayment = new \Praxigento\Odoo\Data\Odoo\Payment();
-        /* collect data */
-        $magePayment = $sale->getPayment();
-        $code = $this->manBusinessCodes->getBusCodeForPaymentMethod($magePayment);
-        $ordered = $magePayment->getBaseAmountOrdered();
-        $amount = $this->hlpFormat->toNumber($ordered);
+        $saleId = $sale->getEntityId();
+
+        /* collect data for main payment */
+        $mainPayment = $sale->getPayment();
+        $mainCode = $this->manBusinessCodes->getBusCodeForPaymentMethod($mainPayment);
+        $ordered = $mainPayment->getBaseAmountOrdered();
+        $mainCur = $sale->getBaseCurrencyCode();
+        $mainAmount = $this->hlpFormat->toNumber($ordered);
+
         /* populate Odoo Data Object */
-        $odooPayment->setCode($code);
-        $odooPayment->setAmount($amount);
-        $result[] = $odooPayment;
+        $odooPaymentMain = new \Praxigento\Odoo\Data\Odoo\Payment();
+        $odooPaymentMain->setCode($mainCode);
+        $odooPaymentMain->setAmount($mainAmount);
+        // $odooPaymentMain->setCurrency($mainCur);
+        $result[] = $odooPaymentMain;
+
+        /* validate combo payment (partially usage of wallet)*/
+        $combo = $this->daoWalletSale->getById($saleId);
+        if ($combo) {
+            $comboAmount = $combo->getBasePartialAmount();
+            /** @var \Magento\Sales\Model\Order\Payment $comboPayment */
+            $comboPayment = $this->factPayment->create();
+            $comboPayment->setMethod(\Praxigento\Wallet\Model\Payment\Method\ConfigProvider::CODE_WALLET);
+            $comboCode = $this->manBusinessCodes->getBusCodeForPaymentMethod($comboPayment);
+            $odooPaymentCombo = new \Praxigento\Odoo\Data\Odoo\Payment();
+            $odooPaymentCombo->setCode($comboCode);
+            $odooPaymentCombo->setAmount($comboAmount);
+            // $odooPaymentCombo->setCurrency($comboCur);
+            $result[] = $odooPaymentCombo;
+        }
         return $result;
     }
 

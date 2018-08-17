@@ -6,7 +6,6 @@
 namespace Praxigento\Odoo\Service\Replicate\Sale;
 
 class Order
-    implements \Praxigento\Odoo\Service\Replicate\Sale\IOrder
 {
     /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
     private $daoEntitySaleOrder;

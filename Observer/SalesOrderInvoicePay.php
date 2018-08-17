@@ -17,13 +17,13 @@ class SalesOrderInvoicePay
     private $logger;
     /** @var  \Praxigento\Warehouse\Api\Helper\Stock */
     private $manStock;
-    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\IOrder */
+    /** @var  \Praxigento\Odoo\Service\Replicate\Sale\Order */
     private $servReplicate;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Warehouse\Api\Helper\Stock $manStock,
-        \Praxigento\Odoo\Service\Replicate\Sale\IOrder $servReplicate
+        \Praxigento\Odoo\Service\Replicate\Sale\Order $servReplicate
     ) {
         $this->logger = $logger;
         $this->manStock = $manStock;
