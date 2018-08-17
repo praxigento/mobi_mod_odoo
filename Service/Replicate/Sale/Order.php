@@ -9,7 +9,7 @@ class Order
 {
     /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
     private $daoEntitySaleOrder;
-    /** @var \Praxigento\Odoo\Repo\Odoo\ISaleOrder */
+    /** @var \Praxigento\Odoo\Repo\Odoo\SaleOrder */
     private $daoOdooSaleOrder;
     /** @var \Praxigento\Core\Api\App\Logger\Main */
     private $logger;
@@ -19,7 +19,7 @@ class Order
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Odoo\Repo\Dao\SaleOrder $daoEntitySaleOrder,
-        \Praxigento\Odoo\Repo\Odoo\ISaleOrder $daoOdooSaleOrder,
+        \Praxigento\Odoo\Repo\Odoo\SaleOrder $daoOdooSaleOrder,
         \Praxigento\Odoo\Service\Replicate\Sale\Order\A\Collector $collector
     ) {
         $this->logger = $logger;

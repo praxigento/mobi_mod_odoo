@@ -5,14 +5,13 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Def;
+namespace Praxigento\Odoo\Repo\Odoo\Connector\Api;
 
 use Magento\Framework\ObjectManagerInterface;
 use Praxigento\Odoo\Repo\Odoo\Connector\Rest;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 
 class Login
-    implements \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin
 {
     /* TIMEOUTS: INTR-653 */
     const HTTP_TIMEOUT_SEC_LOGIN = 15;

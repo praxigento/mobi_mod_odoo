@@ -2,13 +2,14 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Repo\Odoo\Def;
+
+namespace Praxigento\Odoo\Repo\Odoo;
 
 class SaleOrder
-    implements \Praxigento\Odoo\Repo\Odoo\ISaleOrder
 {
     const ODOO_DATA = 'data';
     const ROUTE = '/api/sale_order';
+
     /** @var  \Magento\Framework\Webapi\ServiceInputProcessor */
     protected $mageSrvInProc;
     /** @var \Magento\Framework\Webapi\ServiceOutputProcessor */

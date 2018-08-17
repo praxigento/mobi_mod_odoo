@@ -37,16 +37,6 @@
     </type>
 
 
-    <!-- **** -->
-    <!-- Repo -->
-    <!-- **** -->
-    <preference for="Praxigento\Odoo\Repo\Odoo\IInventory"
-                type="Praxigento\Odoo\Repo\Odoo\Def\Inventory"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\ISaleOrder"
-                type="Praxigento\Odoo\Repo\Odoo\Def\SaleOrder"/>
-    <preference for="Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin"
-                type="Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login"/>
-
 
     <!-- ******* -->
     <!-- PLUGINS -->

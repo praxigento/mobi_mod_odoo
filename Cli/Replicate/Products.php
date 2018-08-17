@@ -11,14 +11,14 @@ class Products
     const OPT_PROD_IDS = 'prods';
     const OPT_WRHS_IDS = 'wrhs';
 
-    /** @var \Praxigento\Odoo\Repo\Odoo\IInventory */
+    /** @var \Praxigento\Odoo\Repo\Odoo\Inventory */
     private $daoOdoo;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save */
     private $servSave;
 
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Repo\Odoo\IInventory $daoOdoo,
+        \Praxigento\Odoo\Repo\Odoo\Inventory $daoOdoo,
         \Praxigento\Odoo\Service\Replicate\Product\Save $servSave
     ) {
         parent::__construct(

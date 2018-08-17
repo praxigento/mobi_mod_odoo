@@ -5,7 +5,7 @@
 namespace Praxigento\Odoo\Repo\Odoo\Def;
 
 use Magento\Framework\Webapi\ServiceInputProcessor;
-use Praxigento\Odoo\Repo\Odoo\Connector\Api\Def\Login;
+use Praxigento\Odoo\Repo\Odoo\Connector\Api\Login;
 use Praxigento\Odoo\Repo\Odoo\Connector\Config\Def\Params;
 use Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter;
 

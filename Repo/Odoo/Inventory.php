@@ -3,10 +3,9 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Repo\Odoo\Def;
+namespace Praxigento\Odoo\Repo\Odoo;
 
 class Inventory
-    implements \Praxigento\Odoo\Repo\Odoo\IInventory
 {
     const PROD_IDS = 'prod_ids';
     const ROUTE = '/api/inventory';

@@ -16,13 +16,13 @@ class Rest
     protected $baseUri;
     /** @var  \Psr\Log\LoggerInterface separate channel to log Odoo activity */
     protected $logger;
-    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin */
+    /** @var  \Praxigento\Odoo\Repo\Odoo\Connector\Api\Login */
     protected $login;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Odoo\Repo\Odoo\Connector\Sub\Adapter $adapter,
-        \Praxigento\Odoo\Repo\Odoo\Connector\Api\ILogin $login,
+        \Praxigento\Odoo\Repo\Odoo\Connector\Api\Login $login,
         \Praxigento\Odoo\Helper\Config $hlpConfig
     ) {
         $this->logger = $logger;
