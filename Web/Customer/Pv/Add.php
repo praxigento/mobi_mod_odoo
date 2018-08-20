@@ -31,7 +31,7 @@ class Add
     private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $daoTypeAsset;
-    /** @var \Praxigento\Accounting\Service\Account\Asset\Transfer */
+    /** @var \Praxigento\Accounting\Api\Service\Account\Asset\Transfer */
     private $servAssetTransfer;
 
     public function __construct(
@@ -41,7 +41,7 @@ class Add
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
-        \Praxigento\Accounting\Service\Account\Asset\Transfer $servAssetTransfer
+        \Praxigento\Accounting\Api\Service\Account\Asset\Transfer $servAssetTransfer
     ) {
         $this->auth = $auth;
         $this->logger = $logger;
@@ -82,7 +82,7 @@ class Add
                 $respRes->setText($msg);
             } else {
                 /* add PV to customer account */
-                $req = new \Praxigento\Accounting\Service\Account\Asset\Transfer\Request();
+                $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
                 $req->setAmount($amount);
                 $req->setAssetId($assetId);
                 $req->setCustomerId($custId);
