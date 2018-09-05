@@ -44,7 +44,45 @@ class QueryModifier
         $fieldAlias = Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS;
         $fieldFullName = self::AS_SALE_ORDER . '.' . Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS;
         $collection->addFilterToMap($fieldAlias, $fieldFullName);
-
+        /**
+         * MOBI-1531: map 'main_table' fields used in grid filter
+         */
+        /* created_at / Purchase Date*/
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_CREATED_AT;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_CREATED_AT;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* base_grand_total / Grand Total (Base) */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_BASE_GRAND_TOTAL;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_BASE_GRAND_TOTAL;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* grand_total / Grand Total (Purchased) */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_GRAND_TOTAL;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_GRAND_TOTAL;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* store_id / Purchase Point */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_STORE_ID;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_STORE_ID;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* increment_id / ID */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_INCREMENT_ID;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_INCREMENT_ID;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* billing_name / Bill-to Name */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_BILLING_NAME;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_BILLING_NAME;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* shipping_name / Ship-to Name */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_SHIPPING_NAME;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_SHIPPING_NAME;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* status / Status */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_STATUS;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_STATUS;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
+        /* signifyd_guarantee_status / Signifyd Guarantee Decision */
+        $fieldAlias = Cfg::E_SALE_ORDER_GRID_A_SHIPPING_NAME;
+        $fieldFullName = Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_GRID_A_SHIPPING_NAME;
+        $collection->addFilterToMap($fieldAlias, $fieldFullName);
     }
 
     public function populateSelect(
