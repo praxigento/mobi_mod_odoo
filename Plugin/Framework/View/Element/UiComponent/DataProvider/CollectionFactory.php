@@ -5,19 +5,20 @@
 namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider;
 
 use Praxigento\Odoo\Config as Cfg;
+use Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A\QueryModifier as AQueryMod;
 
 /**
  * Add Odoo replication flag to data collection for sale orders grid.
  */
 class CollectionFactory
 {
-    /** @var  Sub\QueryModifier */
-    protected $_subQueryModifier;
+    /** @var  AQueryMod */
+    private $aQueryMod;
 
     public function __construct(
-        Sub\QueryModifier $subQueryModufier
+        AQueryMod $aQueryMod
     ) {
-        $this->_subQueryModifier = $subQueryModufier;
+        $this->aQueryMod = $aQueryMod;
     }
 
     /**
@@ -37,9 +38,9 @@ class CollectionFactory
         if ($requestName == Cfg::DS_SALES_ORDERS_GRID) {
             if ($result instanceof \Magento\Sales\Model\ResourceModel\Order\Grid\Collection) {
                 /* add JOINS to the select query */
-                $this->_subQueryModifier->populateSelect($result);
+                $this->aQueryMod->populateSelect($result);
                 /* add fields to mapping */
-                $this->_subQueryModifier->addFieldsMapping($result);
+                $this->aQueryMod->addFieldsMapping($result);
             }
         }
         return $result;

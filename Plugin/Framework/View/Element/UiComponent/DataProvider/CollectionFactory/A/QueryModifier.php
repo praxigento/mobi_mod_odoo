@@ -3,14 +3,14 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\Sub;
+namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A;
 
 use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Repo\Data\SaleOrder;
 
 /**
- * TODO: this plugin is not plugged. Remove it or plug.
+ * Join base query for grid data provider to additional tables and map UI columns to query columns.
  */
 class QueryModifier
 {
@@ -25,12 +25,12 @@ class QueryModifier
 
 
     /** @var \Magento\Framework\App\ResourceConnection */
-    protected $_resource;
+    private $resource;
 
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource
     ) {
-        $this->_resource = $resource;
+        $this->resource = $resource;
     }
 
     public function addFieldsMapping(
@@ -90,7 +90,7 @@ class QueryModifier
     ) {
         $select = $collection->getSelect();
         /* LEFT JOIN `prxgt_odoo_sale` */
-        $tbl = [self::AS_ODOO_SALE => $this->_resource->getTableName(SaleOrder::ENTITY_NAME)];
+        $tbl = [self::AS_ODOO_SALE => $this->resource->getTableName(SaleOrder::ENTITY_NAME)];
         $on = self::AS_ODOO_SALE . '.' . SaleOrder::A_MAGE_REF . '=main_table.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $exp = new Expression('!ISNULL(' . self::AS_ODOO_SALE . '.' . SaleOrder::A_MAGE_REF . ')');
         $cols = [
@@ -99,7 +99,7 @@ class QueryModifier
         $select->joinLeft($tbl, $on, $cols);
 
         /* MOBI-718: dumb realization of the feature */
-        $tbl = $this->_resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER);
+        $tbl = $this->resource->getTableName(Cfg::ENTITY_MAGE_SALES_ORDER);
         $as = self::AS_SALE_ORDER;
         $on = $as . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID . '=' . Cfg::AS_MAIN_TABLE . '.' . Cfg::E_SALE_ORDER_A_ENTITY_ID;
         $cols = [Cfg::E_SALE_ORDER_A_APPLIED_RULE_IDS];
