@@ -26,6 +26,7 @@ class Request
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Request\Data $data
+     * @return void
      */
     public function setData($data)
     {

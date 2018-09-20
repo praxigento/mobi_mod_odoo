@@ -38,7 +38,7 @@ class Warehouse
     /**
      * Get price for the product on the concrete warehouse.
      *
-     * @return double
+     * @return float
      */
     public function getPriceWarehouse()
     {
@@ -58,7 +58,7 @@ class Warehouse
     /**
      * Get PV for the product on the concrete warehouse.
      *
-     * @return double
+     * @return float
      */
     public function getPvWarehouse()
     {
@@ -70,6 +70,7 @@ class Warehouse
      * Set Odoo ID of the warehouse.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {
@@ -80,6 +81,7 @@ class Warehouse
      * Set array of lots data for the product on the warehouse.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\Lot[] $data
+     * @return void
      */
     public function setLots($data)
     {
@@ -89,7 +91,8 @@ class Warehouse
     /**
      * Set price for the product on the concrete warehouse.
      *
-     * @param double $data
+     * @param float $data
+     * @return void
      */
     public function setPriceWarehouse($data)
     {
@@ -98,6 +101,7 @@ class Warehouse
 
     /**
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse\GroupPrice\Item[] $data
+     * @return void
      */
     public function setPrices($data)
     {
@@ -107,7 +111,8 @@ class Warehouse
     /**
      * Set PV for the product on the concrete warehouse.
      *
-     * @param double $data
+     * @param float $data
+     * @return void
      */
     public function setPvWarehouse($data)
     {

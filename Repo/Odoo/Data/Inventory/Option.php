@@ -29,6 +29,7 @@ class Option
      * Set currency for wholesale prices ('EUR').
      *
      * @param string $data
+     * @return void
      */
     public function setCurrency($data)
     {

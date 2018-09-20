@@ -53,7 +53,10 @@ class Data
         return $result;
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setCustomerMlmId($data)
     {
         parent::set(self::CUSTOMER_MLM_ID, $data);
@@ -63,19 +66,26 @@ class Data
      * Reference to the corresponded operation in Odoo (to prevent doubling).
      *
      * @param string
+     * @return void
      */
     public function setNotes($data)
     {
         parent::set(self::NOTES, $data);
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setOdooRef($data)
     {
         parent::set(self::ODOO_REF, $data);
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setPv($data)
     {
         parent::set(self::PV, $data);

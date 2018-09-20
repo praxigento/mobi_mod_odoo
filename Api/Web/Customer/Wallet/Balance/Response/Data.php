@@ -31,13 +31,19 @@ class Data
         return $result;
     }
 
-    /** @param float */
+    /**
+     * @param float
+     * @return void
+     */
     public function setBalance($data)
     {
         parent::set(self::BALANCE, $data);
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setCurrency($data)
     {
         parent::set(self::CURRENCY, $data);

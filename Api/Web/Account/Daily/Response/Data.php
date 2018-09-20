@@ -21,6 +21,7 @@ class Data
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Account\Daily\Response\Data\Item[] $data
+     * @return void
      */
     public function setDates($data)
     {

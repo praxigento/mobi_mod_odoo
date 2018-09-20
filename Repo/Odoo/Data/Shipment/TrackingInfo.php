@@ -36,6 +36,7 @@ class TrackingInfo
      * Business code of the shipping method.
      *
      * @param string $data
+     * @return void
      */
     public function setShippingCode($data)
     {
@@ -46,6 +47,7 @@ class TrackingInfo
      * Tracking number/code.
      *
      * @param string $data
+     * @return void
      */
     public function setTrackingNumber($data)
     {

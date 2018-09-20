@@ -50,6 +50,7 @@ class Warehouse
      * Set short code to identify warehouse by humans.
      *
      * @param string $data
+     * @return void
      */
     public function setCode($data)
     {
@@ -60,6 +61,7 @@ class Warehouse
      * Set currency for warehouse prices ('EUR').
      *
      * @param string $data
+     * @return void
      */
     public function setCurrency($data)
     {
@@ -70,6 +72,7 @@ class Warehouse
      * Set Odoo ID of the warehouse.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {

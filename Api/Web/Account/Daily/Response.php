@@ -26,6 +26,7 @@ class Response
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Account\Daily\Response\Data $data
+     * @return void
      */
     public function setData($data)
     {

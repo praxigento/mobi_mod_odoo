@@ -35,6 +35,7 @@ class Period
 
     /**
      * @param string $data 'YYYYMMDD'
+     * @return void
      */
     public function setFrom($data)
     {
@@ -43,6 +44,7 @@ class Period
 
     /**
      * @param string $data 'YYYYMMDD'
+     * @return void
      */
     public function setTo($data)
     {

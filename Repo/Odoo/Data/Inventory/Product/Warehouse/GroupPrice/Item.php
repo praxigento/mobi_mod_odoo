@@ -37,6 +37,7 @@ class Item
      * Business code for customer group.
      *
      * @param string $data
+     * @return void
      */
     public function setGroupCode($data)
     {
@@ -45,6 +46,7 @@ class Item
 
     /**
      * @param float $data
+     * @return void
      */
     public function setPrice($data)
     {

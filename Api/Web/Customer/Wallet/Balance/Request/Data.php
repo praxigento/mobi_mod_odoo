@@ -23,7 +23,10 @@ class Data
         return $result;
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setCustomerMlmId($data)
     {
         parent::set(self::CUSTOMER_MLM_ID, $data);

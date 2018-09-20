@@ -39,13 +39,19 @@ class Data
         return $result;
     }
 
-    /** @param string */
+    /**
+     * @param string
+     * @return void
+     */
     public function setOdooRef($data)
     {
         parent::set(self::ODOO_REF, $data);
     }
 
-    /** @param int */
+    /**
+     * @param int
+     * @return void
+     */
     public function setOperationId($data)
     {
         parent::set(self::OPERATION_ID, $data);

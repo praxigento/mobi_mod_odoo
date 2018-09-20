@@ -131,6 +131,7 @@ class Product
      * Set array of the categories ids where this product is placed.
      *
      * @param int[] $data
+     * @return void
      */
     public function setCategories($data)
     {
@@ -141,6 +142,7 @@ class Product
      * Set Odoo ID of the product.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {
@@ -151,6 +153,7 @@ class Product
      * Set activity status.
      *
      * @param bool $data
+     * @return void
      */
     public function setIsActive($data)
     {
@@ -161,6 +164,7 @@ class Product
      * Set name for the product.
      *
      * @param string $data
+     * @return void
      */
     public function setName($data)
     {
@@ -168,9 +172,10 @@ class Product
     }
 
     /**
-     * Set куефшд price for the product (see /option/currency for the currency).
+     * Set retail price for the product (see /option/currency for the currency).
      *
      * @param float $data
+     * @return void
      *
      * @deprecated MOBI-765
      */
@@ -183,6 +188,7 @@ class Product
      * Set wholesale price for the product (see /option/currency to get wholesale currency).
      *
      * @param float $data
+     * @return void
      *
      * @deprecated MOBI-765
      */
@@ -195,6 +201,7 @@ class Product
      * Set wholesale PV for the product.
      *
      * @param float $data
+     * @return void
      */
     public function setPvWholesale($data)
     {
@@ -205,6 +212,7 @@ class Product
      * Set SKU for the product.
      *
      * @param string $data
+     * @return void
      */
     public function setSku($data)
     {
@@ -215,6 +223,7 @@ class Product
      * Set array of warehouse data for concrete product in bundle.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product\Warehouse[] $data
+     * @return void
      */
     public function setWarehouses($data)
     {
@@ -225,6 +234,7 @@ class Product
      * Set weight for the product.
      *
      * @param float $data
+     * @return void
      */
     public function setWeight($data)
     {

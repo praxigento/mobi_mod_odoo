@@ -25,6 +25,7 @@ class Response
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data $data
+     * @return void
      */
     public function setData($data)
     {

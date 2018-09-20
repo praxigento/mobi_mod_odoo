@@ -62,6 +62,7 @@ class Inventory
      * Set array of the lots related to products in the bundle.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Lot[] $data
+     * @return void
      */
     public function setLots($data = null)
     {
@@ -72,6 +73,7 @@ class Inventory
      * Set products bundle options.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Option $data
+     * @return void
      *
      * @deprecated MOBI-765
      */
@@ -84,6 +86,7 @@ class Inventory
      * Set array of the products to the bundle.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Product[] $data
+     * @return void
      */
     public function setProducts($data = null)
     {
@@ -94,6 +97,7 @@ class Inventory
      * Set array of the warehouses related to products in the bundle.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Inventory\Warehouse[] $data
+     * @return void
      */
     public function setWarehouses($data = null)
     {

@@ -31,6 +31,7 @@ class Item
 
     /**
      * @param string $data 'YYYYMMDD'
+     * @return void
      */
     public function setDate($data)
     {
@@ -39,6 +40,7 @@ class Item
 
     /**
      * @param \Praxigento\Odoo\Service\Replicate\Account\Daily\Response\Item[] $data
+     * @return void
      */
     public function setItems($data)
     {

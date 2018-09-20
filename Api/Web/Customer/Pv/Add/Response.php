@@ -27,6 +27,7 @@ class Response
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data $data
+     * @return void
      */
     public function setData($data)
     {

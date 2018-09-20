@@ -35,6 +35,7 @@ class Item
      * @see https://confluence.prxgt.com/x/AwA2CQ
      *
      * @param string $data
+     * @return void
      */
     public function setCode($data)
     {
@@ -43,6 +44,7 @@ class Item
 
     /**
      * @param float $data
+     * @return void
      */
     public function setValue($data)
     {

@@ -25,6 +25,7 @@ class Request
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Account\Daily\Request\Data $data
+     * @return void
      */
     public function setData($data) {
         parent::set(self::DATA, $data);

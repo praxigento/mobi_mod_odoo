@@ -50,6 +50,7 @@ class Lot
      * Set expiration date for all products from this lot.
      *
      * @param string $data
+     * @return void
      */
     public function setExpirationDate($data)
     {
@@ -60,6 +61,7 @@ class Lot
      * Set Odoo ID of the lot.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {
@@ -70,6 +72,7 @@ class Lot
      * Set code number used by humans.
      *
      * @param string $data
+     * @return void
      */
     public function setNumber($data)
     {

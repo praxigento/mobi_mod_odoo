@@ -49,6 +49,7 @@ class Shipment
      * ID of the shipment in Odoo.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {
@@ -59,6 +60,7 @@ class Shipment
      * Status of the shipment in Odoo.
      *
      * @param string $data
+     * @return void
      *
      * @deprecated is not used in \Praxigento\Odoo\Api\Web\Sales\Shipment\Tracking\Save::execute
      */
@@ -71,6 +73,7 @@ class Shipment
      * Tracking information from Odoo.
      *
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Shipment\TrackingInfo $data
+     * @return void
      */
     public function setTrackingInfo(\Praxigento\Odoo\Repo\Odoo\Data\Shipment\TrackingInfo $data)
     {

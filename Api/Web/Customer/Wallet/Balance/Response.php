@@ -23,6 +23,7 @@ class Response
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Customer\Wallet\Balance\Response\Data $data
+     * @return void
      */
     public function setData($data)
     {

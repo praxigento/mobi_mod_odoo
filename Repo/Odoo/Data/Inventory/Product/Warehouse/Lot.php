@@ -24,7 +24,7 @@ class Lot
     /**
      * Get quantity of the product on the warehouse.
      *
-     * @return double
+     * @return float
      */
     public function getQuantity()
     {
@@ -36,6 +36,7 @@ class Lot
      * Set Odoo ID of the lot.
      *
      * @param int $data
+     * @return void
      */
     public function setIdOdoo($data)
     {
@@ -45,7 +46,8 @@ class Lot
     /**
      * Set quantity of the product on the warehouse.
      *
-     * @param double $data
+     * @param float $data
+     * @return void
      */
     public function setQuantity($data)
     {

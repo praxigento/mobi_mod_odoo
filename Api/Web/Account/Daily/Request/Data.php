@@ -25,6 +25,7 @@ class Data
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Account\Daily\Request\Data\Period $data
+     * @return void
      */
     public function setPeriod($data)
     {
