@@ -37,7 +37,7 @@ class Tracking
      * Magento ID for sale order.
      *
      * @param int $data
-     * @return int
+     * @return void
      */
     public function setSaleOrderIdMage($data)
     {
@@ -46,6 +46,7 @@ class Tracking
 
     /**
      * @param \Praxigento\Odoo\Repo\Odoo\Data\Shipment $data
+     * @return void
      */
     public function setShipment(\Praxigento\Odoo\Repo\Odoo\Data\Shipment $data)
     {

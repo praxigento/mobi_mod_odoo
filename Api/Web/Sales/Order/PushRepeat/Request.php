@@ -26,6 +26,7 @@ class Request
 
     /**
      * @param \Praxigento\Odoo\Api\Web\Sales\Order\PushRepeat\Request\Data $data
+     * @return void
      */
     public function setData($data)
     {

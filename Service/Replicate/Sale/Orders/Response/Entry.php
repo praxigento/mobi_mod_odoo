@@ -69,6 +69,7 @@ class Entry
      * Debug stacktrace from Odoo.
      *
      * @param string $data
+     * @return void
      */
     public function setDebug($data)
     {
@@ -79,6 +80,7 @@ class Entry
      * Error name from Odoo.
      *
      * @param string $data
+     * @return void
      */
     public function setErrorName($data)
     {
@@ -87,6 +89,7 @@ class Entry
 
     /**
      * @param int $data
+     * @return void
      */
     public function setIdMage($data)
     {
@@ -97,6 +100,7 @@ class Entry
      * 'true' - order is successfully saved into Odoo.
      *
      * @param bool $data
+     * @return void
      */
     public function setIsSucceed($data)
     {
@@ -105,6 +109,7 @@ class Entry
 
     /**
      * @param string $data
+     * @return void
      */
     public function setNumber($data)
     {

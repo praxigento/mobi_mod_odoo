@@ -27,6 +27,7 @@ class Report
 
     /**
      * @param \Praxigento\Odoo\Service\Replicate\Sale\Orders\Response\Entry[] $data
+     * @return void
      */
     public function setEntries($data)
     {
