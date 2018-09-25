@@ -2,10 +2,10 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider;
+namespace Praxigento\Odoo\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider;
 
 use Praxigento\Odoo\Config as Cfg;
-use Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A\QueryModifier as AQueryMod;
+use Praxigento\Odoo\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A\QueryModifier as AQueryMod;
 
 /**
  * Add Odoo replication flag to data collection for sale orders grid.

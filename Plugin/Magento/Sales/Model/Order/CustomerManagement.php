@@ -2,7 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
-namespace Praxigento\Odoo\Plugin\Sales\Model\Order;
+namespace Praxigento\Odoo\Plugin\Magento\Sales\Model\Order;
 
 
 class CustomerManagement

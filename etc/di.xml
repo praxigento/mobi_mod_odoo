@@ -44,19 +44,19 @@
     <type name="Magento\Backend\Block\Widget\Grid\Extended">
         <!-- Prevent "Column 'customer_id' in where clause is ambiguous". -->
         <plugin name="praxigento_odoo_plugin"
-                type="\Praxigento\Odoo\Plugin\Backend\Block\Widget\Grid\Extended"
+                type="\Praxigento\Odoo\Plugin\Magento\Backend\Block\Widget\Grid\Extended"
                 sortOrder="100" disabled="false"/>
     </type>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <!-- Add custom columns to the sales orders grid (is_in_odoo) -->
         <plugin name="praxigento_odoo_plugin"
-                type="Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory"
+                type="Praxigento\Odoo\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory"
                 sortOrder="100" disabled="false"/>
     </type>
     <type name="\Magento\Sales\Model\Order\CustomerManagement">
         <!-- Replicate orders for new signed customers (anons & referrals) -->
         <plugin name="praxigento_odoo_plugin"
-                type="Praxigento\Odoo\Plugin\Sales\Model\Order\CustomerManagement"
+                type="Praxigento\Odoo\Plugin\Magento\Sales\Model\Order\CustomerManagement"
                 sortOrder="100" disabled="false"/>
     </type>
 

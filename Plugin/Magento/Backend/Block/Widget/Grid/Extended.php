@@ -4,7 +4,7 @@
  * Since: 2018
  */
 
-namespace Praxigento\Odoo\Plugin\Backend\Block\Widget\Grid;
+namespace Praxigento\Odoo\Plugin\Magento\Backend\Block\Widget\Grid;
 
 class Extended
 {

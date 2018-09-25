@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace Praxigento\Odoo\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A;
+namespace Praxigento\Odoo\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory\A;
 
 use Praxigento\Core\App\Repo\Query\Expression;
 use Praxigento\Odoo\Config as Cfg;
