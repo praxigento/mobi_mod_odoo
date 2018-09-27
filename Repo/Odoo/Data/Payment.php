@@ -4,16 +4,61 @@
  */
 namespace Praxigento\Odoo\Repo\Odoo\Data;
 
-/**
- * @method string getCode()
- * @method void setCode(string $data)
- * @method string getCurrency()
- * @method void setCurrency(string $data)
- * @method float getAmount()
- * @method void setAmount(float $data)
- */
 class Payment
     extends \Praxigento\Core\Data
 {
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        $result = parent::getAmount();
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        $result = parent::getCode();
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        $result = parent::getCurrency();
+        return $result;
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setAmount($data)
+    {
+        parent::setAmount($data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setCode($data)
+    {
+        parent::setCode($data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setCurrency($data)
+    {
+        parent::setCurrency($data);
+    }
 
 }

@@ -5,34 +5,223 @@
 
 namespace Praxigento\Odoo\Repo\Odoo\Data;
 
-/**
- * @method int getIdMage()
- * @method void setIdMage(int $data)
- * @method int getWarehouseIdOdoo()
- * @method void setWarehouseIdOdoo(int $data)
- * @method string getNumber()
- * @method void setNumber(string $data)
- * @method string getDatePaid()
- * @method void setDatePaid(string $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer getCustomer()
- * @method void setCustomer(\Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\Contact getAddrBilling()
- * @method void setAddrBilling(\Praxigento\Odoo\Repo\Odoo\Data\Contact $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\Contact getAddrShipping()
- * @method void setAddrShipping(\Praxigento\Odoo\Repo\Odoo\Data\Contact $data)
- * @method float getPvTotal()
- * @method void setPvTotal(float $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price getPrice()
- * @method void setPrice(\Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line[] getLines()
- * @method void setLines(\Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line [] $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping getShipping()
- * @method void setShipping(\Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping $data)
- * @method \Praxigento\Odoo\Repo\Odoo\Data\Payment[] getPayments()
- * @method void setPayments(\Praxigento\Odoo\Repo\Odoo\Data\Payment [] $data)
- */
 class SaleOrder
     extends \Praxigento\Core\Data
 {
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Contact
+     */
+    public function getAddrBilling()
+    {
+        $result = parent::getAddrBilling();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Contact
+     */
+    public function getAddrShipping()
+    {
+        $result = parent::getAddrShipping();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer
+     */
+    public function getCustomer()
+    {
+        $result = parent::getCustomer();
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatePaid()
+    {
+        $result = parent::getDatePaid();
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdMage()
+    {
+        $result = parent::getIdMage();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line[]
+     */
+    public function getLines()
+    {
+        $result = parent::getLines();
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumber()
+    {
+        $result = parent::getNumber();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\Payment[]
+     */
+    public function getPayments()
+    {
+        $result = parent::getPayments();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price
+     */
+    public function getPrice()
+    {
+        $result = parent::getPrice();
+        return $result;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPvTotal()
+    {
+        $result = parent::getPvTotal();
+        return $result;
+    }
+
+    /**
+     * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping
+     */
+    public function getShipping()
+    {
+        $result = parent::getShipping();
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWarehouseIdOdoo()
+    {
+        $result = parent::getWarehouseIdOdoo();
+        return $result;
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Contact $data
+     * @return void
+     */
+    public function setAddrBilling($data)
+    {
+        parent::setAddrBilling($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Contact $data
+     * @return void
+     */
+    public function setAddrShipping($data)
+    {
+        parent::setAddrShipping($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Customer $data
+     * @return void
+     */
+    public function setCustomer($data)
+    {
+        parent::setCustomer($data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setDatePaid($data)
+    {
+        parent::setDatePaid($data);
+    }
+
+    /**
+     * @param int $data
+     * @return void
+     */
+    public function setIdMage($data)
+    {
+        parent::setIdMage($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line[] $data
+     * @return void
+     */
+    public function setLines($data)
+    {
+        parent::setLines($data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setNumber($data)
+    {
+        parent::setNumber($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\Payment[] $data
+     * @return void
+     */
+    public function setPayments($data)
+    {
+        parent::setPayments($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Price $data
+     * @return void
+     */
+    public function setPrice($data)
+    {
+        parent::setPrice($data);
+    }
+
+    /**
+     * @param float $data
+     * @return void
+     */
+    public function setPvTotal($data)
+    {
+        parent::setPvTotal($data);
+    }
+
+    /**
+     * @param \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping $data
+     * @return void
+     */
+    public function setShipping($data)
+    {
+        parent::setShipping($data);
+    }
+
+    /**
+     * @param int $data
+     * @return void
+     */
+    public function setWarehouseIdOdoo($data)
+    {
+        parent::setWarehouseIdOdoo($data);
+    }
 
 }
