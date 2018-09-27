@@ -33,6 +33,17 @@ class TrackingInfo
     }
 
     /**
+     * Tracking URL.
+     *
+     * @return string
+     */
+    public function getTrackingUrl()
+    {
+        $result = parent::getTrackingUrl();
+        return $result;
+    }
+
+    /**
      * Business code of the shipping method.
      *
      * @param string $data
@@ -52,5 +63,15 @@ class TrackingInfo
     public function setTrackingNumber($data)
     {
         parent::setTrackingNumber($data);
+    }
+    /**
+     * Tracking URL.
+     *
+     * @param string $data
+     * @return void
+     */
+    public function setTrackingUrl($data)
+    {
+        parent::setTrackingUrl($data);
     }
 }
