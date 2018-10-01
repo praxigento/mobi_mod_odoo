@@ -16,7 +16,7 @@ class Warehouse
     /**
      * Get Odoo ID of the warehouse.
      *
-     * @return  int|null
+     * @return  string
      */
     public function getIdOdoo()
     {
@@ -69,7 +69,7 @@ class Warehouse
     /**
      * Set Odoo ID of the warehouse.
      *
-     * @param int $data
+     * @param string $data
      * @return void
      */
     public function setIdOdoo($data)
