@@ -19,9 +19,14 @@ use Praxigento\Odoo\Config as Cfg;
 class Transaction
     implements \Praxigento\Odoo\Api\Web\Account\TransactionInterface
 {
+    /** @var \Praxigento\Odoo\Web\Account\Transaction\A\DataSource */
+    private $aDataSource;
 
-    public function __construct()
+    public function __construct(
+        \Praxigento\Odoo\Web\Account\Transaction\A\DataSource $aDataSource
+    )
     {
+        $this->aDataSource = $aDataSource;
     }
 
     /**
