@@ -10,6 +10,14 @@
         </resources>
     </route>
 
+    <route url="/V1/prxgt/odoo/account/transaction" method="POST">
+        <!-- Request accounting transactions data. -->
+        <service class="Praxigento\Odoo\Api\Web\Account\TransactionInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+        </resources>
+    </route>
+
     <route url="/V1/prxgt/odoo/customer/pv/add/" method="POST">
         <!-- Add PV to customer account -->
         <service class="Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface" method="exec"/>

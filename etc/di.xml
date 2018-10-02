@@ -10,6 +10,8 @@
                 type="Praxigento\Odoo\App\Logger\Main"/>
     <preference for="Praxigento\Odoo\Api\Web\Account\DailyInterface"
                 type="Praxigento\Odoo\Web\Account\Daily"/>
+    <preference for="Praxigento\Odoo\Api\Web\Account\TransactionInterface"
+                type="Praxigento\Odoo\Web\Account\Transaction"/>
     <preference for="Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface"
                 type="Praxigento\Odoo\Web\Customer\Pv\Add"/>
     <preference for="Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface"
