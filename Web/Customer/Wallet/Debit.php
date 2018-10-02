@@ -35,7 +35,7 @@ class Debit
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
     private $manTrans;
-    /** @var \Praxigento\Accounting\Api\Service\Operation */
+    /** @var \Praxigento\Accounting\Api\Service\Operation\Create */
     private $servOper;
 
     public function __construct(
@@ -47,7 +47,7 @@ class Debit
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Core\Api\Helper\Customer\Currency $hlpCustCur,
-        \Praxigento\Accounting\Api\Service\Operation $servOper
+        \Praxigento\Accounting\Api\Service\Operation\Create $servOper
     )
     {
         $this->logger = $logger;
@@ -196,7 +196,7 @@ class Debit
         $tran->setValue($amount);
         $tran->setNote($note);
         /* perform operation */
-        $req = new \Praxigento\Accounting\Api\Service\Operation\Request();
+        $req = new \Praxigento\Accounting\Api\Service\Operation\Create\Request();
         $req->setCustomerId($custId);
         $req->setOperationTypeCode(Cfg::CODE_TYPE_OPER_WALLET_DEBIT);
         $req->setTransactions([$tran]);
