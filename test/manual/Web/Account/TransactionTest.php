@@ -23,9 +23,9 @@ class TransactionTest
         $req = new ARequest();
         $data = new ARequestData ();
         $data->setAssetTypeCode(Cfg::CODE_TYPE_ASSET_PV);
-        $data->setCustomerMlmId('12345678');
-        $data->setDateFrom('2018-01-01');
-        $data->setDateTo('2018-01-31');
+        $data->setCustomerMlmId('778104481');
+        $data->setDateFrom('2018-08-01');
+        $data->setDateTo('2018-08-31');
         $req->setData($data);
         $res = $obj->exec($req);
         $this->assertInstanceOf(AResponse::class, $res);

@@ -10,7 +10,8 @@ use Praxigento\Pv\Config as PvCfg;
 use Praxigento\Wallet\Config as WalletCfg;
 use Praxigento\Warehouse\Config as WrhsCfg;
 
-class Config extends \Praxigento\Core\Config
+class Config
+    extends \Praxigento\Accounting\Config
 {
     const ACL_CATALOG_LOTS = WrhsCfg::ACL_CATALOG_LOTS;
     const ACL_CATALOG_WAREHOUSES = WrhsCfg::ACL_CATALOG_WAREHOUSES;

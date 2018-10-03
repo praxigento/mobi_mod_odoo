@@ -10,7 +10,6 @@ use Praxigento\Core\Api\App\Web\Response\Result as WResult;
 use Praxigento\Odoo\Api\Web\Account\Transaction\Request as WRequest;
 use Praxigento\Odoo\Api\Web\Account\Transaction\Response as WResponse;
 use Praxigento\Odoo\Api\Web\Account\Transaction\Response\Data as WData;
-use Praxigento\Odoo\Config as Cfg;
 
 
 /**
@@ -19,14 +18,18 @@ use Praxigento\Odoo\Config as Cfg;
 class Transaction
     implements \Praxigento\Odoo\Api\Web\Account\TransactionInterface
 {
-    /** @var \Praxigento\Odoo\Web\Account\Transaction\A\DataSource */
-    private $aDataSource;
+    /** @var \Praxigento\Odoo\Web\Account\Transaction\A\GetItems */
+    private $aGetItems;
+    /** @var \Praxigento\Odoo\Web\Account\Transaction\A\GetBalances */
+    private $aGetBalances;
 
     public function __construct(
-        \Praxigento\Odoo\Web\Account\Transaction\A\DataSource $aDataSource
+        \Praxigento\Odoo\Web\Account\Transaction\A\GetBalances $aGetBalances,
+        \Praxigento\Odoo\Web\Account\Transaction\A\GetItems $aGetItems
     )
     {
-        $this->aDataSource = $aDataSource;
+        $this->aGetBalances = $aGetBalances;
+        $this->aGetItems = $aGetItems;
     }
 
     /**
@@ -44,17 +47,17 @@ class Transaction
         $dateFrom = $reqData->getDateFrom();
         $dateTo = $reqData->getDateTo();
 
-        $respRes = new WResult();
-        $respData = new WData();
-        $cfg = Cfg::CODE_TYPE_ASSET_PV;
-
         /** perform processing */
-        $respRes->setCode(WResponse::CODE_SUCCESS);
+        $items = $this->aGetItems->exec($assetTypeCode, $customerMlmId, $dateFrom, $dateTo);
 
         /** compose result */
+        $respData = new WData();
+        $respData->setItems($items);
+        $respRes = new WResult();
+        $respRes->setCode(WResponse::CODE_SUCCESS);
         $result = new WResponse();
-        $result->setResult($respRes);
         $result->setData($respData);
+        $result->setResult($respRes);
         return $result;
     }
 
