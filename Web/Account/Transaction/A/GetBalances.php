@@ -6,82 +6,119 @@
 
 namespace Praxigento\Odoo\Web\Account\Transaction\A;
 
-use Praxigento\Accounting\Repo\Data\Transaction as ETransaction;
+use Praxigento\Accounting\Api\Repo\Query\Balance\OnDate\Closing as QBalance;
+use Praxigento\Accounting\Repo\Data\Account as EAccount;
 use Praxigento\Accounting\Repo\Data\Type\Asset as ETypeAsset;
 use Praxigento\Downline\Repo\Data\Customer as EDwnlCust;
-use Praxigento\Downline\Repo\Query\Account\Trans\Get as QTransGet;
-use Praxigento\Odoo\Api\Web\Account\Transaction\Response\Data\Item as DItem;
-use Praxigento\Odoo\Config as Cfg;
 
 /**
- * Retrieve balances data from DB and compose API data object.
+ * Retrieve balances data (open|close) from DB.
  */
 class GetBalances
 {
+    /** Tables aliases for external usage ('camelCase' naming) */
+    private const AS_DWNL_CUST = 'dwnlCust';
+    private const AS_TYPE_ASSET = 'typeAsset';
 
     /** Bound variables names ('camelCase' naming) */
-    const BND_ASSET_CODE = 'assetCode';
-    const BND_DATE_FROM = 'dateFrom';
-    const BND_DATE_TO = 'dateTo';
-    const BND_MLM_ID = 'mlmId';
+    private const BND_ASSET_CODE = 'assetCode';
+    private const BND_DATE = 'date';
+    private const BND_MLM_ID = 'mlmId';
 
-    /** @var \Praxigento\Downline\Repo\Query\Account\Trans\Get */
-    private $qTransGet;
+    /** @var \Praxigento\Core\Api\Helper\Period */
+    private $hlpPeriod;
+    /** @var \Praxigento\Accounting\Api\Repo\Query\Balance\OnDate\Closing */
+    private $qBalance;
+    /** @var \Magento\Framework\App\ResourceConnection */
+    private $resource;
 
     public function __construct(
-        \Praxigento\Downline\Repo\Query\Account\Trans\Get $qTransGet
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Praxigento\Accounting\Api\Repo\Query\Balance\OnDate\Closing $qBalance,
+        \Praxigento\Core\Api\Helper\Period $hlpPeriod
     ) {
-        $this->qTransGet = $qTransGet;
+        $this->resource = $resource;
+        $this->qBalance = $qBalance;
+        $this->hlpPeriod = $hlpPeriod;
     }
 
     public function exec($assetTypeCode, $mlmId, $dateFrom, $dateTo)
     {
         /** define local working data */
-        $query = $this->qTransGet->build();
-        $conn = $query->getConnection();
-        $dateFrom = substr($dateFrom, 0, 10); // YYYY-MM-DD
-        $dateTo = substr($dateTo, 0, 10); // YYYY-MM-DD
-        $dateToNext = date('Y-m-d', strtotime($dateTo . ' +1 day'));
+        $dsFrom = $this->hlpPeriod->getPeriodForDate($dateFrom); // YYYYMMDD
+        $dsFrom = $this->hlpPeriod->getPeriodPrev($dsFrom); // prev. closing = current open
+        $dsTo = $this->hlpPeriod->getPeriodForDate($dateTo); // YYYYMMDD
 
+        /** perform processing */
+        $balanceOpen = $this->getBalance($dsFrom, $mlmId, $assetTypeCode);
+        $balanceClose = $this->getBalance($dsTo, $mlmId, $assetTypeCode);
+
+        return [$balanceOpen, $balanceClose];
+    }
+
+    /**
+     * Get closing balance for given date/customer/asset.
+     *
+     * @param string $date
+     * @param string $mlmId
+     * @param string $assetCode
+     * @return float
+     */
+    private function getBalance($date, $mlmId, $assetCode)
+    {
+        $query = $this->populateBalanceQuery();
+        $conn = $query->getConnection();
         /** perform processing: add filters to query */
-        $byCustDebit = QTransGet::AS_DWNL_DEBIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
-        $byCustCredit = QTransGet::AS_DWNL_CREDIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
-        $byCust = "($byCustDebit) OR ($byCustCredit)";
-        $byAsset = QTransGet::AS_TYPE_ASSET . '.' . ETypeAsset::A_CODE . '=:' . self::BND_ASSET_CODE;
-        $byDateFrom = QTransGet::AS_TRANS . '.' . ETransaction::A_DATE_APPLIED . '>=:' . self::BND_DATE_FROM;
-        $byDateTo = QTransGet::AS_TRANS . '.' . ETransaction::A_DATE_APPLIED . '<:' . self::BND_DATE_TO;
-        $byPeriod = "($byDateFrom) AND ($byDateTo)";
-        $where = "($byCust) AND ($byPeriod) AND ($byAsset)";
-        $query->where($where);
         $bind = [
-            self::BND_ASSET_CODE => $assetTypeCode,
+            QBalance::BND_MAX_DATE => $date,
             self::BND_MLM_ID => $mlmId,
-            self::BND_DATE_FROM => $dateFrom,
-            self::BND_DATE_TO => $dateToNext
+            self::BND_ASSET_CODE => $assetCode
         ];
         $rs = $conn->fetchAll($query, $bind);
 
         /** compose result */
-        $result = [];
-        foreach ($rs as $one) {
-            $debitMlmId = $one[QTransGet::A_DEBIT_MLM_ID] ?? Cfg::CUST_SYS_NAME;
-            $creditMlmId = $one[QTransGet::A_CREDIT_MLM_ID] ?? Cfg::CUST_SYS_NAME;
-
-            $item = new DItem();
-            $item->setAssetTypeCode($one[QTransGet::A_ASSET_TYPE_CODE]);
-            $item->setCreditAccId($one[QTransGet::A_CREDIT_ACC_ID]);
-            $item->setCreditMlmId($creditMlmId);
-            $item->setDateApplied($one[QTransGet::A_DATE_APPLIED]);
-            $item->setDatePerformed($one[QTransGet::A_DATE_PERFORMED]);
-            $item->setDebitAccId($one[QTransGet::A_DEBIT_ACC_ID]);
-            $item->setDebitMlmId($debitMlmId);
-            $item->setOperId($one[QTransGet::A_OPER_ID]);
-            $item->setOperTypeCode($one[QTransGet::A_OPER_TYPE_CODE]);
-            $item->setTransAmount($one[QTransGet::A_TRANS_AMOUNT]);
-            $item->setTransId($one[QTransGet::A_TRANS_ID]);
-            $item->setTransNote($one[QTransGet::A_TRANS_NOTE]);
-            $result[] = $item;
+        $result = 0;
+        if (
+            is_array($rs) &&
+            (count($rs) == 1)
+        ) {
+            $item = reset($rs);
+            $result = $item[QBalance::A_BALANCE];
         }
+        return $result;
+    }
+
+    /**
+     * Set additional filters to base query.
+     *
+     * @return \Magento\Framework\DB\Select
+     */
+    private function populateBalanceQuery()
+    {
+        $result = $this->qBalance->build();
+        $asAcc = QBalance::AS_ACC;
+        $asTypeAsset = self::AS_TYPE_ASSET;
+        $asDwnl = self::AS_DWNL_CUST;
+
+        /* LEFT JOIN prxgt_acc_type_asset */
+        $tbl = $this->resource->getTableName(ETypeAsset::ENTITY_NAME);
+        $as = $asTypeAsset;
+        $cols = [];
+        $cond = "$as." . ETypeAsset::A_ID . "=$asAcc." . EAccount::A_ASSET_TYPE_ID;
+        $result->joinLeft([$as => $tbl], $cond, $cols);
+
+        /* LEFT JOIN prxgt_dwnl_customer */
+        $tbl = $this->resource->getTableName(EDwnlCust::ENTITY_NAME);
+        $as = $asDwnl;
+        $cols = [];
+        $cond = "$as." . EDwnlCust::A_CUSTOMER_ID . "=$asAcc." . EAccount::A_CUST_ID;
+        $result->joinLeft([$as => $tbl], $cond, $cols);
+
+        /* WHERE */
+        $byType = "$asTypeAsset." . ETypeAsset::A_CODE . "=:" . self::BND_ASSET_CODE;
+        $byMlmId = "$asDwnl." . EDwnlCust::A_MLM_ID . "=:" . self::BND_MLM_ID;
+        $result->where("($byType) AND ($byMlmId)");
+
         return $result;
     }
 }

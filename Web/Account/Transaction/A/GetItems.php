@@ -20,10 +20,10 @@ class GetItems
 {
 
     /** Bound variables names ('camelCase' naming) */
-    const BND_ASSET_CODE = 'assetCode';
-    const BND_DATE_FROM = 'dateFrom';
-    const BND_DATE_TO = 'dateTo';
-    const BND_MLM_ID = 'mlmId';
+    private const BND_ASSET_CODE = 'assetCode';
+    private const BND_DATE_FROM = 'dateFrom';
+    private const BND_DATE_TO = 'dateTo';
+    private const BND_MLM_ID = 'mlmId';
 
     /** @var \Praxigento\Downline\Repo\Query\Account\Trans\Get */
     private $qTransGet;

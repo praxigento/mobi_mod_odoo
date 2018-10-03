@@ -49,12 +49,17 @@ class Transaction
 
         /** perform processing */
         $items = $this->aGetItems->exec($assetTypeCode, $customerMlmId, $dateFrom, $dateTo);
+        list($open, $close) = $this->aGetBalances->exec($assetTypeCode, $customerMlmId, $dateFrom, $dateTo);
 
         /** compose result */
         $respData = new WData();
         $respData->setItems($items);
+        $respData->setBalanceOpen($open);
+        $respData->setBalanceClose($close);
+
         $respRes = new WResult();
         $respRes->setCode(WResponse::CODE_SUCCESS);
+
         $result = new WResponse();
         $result->setData($respData);
         $result->setResult($respRes);
