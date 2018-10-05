@@ -2,6 +2,14 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
+    <route url="/V1/prxgt/odoo/account/balances" method="POST">
+        <!-- Get balances for list of customers for period. -->
+        <service class="Praxigento\Odoo\Api\Web\Account\BalancesInterface" method="exec"/>
+        <resources>
+            <resource ref="Praxigento_Odoo::replicate"/>
+        </resources>
+    </route>
+
     <route url="/V1/prxgt/odoo/account/daily" method="POST">
         <!-- Get account turnover summary by day & transaction type (Odoo replication). -->
         <service class="Praxigento\Odoo\Api\Web\Account\DailyInterface" method="exec"/>

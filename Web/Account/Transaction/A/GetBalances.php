@@ -16,13 +16,12 @@ use Praxigento\Downline\Repo\Data\Customer as EDwnlCust;
  */
 class GetBalances
 {
-    /** Tables aliases for external usage ('camelCase' naming) */
+    /** Tables aliases */
     private const AS_DWNL_CUST = 'dwnlCust';
     private const AS_TYPE_ASSET = 'typeAsset';
 
     /** Bound variables names ('camelCase' naming) */
     private const BND_ASSET_CODE = 'assetCode';
-    private const BND_DATE = 'date';
     private const BND_MLM_ID = 'mlmId';
 
     /** @var \Praxigento\Core\Api\Helper\Period */

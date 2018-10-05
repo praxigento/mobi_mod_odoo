@@ -8,6 +8,8 @@
     <!-- *** -->
     <preference for="Praxigento\Odoo\Api\App\Logger\Main"
                 type="Praxigento\Odoo\App\Logger\Main"/>
+    <preference for="Praxigento\Odoo\Api\Web\Account\BalancesInterface"
+                type="Praxigento\Odoo\Web\Account\Balances"/>
     <preference for="Praxigento\Odoo\Api\Web\Account\DailyInterface"
                 type="Praxigento\Odoo\Web\Account\Daily"/>
     <preference for="Praxigento\Odoo\Api\Web\Account\TransactionInterface"

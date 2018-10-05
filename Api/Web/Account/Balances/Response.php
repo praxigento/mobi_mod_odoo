@@ -4,10 +4,10 @@
  * Since: 2018
  */
 
-namespace Praxigento\Odoo\Api\Web\Account\Transaction;
+namespace Praxigento\Odoo\Api\Web\Account\Balances;
 
 /**
- * Response to get accounting transactions data.
+ * Response to get balances for list of customers for period.
  *
  * (Define getters explicitly to use with Swagger tool)
  * (Define setters explicitly to use with Magento JSON2PHP conversion tool)
@@ -17,7 +17,7 @@ class Response
     extends \Praxigento\Core\Api\App\Web\Response
 {
     /**
-     * @return \Praxigento\Odoo\Api\Web\Account\Transaction\Response\Data
+     * @return \Praxigento\Odoo\Api\Web\Account\Balances\Response\Data
      */
     public function getData()
     {
@@ -26,7 +26,7 @@ class Response
     }
 
     /**
-     * @param \Praxigento\Odoo\Api\Web\Account\Transaction\Response\Data $data
+     * @param \Praxigento\Odoo\Api\Web\Account\Balances\Response\Data $data
      * @return void
      */
     public function setData($data)
