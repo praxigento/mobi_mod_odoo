@@ -65,14 +65,17 @@ class GetBalances
      */
     private function getBalance($date, $mlmId, $assetCode)
     {
-        $query = $this->populateBalanceQuery();
+        $isMobiSysAcc = is_null($mlmId);
+        $query = $this->populateBalanceQuery($isMobiSysAcc);
         $conn = $query->getConnection();
         /** perform processing: add filters to query */
         $bind = [
             QBalance::BND_MAX_DATE => $date,
-            self::BND_MLM_ID => $mlmId,
             self::BND_ASSET_CODE => $assetCode
         ];
+        if (!$isMobiSysAcc) {
+            $bind[self::BND_MLM_ID] = $mlmId;
+        }
         $rs = $conn->fetchAll($query, $bind);
 
         /** compose result */
@@ -92,7 +95,7 @@ class GetBalances
      *
      * @return \Magento\Framework\DB\Select
      */
-    private function populateBalanceQuery()
+    private function populateBalanceQuery($isMobySysCust = false)
     {
         $result = $this->qBalance->build();
         $asAcc = QBalance::AS_ACC;
@@ -114,8 +117,12 @@ class GetBalances
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* WHERE */
-        $byType = "$asTypeAsset." . ETypeAsset::A_CODE . "=:" . self::BND_ASSET_CODE;
-        $byMlmId = "$asDwnl." . EDwnlCust::A_MLM_ID . "=:" . self::BND_MLM_ID;
+        $byType = "$asTypeAsset." . ETypeAsset::A_CODE . '=:' . self::BND_ASSET_CODE;
+        if ($isMobySysCust) {
+            $byMlmId = "$asDwnl." . EDwnlCust::A_MLM_ID . ' IS NULL';
+        } else {
+            $byMlmId = "$asDwnl." . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
+        }
         $result->where("($byType) AND ($byMlmId)");
 
         return $result;

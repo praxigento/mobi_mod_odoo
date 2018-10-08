@@ -44,9 +44,17 @@ class GetItems
         $dateToNext = date('Y-m-d', strtotime($dateTo . ' +1 day'));
 
         /** perform processing: add filters to query */
-        $byCustDebit = QTransGet::AS_DWNL_DEBIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
-        $byCustCredit = QTransGet::AS_DWNL_CREDIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
-        $byCust = "($byCustDebit) OR ($byCustCredit)";
+        if (is_null($mlmId)) {
+            /* MOBI_SYS: system "customer" has no MLM ID */
+            $byCustDebit = QTransGet::AS_DWNL_DEBIT . '.' . EDwnlCust::A_MLM_ID . ' IS NULL';
+            $byCustCredit = QTransGet::AS_DWNL_CREDIT . '.' . EDwnlCust::A_MLM_ID . ' IS NULL';
+            $byCust = "($byCustDebit) OR ($byCustCredit)";
+        } else {
+            /* regular customer */
+            $byCustDebit = QTransGet::AS_DWNL_DEBIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
+            $byCustCredit = QTransGet::AS_DWNL_CREDIT . '.' . EDwnlCust::A_MLM_ID . '=:' . self::BND_MLM_ID;
+            $byCust = "($byCustDebit) OR ($byCustCredit)";
+        }
         $byAsset = QTransGet::AS_TYPE_ASSET . '.' . ETypeAsset::A_CODE . '=:' . self::BND_ASSET_CODE;
         $byDateFrom = QTransGet::AS_TRANS . '.' . ETransaction::A_DATE_APPLIED . '>=:' . self::BND_DATE_FROM;
         $byDateTo = QTransGet::AS_TRANS . '.' . ETransaction::A_DATE_APPLIED . '<:' . self::BND_DATE_TO;
@@ -55,10 +63,12 @@ class GetItems
         $query->where($where);
         $bind = [
             self::BND_ASSET_CODE => $assetTypeCode,
-            self::BND_MLM_ID => $mlmId,
             self::BND_DATE_FROM => $dateFrom,
             self::BND_DATE_TO => $dateToNext
         ];
+        if (!is_null($mlmId)) {
+            $bind[self::BND_MLM_ID] = $mlmId;
+        }
         $rs = $conn->fetchAll($query, $bind);
 
         /** compose result */
