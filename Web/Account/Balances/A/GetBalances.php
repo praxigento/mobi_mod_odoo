@@ -12,6 +12,7 @@ use Praxigento\Accounting\Repo\Data\Type\Asset as ETypeAsset;
 use Praxigento\Core\App\Repo\Query\Expression as AnExpression;
 use Praxigento\Downline\Repo\Data\Customer as EDwnlCust;
 use Praxigento\Odoo\Api\Web\Account\Balances\Response\Data\Item as DItem;
+use Praxigento\Odoo\Api\Web\Account\Balances\Response\Data\Item\Asset as DAsset;
 
 /**
  * Retrieve balances data (open|close) from DB.
@@ -83,21 +84,45 @@ class GetBalances
         foreach ($mlmIds as $mlmId) {
             $item = new DItem();
             $item->setMlmId($mlmId);
+            /* compose list of the used assets */
+            $openCust = $closeCust = [];
             if (isset($open[$mlmId])) {
+                $openCust = $open[$mlmId];
             }
-
+            if (isset($close[$mlmId])) {
+                $closeCust = $close[$mlmId];
+            }
+            $assetCodes = $this->getAssetCodes($openCust, $closeCust);
+            $assets = [];
+            foreach ($assetCodes as $assetCode) {
+                $balanceOpen = $openCust[$assetCode] ?? 0;
+                $balanceClose = $closeCust[$assetCode] ?? 0;
+                $asset = new DAsset();
+                $asset->setClose($balanceClose);
+                $asset->setOpen($balanceOpen);
+                $asset->setType($assetCode);
+                $assets[] = $asset;
+            }
+            $item->setAssets($assets);
             $result[$mlmId] = $item;
         }
         return $result;
     }
 
-    private function getAssets($open, $close)
+    /**
+     * Compose array with assets for open/close data.
+     *
+     * @param array $open
+     * @param array $close
+     * @return array
+     */
+    private function getAssetCodes($open, $close)
     {
         $result = [];
         foreach ($open as $asset => $balance) {
             if (!in_array($asset, $result)) $result[] = $asset;
         }
-        foreach ($open as $asset => $balance) {
+        foreach ($close as $asset => $balance) {
             if (!in_array($asset, $result)) $result[] = $asset;
         }
         return $result;
@@ -113,26 +138,28 @@ class GetBalances
      */
     private function getBalance($date, $mlmIds, $assetCode)
     {
-        $filterByAsset = !is_null($assetCode);
-        $query = $this->populateBalanceQuery($mlmIds, $filterByAsset);
-        $conn = $query->getConnection();
-
-        /** perform processing: add filters to query */
-        $bind = [
-            QBalance::BND_MAX_DATE => $date
-        ];
-        if ($filterByAsset) {
-            $bind[self::BND_ASSET_CODE] = $assetCode;
-        }
-        $rs = $conn->fetchAll($query, $bind);
-
-        /** compose result */
         $result = [];
-        foreach ($rs as $one) {
-            $mlmId = $one[self::A_MLM_ID];
-            $asset = $one[self::A_ASSET_TYPE];
-            $balance = $one[QBalance::A_BALANCE];
-            $result[$mlmId][$asset] = $balance;
+        if (count($mlmIds) > 0) {
+            $filterByAsset = !is_null($assetCode);
+            $query = $this->populateBalanceQuery($mlmIds, $filterByAsset);
+            $conn = $query->getConnection();
+
+            /** perform processing: add filters to query */
+            $bind = [
+                QBalance::BND_MAX_DATE => $date
+            ];
+            if ($filterByAsset) {
+                $bind[self::BND_ASSET_CODE] = $assetCode;
+            }
+            $rs = $conn->fetchAll($query, $bind);
+
+            /** compose result */
+            foreach ($rs as $one) {
+                $mlmId = $one[self::A_MLM_ID];
+                $asset = $one[self::A_ASSET_TYPE];
+                $balance = $one[QBalance::A_BALANCE];
+                $result[$mlmId][$asset] = $balance;
+            }
         }
         return $result;
     }

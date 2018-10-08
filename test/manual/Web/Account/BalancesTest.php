@@ -23,7 +23,7 @@ class BalancesTest
         $obj = $this->manObj->create(AService::class);
         $req = new ARequest();
         $data = new ARequestData ();
-        $data->setAssetTypeCode(Cfg::CODE_TYPE_ASSET_PV);
+//        $data->setAssetTypeCode(Cfg::CODE_TYPE_ASSET_PV);
         $data->setCustomers(['778104481', '800002446']);
         $data->setDateFrom('2018-08-01');
         $data->setDateTo('2018-08-31');
