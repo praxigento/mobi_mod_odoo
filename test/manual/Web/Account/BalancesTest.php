@@ -10,7 +10,6 @@ use Praxigento\Odoo\Api\Web\Account\Balances\Request as ARequest;
 use Praxigento\Odoo\Api\Web\Account\Balances\Request\Data as ARequestData;
 use Praxigento\Odoo\Api\Web\Account\Balances\Response as AResponse;
 use Praxigento\Odoo\Api\Web\Account\BalancesInterface as AService;
-use Praxigento\Odoo\Config as Cfg;
 
 include_once(__DIR__ . '/../../phpunit_bootstrap.php');
 

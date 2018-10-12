@@ -69,9 +69,14 @@ class Save
                 $shipment->register();
                 $shipment->save();
                 $order = $shipment->getOrder();
-                $invoice = $this->manInvoice->prepareInvoice($order);
-                $invoice->register();
-                $invoice->save();
+                $invoices = $order->getInvoiceCollection();
+                if (count($invoices)) {
+                    /* there is invoices in order; do nothing */
+                } else {
+                    $invoice = $this->manInvoice->prepareInvoice($order);
+                    $invoice->register();
+                    $invoice->save();
+                }
                 $order->save();
                 $this->manTrans->commit($def);
                 $respRes->setCode(AResponse::CODE_SUCCESS);
