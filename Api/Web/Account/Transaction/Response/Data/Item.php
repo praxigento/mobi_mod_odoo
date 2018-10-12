@@ -12,10 +12,12 @@ class Item
     const ASSET_TYPE_CODE = 'assetTypeCode';
     const CREDIT_ACC_ID = 'creditAccId';
     const CREDIT_MLM_ID = 'creditMlmId';
+    const CREDIT_NAME = 'creditName';
     const DATE_APPLIED = 'dateApplied';
     const DATE_PERFORMED = 'datePerformed';
     const DEBIT_ACC_ID = 'debitAccId';
     const DEBIT_MLM_ID = 'debitMlmId';
+    const DEBIT_NAME = 'debitName';
     const OPER_ID = 'operId';
     const OPER_NOTE = 'operNote';
     const OPER_TYPE_CODE = 'operTypeCode';
@@ -54,6 +56,15 @@ class Item
     /**
      * @return string
      */
+    public function getCreditName()
+    {
+        $result = parent::get(self::CREDIT_NAME);
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
     public function getDateApplied()
     {
         $result = parent::get(self::DATE_APPLIED);
@@ -84,6 +95,15 @@ class Item
     public function getDebitMlmId()
     {
         $result = parent::get(self::DEBIT_MLM_ID);
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDebitName()
+    {
+        $result = parent::get(self::DEBIT_NAME);
         return $result;
     }
 
@@ -172,6 +192,15 @@ class Item
      * @param string $data
      * @return void
      */
+    public function setCreditName($data)
+    {
+        parent::set(self::CREDIT_NAME, $data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
     public function setDateApplied($data)
     {
         parent::set(self::DATE_APPLIED, $data);
@@ -202,6 +231,15 @@ class Item
     public function setDebitMlmId($data)
     {
         parent::set(self::DEBIT_MLM_ID, $data);
+    }
+
+    /**
+     * @param string $data
+     * @return void
+     */
+    public function setDebitName($data)
+    {
+        parent::set(self::DEBIT_NAME, $data);
     }
 
     /**

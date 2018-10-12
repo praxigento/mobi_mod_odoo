@@ -6,6 +6,7 @@
 
 namespace Praxigento\Odoo\Web\Account\Transaction\A;
 
+use Praxigento\Accounting\Repo\Data\Account as EAccount;
 use Praxigento\Accounting\Repo\Data\Transaction as ETransaction;
 use Praxigento\Accounting\Repo\Data\Type\Asset as ETypeAsset;
 use Praxigento\Downline\Repo\Data\Customer as EDwnlCust;
@@ -18,6 +19,15 @@ use Praxigento\Odoo\Config as Cfg;
  */
 class GetItems
 {
+    /** Tables aliases for internal usage ('camelCase' naming) */
+    private const AS_CUST_CREDIT = 'custCred';
+    private const AS_CUST_DEBIT = 'custDebt';
+
+    /** Columns/expressions aliases for internal usage ('camelCase' naming) */
+    const A_CRED_CUST_FIRST = 'credCustFirst';
+    const A_CRED_CUST_LAST = 'credCustLast';
+    const A_DEBT_CUST_FIRST = 'debtCustFirst';
+    const A_DEBT_CUST_LAST = 'debtCustLast';
 
     /** Bound variables names ('camelCase' naming) */
     private const BND_ASSET_CODE = 'assetCode';
@@ -27,10 +37,14 @@ class GetItems
 
     /** @var \Praxigento\Downline\Repo\Query\Account\Trans\Get */
     private $qTransGet;
+    /** @var \Magento\Framework\App\ResourceConnection */
+    private $resource;
 
     public function __construct(
+        \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Downline\Repo\Query\Account\Trans\Get $qTransGet
     ) {
+        $this->resource = $resource;
         $this->qTransGet = $qTransGet;
     }
 
@@ -43,7 +57,36 @@ class GetItems
         $dateTo = substr($dateTo, 0, 10); // YYYY-MM-DD
         $dateToNext = date('Y-m-d', strtotime($dateTo . ' +1 day'));
 
-        /** perform processing: add filters to query */
+        /* perform processing */
+        /* define tables aliases for internal usage (in this method) */
+        $asAccCred = QTransGet::AS_ACC_CREDIT;
+        $asAccDebt = QTransGet::AS_ACC_DEBIT;
+        $asCustCred = self::AS_CUST_CREDIT;
+        $asCustDebt = self::AS_CUST_DEBIT;
+
+        /* additional JOINS to base query */
+
+        /* LEFT JOIN customer_entity as debit */
+        $tbl = $this->resource->getTableName(Cfg::ENTITY_MAGE_CUSTOMER);
+        $as = $asCustDebt;
+        $cols = [
+            self::A_DEBT_CUST_FIRST => Cfg::E_CUSTOMER_A_FIRSTNAME,
+            self::A_DEBT_CUST_LAST => Cfg::E_CUSTOMER_A_LASTNAME
+        ];
+        $cond = "$as." . Cfg::E_CUSTOMER_A_ENTITY_ID . "=$asAccDebt." . EAccount::A_CUST_ID;
+        $query->joinLeft([$as => $tbl], $cond, $cols);
+
+        /* LEFT JOIN customer_entity as credit */
+        $tbl = $this->resource->getTableName(Cfg::ENTITY_MAGE_CUSTOMER);
+        $as = $asCustCred;
+        $cols = [
+            self::A_CRED_CUST_FIRST => Cfg::E_CUSTOMER_A_FIRSTNAME,
+            self::A_CRED_CUST_LAST => Cfg::E_CUSTOMER_A_LASTNAME
+        ];
+        $cond = "$as." . Cfg::E_CUSTOMER_A_ENTITY_ID . "=$asAccCred." . EAccount::A_CUST_ID;
+        $query->joinLeft([$as => $tbl], $cond, $cols);
+
+        /** add filters to query */
         if (is_null($mlmId)) {
             /* MOBI_SYS: system "customer" has no MLM ID */
             $byCustDebit = QTransGet::AS_DWNL_DEBIT . '.' . EDwnlCust::A_MLM_ID . ' IS NULL';
@@ -76,15 +119,23 @@ class GetItems
         foreach ($rs as $one) {
             $debitMlmId = $one[QTransGet::A_DEBIT_MLM_ID] ?? Cfg::CUST_SYS_NAME;
             $creditMlmId = $one[QTransGet::A_CREDIT_MLM_ID] ?? Cfg::CUST_SYS_NAME;
+            $nameFirst = $one[self::A_DEBT_CUST_FIRST];
+            $nameLast = $one[self::A_DEBT_CUST_LAST];
+            $debitName = trim("$nameFirst $nameLast");
+            $nameFirst = $one[self::A_CRED_CUST_FIRST];
+            $nameLast = $one[self::A_CRED_CUST_LAST];
+            $creditName = trim("$nameFirst $nameLast");
 
             $item = new DItem();
             $item->setAssetTypeCode($one[QTransGet::A_ASSET_TYPE_CODE]);
             $item->setCreditAccId($one[QTransGet::A_CREDIT_ACC_ID]);
             $item->setCreditMlmId($creditMlmId);
+            $item->setCreditName($creditName);
             $item->setDateApplied($one[QTransGet::A_DATE_APPLIED]);
             $item->setDatePerformed($one[QTransGet::A_DATE_PERFORMED]);
             $item->setDebitAccId($one[QTransGet::A_DEBIT_ACC_ID]);
             $item->setDebitMlmId($debitMlmId);
+            $item->setDebitName($debitName);
             $item->setOperId($one[QTransGet::A_OPER_ID]);
             $item->setOperTypeCode($one[QTransGet::A_OPER_TYPE_CODE]);
             $item->setTransAmount($one[QTransGet::A_TRANS_AMOUNT]);
