@@ -13,6 +13,8 @@ use Praxigento\Odoo\Service\Replicate\Product\Save\Response as AResponse;
  */
 class Save
 {
+    /** @var \Psr\Log\LoggerInterface */
+    private $logger;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Lots */
     private $ownLots;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product */
@@ -21,10 +23,12 @@ class Save
     private $ownWrhs;
 
     public function __construct(
+        \Praxigento\Core\Api\App\Logger\Main $logger,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Lots $ownLots,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product $ownProd,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Warehouses $ownWrhs
     ) {
+        $this->logger = $logger;
         $this->ownLots = $ownLots;
         $this->ownProd = $ownProd;
         $this->ownWrhs = $ownWrhs;
@@ -45,6 +49,9 @@ class Save
         $lots = $inventory->getLots();
         $products = $inventory->getProducts();
 
+        $total = count($products);
+        $this->logger->info("Odoo products replication is started. Total products: $total.");
+
         /** perform processing */
         $this->ownWrhs->execute($warehouses);
         $this->ownLots->execute($lots);
@@ -53,6 +60,7 @@ class Save
                 $this->ownProd->execute($prod);
             }
         }
+        $this->logger->info("Odoo products replication is completed.");
 
         /** compose result */
         $result = new AResponse();
