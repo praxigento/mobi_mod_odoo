@@ -16,11 +16,15 @@ class Lot
     private $daoOdooLot;
     /** @var \Praxigento\Warehouse\Repo\Dao\Quantity */
     private $daoWrhsQty;
+    /** @var \Psr\Log\LoggerInterface */
+    private $logger;
 
     public function __construct(
+        \Praxigento\Odoo\App\Logger\Main $logger,
         \Praxigento\Odoo\Repo\Dao\Lot $daoOdooLot,
         \Praxigento\Warehouse\Repo\Dao\Quantity $daoWrhsQty
     ) {
+        $this->logger = $logger;
         $this->daoOdooLot = $daoOdooLot;
         $this->daoWrhsQty = $daoWrhsQty;
     }
@@ -46,6 +50,7 @@ class Lot
                 EWrhsQty::A_LOT_REF => $lotIdMage
             ];
             $this->daoWrhsQty->deleteById($pk);
+            $this->logger->info("Empty lot is removed - lot: $lotIdMage, stockItem: $stockItemId;");
         }
     }
 
