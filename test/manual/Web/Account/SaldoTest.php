@@ -22,7 +22,7 @@ class SaldoTest
         $obj = $this->manObj->create(AService::class);
         $req = new ARequest();
         $data = new ARequestData ();
-        $data->setOperTypes([]);
+        $data->setOperTypes(['PV', 'WALLET']);
         $data->setCustomers(['778104481']);
         $data->setDateFrom('2018-08-01');
         $data->setDateTo('2018-08-31');
