@@ -22,6 +22,8 @@ use Praxigento\Odoo\Web\Account\Saldo\A\Repo\Query\SummaryBase as QSumBase;
 class Saldo
     implements \Praxigento\Odoo\Api\Web\Account\SaldoInterface
 {
+    /** @var \Praxigento\Odoo\Api\Helper\BusinessCodes */
+    private $hlpBusCodes;
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
     /** @var \Praxigento\Odoo\Web\Account\Saldo\A\Repo\Query\SummaryBase */
@@ -32,11 +34,23 @@ class Saldo
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
+        \Praxigento\Odoo\Api\Helper\BusinessCodes $hlpBusCodes,
         \Praxigento\Odoo\Web\Account\Saldo\A\Repo\Query\SummaryBase $qSumBase
     ) {
         $this->resource = $resource;
         $this->hlpPeriod = $hlpPeriod;
+        $this->hlpBusCodes = $hlpBusCodes;
         $this->qSumBase = $qSumBase;
+    }
+
+    private function convertTranTypes($trnTypes)
+    {
+        $result = [];
+        foreach ($trnTypes as $type) {
+            $operTypes = $this->hlpBusCodes->getMageCodesForTransType($type);
+            $result = array_merge($result, $operTypes);
+        }
+        return $result;
     }
 
     /**
@@ -49,12 +63,13 @@ class Saldo
         assert($request instanceof WRequest);
         /** define local working data */
         $reqData = $request->getData();
-        $operTypes = $reqData->getOperTypes();
+        $tranTypes = $reqData->getTransTypes();
         $customers = $reqData->getCustomers();
         $dateFrom = $reqData->getDateFrom();
         $dateTo = $reqData->getDateTo();
 
         /** perform processing */
+        $operTypes = $this->convertTranTypes($tranTypes);
         $dateFrom = substr($dateFrom, 0, 10); // YYYY-MM-DD
         $dateTo = substr($dateTo, 0, 10); // YYYY-MM-DD
         $dateToNext = date('Y-m-d', strtotime($dateTo . ' +1 day'));

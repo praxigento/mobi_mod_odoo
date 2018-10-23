@@ -168,7 +168,7 @@ class SummaryBase
             $codes .= $type . ',';
         }
         $codes = substr($codes, 0, -1);
-        $exp = self::AS_TYPE_ASSET . '.' . ETypeAsset::A_CODE . " IN ($codes)";
+        $exp = self::AS_TYPE_OPER . '.' . ETypeOper::A_CODE . " IN ($codes)";
         $result = new AnExpression($exp);
         return $result;
     }

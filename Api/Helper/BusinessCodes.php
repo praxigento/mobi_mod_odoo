@@ -51,7 +51,15 @@ interface BusinessCodes
      * @param string $businessCode for shipping method
      * @return string carrier's code
      */
-    public function getMagCodeForCarrier($businessCode);
+    public function getMageCodeForCarrier($businessCode);
+
+    /**
+     * One transaction type can be mapped to multiple operation types.
+     *
+     * @param string $trnType business code for transaction type
+     * @return array
+     */
+    public function getMageCodesForTransType($trnType);
 
     /**
      * Get '1' value by 'distributor' value.

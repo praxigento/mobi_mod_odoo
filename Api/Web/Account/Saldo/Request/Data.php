@@ -16,7 +16,7 @@ class Data
     const CUSTOMERS = 'customers';
     const DATE_FROM = 'dateFrom';
     const DATE_TO = 'dateTo';
-    const OPER_TYPES = 'operTypes';
+    const TRANS_TYPES = 'operTypes';
 
     /**
      * @return string[]
@@ -48,9 +48,9 @@ class Data
     /**
      * @return string[]
      */
-    public function getOperTypes()
+    public function getTransTypes()
     {
-        $result = parent::get(self::OPER_TYPES);
+        $result = parent::get(self::TRANS_TYPES);
         return $result;
     }
 
@@ -85,9 +85,9 @@ class Data
      * @param string[] $data
      * @return void
      */
-    public function setOperTypes($data)
+    public function setTransTypes($data)
     {
-        parent::set(self::OPER_TYPES, $data);
+        parent::set(self::TRANS_TYPES, $data);
     }
 
 }

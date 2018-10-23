@@ -57,7 +57,7 @@ class Save
             /** @var \Magento\Sales\Model\Order\Shipment $shipment */
             $shipment = $this->shipmentLoader->load();
             if ($shipment) {
-                $carrierCode = $this->manBusCodes->getMagCodeForCarrier($shippingMethodCode);
+                $carrierCode = $this->manBusCodes->getMageCodeForCarrier($shippingMethodCode);
                 $title = $this->manBusCodes->getTitleForCarrier($shippingMethodCode);
                 if ($trackNumber) {
                     $track = $this->manObj->create(\Magento\Sales\Model\Order\Shipment\Track::class);
