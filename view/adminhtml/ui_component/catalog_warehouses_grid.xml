@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
 
     <!-- **************************************************** -->
-    <!-- Data Source definition -->
+    <!-- Rewrite original Data Source.                        -->
     <!-- **************************************************** -->
     <dataSource name="catalog_warehouses_grid_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Praxigento\Core\App\Ui\DataProvider\Grid\Base</argument>
-            <argument name="name" xsi:type="string">catalog_warehouses_grid_data_source</argument>
-            <argument name="gridQueryBuilder"
-                      xsi:type="object">Praxigento\Odoo\Ui\DataProvider\Grid\Warehouse\QueryBuilder</argument>
-        </argument>
-        <argument name="data" xsi:type="array">
-            <item name="js_config" xsi:type="array">
-                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
-            </item>
+            <!--https://magento.stackexchange.com/questions/248611/magento-2-grid-data-source-definition-in-compact-form -->
+            <argument name="gridQueryBuilder" xsi:type="object">Praxigento\Odoo\Ui\DataProvider\Grid\Warehouse\QueryBuilder</argument>
         </argument>
     </dataSource>
 
     <!-- **************************************************** -->
-    <!-- Grid Columns -->
+    <!-- Additional Columns for Grid                          -->
     <!-- **************************************************** -->
     <columns name="catalog_warehouses_columns">
 
         <column name="OdooId">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">asc</item>
-                    <item name="label" xsi:type="string" translate="true">Odoo ID</item>
-                </item>
-            </argument>
+            <settings>
+                <dataType>number</dataType>
+                <filter>textRange</filter>
+                <label translate="true">Odoo ID</label>
+            </settings>
         </column>
+
     </columns>
 </listing>

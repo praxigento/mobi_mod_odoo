@@ -1,25 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
-/**
- * Additional columns for sale orders grid.
- */
--->
-<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <!-- **************************************************** -->
+    <!-- Additional Columns for Grid                          -->
+    <!-- **************************************************** -->
     <columns name="sales_order_columns">
+
         <column name="prxgt_is_in_odoo">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <!--<item name="filter" xsi:type="string">text</item>-->
-                    <item name="label" xsi:type="string" translate="true">Is in Odoo</item>
-                </item>
-            </argument>
+            <settings>
+                <dataType>number</dataType>
+                <filter>text</filter>
+                <label translate="true">Is in Odoo</label>
+            </settings>
         </column>
+
         <column name="applied_rule_ids">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <!--<item name="filter" xsi:type="string">text</item>-->
-                    <item name="label" xsi:type="string" translate="true">Sales Rules</item>
-                </item>
-            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <filter>text</filter>
+                <label translate="true">Sales Rules</label>
+            </settings>
         </column>
+
     </columns>
 </listing>
