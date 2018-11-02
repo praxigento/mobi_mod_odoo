@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+
+        <!-- "Sales / MOBI Actions" group items -->
+        <add id="Praxigento_Odoo::sales_replicate"
+             title="Replicate Sales"
+             translate="title"
+             module="Praxigento_Odoo"
+             sortOrder="100"
+             action="odoo/replicate"
+             parent="Praxigento_Core::sales_actions"
+             resource="Praxigento_Odoo::replicate"/>
+
+
+        <!-- "Catalog / MOBI Actions" group items -->
+        <add id="Praxigento_Odoo::catalog_replicate_products"
+             title="Replicate Products"
+             translate="title"
+             module="Praxigento_Odoo"
+             sortOrder="100"
+             action="odoo/replicate"
+             parent="Praxigento_Core::catalog_actions"
+             resource="Praxigento_Odoo::replicate"/>
+
+    </menu>
+</config>
