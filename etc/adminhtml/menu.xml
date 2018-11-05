@@ -4,23 +4,23 @@
     <menu>
 
         <!-- "Sales / MOBI Actions" group items -->
-        <add id="Praxigento_Odoo::sales_replicate"
-             title="Replicate Sales"
+        <add id="Praxigento_Odoo::replicate_sales"
+             title="Replicate Orders"
              translate="title"
              module="Praxigento_Odoo"
              sortOrder="100"
-             action="odoo/replicate"
+             action="sales/replicate_orders"
              parent="Praxigento_Core::sales_actions"
              resource="Praxigento_Odoo::replicate"/>
 
 
         <!-- "Catalog / MOBI Actions" group items -->
-        <add id="Praxigento_Odoo::catalog_replicate_products"
+        <add id="Praxigento_Odoo::replicate_products"
              title="Replicate Products"
              translate="title"
              module="Praxigento_Odoo"
              sortOrder="100"
-             action="odoo/replicate"
+             action="catalog/replicate_products"
              parent="Praxigento_Core::catalog_actions"
              resource="Praxigento_Odoo::replicate"/>
 
