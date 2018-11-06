@@ -16,7 +16,16 @@ class Product
 {
     /** @var int */
     private static $cacheDefWrhs;
-
+    /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
+    private $daoAttrSet;
+    /** @var \Praxigento\Odoo\Repo\Dao\Product */
+    private $daoOdooProd;
+    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
+    private $daoOdooWrhs;
+    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
+    private $daoProd;
+    /** @var \Praxigento\Pv\Repo\Dao\Product */
+    private $daoPvProd;
     /** @var \Magento\Catalog\Model\ProductFactory */
     private $factProd;
     /** @var \Magento\Framework\Api\Search\SearchCriteriaFactory */
@@ -29,19 +38,12 @@ class Product
     private $ownCat;
     /** @var \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse */
     private $ownWrhs;
-    /** @var \Magento\Catalog\Api\AttributeSetRepositoryInterface */
-    private $daoAttrSet;
-    /** @var \Praxigento\Odoo\Repo\Dao\Product */
-    private $daoOdooProd;
-    /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
-    private $daoOdooWrhs;
-    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
-    private $daoProd;
-    /** @var \Praxigento\Pv\Repo\Dao\Product */
-    private $daoPvProd;
+    /** @var \Magento\Framework\Registry */
+    private $registry;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
+        \Magento\Framework\Registry $registry,
         \Magento\Catalog\Api\AttributeSetRepositoryInterface $daoAttrSet,
         \Praxigento\Odoo\Repo\Dao\Product $daoOdooProd,
         \Praxigento\Odoo\Repo\Dao\Warehouse $daoOdooWrhs,
@@ -54,6 +56,7 @@ class Product
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product\Warehouse $ownWrhs
     ) {
         $this->logger = $logger;
+        $this->registry = $registry;
         $this->daoAttrSet = $daoAttrSet;
         $this->daoProd = $daoProd;
         $this->daoOdooProd = $daoOdooProd;
@@ -106,6 +109,9 @@ class Product
         $product->setAttributeSetId($attrSetId);
         $product->setTypeId(Type::TYPE_SIMPLE);
         $product->setUrlKey($sku); // MOBI-331 : use SKU as URL Key instead of Product Name
+        /* MOBI-1610: see \MageWorx\Downloads\Observer\Adminhtml\SaveProductAttachments::execute */
+        $this->registry->unregister('product');
+        $this->registry->register('product', $product);
         $saved = $this->daoProd->save($product);
         /* return product ID */
         $result = $saved->getId();
@@ -272,6 +278,9 @@ class Product
         $product->setStatus($status);
         $product->setPrice($priceRetail);
         $product->setWeight($weight);
+        /* MOBI-1610: see \MageWorx\Downloads\Observer\Adminhtml\SaveProductAttachments::execute */
+        $this->registry->unregister('product');
+        $this->registry->register('product', $product);
         $this->daoProd->save($product);
     }
 

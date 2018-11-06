@@ -37,13 +37,13 @@ class Products
             self::OPT_PROD_IDS,
             'p',
             \Symfony\Component\Console\Input\InputArgument::OPTIONAL,
-            'Comma-delimited list of product\'s Odoo IDs to replicate (./magento prxgt:odoo:replicate-products -p 1,2,...); if missed - all products will be replicated;'
+            'Comma-separated list of product\'s Odoo IDs to replicate (./magento prxgt:odoo:replicate-products -p 1,2,...); if missed - all products will be replicated;'
         );
         $this->addOption(
             self::OPT_WRHS_IDS,
             'w',
             \Symfony\Component\Console\Input\InputArgument::OPTIONAL,
-            'Comma-delimited list of warehouses\' codes to replicate (./magento prxgt:odoo:replicate-products -w 1,2,...); if missed - products for all warehouses will be replicated;'
+            'Comma-separated list of warehouses\' codes to replicate (./magento prxgt:odoo:replicate-products -w 1,2,...); if missed - products for all warehouses will be replicated;'
         );
     }
 

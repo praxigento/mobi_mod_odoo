@@ -7,7 +7,7 @@ namespace Praxigento\Odoo\Controller\Adminhtml\Replicate\Products;
 
 use Praxigento\Odoo\Config as Cfg;
 
-class Index
+class Report
     extends \Praxigento\Core\App\Action\Back\Base
 {
 
@@ -28,5 +28,4 @@ class Index
             $pageTitle
         );
     }
-
 }

@@ -36,7 +36,7 @@ class Inventory
         }
         if (is_array($wrhsIds)) {
             $argWrhsIds = $wrhsIds;
-        } elseif (is_int($wrhsIds)) {
+        } elseif (is_string($wrhsIds)) {
             $argWrhsIds = [$wrhsIds];
         } else {
             $argWrhsIds = [];
