@@ -1,0 +1,29 @@
+<?php
+/**
+ * Authors: Alex Gusev <alex@flancer64.com>
+ * Since: 2018
+ *
+ * @var \Praxigento\Odoo\Block\Adminhtml\Sales\Replicate\Orders\Index $block
+ */
+$total = (int)$block->getTotalOrders();
+?>
+<div id="prxgt_admin_form_container" style="width: 300px; margin: 0 auto;">
+    <form id="prxgt_admin_from"
+          method="post"
+          action="<?= $block->getUrlSubmit() ?>">
+        <input name="form_key"
+               type="hidden"
+               value="<?= $block->getFormKey() ?>"/>
+        <div style="float: left"><?= __('Total orders to replicate') ?>: <span><?= $total ?></span></div>
+        <?php if ($total): ?>
+            <div style="float: left; margin-left: 10px; margin-top: -5px;">
+                <button id="prxgt_admin_form_submit"
+                        title="<?= __('Replicate Orders') ?>"
+                        type="submit"
+                        class="action-default scalable primary">
+                    <span><?= __('Replicate Orders') ?></span>
+                </button>
+            </div>
+        <?php endif; ?>
+    </form>
+</div>

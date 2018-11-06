@@ -8,6 +8,15 @@ class Data
     extends \Praxigento\Core\Data
 {
     /**
+     * @return string[]
+     */
+    public function getArguments()
+    {
+        $result = parent::getArguments();
+        return $result;
+    }
+
+    /**
      * @return string
      */
     public function getDebug()
@@ -41,6 +50,15 @@ class Data
     {
         $result = parent::getName();
         return $result;
+    }
+
+    /**
+     * @param string[] $data
+     * @return void
+     */
+    public function setArguments($data)
+    {
+        parent::setArguments($data);
     }
 
     /**

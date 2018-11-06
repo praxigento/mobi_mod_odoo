@@ -12,17 +12,17 @@ class Orders
     private $logger;
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order */
     private $servOrder;
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector */
+    /** @var \Praxigento\Odoo\Helper\Replicate\Orders\Collector */
     private $subCollector;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
-        \Praxigento\Odoo\Service\Replicate\Sale\Order $servOrder,
-        \Praxigento\Odoo\Service\Replicate\Sale\Orders\Collector $subCollector
+        \Praxigento\Odoo\Helper\Replicate\Orders\Collector $hlpCollector,
+        \Praxigento\Odoo\Service\Replicate\Sale\Order $servOrder
     ) {
         $this->logger = $logger;
+        $this->subCollector = $hlpCollector;
         $this->servOrder = $servOrder;
-        $this->subCollector = $subCollector;
     }
 
     public function exec(\Praxigento\Odoo\Service\Replicate\Sale\Orders\Request $req)
