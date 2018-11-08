@@ -47,8 +47,8 @@ class Saldo
     {
         $result = [];
         foreach ($trnTypes as $type) {
-            $operTypes = $this->hlpBusCodes->getMageCodesForTransType($type);
-            $result = array_merge($result, $operTypes);
+            $operTypes = $this->hlpBusCodes->getMageCodeForTransType($type);
+            $result = array_merge($result, [$operTypes]);
         }
         return $result;
     }

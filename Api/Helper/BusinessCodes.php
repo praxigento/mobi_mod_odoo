@@ -57,9 +57,9 @@ interface BusinessCodes
      * One transaction type can be mapped to multiple operation types.
      *
      * @param string $trnType business code for transaction type
-     * @return array
+     * @return string
      */
-    public function getMageCodesForTransType($trnType);
+    public function getMageCodeForTransType($trnType);
 
     /**
      * Get '1' value by 'distributor' value.
