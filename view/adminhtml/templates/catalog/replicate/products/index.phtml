@@ -38,19 +38,20 @@ $wrhsItems = $block->getSelectItemsForWarehouses();
                 </div>
             </div>
 
-            <!-- Warehouse multi-select -->
+            <!-- Warehouse select: there are some troubles with multi-select in Magento. -->
             <div class="admin__field field field-report_type with-note">
                 <label class="label admin__field-label"
                        for="prxgt_admin_from_warehouses"><?= __('Warehouse') ?>:</label>
                 <div class="admin__field-control control">
                     <select id="prxgt_admin_from_warehouses"
                             name="warehouses"
+                            disabled="true"
                             class="multiselect-custom admin__control-select">
                         <?php foreach ($wrhsItems as $value => $label): ?>
                             <option value="<?= $value ?>"><?= $label ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <div class="note admin__field-note" id="report_type-note">Warehouses codes to replicate (if omitted
+                    <div class="note admin__field-note" id="report_type-note">Warehouse code to replicate (if omitted
                         - products for all warehouses will be replicated).
                     </div>
                 </div>
