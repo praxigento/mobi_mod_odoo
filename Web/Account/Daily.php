@@ -5,12 +5,12 @@
 
 namespace Praxigento\Odoo\Web\Account;
 
+use Praxigento\Accounting\Api\Service\Account\Balance\LastDate\Request as ALastDayReq;
 use Praxigento\Core\Api\App\Web\Response\Result as WResult;
 use Praxigento\Odoo\Api\Web\Account\Daily\Request as WRequest;
 use Praxigento\Odoo\Api\Web\Account\Daily\Response as WResponse;
 use Praxigento\Odoo\Api\Web\Account\Daily\Response\Data as WData;
 use Praxigento\Odoo\Config as Cfg;
-
 
 /**
  * API adapter for internal service to get account turnover summary by day & transaction type (Odoo replication).
@@ -18,25 +18,20 @@ use Praxigento\Odoo\Config as Cfg;
 class Daily
     implements \Praxigento\Odoo\Api\Web\Account\DailyInterface
 {
-
     /** @var \Praxigento\Core\Api\Helper\Period */
     private $hlpPeriod;
-    /** @var \Praxigento\Accounting\Repo\Dao\Balance */
-    private $daoBalance;
-    /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
-    private $daoTypeAsset;
+    /** @var \Praxigento\Accounting\Api\Service\Account\Balance\LastDate */
+    private $servLastDate;
     /** @var \Praxigento\Odoo\Service\Replicate\Account\Daily */
     private $servReportDaily;
 
     public function __construct(
-        \Praxigento\Accounting\Repo\Dao\Balance $daoBalance,
-        \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
         \Praxigento\Core\Api\Helper\Period $hlpPeriod,
+        \Praxigento\Accounting\Api\Service\Account\Balance\LastDate $servLastDate,
         \Praxigento\Odoo\Service\Replicate\Account\Daily $servReportDaily
     ) {
-        $this->daoBalance = $daoBalance;
-        $this->daoTypeAsset = $daoTypeAsset;
         $this->hlpPeriod = $hlpPeriod;
+        $this->servLastDate = $servLastDate;
         $this->servReportDaily = $servReportDaily;
     }
 
@@ -89,11 +84,14 @@ class Daily
      * Get datestamp for maximal date with calculated balance for WALLET active.
      *
      * @return string YYYYMMDD
+     * @throws \Exception
      */
     private function getMaxBalanceDate()
     {
-        $assetTypeId = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
-        $result = $this->daoBalance->getMaxDate($assetTypeId);
+        $req = new ALastDayReq();
+        $req->setAssetTypeCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
+        $resp = $this->servLastDate->exec($req);
+        $result = $resp->getLastDate();
         return $result;
     }
 }
