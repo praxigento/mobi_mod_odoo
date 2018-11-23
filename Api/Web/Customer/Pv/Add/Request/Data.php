@@ -13,6 +13,7 @@ class Data
     extends \Praxigento\Core\Data
 {
     const CUSTOMER_MLM_ID = 'customerMlmId';
+    const DATE_APPLIED = 'dateApplied';
     const NOTES = 'notes';
     const ODOO_REF = 'odooRef';
     const PV = 'pv';
@@ -21,6 +22,13 @@ class Data
     public function getCustomerMlmId()
     {
         $result = parent::get(self::CUSTOMER_MLM_ID);
+        return $result;
+    }
+
+    /** @return string|null */
+    public function getDateApplied()
+    {
+        $result = parent::get(self::DATE_APPLIED);
         return $result;
     }
 
@@ -60,6 +68,15 @@ class Data
     public function setCustomerMlmId($data)
     {
         parent::set(self::CUSTOMER_MLM_ID, $data);
+    }
+
+    /**
+     * @param string
+     * @return void
+     */
+    public function setDateApplied($data)
+    {
+        parent::set(self::DATE_APPLIED, $data);
     }
 
     /**

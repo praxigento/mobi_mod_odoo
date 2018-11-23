@@ -57,6 +57,7 @@ class Add
         assert($request instanceof \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Request);
         /** define local working data */
         $data = $request->getData();
+        $dateApplied = $data->getDateApplied();
         $mlmId = $data->getCustomerMlmId();
         $notes = $data->getNotes();
         $odooRef = $data->getOdooRef();
@@ -86,9 +87,10 @@ class Add
                 $req->setAmount($amount);
                 $req->setAssetId($assetId);
                 $req->setCustomerId($custId);
-                $req->setUserId($userId);
+                $req->setDateApplied($dateApplied);
                 $req->setIsDirect(true);
                 $req->setNote($notes);
+                $req->setUserId($userId);
 
                 $resp = $this->servAssetTransfer->exec($req);
                 $operId = $resp->getOperId();
