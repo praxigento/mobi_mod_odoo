@@ -17,11 +17,10 @@
     <!-- **************************************************** -->
     <columns name="catalog_warehouses_columns">
 
-        <column name="OdooId"
-                component="Praxigento_Core/js/grid/columns/integer">
+        <column name="OdooId">
             <settings>
-                <dataType>number</dataType>
-                <filter>textRange</filter>
+                <dataType>text</dataType>
+                <filter>text</filter>
                 <label translate="true">Odoo ID</label>
             </settings>
         </column>
