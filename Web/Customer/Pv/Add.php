@@ -102,6 +102,8 @@ class Add
                     $respRes->setCode(WResponse::CODE_SUCCESS);
                     $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
                     $this->logger->info($msg);
+                } else {
+                    $respRes->setText($resp->getErrorMessage());
                 }
             }
             $this->manTrans->commit($def);
