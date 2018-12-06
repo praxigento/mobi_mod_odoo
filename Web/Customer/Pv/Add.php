@@ -27,6 +27,8 @@ class Add
     private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $daoTypeAsset;
+    /** @var \Praxigento\Downline\Api\Helper\Config */
+    private $hlpCfgDwnl;
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
@@ -44,7 +46,8 @@ class Add
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
-        \Praxigento\Accounting\Api\Service\Account\Asset\Transfer $servAssetTransfer
+        \Praxigento\Accounting\Api\Service\Account\Asset\Transfer $servAssetTransfer,
+        \Praxigento\Downline\Api\Helper\Config $hlpCfgDwnl
     ) {
         $this->repoCust = $repoCust;
         $this->auth = $auth;
@@ -54,6 +57,7 @@ class Add
         $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
         $this->servAssetTransfer = $servAssetTransfer;
+        $this->hlpCfgDwnl = $hlpCfgDwnl;
     }
 
     public function exec($request)
@@ -87,28 +91,36 @@ class Add
                 $respRes->setText($msg);
             } else {
                 /* validate customer group */
-                /* add PV to customer account */
-                $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
-                $req->setAmount($amount);
-                $req->setAssetId($assetId);
-                $req->setCustomerId($custId);
-                $req->setDateApplied($dateApplied);
-                $req->setIsDirect(true);
-                $req->setNote($notes);
-                $req->setUserId($userId);
+                $isValidGroup = $this->isValidGroup($custId);
+                if ($isValidGroup) {
+                    /* add PV to customer account */
+                    $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
+                    $req->setAmount($amount);
+                    $req->setAssetId($assetId);
+                    $req->setCustomerId($custId);
+                    $req->setDateApplied($dateApplied);
+                    $req->setIsDirect(true);
+                    $req->setNote($notes);
+                    $req->setUserId($userId);
 
-                $resp = $this->servAssetTransfer->exec($req);
-                $operId = $resp->getOperId();
+                    $resp = $this->servAssetTransfer->exec($req);
+                    $operId = $resp->getOperId();
 
-                if ($operId) {
-                    $this->registerOdooRequest($odooRef);
-                    /* compose response */
-                    $respData->setOperationId($operId);
-                    $respRes->setCode(WResponse::CODE_SUCCESS);
-                    $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
-                    $this->logger->info($msg);
+                    if ($operId) {
+                        $this->registerOdooRequest($odooRef);
+                        /* compose response */
+                        $respData->setOperationId($operId);
+                        $respRes->setCode(WResponse::CODE_SUCCESS);
+                        $msg = "$pv PV are credited to customer #$mlmId (odoo ref. #$odooRef).";
+                        $this->logger->info($msg);
+                    } else {
+                        $respRes->setText($resp->getErrorMessage());
+                    }
                 } else {
-                    $respRes->setText($resp->getErrorMessage());
+                    $msg = "Customer #$mlmId/$custId has group that is not allowed for PV transfers.";
+                    $this->logger->error($msg);
+                    $respRes->setCode(WResponse::CODE_WRONG_CUST_GROUP);
+                    $respRes->setText($msg);
                 }
             }
             $this->manTrans->commit($def);
@@ -123,16 +135,6 @@ class Add
         return $result;
     }
 
-    private function isValidGroup($custId)
-    {
-        $result = false;
-        $found = $this->repoCust->getById($custId);
-        if ($found) {
-            $groupId = $found->getGroupId();
-
-        }
-        return $result;
-    }
     /**
      * Look up for performed "Add PV to Customer" requests with the same Odoo Reference.
      *
@@ -181,6 +183,18 @@ class Add
     private function getUserId($request)
     {
         $result = $this->auth->getCurrentUserId($request);
+        return $result;
+    }
+
+    private function isValidGroup($custId)
+    {
+        $result = false;
+        $found = $this->repoCust->getById($custId);
+        if ($found) {
+            $groupId = $found->getGroupId();
+            $allowedGroups = $this->hlpCfgDwnl->getDowngradeGroupsDistrs();
+            $result = in_array($groupId, $allowedGroups);
+        }
         return $result;
     }
 
