@@ -15,6 +15,7 @@ class Response
 {
     const CODE_CUSTOMER_IS_NOT_FOUND = 'CUSTOMER_IS_NOT_FOUND';
     const CODE_DUPLICATED = 'DUPLICATED';
+    const CODE_WRONG_CUST_GROUP = 'WRONG_CUST_GROUP';
 
     /**
      * @return \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data|null

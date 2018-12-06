@@ -21,20 +21,23 @@ class Add
 {
     /** @var \Praxigento\Core\Api\App\Web\Authenticator\Rest */
     private $auth;
-    /** @var \Praxigento\Odoo\Api\App\Logger\Main */
-    private $logger;
-    /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
-    private $manTrans;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
     private $daoDwnlCust;
     /** @var \Praxigento\Odoo\Repo\Dao\Registry\Request */
     private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $daoTypeAsset;
+    /** @var \Praxigento\Odoo\Api\App\Logger\Main */
+    private $logger;
+    /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
+    private $manTrans;
+    /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
+    private $repoCust;
     /** @var \Praxigento\Accounting\Api\Service\Account\Asset\Transfer */
     private $servAssetTransfer;
 
     public function __construct(
+        \Magento\Customer\Api\CustomerRepositoryInterface $repoCust,
         \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
@@ -43,6 +46,7 @@ class Add
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Api\Service\Account\Asset\Transfer $servAssetTransfer
     ) {
+        $this->repoCust = $repoCust;
         $this->auth = $auth;
         $this->logger = $logger;
         $this->daoTypeAsset = $daoTypeAsset;
@@ -82,6 +86,7 @@ class Add
                 $respRes->setCode(WResponse::CODE_DUPLICATED);
                 $respRes->setText($msg);
             } else {
+                /* validate customer group */
                 /* add PV to customer account */
                 $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
                 $req->setAmount($amount);
@@ -118,6 +123,16 @@ class Add
         return $result;
     }
 
+    private function isValidGroup($custId)
+    {
+        $result = false;
+        $found = $this->repoCust->getById($custId);
+        if ($found) {
+            $groupId = $found->getGroupId();
+
+        }
+        return $result;
+    }
     /**
      * Look up for performed "Add PV to Customer" requests with the same Odoo Reference.
      *
