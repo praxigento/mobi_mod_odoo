@@ -5,14 +5,13 @@
  */
 
 namespace Praxigento\Odoo\Web\Account\Balances\A;
-
 use Praxigento\Accounting\Api\Repo\Query\Balance\OnDate\Closing as QBalance;
 use Praxigento\Accounting\Repo\Data\Account as EAccount;
 use Praxigento\Accounting\Repo\Data\Type\Asset as ETypeAsset;
-use Praxigento\Core\App\Repo\Query\Expression as AnExpression;
 use Praxigento\Downline\Repo\Data\Customer as EDwnlCust;
 use Praxigento\Odoo\Api\Web\Account\Balances\Response\Data\Item as DItem;
 use Praxigento\Odoo\Api\Web\Account\Balances\Response\Data\Item\Asset as DAsset;
+use Praxigento\Odoo\Config as Cfg;
 
 /**
  * Retrieve balances data (open|close) from DB.
@@ -51,13 +50,24 @@ class GetBalances
     {
         $conn = $this->resource->getConnection();
         $ids = '';
+        /* add SYSTEM accounts if any MLM ID is '' */
+        $addSysAccs = false;
         foreach ($mlmIds as $one) {
-            $mlmId = $conn->quote($one);
-            $ids .= $mlmId . ',';
+            if (empty($one)) {
+                $addSysAccs = true;
+            } else {
+                $mlmId = $conn->quote($one);
+                $ids .= $mlmId . ',';
+            }
         }
         $ids = substr($ids, 0, -1);
         $exp = self::AS_DWNL_CUST . '.' . EDwnlCust::A_MLM_ID . " IN ($ids)";
-        $result = new AnExpression($exp);
+        if ($addSysAccs) {
+            $byIsNull = self::AS_DWNL_CUST . "." . EDwnlCust::A_MLM_ID . " IS NULL";
+            $result = "($exp) OR ($byIsNull)";
+        } else {
+            $result = $exp;
+        }
         return $result;
     }
 
@@ -83,6 +93,9 @@ class GetBalances
         $result = [];
         foreach ($mlmIds as $mlmId) {
             $item = new DItem();
+            if (empty($mlmId)) {
+                $mlmId = Cfg::CUST_SYS_NAME;
+            }
             $item->setMlmId($mlmId);
             /* compose list of the used assets */
             $openCust = $closeCust = [];
@@ -155,7 +168,7 @@ class GetBalances
 
             /** compose result */
             foreach ($rs as $one) {
-                $mlmId = $one[self::A_MLM_ID];
+                $mlmId = $one[self::A_MLM_ID] ?? Cfg::CUST_SYS_NAME;
                 $asset = $one[self::A_ASSET_TYPE];
                 $balance = $one[QBalance::A_BALANCE];
                 $result[$mlmId][$asset] = $balance;
