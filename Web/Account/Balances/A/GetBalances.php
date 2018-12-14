@@ -61,12 +61,20 @@ class GetBalances
             }
         }
         $ids = substr($ids, 0, -1);
-        $exp = self::AS_DWNL_CUST . '.' . EDwnlCust::A_MLM_ID . " IN ($ids)";
+        if ($ids) {
+            $byIds = self::AS_DWNL_CUST . '.' . EDwnlCust::A_MLM_ID . " IN ($ids)";
+        } else {
+            $byIds = '';
+        }
         if ($addSysAccs) {
             $byIsNull = self::AS_DWNL_CUST . "." . EDwnlCust::A_MLM_ID . " IS NULL";
-            $result = "($exp) OR ($byIsNull)";
+            if ($byIds) {
+                $result = "($byIds) OR ($byIsNull)";
+            } else {
+                $result = "($byIsNull)";
+            }
         } else {
-            $result = $exp;
+            $result = "($byIds)";
         }
         return $result;
     }
