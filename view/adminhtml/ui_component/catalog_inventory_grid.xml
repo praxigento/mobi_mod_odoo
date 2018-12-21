@@ -18,7 +18,7 @@
     <columns name="catalog_inventory_columns">
 
         <column name="OdooId"
-                component="Praxigento_Core/js/grid/columns/integer">
+                component="Praxigento_Core/js/grid/column/integer">
             <settings>
                 <dataType>number</dataType>
                 <filter>textRange</filter>
