@@ -113,7 +113,7 @@ class GetBalances
         $tbl = $this->resource->getTableName(EDwnlCust::ENTITY_NAME);
         $as = $asDwnl;
         $cols = [];
-        $cond = "$as." . EDwnlCust::A_CUSTOMER_ID . "=$asAcc." . EAccount::A_CUST_ID;
+        $cond = "$as." . EDwnlCust::A_CUSTOMER_REF . "=$asAcc." . EAccount::A_CUST_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* WHERE */

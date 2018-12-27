@@ -102,7 +102,7 @@ class SummaryBase
         $cols = [
             self::A_DEBIT_CUST => EDwnlCust::A_MLM_ID
         ];
-        $cond = "$as." . EDwnlCust::A_CUSTOMER_ID . "=$asDbtAcc." . EAccount::A_CUST_ID;
+        $cond = "$as." . EDwnlCust::A_CUSTOMER_REF . "=$asDbtAcc." . EAccount::A_CUST_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* LEFT JOIN prxgt_acc_account AS crdAcc */
@@ -118,7 +118,7 @@ class SummaryBase
         $cols = [
             self::A_CREDIT_CUST => EDwnlCust::A_MLM_ID
         ];
-        $cond = "$as." . EDwnlCust::A_CUSTOMER_ID . "=$asCrdAcc." . EAccount::A_CUST_ID;
+        $cond = "$as." . EDwnlCust::A_CUSTOMER_REF . "=$asCrdAcc." . EAccount::A_CUST_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* LEFT JOIN prxgt_acc_type_asset */

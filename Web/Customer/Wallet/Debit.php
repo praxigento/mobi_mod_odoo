@@ -168,7 +168,7 @@ class Debit
         $result = null;
         $entity = $this->daoDwnlCust->getByMlmId($mlmId);
         if ($entity) {
-            $result = $entity->getCustomerId();
+            $result = $entity->getCustomerRef();
         }
         return $result;
     }

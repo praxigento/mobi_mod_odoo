@@ -170,7 +170,7 @@ class Add
         if (!$customer) {
             throw new \Exception("Cannot find customer with MLM ID: $mlmId.");
         }
-        $result = $customer->getCustomerId();
+        $result = $customer->getCustomerRef();
         return $result;
     }
 

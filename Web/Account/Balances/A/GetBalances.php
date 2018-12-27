@@ -214,7 +214,7 @@ class GetBalances
         $cols = [
             self::A_MLM_ID => EDwnlCust::A_MLM_ID
         ];
-        $cond = "$as." . EDwnlCust::A_CUSTOMER_ID . "=$asAcc." . EAccount::A_CUST_ID;
+        $cond = "$as." . EDwnlCust::A_CUSTOMER_REF . "=$asAcc." . EAccount::A_CUST_ID;
         $result->joinLeft([$as => $tbl], $cond, $cols);
 
         /* WHERE */
