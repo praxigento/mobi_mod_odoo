@@ -10,9 +10,10 @@ namespace Praxigento\Odoo\Block\Adminhtml\Catalog\Replicate\Products;
 class Report
     extends \Magento\Backend\Block\Template
 {
+    const FIELDSET = 'replicate_product';
+    const FIELD_SKU = 'sku';
+    const FIELD_WRHS = 'wrhs';
     const NO_WRHS = \Praxigento\Odoo\Block\Adminhtml\Catalog\Replicate\Products\Index::NO_WRHS;
-    const REQ_SKU = 'sku';
-    const REQ_WRHS = 'warehouses';
     /** @var \Praxigento\Odoo\Repo\Odoo\Inventory */
     private $daoOdoo;
     /** @var \Praxigento\Odoo\Repo\Dao\Product */
@@ -43,15 +44,11 @@ class Report
 
     protected function _beforeToHtml()
     {
-        $request = $this->getRequest();
-        $params = $request->getParams();
-        $sku = $params[self::REQ_SKU] ?? '';
-        $wrhs = $params[self::REQ_WRHS] ?? self::NO_WRHS;
-
+        [$sku, $wrhs] = $this->parseParams();
         $inventory = $this->getOdooInventory($sku, $wrhs);
         $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
         $req->setInventory($inventory);
-        $resp = $this->servReplicate->exec($req);
+        $this->servReplicate->exec($req);
         $result = parent::_beforeToHtml();
         return $result;
     }
@@ -88,5 +85,21 @@ class Report
             $result = __('No data.');
         }
         return $result;
+    }
+
+    private function parseParams()
+    {
+        $request = $this->getRequest();
+        $params = $request->getParams();
+        $sku = '';
+        $wrhs = self::NO_WRHS;
+        if (isset($params[self::FIELDSET])) {
+            $fieldset = $params[self::FIELDSET];
+            $sku = $fieldset[self::FIELD_SKU] ?? '';
+            $wrhs = $fieldset[self::FIELD_WRHS] ?? self::NO_WRHS;
+            if ($wrhs == \Praxigento\Odoo\Ui\DataProvider\Options\Warehouse::VAL_ALL)
+                $wrhs = self::NO_WRHS;
+        }
+        return [$sku, $wrhs];
     }
 }

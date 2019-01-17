@@ -43,7 +43,7 @@ class Products
             self::OPT_WRHS_IDS,
             'w',
             \Symfony\Component\Console\Input\InputArgument::OPTIONAL,
-            'Comma-separated list of warehouses\' codes to replicate (./magento prxgt:odoo:replicate-products -w 1,2,...); if missed - products for all warehouses will be replicated;'
+            'Comma-separated list of warehouses\' codes to replicate (./magento prxgt:odoo:replicate-products -w CNTR,WEST,...); if missed - products for all warehouses will be replicated;'
         );
     }
 

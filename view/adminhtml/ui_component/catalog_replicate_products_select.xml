@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <!-- **************************************************** -->
+    <!-- Configuration of the component's data provider.      -->
+    <!-- **************************************************** -->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">catalog_replicate_products_select.catalog_replicate_products_select_ds</item>
+        </item>
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="save" class="Praxigento\Odoo\Block\Adminhtml\Catalog\Replicate\Products\Button\Replicate"/>
+        </buttons>
+        <deps>
+            <dep>catalog_replicate_products_select.catalog_replicate_products_select_ds</dep>
+        </deps>
+        <!-- to prevent never ending spinner & to post form data to server -->
+        <layout>
+            <type>tabs</type>
+        </layout>
+    </settings>
+
+    <!-- **************************************************** -->
+    <!-- Data Source (is used by data provider).              -->
+    <!-- **************************************************** -->
+    <dataSource name="catalog_replicate_products_select_ds"
+                component="Praxigento_Santegra/js/form/provider/customer_downline">
+        <settings>
+            <submitUrl path="customer/downline/post"/>
+        </settings>
+        <dataProvider class="Praxigento\Santegra\Ui\DataProvider\Customer\Downline\Form"
+                      name="catalog_replicate_products_select_ds">
+        </dataProvider>
+    </dataSource>
+    <dataSource name="catalog_replicate_products_select_ds"
+                component="Magento_Ui/js/form/provider">
+        <settings>
+            <submitUrl path="catalog/replicate_products/report"/>
+        </settings>
+        <dataProvider class="Praxigento\Core\App\Ui\DataProvider\Base"
+                      name="catalog_replicate_products_select_ds">
+        </dataProvider>
+    </dataSource>
+
+
+    <!--See \Praxigento\Odoo\Block\Adminhtml\Catalog\Replicate\Products\Report::FIELDSET -->
+    <fieldset name="replicate_product">
+        <!-- Don't remove "settings/label" section, fieldset will be empty on the front -->
+        <settings>
+            <label></label>
+        </settings>
+
+        <field name="sku" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">SKU</label>
+                <notice>Comma-separated list of product's SKUs to replicate
+                    (ABC-21,QWE-34; if omitted - all products will be replicated).</notice>
+                <dataScope>sku</dataScope>
+            </settings>
+        </field>
+
+        <field name="wrhs" formElement="select">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Warehouse</label>
+                <!--<notice translate="true"></notice>-->
+                <dataScope>wrhs</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Praxigento\Odoo\Ui\DataProvider\Options\Warehouse"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+    </fieldset>
+
+
+</form>
