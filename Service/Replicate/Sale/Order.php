@@ -7,14 +7,14 @@ namespace Praxigento\Odoo\Service\Replicate\Sale;
 
 class Order
 {
+    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\A\Collector */
+    private $actCollector;
     /** @var \Praxigento\Odoo\Repo\Dao\SaleOrder */
     private $daoEntitySaleOrder;
     /** @var \Praxigento\Odoo\Repo\Odoo\SaleOrder */
     private $daoOdooSaleOrder;
     /** @var \Praxigento\Core\Api\App\Logger\Main */
     private $logger;
-    /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order\A\Collector */
-    private $actCollector;
 
     public function __construct(
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
@@ -38,7 +38,7 @@ class Order
         /** @var \Praxigento\Odoo\Repo\Data\SaleOrder $registeredOrder */
         $registeredOrder = $this->daoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
-        /* skip processing for registered orders or guest checkouted */
+        /* skip processing for registered orders or orders being checked out by guests */
         if ($orderIdMage && !$isRegistered && $customerIdMage) {
             $odooOrder = $this->actCollector->getSaleOrder($mageOrder);
             /* save order into Odoo repo */
