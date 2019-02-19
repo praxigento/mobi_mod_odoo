@@ -5,6 +5,8 @@
 
 namespace Praxigento\Odoo\Repo\Odoo;
 
+use Praxigento\Odoo\Repo\Odoo\Connector\Rest as ARest;
+
 class SaleOrder
 {
     const ODOO_DATA = 'data';
@@ -78,7 +80,7 @@ class SaleOrder
         $orderData = $order->get();
         $underscored = $this->_convertToUnderScored($orderData);
         /* perform request and extract result data */
-        $cover = $this->rest->request($underscored, self::ROUTE);
+        $cover = $this->rest->request($underscored, self::ROUTE, ARest::HTTP_METHOD_POST, 15);
         $data = $cover->getResultData();
         if ($data) {
             $result = $this->mageSrvInProc->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Response::class);
