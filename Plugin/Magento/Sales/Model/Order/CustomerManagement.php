@@ -30,14 +30,15 @@ class CustomerManagement
         $orderId
     ) {
         $result = $proceed($orderId);
-        try {
-            $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
-            $order = $this->daoOrder->get($orderId);
-            $req->setSaleOrder($order);
-            $this->servReplicate->exec($req);
-        } catch (\Throwable $th) {
-
-        }
+        /* SAN-535: disable async orders replication with Odoo */
+//        try {
+//            $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
+//            $order = $this->daoOrder->get($orderId);
+//            $req->setSaleOrder($order);
+//            $this->servReplicate->exec($req);
+//        } catch (\Throwable $th) {
+//
+//        }
         return $result;
     }
 }

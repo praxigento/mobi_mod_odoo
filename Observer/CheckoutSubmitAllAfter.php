@@ -36,16 +36,17 @@ class CheckoutSubmitAllAfter
         $order = $observer->getData(self::DATA_ORDER);
         $state = $order->getState();
         if ($state == \Magento\Sales\Model\Order::STATE_PROCESSING) {
-            try {
-                $this->logger->debug("Call to Odoo service to replicate order.");
-                $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
-                $req->setSaleOrder($order);
-                $this->servReplicate->exec($req);
-            } catch (\Exception $e) {
-                /* catch all exceptions and steal them */
-                $msg = 'Some error is occurred on sale order saving to Odoo. Error: ' . $e->getMessage();
-                $this->logger->error($msg);
-            }
+            /* SAN-535: disable async orders replication with Odoo */
+//            try {
+//                $this->logger->debug("Call to Odoo service to replicate order.");
+//                $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
+//                $req->setSaleOrder($order);
+//                $this->servReplicate->exec($req);
+//            } catch (\Exception $e) {
+//                /* catch all exceptions and steal them */
+//                $msg = 'Some error is occurred on sale order saving to Odoo. Error: ' . $e->getMessage();
+//                $this->logger->error($msg);
+//            }
         }
     }
 
