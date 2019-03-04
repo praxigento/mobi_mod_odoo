@@ -80,7 +80,7 @@ class SaleOrder
         $orderData = $order->get();
         $underscored = $this->_convertToUnderScored($orderData);
         /* perform request and extract result data */
-        $cover = $this->rest->request($underscored, self::ROUTE, ARest::HTTP_METHOD_POST, 15);
+        $cover = $this->rest->request($underscored, self::ROUTE, ARest::HTTP_METHOD_POST, ARest::DEF_TIMEOUT_SEC);
         $data = $cover->getResultData();
         if ($data) {
             $result = $this->mageSrvInProc->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Response::class);
