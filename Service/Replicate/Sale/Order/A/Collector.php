@@ -12,8 +12,6 @@ use Praxigento\Odoo\Config as Cfg;
  */
 class Collector
 {
-    /** @var \Magento\Sales\Api\Data\OrderPaymentFactory */
-    private $factPayment;
     /** @var \Magento\Customer\Api\CustomerRepositoryInterface */
     private $daoCustomer;
     /** @var \Praxigento\Downline\Repo\Dao\Customer */
@@ -30,6 +28,8 @@ class Collector
     private $daoWalletSale;
     /** @var \Praxigento\Odoo\Repo\Dao\Warehouse */
     private $daoWarehouse;
+    /** @var \Magento\Sales\Api\Data\OrderPaymentFactory */
+    private $factPayment;
     /** @var  \Praxigento\Core\Api\Helper\Format */
     private $hlpFormat;
     /** @var \Praxigento\Warehouse\Api\Helper\Stock */
@@ -56,8 +56,7 @@ class Collector
         \Praxigento\Wallet\Repo\Dao\Partial\Sale $daoWalletSale,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Items\Lots\Get\Builder $qbLots,
         \Praxigento\Odoo\Repo\Query\Replicate\Sale\Orders\Tax\Item\Get\Builder $qbTaxItems
-    )
-    {
+    ) {
         $this->factPayment = $factPayment;
         $this->hlpStock = $hlpStock;
         $this->manBusinessCodes = $hlpBusinessCodes;
@@ -255,6 +254,7 @@ class Collector
     /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $item
      * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Line\Tax
+     * @throws \Exception
      */
     private function getItemTax(\Magento\Sales\Api\Data\OrderItemInterface $item)
     {
@@ -266,10 +266,21 @@ class Collector
         if ($rate) {
             $base = $rate->getAmount() / $rate->getPercent();
             $base = $this->hlpFormat->toNumber($base);
-            /* populate Odoo Data Object */
-            $result->setBase($base);
-            $result->setRates($rates);
+        } else {
+            /* ad fake zero-node to result (SAN-581) */
+            $priceBase = $item->getBasePrice();
+            $qty = $item->getQtyOrdered();
+            $price = $priceBase / $qty;
+            $base = round($price, 2);
+            $rate = new  \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
+            $rate->setCode('SAN-581');
+            $rate->setPercent(0);
+            $rate->setAmount(0);
+            $rates = [$rate];
         }
+        /* populate Odoo Data Object */
+        $result->setBase($base);
+        $result->setRates($rates);
         return $result;
     }
 
@@ -586,23 +597,32 @@ class Collector
     /**
      * @param \Magento\Sales\Api\Data\OrderInterface $sale
      * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping\Tax
+     * @throws \Exception
      */
     private function getShippingTax(\Magento\Sales\Api\Data\OrderInterface $sale)
     {
         $result = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping\Tax();
         /* collect data */
-        $base = 0;
         $saleId = $sale->getEntityId();
         $rates = $this->getShippingTaxRates($saleId);
-        /* calc base for tax incl. scheme */
-        $totalTax = 0;
-        foreach ($rates as $rate) {
-            $amount = $rate->getAmount();
-            $totalTax += $amount;
+        if ($rates) {
+            /* calc base for tax incl. scheme */
+            $totalTax = 0;
+            foreach ($rates as $rate) {
+                $amount = $rate->getAmount();
+                $totalTax += $amount;
+            }
+        } else {
+            /* ad fake zero-node to result (SAN-581) */
+            $totalTax = 0;
+            $rate = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
+            $rate->setCode('SAN-581');
+            $rate->setPercent(0);
+            $rate->setAmount(0);
+            $rates[] = $rate;
         }
         $shippingWithTax = $sale->getBaseShippingInclTax();
         $base = $shippingWithTax - $totalTax;
-
         /* populate Odoo Data Object */
         $result->setBase($base);
         $result->setRates($rates);
