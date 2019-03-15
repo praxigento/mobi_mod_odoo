@@ -267,10 +267,11 @@ class Collector
             $base = $rate->getAmount() / $rate->getPercent();
             $base = $this->hlpFormat->toNumber($base);
         } else {
-            /* ad fake zero-node to result (SAN-581) */
-            $priceBase = $item->getBasePrice();
+            /* add fake zero-node to result (SAN-581) */
+            $priceTotal = $item->getBaseRowTotal();
+            $priceDiscount = $item->getBaseDiscountAmount();
             $qty = $item->getQtyOrdered();
-            $price = $priceBase / $qty;
+            $price = ($priceTotal - $priceDiscount) / $qty;
             $base = round($price, 2);
             $rate = new  \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $rate->setCode('SAN-581');
@@ -613,7 +614,7 @@ class Collector
                 $totalTax += $amount;
             }
         } else {
-            /* ad fake zero-node to result (SAN-581) */
+            /* add fake zero-node to result (SAN-581) */
             $totalTax = 0;
             $rate = new \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $rate->setCode('SAN-581');
