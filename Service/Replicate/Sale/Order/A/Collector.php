@@ -244,7 +244,6 @@ class Collector
         if ($phone) $result->setPhone($phone);
         if ($email) $result->setEmail($email);
         if ($country) $result->setCountry($country);
-        if ($state) $result->setState($state);
         if ($city) $result->setCity($city);
         if ($street) $result->setStreet($street);
         if ($zip) $result->setZip($zip);

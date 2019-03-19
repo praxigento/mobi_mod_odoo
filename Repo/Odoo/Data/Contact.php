@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Repo\Odoo\Data;
 
 class Contact
@@ -49,15 +50,6 @@ class Contact
     public function getPhone()
     {
         $result = parent::getPhone();
-        return $result;
-    }
-
-    /**
-     * @return string
-     */
-    public function getState()
-    {
-        $result = parent::getState();
         return $result;
     }
 
@@ -131,15 +123,6 @@ class Contact
     public function setPhone($data)
     {
         parent::setPhone($data);
-    }
-
-    /**
-     * @param string $data
-     * @return void
-     */
-    public function setState($data)
-    {
-        parent::setState($data);
     }
 
     /**
