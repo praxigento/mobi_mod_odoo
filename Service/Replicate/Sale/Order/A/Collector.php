@@ -269,8 +269,7 @@ class Collector
             /* add fake zero-node to result (SAN-581) */
             $priceTotal = $item->getBaseRowTotal();
             $priceDiscount = $item->getBaseDiscountAmount();
-            $qty = $item->getQtyOrdered();
-            $price = ($priceTotal - $priceDiscount) / $qty;
+            $price = ($priceTotal - $priceDiscount);
             $base = round($price, 2);
             $rate = new  \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Tax\Rate();
             $rate->setCode('SAN-581');
