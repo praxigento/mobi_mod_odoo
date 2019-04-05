@@ -17,12 +17,10 @@ class Products
     private $servSave;
 
     public function __construct(
-        \Magento\Framework\ObjectManagerInterface $manObj,
         \Praxigento\Odoo\Repo\Odoo\Inventory $daoOdoo,
         \Praxigento\Odoo\Service\Replicate\Product\Save $servSave
     ) {
         parent::__construct(
-            $manObj,
             'prxgt:odoo:replicate:products',
             'Pull products list from Odoo and replicate data into Magento.'
         );
@@ -47,60 +45,45 @@ class Products
         );
     }
 
-    protected function execute(
-        \Symfony\Component\Console\Input\InputInterface $input,
-        \Symfony\Component\Console\Output\OutputInterface $output
-    ) {
-        $output->writeln("<info>Command '" . $this->getName() . "' is started.<info>");
-        try {
-            $this->checkAreaCode(); // to prevent "Area code not set" exception.
-            /* parse arguments */
-            $optProdIds = $this->parseOptProdIds($input, $output);
-            $optWrhsIds = $this->parseOptWrhsIds($input, $output);
-            /* get inventory data from Odoo */
-            $inventory = $this->daoOdoo->get($optProdIds, $optWrhsIds);
-            /* call service operation */
-            $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
-            $req->setInventory($inventory);
-            $this->servSave->exec($req);
-        } catch (\Throwable $e) {
-            $output->writeln('<info>Command \'' . $this->getName() . '\' failed. Reason: '
-                . $e->getMessage() . '.<info>');
-            $output->writeln('<info>' . $e->getTraceAsString() . '.<info>');
-        }
-        $output->writeln('<info>Command \'' . $this->getName() . '\' is completed.<info>');
-    }
-
-    private function parseOptProdIds(
-        \Symfony\Component\Console\Input\InputInterface $input,
-        \Symfony\Component\Console\Output\OutputInterface $output)
+    private function parseOptProdIds(\Symfony\Component\Console\Input\InputInterface $input)
     {
         $opt = $input->getOption(static::OPT_PROD_IDS);
         if (is_null($opt)) {
             $result = null;
-            $output->writeln('<info>List of all products will be pulled from Odoo.<info>');
+            $this->logInfo('List of all products will be pulled from Odoo.');
         } else {
             $result = explode(',', $opt);
             array_walk($result, function (&$item) {
                 $item = (int)$item;
             });
-            $output->writeln("<info>Products with Odoo IDs ($opt) will be pulled from Odoo.<info>");
+            $this->logInfo("Products with Odoo IDs ($opt) will be pulled from Odoo.");
         }
         return $result;
     }
 
-    private function parseOptWrhsIds(
-        \Symfony\Component\Console\Input\InputInterface $input,
-        \Symfony\Component\Console\Output\OutputInterface $output)
+    private function parseOptWrhsIds(\Symfony\Component\Console\Input\InputInterface $input)
     {
         $opt = $input->getOption(static::OPT_WRHS_IDS);
         if (is_null($opt)) {
             $result = null;
-            $output->writeln('<info>List of products from all warehouses will be pulled from Odoo.<info>');
+            $this->logInfo('List of products from all warehouses will be pulled from Odoo.');
         } else {
             $result = explode(',', $opt);
-            $output->writeln("<info>Products from these warehouses ($opt) will be pulled from Odoo.<info>");
+            $this->logInfo("Products from these warehouses ($opt) will be pulled from Odoo.");
         }
         return $result;
+    }
+
+    protected function process(\Symfony\Component\Console\Input\InputInterface $input)
+    {
+        /* parse arguments */
+        $optProdIds = $this->parseOptProdIds($input);
+        $optWrhsIds = $this->parseOptWrhsIds($input);
+        /* get inventory data from Odoo */
+        $inventory = $this->daoOdoo->get($optProdIds, $optWrhsIds);
+        /* call service operation */
+        $req = new \Praxigento\Odoo\Service\Replicate\Product\Save\Request();
+        $req->setInventory($inventory);
+        $this->servSave->exec($req);
     }
 }
