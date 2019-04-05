@@ -27,7 +27,7 @@ class Orders
         \Symfony\Component\Console\Input\InputInterface $input,
         \Symfony\Component\Console\Output\OutputInterface $output
     ) {
-        $output->writeln('<info>Sale orders push replication (Mage2Odoo) is started.<info>');
+        $output->writeln("<info>Command '" . $this->getName() . "' is started.<info>");
         $this->checkAreaCode();
         $req = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Request();
         $resp = $this->srvReplicateOrders->exec($req);
@@ -44,6 +44,6 @@ class Orders
                 $output->writeln("<error>$debug<error>");
             }
         }
-        $output->writeln('<info>Command is completed.<info>');
+        $output->writeln('<info>Command \'' . $this->getName() . '\' is completed.<info>');
     }
 }
