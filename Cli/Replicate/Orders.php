@@ -9,17 +9,18 @@ class Orders
     extends \Praxigento\Core\App\Cli\Cmd\Base
 {
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Orders */
-    protected $callReplicateOrders;
+    private $srvReplicateOrders;
+
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $manObj,
-        \Praxigento\Odoo\Service\Replicate\Sale\Orders $callReplicateOrders
+        \Praxigento\Odoo\Service\Replicate\Sale\Orders $srvReplicateOrders
     ) {
         parent::__construct(
             $manObj,
             'prxgt:odoo:replicate:orders',
             'Push sale orders that are not replicated into Odoo.'
         );
-        $this->callReplicateOrders = $callReplicateOrders;
+        $this->srvReplicateOrders = $srvReplicateOrders;
     }
 
     protected function execute(
@@ -29,7 +30,7 @@ class Orders
         $output->writeln('<info>Sale orders push replication (Mage2Odoo) is started.<info>');
         $this->checkAreaCode();
         $req = new \Praxigento\Odoo\Service\Replicate\Sale\Orders\Request();
-        $resp = $this->callReplicateOrders->exec($req);
+        $resp = $this->srvReplicateOrders->exec($req);
         $entries = $resp->getEntries();
         foreach ($entries as $entry) {
             $id = $entry->getIdMage();
