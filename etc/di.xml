@@ -59,11 +59,5 @@
                 type="Praxigento\Odoo\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory"
                 sortOrder="500" disabled="false"/>
     </type>
-    <type name="\Magento\Sales\Model\Order\CustomerManagement">
-        <!-- Replicate orders for new signed customers (anons & referrals) -->
-        <plugin name="prxgt_odoo_plugin"
-                type="Praxigento\Odoo\Plugin\Magento\Sales\Model\Order\CustomerManagement"
-                sortOrder="500" disabled="false"/>
-    </type>
 
 </config>
