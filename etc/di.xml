@@ -16,6 +16,8 @@
                 type="Praxigento\Odoo\Web\Account\Saldo"/>
     <preference for="Praxigento\Odoo\Api\Web\Account\TransactionInterface"
                 type="Praxigento\Odoo\Web\Account\Transaction"/>
+    <preference for="Praxigento\Odoo\Api\Web\Customer\Get\AllInterface"
+                type="Praxigento\Odoo\Web\Customer\Get\All"/>
     <preference for="Praxigento\Odoo\Api\Web\Customer\Pv\AddInterface"
                 type="Praxigento\Odoo\Web\Customer\Pv\Add"/>
     <preference for="Praxigento\Odoo\Api\Web\Customer\Wallet\BalanceInterface"
