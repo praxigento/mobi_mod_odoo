@@ -38,8 +38,10 @@ class Order
         /** @var \Praxigento\Odoo\Repo\Data\SaleOrder $registeredOrder */
         $registeredOrder = $this->daoEntitySaleOrder->getById($orderIdMage);
         $isRegistered = (bool)$registeredOrder;
+        /* SAN-703: check invoices */
+        $hasPaidInvoice = $this->hasPaidInvoice($mageOrder);
         /* skip processing for registered orders or orders being checked out by guests */
-        if ($orderIdMage && !$isRegistered && $customerIdMage) {
+        if ($orderIdMage && !$isRegistered && $customerIdMage && $hasPaidInvoice) {
             $odooOrder = $this->actCollector->getSaleOrder($mageOrder);
             /* save order into Odoo repo */
             $resp = $this->daoOdooSaleOrder->save($odooOrder);
@@ -56,9 +58,23 @@ class Order
                 $result->markSucceed();
             }
         } else {
-            $msg = "Order replication to Odoo is skipped (id/is_registered/customer_id): $orderIdMage/"
-                . (string)$isRegistered . "/$customerIdMage.";
+            $msg = "Order replication to Odoo is skipped (id/is_registered/customer_id/hasPaidInvoice): $orderIdMage/"
+                . (string)$isRegistered . "/$customerIdMage/$hasPaidInvoice.";
             $this->logger->info($msg);
+        }
+        return $result;
+    }
+
+    private function hasPaidInvoice(\Magento\Sales\Model\Order $order): bool
+    {
+        $result = false;
+        $invoices = $order->getInvoiceCollection();
+        foreach ($invoices as $invoice) {
+            /** @var \Magento\Sales\Model\Order\Invoice $invoice */
+            $state = $invoice->getState();
+            if ($state == \Magento\Sales\Model\Order\Invoice::STATE_PAID) {
+                $result = true;
+            }
         }
         return $result;
     }
