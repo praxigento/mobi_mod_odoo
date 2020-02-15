@@ -263,7 +263,7 @@ class Collector
         $rates = $this->getItemTaxRates($itemMageId);
         $rate = reset($rates);
         if ($rate) {
-            $base = $rate->getAmount() / $rate->getPercent();
+            $base = $item->getBaseRowTotal();
             $base = $this->hlpFormat->toNumber($base);
         } else {
             /* add fake zero-node to result (SAN-581) */
