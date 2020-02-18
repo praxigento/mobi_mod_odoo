@@ -16,7 +16,7 @@ $total = (int)$block->getTotalOrders();
                value="<?= $block->getFormKey() ?>"/>
         <div style="float: left"><?= __('Total orders to replicate') ?>: <span><?= $total ?></span></div>
         <?php if ($total): ?>
-            <div style="float: left; margin-left: 10px; margin-top: -5px;">
+            <div style="float: left; margin-left: 10px; margin-top: 5px;">
                 <button id="prxgt_admin_form_submit"
                         title="<?= __('Replicate Orders') ?>"
                         type="submit"
