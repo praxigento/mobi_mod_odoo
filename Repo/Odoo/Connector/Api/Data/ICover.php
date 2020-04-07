@@ -8,5 +8,7 @@ namespace Praxigento\Odoo\Repo\Odoo\Connector\Api\Data;
 
 interface ICover
 {
+    public function getErrorData();
+
     public function getResultData();
 }

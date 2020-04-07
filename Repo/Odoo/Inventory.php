@@ -26,6 +26,7 @@ class Inventory
 
     public function get($prodIds = null, $wrhsIds = null)
     {
+        $result = new \Praxigento\Odoo\Repo\Odoo\Data\Inventory();
         /* prepare request parameters */
         if (is_array($prodIds)) {
             $argProdIds = $prodIds;
@@ -48,7 +49,9 @@ class Inventory
         /* perform request and extract result data */
         $cover = $this->rest->request($params, self::ROUTE);
         $data = $cover->getResultData();
-        $result = $this->inputProcessor->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\Inventory::class);
+        if ($data) {
+            $result = $this->inputProcessor->convertValue($data, \Praxigento\Odoo\Repo\Odoo\Data\Inventory::class);
+        }
         return $result;
     }
 }

@@ -2,6 +2,7 @@
 /**
  * User: Alex Gusev <alex@flancer64.com>
  */
+
 namespace Praxigento\Odoo\Repo\Odoo\Connector;
 
 class Rest
@@ -68,6 +69,10 @@ class Rest
         $this->logger->debug("Response:\t\n$contents");
         $data = $this->adapter->decodeJson($contents);
         $result = new \Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\Def\Cover($data);
+        $error = $result->getErrorData();
+        if ($error) {
+            $this->logger->error(json_encode($error));
+        }
         return $result;
     }
 }

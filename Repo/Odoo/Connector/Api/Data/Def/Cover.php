@@ -10,6 +10,7 @@ use Praxigento\Odoo\Repo\Odoo\Connector\Api\Data\ICover;
 
 class Cover extends DataObject implements ICover
 {
+    const PATH_ERROR_DATA = '/error';
     const PATH_RESULT_DATA = '/result';
 
     /**
@@ -22,10 +23,15 @@ class Cover extends DataObject implements ICover
         parent::__construct($data);
     }
 
+    public function getErrorData()
+    {
+        $result = parent::get(self::PATH_ERROR_DATA);
+        return $result;
+    }
+
     public function getResultData()
     {
         $result = parent::get(self::PATH_RESULT_DATA);
         return $result;
     }
-
 }
