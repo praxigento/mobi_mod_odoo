@@ -23,7 +23,7 @@ class Save
     private $ownWrhs;
 
     public function __construct(
-        \Praxigento\Core\Api\App\Logger\Main $logger,
+        \Praxigento\Odoo\Api\App\Logger\Main $logger,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Lots $ownLots,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Product $ownProd,
         \Praxigento\Odoo\Service\Replicate\Product\Save\Own\Warehouses $ownWrhs
@@ -55,11 +55,19 @@ class Save
         /** perform processing */
         $this->ownWrhs->execute($warehouses);
         $this->ownLots->execute($lots);
+        $processed = 0;
         if (is_array($products)) {
             foreach ($products as $prod) {
-                $this->ownProd->execute($prod);
+                try {
+                    $this->ownProd->execute($prod);
+                    $processed++;
+                } catch (\Throwable $e) {
+                    $this->logger->error($e->getMessage());
+                    break; // break loop on error and print out the message
+                }
             }
         }
+        $this->logger->info("Products been replicated: $processed from $total.");
         $this->logger->info("Odoo products replication is completed.");
 
         /** compose result */
