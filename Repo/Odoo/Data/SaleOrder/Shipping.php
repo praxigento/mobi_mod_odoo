@@ -17,6 +17,16 @@ class Shipping
     }
 
     /**
+     * Distribution point (for CDEK only).
+     * @return string
+     */
+    public function getDistrPoint()
+    {
+        $result = parent::getDistrPoint();
+        return $result;
+    }
+
+    /**
      * @return \Praxigento\Odoo\Repo\Odoo\Data\SaleOrder\Shipping\Tax
      */
     public function getTax()
@@ -32,6 +42,17 @@ class Shipping
     public function setCode($data)
     {
         parent::setCode($data);
+    }
+
+    /**
+     * Distribution point (for CDEK only).
+     *
+     * @param string $data
+     * @return void
+     */
+    public function setDistrPoint($data)
+    {
+        parent::setDistrPoint($data);
     }
 
     /**

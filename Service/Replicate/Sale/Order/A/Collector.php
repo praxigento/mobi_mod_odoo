@@ -587,9 +587,11 @@ class Collector
         /* collect data */
         $code = $this->manBusinessCodes->getBusCodeForShippingMethod($sale);
         $tax = $this->getShippingTax($sale);
+        $distPoint = $sale->getData('pvz_code');
         /* populate Odoo Data Object */
         $result->setCode($code);
         $result->setTax($tax);
+        if ($distPoint) $result->setDistrPoint($distPoint);
         return $result;
     }
 
