@@ -53,9 +53,11 @@ class Orders
                     $entry->setErrorName($name);
                     $msg = "Cannot push sale order #$number (id:$id) to Odoo. Reason: $name ($debug).";
                     $this->logger->error($msg);
-                } else {
+                } elseif($resp->isSucceed()) {
                     $entry->setIsSucceed(true);
                     $this->logger->info("Sale order #$number (id:$id) is pushed into Odoo.");
+                } else {
+                    $this->logger->info("Sale order #$number (id:$id) is processed.");
                 }
                 $entries[] = $entry;
             } catch (\Throwable $e) {
