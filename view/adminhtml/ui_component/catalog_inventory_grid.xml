@@ -22,7 +22,7 @@
             <settings>
                 <dataType>number</dataType>
                 <filter>textRange</filter>
-                <label translate="true">Odoo ID</label>
+                <label translate="true">Product ID (Odoo)</label>
             </settings>
         </column>
 
