@@ -13,7 +13,7 @@ class OrderTest
     /** @var \Praxigento\Odoo\Service\Replicate\Sale\Order */
     private $obj;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->obj = $this->manObj->create(\Praxigento\Odoo\Service\Replicate\Sale\Order::class);
     }

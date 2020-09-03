@@ -16,7 +16,7 @@ class CheckoutSubmitAllAfter_ManualTest
     /** @var  \Magento\Sales\Api\OrderRepositoryInterface */
     private $daoSaleOrder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->daoSaleOrder = $this->_manObj->create(\Magento\Sales\Api\OrderRepositoryInterface::class);
         $this->obj = $this->_manObj->create(CheckoutSubmitAllAfter::class);
