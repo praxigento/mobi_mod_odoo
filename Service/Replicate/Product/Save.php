@@ -120,7 +120,7 @@ class Save
             $transport = $this->mailTransportBuilder->getTransport();
             $transport->sendMessage();
 
-            $this->loggerBase->info("Forecast bonus alert is sent.");
+            $this->loggerBase->info("Odoo product replication alert is sent.");
         } catch (\Throwable $e) {
             $this->loggerBase->error('Cannot send email alert (Odoo products replication): ' . $e->getMessage());
         }
