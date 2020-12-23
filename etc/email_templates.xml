@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+
+    <!-- see \Praxigento\Odoo\Service\Replicate\Product\Save::EMAIL_TMPL -->
+    <template id="prxgt_odoo_product_replication_alert"
+              label="Odoo Products Replication Alert"
+              file="replication_alert.html"
+              type="html"
+              module="Praxigento_Odoo"
+              area="adminhtml"/>
+</config>
