@@ -14,7 +14,8 @@ use Praxigento\Santegra\Config as Cfg;
  */
 class Save
 {
-    private const EMAIL_IDENTITY_FROM = 'support';
+    private const ADDR_EMAIL = 'evgenij.shorin@gmail.com';
+    private const ADDR_NAME = 'Evgenij Shorin';
     private const EMAIL_TMPL = 'prxgt_odoo_product_replication_alert';
 
     /** @var \Magento\Backend\App\ConfigInterface */
@@ -109,14 +110,11 @@ class Save
                 'store' => Cfg::DEF_STORE_ID_DEFAULT
             ];
 
-            $email = $this->config->getValue(Cfg::CFG_PATH_TRANS_EMAIL_IDENT_GENERAL_EMAIL);
-            $name = $this->config->getValue(Cfg::CFG_PATH_TRANS_EMAIL_IDENT_GENERAL_NAME);
-
             $this->mailTransportBuilder->setTemplateIdentifier(self::EMAIL_TMPL);
             $this->mailTransportBuilder->setTemplateOptions($opts);
             $this->mailTransportBuilder->setTemplateVars([]);
-            $this->mailTransportBuilder->addTo($email, $name);
-            $this->mailTransportBuilder->setFromByScope(self::EMAIL_IDENTITY_FROM);
+            $this->mailTransportBuilder->addTo(self::ADDR_EMAIL, self::ADDR_NAME);
+            $this->mailTransportBuilder->setFromByScope(['name' => self::ADDR_NAME, 'email' => self::ADDR_EMAIL]);
             $transport = $this->mailTransportBuilder->getTransport();
             $transport->sendMessage();
 
