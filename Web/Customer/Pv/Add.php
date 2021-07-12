@@ -80,6 +80,74 @@ class Add
         $assetId = $this->getAssetId();
         $custId = $this->getCustomerId($mlmId);
         $userId = $this->getUserId($request);
+
+        /* add PV to customer account */
+        $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
+        $req->setAmount($amount);
+        $req->setAssetId($assetId);
+        $req->setCustomerId($custId);
+        $req->setDateApplied($dateApplied);
+        $req->setIsDirect(true);
+        $req->setNote($notes);
+        $req->setUserId($userId);
+
+        // repeat 3 attempts to execute operation with 1 sec. await interval between attempts
+        $MAX = 3;
+        $WAIT = 1000;
+        $count = 1;
+        $done = false;
+        do {
+            try {
+                $this->attempts($respRes, $respData, $req, $odooRef, $mlmId);
+                $done = true;
+            } catch (\Throwable $e) {
+                $msg = $e->getMessage();
+                $this->logger->error("Cannot add PV to customer: $msg");
+                if (str_contains($msg, 'Deadlock found when trying to get lock')) {
+                    if ($count < $MAX) {
+                        // wait and increase counter
+                        usleep($WAIT);
+                        $count++;
+                        $this->logger->error("One more attempt will be given ($count of $MAX).");
+                    } else {
+                        $done = true;
+                        $respRes->setText($msg);
+                        $this->logger->error("All attempts are off ($count of $MAX).");
+                    }
+                } else {
+                    $done = true;
+                    $respRes->setText($msg);
+                }
+            }
+        } while (!$done);
+
+        /** compose result */
+        $result = new WResponse();
+        $result->setResult($respRes);
+        $result->setData($respData);
+        return $result;
+    }
+
+    /**
+     * This method is extracted from 'exec()' and is not well done but it is done quick.
+     *
+     * @param \Praxigento\Core\Api\App\Web\Response\Result $respRes
+     * @param \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data $respData
+     * @param \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request $req
+     * @param $odooRef
+     * @param $mlmId
+     * @throws \Exception
+     */
+    private function attempts(
+        \Praxigento\Core\Api\App\Web\Response\Result $respRes,
+        \Praxigento\Odoo\Api\Web\Customer\Pv\Add\Response\Data $respData,
+        \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request $req,
+        $odooRef,
+        $mlmId
+    ) {
+        $custId = $req->getCustomerId();
+        $pv = $req->getAmount();
+
         /* prevent duplication */
         $def = $this->manTrans->begin();
         try {
@@ -93,16 +161,6 @@ class Add
                 /* validate customer group */
                 $isValidGroup = $this->isValidGroup($custId);
                 if ($isValidGroup) {
-                    /* add PV to customer account */
-                    $req = new \Praxigento\Accounting\Api\Service\Account\Asset\Transfer\Request();
-                    $req->setAmount($amount);
-                    $req->setAssetId($assetId);
-                    $req->setCustomerId($custId);
-                    $req->setDateApplied($dateApplied);
-                    $req->setIsDirect(true);
-                    $req->setNote($notes);
-                    $req->setUserId($userId);
-
                     $resp = $this->servAssetTransfer->exec($req);
                     $operId = $resp->getOperId();
 
@@ -128,11 +186,6 @@ class Add
             /* rollback uncommitted transactions on exception */
             $this->manTrans->end($def);
         }
-        /** compose result */
-        $result = new WResponse();
-        $result->setResult($respRes);
-        $result->setData($respData);
-        return $result;
     }
 
     /**
@@ -142,8 +195,7 @@ class Add
      * @return bool|\Praxigento\Odoo\Repo\Data\Registry\Request
      * @throws \Exception
      */
-    private function findDuplicates($odooRef)
-    {
+    private function findDuplicates($odooRef) {
         $entity = new ERegRequest();
         $entity->setTypeCode(HCodeReq::CUSTOMER_PV_ADD);
         $entity->setOdooRef($odooRef);
