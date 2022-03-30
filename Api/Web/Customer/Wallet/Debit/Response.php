@@ -13,6 +13,7 @@ class Response
     const CODE_CURRENCY_UNKNOWN = 'CURRENCY_UNKNOWN';
     const CODE_CUSTOMER_IS_NOT_FOUND = 'CUSTOMER_IS_NOT_FOUND';
     const CODE_DUPLICATED = 'DUPLICATED';
+    const CODE_NOT_ENOUGH_BALANCE = 'NOT_ENOUGH_BALANCE';
 
     /**
      * @return \Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data|null

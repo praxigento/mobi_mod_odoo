@@ -12,6 +12,7 @@ use Praxigento\Odoo\Api\Web\Customer\Wallet\Debit\Response\Data as WData;
 use Praxigento\Odoo\Config as Cfg;
 use Praxigento\Odoo\Helper\Code\Request as HCodeReq;
 use Praxigento\Odoo\Repo\Data\Registry\Request as ERegRequest;
+use Praxigento\Wallet\Config as CfgWallet;
 
 /**
  * API adapter to internal services to transfer funds from customer wallet to system wallet.
@@ -31,6 +32,8 @@ class Debit
     private $daoTypeAsset;
     /** @var \Praxigento\Core\Api\Helper\Customer\Currency */
     private $hlpCustCur;
+    /** @var \Praxigento\Accounting\Api\Helper\Balance */
+    private $hlpAccBalance;
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
     private $logger;
     /** @var \Praxigento\Core\Api\App\Repo\Transaction\Manager */
@@ -46,6 +49,7 @@ class Debit
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
+        \Praxigento\Accounting\Api\Helper\Balance $hlpAccBalance,
         \Praxigento\Core\Api\Helper\Customer\Currency $hlpCustCur,
         \Praxigento\Accounting\Api\Service\Operation\Create $servOper
     )
@@ -56,6 +60,7 @@ class Debit
         $this->daoDwnlCust = $daoDwnlCust;
         $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
+        $this->hlpAccBalance = $hlpAccBalance;
         $this->hlpCustCur = $hlpCustCur;
         $this->servOper = $servOper;
     }
@@ -84,7 +89,7 @@ class Debit
         assert($request instanceof WRequest);
         /** define local working data */
         $reqData = $request->getData();
-        $amount = $reqData->getAmount();
+        $amount = abs($reqData->getAmount());
         $currency = $reqData->getCurrency();
         $mlmId = $reqData->getCustomerMlmId();
         $notes = $reqData->getNotes();
@@ -104,9 +109,9 @@ class Debit
             $respRes->setCode(WResponse::CODE_CURRENCY_UNKNOWN);
             $respRes->setText($msg);
         } else {
-            /* prevent duplication */
             $def = $this->manTrans->begin();
             try {
+                /* prevent duplication */
                 $found = $this->findDuplicates($odooRef);
                 if ($found) {
                     $msg = "Odoo request referenced as '$odooRef' is already processed.";
@@ -114,13 +119,24 @@ class Debit
                     $respRes->setCode(WResponse::CODE_DUPLICATED);
                     $respRes->setText($msg);
                 } else {
+                    /* validate customer existence */
                     $custId = $this->getCustomerId($mlmId);
                     if ($custId) {
-                        $amount = $this->convertAmountToBaseCurrency($amount, $currency);
-                        $operId = $this->performDebit($custId, $amount, $notes);
-                        $this->registerOdooRequest($odooRef);
-                        $respData->setOperationId($operId);
-                        $respRes->setCode(WResponse::CODE_SUCCESS);
+                        /* validate available balance */
+                        $balance = $this->hlpAccBalance->get($custId, CfgWallet::CODE_TYPE_ASSET_WALLET);
+                        if (($balance - $amount) > (0 - Cfg::DEF_ZERO)) { // >= 0
+                            /* perform debit operation */
+                            $amount = $this->convertAmountToBaseCurrency($amount, $currency);
+                            $operId = $this->performDebit($custId, $amount, $notes);
+                            $this->registerOdooRequest($odooRef);
+                            $respData->setOperationId($operId);
+                            $respRes->setCode(WResponse::CODE_SUCCESS);
+                        } else {
+                            $respRes->setCode(WResponse::CODE_NOT_ENOUGH_BALANCE);
+                            $msg = "Customer #$mlmId has '$balance' on the wallet balance. It's not enough to perform request.";
+                            $this->logger->error($msg);
+                            $respRes->setText($msg);
+                        }
                     } else {
                         $respRes->setCode(WResponse::CODE_CUSTOMER_IS_NOT_FOUND);
                         $msg = "Customer #$mlmId is not found.";
@@ -149,8 +165,7 @@ class Debit
      * @return bool|\Praxigento\Odoo\Repo\Data\Registry\Request
      * @throws \Exception
      */
-    private function findDuplicates($odooRef)
-    {
+    private function findDuplicates($odooRef) {
         $entity = new ERegRequest();
         $entity->setTypeCode(HCodeReq::CUSTOMER_WALLET_DEBIT);
         $entity->setOdooRef($odooRef);
@@ -163,8 +178,7 @@ class Debit
      * @param string $mlmId
      * @return int|null
      */
-    private function getCustomerId($mlmId)
-    {
+    private function getCustomerId($mlmId) {
         $result = null;
         $entity = $this->daoDwnlCust->getByMlmId($mlmId);
         if ($entity) {
