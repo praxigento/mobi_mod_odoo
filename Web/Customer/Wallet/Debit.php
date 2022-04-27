@@ -18,9 +18,8 @@ use Praxigento\Wallet\Config as CfgWallet;
  * API adapter to internal services to transfer funds from customer wallet to system wallet.
  */
 class Debit
-    implements \Praxigento\Odoo\Api\Web\Customer\Wallet\DebitInterface
-{
-    private $allowedCurs = [Cfg::CODE_CUR_EUR, Cfg::CODE_CUR_USD];
+    implements \Praxigento\Odoo\Api\Web\Customer\Wallet\DebitInterface {
+    private $allowedCurs = [Cfg::CODE_CUR_EUR, Cfg::CODE_CUR_USD, Cfg::CODE_CUR_RUB];
 
     /** @var \Praxigento\Accounting\Repo\Dao\Account */
     private $daoAcc;
@@ -30,8 +29,6 @@ class Debit
     private $daoRegRequest;
     /** @var \Praxigento\Accounting\Repo\Dao\Type\Asset */
     private $daoTypeAsset;
-    /** @var \Praxigento\Core\Api\Helper\Customer\Currency */
-    private $hlpCustCur;
     /** @var \Praxigento\Accounting\Api\Helper\Balance */
     private $hlpAccBalance;
     /** @var \Praxigento\Odoo\Api\App\Logger\Main */
@@ -40,52 +37,84 @@ class Debit
     private $manTrans;
     /** @var \Praxigento\Accounting\Api\Service\Operation\Create */
     private $servOper;
+    /** @var \Praxigento\Core\Api\App\Repo\Generic */
+    private $daoGeneric;
+    /**
+     * @var array [FROM][TO]=> rate
+     */
+    private $cacheRates = [];
 
     public function __construct(
-        \Praxigento\Core\Api\App\Web\Authenticator\Rest $auth,
         \Praxigento\Odoo\Api\App\Logger\Main $logger,
+        \Praxigento\Core\Api\App\Repo\Generic $daoGeneric,
         \Praxigento\Accounting\Repo\Dao\Account $daoAcc,
         \Praxigento\Accounting\Repo\Dao\Type\Asset $daoTypeAsset,
         \Praxigento\Downline\Repo\Dao\Customer $daoDwnlCust,
         \Praxigento\Odoo\Repo\Dao\Registry\Request $daoRegRequest,
         \Praxigento\Core\Api\App\Repo\Transaction\Manager $manTrans,
         \Praxigento\Accounting\Api\Helper\Balance $hlpAccBalance,
-        \Praxigento\Core\Api\Helper\Customer\Currency $hlpCustCur,
         \Praxigento\Accounting\Api\Service\Operation\Create $servOper
-    )
-    {
+    ) {
         $this->logger = $logger;
+        $this->daoGeneric = $daoGeneric;
         $this->daoAcc = $daoAcc;
         $this->daoTypeAsset = $daoTypeAsset;
         $this->daoDwnlCust = $daoDwnlCust;
         $this->daoRegRequest = $daoRegRequest;
         $this->manTrans = $manTrans;
         $this->hlpAccBalance = $hlpAccBalance;
-        $this->hlpCustCur = $hlpCustCur;
         $this->servOper = $servOper;
+    }
+
+    /**
+     * Load rates from DB or use cache.
+     *
+     * @param string $from
+     * @param string $to
+     * @return float
+     * @throws \Exception
+     */
+    private function loadRate($from, $to) {
+        if (isset($this->cacheRates[$from][$to])) {
+            $result = $this->cacheRates[$from][$to];
+        } else {
+            $entity = Cfg::ENTITY_MAGE_DIR_CUR_RATE;
+            $key = [
+                Cfg::E_DIR_CUR_RATE_A_CURRENCY_FROM => $from,
+                Cfg::E_DIR_CUR_RATE_A_CURRENCY_TO => $to
+            ];
+            $found = $this->daoGeneric->getEntityByPk($entity, $key);
+            if ($found) {
+                $result = $found[Cfg::E_DIR_CUR_RATE_A_RATE];
+                $this->cacheRates[$from][$to] = $result;
+            } else {
+                throw new \Exception("Cannot load rate for currencies: $from => $to.");
+            }
+        }
+        return $result;
     }
 
     /**
      * Convert $amount if $currency equals to EUR.
      *
-     * (yes, this is an ugly solution, I know)
-     *
      * @param $amount
      * @param $currency
      * @return float
      */
-    private function convertAmountToBaseCurrency($amount, $currency)
-    {
+    private function convertAmountToBaseCurrency($amount, $currency) {
         if ($currency == Cfg::CODE_CUR_EUR) {
-            $result = $this->hlpCustCur->convertToBase($amount);
+            // Yes, this is an ugly solution, I know. Wrong reference to top-level plugin.
+            $result = $amount * \Praxigento\Santegra\Config::RATE_EUR_USD;
+        } elseif ($currency == Cfg::CODE_CUR_RUB) {
+            $rate = $this->loadRate($currency, Cfg::CODE_CUR_USD);
+            $result = $amount * $rate;
         } else {
             $result = $amount;
         }
         return $result;
     }
 
-    public function exec($request)
-    {
+    public function exec($request) {
         assert($request instanceof WRequest);
         /** define local working data */
         $reqData = $request->getData();
@@ -196,8 +225,7 @@ class Debit
      * @return int
      * @throws \Exception
      */
-    private function performDebit($custId, $amount, $note)
-    {
+    private function performDebit($custId, $amount, $note) {
         /* get accounts */
         $assetTypeId = $this->daoTypeAsset->getIdByCode(Cfg::CODE_TYPE_ASSET_WALLET_ACTIVE);
         $debitAcc = $this->daoAcc->getByCustomerId($custId, $assetTypeId);
@@ -226,8 +254,7 @@ class Debit
      * @param string $odooRef
      * @throws \Exception
      */
-    private function registerOdooRequest($odooRef)
-    {
+    private function registerOdooRequest($odooRef) {
         $entity = new ERegRequest();
         $entity->setTypeCode(HCodeReq::CUSTOMER_WALLET_DEBIT);
         $entity->setOdooRef($odooRef);
