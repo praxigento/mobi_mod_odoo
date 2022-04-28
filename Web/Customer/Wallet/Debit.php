@@ -124,6 +124,9 @@ class Debit
         $notes = $reqData->getNotes();
         $odooRef = $reqData->getOdooRef();
 
+        $reqData->get();
+        $this->logger->info(self::class . " (req): amount=$amount, currency=$currency, mlmId=$mlmId, odooRef=$odooRef, notes=$notes.");
+
         $respRes = new WResult();
         $respData = new WData();
 
@@ -151,18 +154,18 @@ class Debit
                     /* validate customer existence */
                     $custId = $this->getCustomerId($mlmId);
                     if ($custId) {
+                        $amountBase = $this->convertAmountToBaseCurrency($amount, $currency);
                         /* validate available balance */
                         $balance = $this->hlpAccBalance->get($custId, CfgWallet::CODE_TYPE_ASSET_WALLET);
-                        if (($balance - $amount) > (0 - Cfg::DEF_ZERO)) { // >= 0
+                        if (($balance - $amountBase) > (0 - Cfg::DEF_ZERO)) { // >= 0
                             /* perform debit operation */
-                            $amount = $this->convertAmountToBaseCurrency($amount, $currency);
-                            $operId = $this->performDebit($custId, $amount, $notes);
+                            $operId = $this->performDebit($custId, $amountBase, $notes);
                             $this->registerOdooRequest($odooRef);
                             $respData->setOperationId($operId);
                             $respRes->setCode(WResponse::CODE_SUCCESS);
                         } else {
                             $respRes->setCode(WResponse::CODE_NOT_ENOUGH_BALANCE);
-                            $msg = "Customer #$mlmId has '$balance' on the wallet balance. It's not enough to perform request.";
+                            $msg = "Customer #$mlmId has '$balance' on the wallet balance. It's not enough to perform request ($amountBase).";
                             $this->logger->error($msg);
                             $respRes->setText($msg);
                         }
@@ -184,6 +187,7 @@ class Debit
         $result = new WResponse();
         $result->setResult($respRes);
         $result->setData($respData);
+        $this->logger->info(self::class . ' (res):' . var_export($respData, true));
         return $result;
     }
 
