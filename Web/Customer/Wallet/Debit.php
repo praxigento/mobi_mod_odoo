@@ -104,7 +104,7 @@ class Debit
     private function convertAmountToBaseCurrency($amount, $currency) {
         if ($currency == Cfg::CODE_CUR_EUR) {
             // Yes, this is an ugly solution, I know. Wrong reference to top-level plugin.
-            $result = $amount * \Praxigento\Santegra\Config::RATE_EUR_USD;
+            $result = $amount * \Praxigento\Santegra\Config::RATE_EUR_USD_AFTER_20220901;
         } elseif ($currency == Cfg::CODE_CUR_RUB) {
             $rate = $this->loadRate($currency, Cfg::CODE_CUR_USD);
             $result = $amount * $rate;
