@@ -23,7 +23,7 @@ class OrderTest
     {
         /** @var \Magento\Sales\Api\OrderRepositoryInterface $repo */
         $repo = $this->manObj->create(\Magento\Sales\Api\OrderRepositoryInterface::class);
-        $sale = $repo->get(2994);
+        $sale = $repo->get(10619);
         $req = new \Praxigento\Odoo\Service\Replicate\Sale\Order\Request();
         $req->setSaleOrder($sale);
         $res = $this->obj->exec($req);

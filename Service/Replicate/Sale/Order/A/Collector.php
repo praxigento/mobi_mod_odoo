@@ -327,7 +327,8 @@ class Collector
         $nameFirst = $mageCust->getFirstname();
         $nameLast = $mageCust->getLastname();
         $name = "$nameFirst $nameLast";
-        $groupId = $mageCust->getGroupId();
+//        $groupId = $mageCust->getGroupId();
+        $groupId = $sale->getCustomerGroupId();
         $groupCode = $this->manBusinessCodes->getBusCodeForCustomerGroupById($groupId);
         /* init Odoo data object */
         $result->setIdMage($custMageId);
